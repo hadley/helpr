@@ -21,14 +21,14 @@ parse_help <- function(rd) {
   # Title, description, value and examples, need to be stitched into a 
   # single string.
   out$title <- reconstruct(untag(rd$title))
-  out$desc <- gsub("$\n+|\n+^", "", reconstruct(untag(rd$description)))
-  out$details <- reconstruct(untag(rd$details))
-  out$value <- reconstruct(untag(rd$value))
+  out$desc <- gsub("$\n+|\n+^", "", reconstruct(rd$description))
+  out$details <- reconstruct(rd$details)
+  out$value <- reconstruct(rd$value)
   out$examples <- highlight(reconstruct(untag(rd$examples)))
   out$usage <- reconstruct(untag(rd$usage))
-  out$authors <- reconstruct(untag(rd$author))
+  out$authors <- reconstruct(rd$author)
 
-  out$seealso <- reconstruct(untag(rd$seealso))
+  out$seealso <- reconstruct(rd$seealso)
   
   # Join together aliases and keywords
   out$name <- reconstruct(untag(rd$name))

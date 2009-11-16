@@ -20,22 +20,21 @@ all_tags <- function(rd) {
 }
 
 reconstruct <- function(rd) {
-  if (is.null(rd)) return()
+  if (is.null(rd)) return("")
+  if (!is.list(rd)) return(as.character(rd))
   
   tag <- tag(rd)
 
-  if (length(tag) == 0 || tag %in% c("", "TEXT")) {
-    # Top level with no tag, just recurse
-    if (is.character(rd)) return(as.character(rd))
+  if (length(tag) == 0 || tag == "TEXT" || tag == "") {
+    # Collapse text strings
+    str_trim(str_join(sapply(rd, reconstruct), collapse = ""))
 
-    pieces <- sapply(rd, reconstruct)
-    text <- str_join(pieces, collapse = "")
-
-    if (length(tag) > 0 && tag == "") return(text)
+  } else if (is_section(tag)) {
+    # Sections should be arranged into paragraphs    
+    text <- reconstruct(untag(rd))
+    paras <- str_trim(str_split(text, "\\n\\n")[[1]])
+    str_join("<p>", paras, "</p>", "\n\n", collapse = "")      
     
-    str_join("<p>", str_split(text, "\\n\\n")[[1]], "</p>", "\n\n", 
-      collapse = "")      
-
   } else if (tag %in% names(simple_tags)) {
     # If we can process tag with just prefix & suffix, do so
     tag_simple(tag, reconstruct(untag(rd)))
@@ -46,7 +45,10 @@ reconstruct <- function(rd) {
     pkg <- attr(rd, "Rd_option")
     
     tag_link(fun, pkg)
-
+    
+  } else if (tag == "\\eqn") {
+    str_join("<code>", rd[[1]], "</code>")
+    
   } else if (tag == "\\url") {
     stopifnot(length(rd) == 1)
     str_join("<a href='", rd[[1]], "'>", rd[[1]], "</a>")
@@ -72,6 +74,13 @@ tag_link <- function(fun, pkg = NULL) {
 }
 
 
+is_section <- function(tag) {
+  
+  tag %in% c("\\details", "\\description", "\\value", "\\author", "\\seealso")
+  
+  
+}
+
 simple_tags <- list(
   "\\acronym" =      c('<acronym>','</acronym>'),
   "\\bold" =         c("<b>", "</b>"),
@@ -81,6 +90,7 @@ simple_tags <- list(
   "\\cr" =           c("<br >", ""),
   "\\dfn" =          c("<dfn>", "</dfn>"),
   "\\donttest" =     c("", ""),
+  "\\dontrun" =      c("## Not run", "## "),
   "\\dots" =         c("...", ""),
   "\\dquote" =       c("&ldquo;", "&rdquo;"),
   "\\emph" =         c("<em>", "</em>"),
@@ -96,7 +106,7 @@ simple_tags <- list(
   "\\preformatted" = c("<pre>","</pre>"),
   "\\R" =            c('<span style="R">R</span>', ""),
   "\\samp" =         c('<span class = "samp">',"</span>"),
-  "\\squote" =       c("&lsquo;","&rsquo;"),
+  "\\sQuote" =       c("&lsquo;","&rsquo;"),
   "\\strong" =       c("<strong>", "</strong>"),
   "\\text" =         c("<p>", "</p>"),
   "\\var" =          c("<var>", "</var>"),
