@@ -3,8 +3,7 @@ Things that the documentation system currently doesn't do, but could:
 * Explore using latent dirichlet topic model to provide see also links based on description and details.
 * Display hyperlinked keywords
 * Look at structure of hannah rd (http://github.com/mislav/hanna) - esp. interactive search
-* Extract sinartra into it's own package
-* Main page - display latest changes
+* Main page - display latest changes from CHANGELOG
 
 Package page
 ============
@@ -16,7 +15,6 @@ Examples
 ========
 
 * Parse examples and add links to functions that are used
-* Syntax highlighting
 * Loupe to display usage
 * Ability to send selected expression to R console
 * Ability to evaluate all example code and interleave results back in html
