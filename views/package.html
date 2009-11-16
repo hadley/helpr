@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="/_styles/reset-fonts-grids.css" />
+  <link rel="stylesheet" type="text/css" href="/_styles/r-help.css" />
+
+  <title><%= package %>. R help</title>
+</head>
+
+<body>
+  <div id="watermark"><%= package %></div>
+  <div id="doc2" class="yui-t6">
+  <div id="hd">
+  </div>
+
+  <div id="bd">
+  <div id="yui-main"><div class="yui-b">
+    <h1><%= package %></h1>
+    <p><%= description$description %></p>
+
+    <p><%= str_join("<a href='topics/", topics, "'>", topics, "</a>", 
+      collapse = ", ") %></p>
+
+  </div></div>
+  <div class="yui-b"><div class = "sidebar">
+    
+    <h2>Author(s)</h2>
+    
+    <p><%= description$author %></p>
+    
+    <h2>Imports</h2>
+    
+    <p><% imports <- sapply(description$imports, "[", "name") %>
+    <%=str_join("<a href='/packages/", imports, "/'>", imports, "</a>", collapse = ", ") %></p>
+    
+    <h2>Suggests</h2>
+    
+    <p><% suggests <- sapply(description$suggests, "[", "name") %>
+    <%=str_join("<a href='/packages/", suggests, "/'>", suggests, "</a>", collapse = ", ") %></p>
+    
+  </div></div>
+  
+  </div><!-- end bd -->
+
+  <div id="ft">
+    <p>R help.  Style created by <a href="http://had.co.nz/">Hadley Wickham</a></p>
+  </div>
+</div></body>
+</html>

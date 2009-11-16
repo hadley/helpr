@@ -1,0 +1,83 @@
+/* Colour scheme: http://kuler.adobe.com/#themeID/163847 */
+
+html {overflow: scroll;}
+
+#hd {
+  padding: 1em;
+  margin: 0 0 2em 0;
+  background-color: #eee;
+  }
+
+#ft {
+  font-size: 100%; 
+  border-top: 1px solid #ccc; 
+  padding-top: 1em; 
+  margin-top: 3em;
+}
+
+/* Basic styles ------------------------- */
+
+#bd * {margin-bottom: 0.5em; line-height: 1.5em;}
+
+a:link, a:visited { color: #264D66;}
+a:hover {background-color: #ccc; color: #264D66;}
+
+td {vertical-align: top; padding: 4px;}
+ul {margin-left: 2em; margin-bottom: 0.5em; }
+ul li {list-style-type: disc;}
+
+h1, h2, h3 {font-family: "Helvetica Neue", Helvetica, Arial, "sans serif"; font-weight:  normal;}
+#hd h1 a {color: #000; text-decoration: none;}
+#hd h1 a:hover {background: none;}
+#bd h1 {font-size: 3em; line-height: 1.2em; width: 75%;}
+h2 {font-size: 1em; margin-top: 1.5em; color: #264D66; font-weight: bold;}
+.sidebar h2 {margin-top: 1em; font-size: 1.2em;}
+.firstline, h2.firstline {margin-top: 0;}
+h3 {font-weight: bold;}
+
+em {font-style: italic;}
+strong {font-weight: bold;}
+
+pre, code {
+  font-size: 0.97em;
+  background-color: #eaeaea;
+  white-space: pre-wrap;
+}
+
+/* Watermark */
+
+#watermark {
+  letter-spacing: -15px;
+  position: fixed;
+  left: 30px;
+  top: 50px;
+  font-size: 200px;
+  margin-top: 0;
+  line-height: 1;
+  font-weight: bold;
+  color: #f6f6f6;
+  z-index: -5;
+}
+
+
+/* Sidebar ------------------------- */
+
+
+#sidebar {font-size:  0.9em; line-height: 1.3em; }
+#sidebar li {margin-left: 0em; }
+
+
+/* Syntax highlighting -----------------------------------------------------*/
+
+.number {color:rgb(21,20,181);}
+.functioncall {color:#264D66 ;}
+.string {color:#375D81 ;}
+.keyword {font-weight:bolder ;color:black;}
+.argument {color:#264D66 ;}
+.comment {color: #333;}
+.formalargs {color: #264D66;}
+.eqformalargs {color:#264D66;}
+.package {color:rgb(150,182,37);}
+.slot {font-style:italic;}
+.symbol {color:black ;}
+.prompt {color:black ;}

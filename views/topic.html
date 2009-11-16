@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="/_styles/reset-fonts-grids.css" />
+  <link rel="stylesheet" type="text/css" href="/_styles/r-help.css" />
+
+  <title><%= name %> / <%= package %>. R help</title>
+</head>
+
+<body>
+  <div id="watermark"><%= name %></div>
+  <div id="doc" class="yui-t4">
+  <div id="hd">
+    <a href=".."><%= package %></a> &#8594; <%= name %> 
+    <% if (length(aliases) > 0) { -%>
+    (aka <%= str_join(aliases, collapse = ", ") %>)<% } %>
+  </div>
+
+  <div id="bd">
+  <div id="yui-main"><div class="yui-b">
+    <h1><%= title%></h1>
+    <%= desc %>
+
+    <h2>Usage</h2>
+    <pre><%= usage %></pre>
+
+    <h2>Arguments</h2>
+
+    <table><% for(param in params) { -%>
+    <tr>
+      <td><code><%= param$param %></code></td>
+      <td><%= param$desc %></td>
+    </tr>
+    <% } -%></table>
+
+    <h2>Details</h2><%= details %>
+
+    <h2>Value</h2><%= value %>
+
+    <h2>Examples</h2>
+    <%= examples %>
+
+  </div></div>
+  <div class="yui-b"><div class = "sidebar">
+    <h2>See also</h2>
+    <%= seealso %>
+    
+    <h2>Author(s)</h2>
+    <%= authors %>
+
+    
+    
+  </div></div>
+  
+  </div><!-- end bd -->
+
+  <div id="ft">
+    <p>R help.  Style created by <a href="http://had.co.nz/">Hadley Wickham</a></p>
+  </div>
+</div></body>
+</html>
