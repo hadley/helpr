@@ -1,50 +1,11 @@
-source("rd-tags.r")
-
-tag <- function(x) attr(x, "Rd_tag")
-
-untag <- function(x) {
-  if (is.null(x)) return()
-  attr(x, "Rd_tag") <- ""
-  x
-}
-
-reconstruct <- function(rd) {
-  if (is.null(rd)) return("")
+pkg_topic <- function(package, topic, file = NULL) {
+  if (is.null(file)) {
+    topics <- pkg_topics_index(package)
+    file <- topics$file[topics$alias == topic]
+    stopifnot(length(file) == 1)    
+  }
   
-  if (is.list(rd)) {
-    # Special tags get ignored
-    special <- tag(rd) == toupper(tag(rd))
-    
-    tag <- tolower(gsub("\\\\", "", tag(rd)))
-    
-    if (tag == "link") {
-      fun <- rd[[1]]
-      pkg <- attr(rd, "Rd_option")
-      if (!is.null(pkg)) {
-        out <- str_join("<a href='/packages/", pkg, "/topics/", fun, "'>", fun, "</a>")        
-      } else {
-        out <- str_join("<a href='", fun, "'>", fun, "</a>")
-      }
-    } else if (tag == "url") {
-      out <- str_join("<a href='", rd[[1]], "'>", rd[[1]], "</a>")
-    } else {
-      html <- html_tags[tag]
-
-      prefix <- ifelse(special, "", sapply(html, "[", 1))
-      suffix <- ifelse(special, "", sapply(html, "[", 2))
-      out <- paste(
-        prefix, paste(sapply(rd, reconstruct), collapse = ""), suffix, 
-       sep = "")      
-    }
-    
-    if (tag(rd) == "TEXT") {
-      out <- str_split(out, "\\n\\n")[[1]]
-      out <- str_join("<p>", str_trim(out), "</p>", "\n\n", collapse = "")
-    } 
-    str_trim(out)
-  } else {
-    rd
-  }  
+  tools:::fetchRdDB(pkg_rddb_path(package), file)
 }
 
 # Function to turn a help topic into a convenient format.
