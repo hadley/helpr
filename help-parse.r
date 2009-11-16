@@ -1,4 +1,3 @@
-library(highlight)
 source("rd-tags.r")
 
 tag <- function(x) attr(x, "Rd_tag")
@@ -92,6 +91,8 @@ parse_help <- function(rd) {
 }
 
 highlight <- function(examples) {
+  if (!require(highlight)) return(examples)
+  
   ex_parser <- parser(text = examples)
-  str_join(capture.output(highlight::highlight( parser.output = ex_parser, renderer = renderer_html(doc = F))), collapse = "\n")
+  str_join(capture.output(highlight::highlight( parser.output = ex_parser, renderer = renderer_html(doc = F))), collapse = "\n")    
 }
