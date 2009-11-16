@@ -70,13 +70,13 @@ html_tags <- list(
   "strong" =       c("<strong>", "</strong>"),
   "var" =          c("<var>", "</var>"),
   "verb" =         c("<pre>", "</pre>"),
-  "text" =         c("<p>", "</p>")
+  "text" =         c("<p>", "</p>"),
+  "R" =            c('<span style="R">R</span>', ""),
+  "cr" =           c("<br >", ""),
+  "dots" =         c("...", ""),
+  "ldots" =        c("...", "")
 )
 
 
 escapes <- list(
- "R" = '<span style="R">R</span>',
- "cr" = "<br >",
- "dots" = "...",
- "ldots" = "..."
 )
