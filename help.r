@@ -1,17 +1,16 @@
 library(sinartra)
 
+source("memoise.r")
 source("help-parse-rd.r")
 source("help-package.r")
 source("help-topic.r")
+source("help-index.r")
 
 router <- Router$clone()
 
 # Show list of all packages on home page
 router$get("/index.html", function() {
-  packages <- as.data.frame(library()$results, stringsAsFactors = FALSE)
-  packages <- packages[order(packages$Package), ]
-  pkg_list <- lapply(1:nrow(packages), function(i) as.list(packages[i, ]))
-  render_brew("index", list(packages = pkg_list))
+  render_brew("index", list(packages = pkg_list()))
 })
 
 # Use file in public, if present
