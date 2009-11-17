@@ -5,11 +5,19 @@ Things that the documentation system currently doesn't do, but could:
 * Look at structure of hannah rd (http://github.com/mislav/hanna) - esp. interactive search
 * Main page - display latest changes from CHANGELOG
 
+* Build index of packages and topics when started
+* interactive tutorial like http://ejohn.org/apps/learn/
+
 Package page
 ============
 
 * links to news & changelogs
 * demos
+
+Topic page
+==========
+
+* "did you mean?" - include list of all topics with the same name in different packages
 
 Examples
 ========
