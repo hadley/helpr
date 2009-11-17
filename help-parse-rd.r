@@ -1,9 +1,3 @@
-rd <- pkg_topic("stats", "glm")
-tags <- sapply(rd, tag)
-tags <- gsub("\\\\", "", tags)
-names(rd) <- tags
-
-
 tag <- function(x) attr(x, "Rd_tag")
 
 untag <- function(x) {

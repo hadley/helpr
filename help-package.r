@@ -29,3 +29,22 @@ pkg_topics_index <- function(package) {
   names(topics) <- c("alias", "file")  
   topics
 }
+
+pkg_topics_rd <- memoise(function(package) {
+  rd <- tools:::fetchRdDB(pkg_rddb_path(package))
+  lapply(rd, name_rd)
+})
+
+# 
+# index <- compact(llply(plyr, function(rd) {
+#   keywords <- reconstruct(untag(rd$keyword))
+#   if (any(keywords != "internal")) return()
+#   
+#   list(
+#     name = reconstruct(untag(rd$name)),
+#     title = reconstruct(untag(rd$title)),
+#     aliases = unname(sapply(rd[names(rd) == "alias"], "[[", 1)),
+#     keywords = unname(sapply(rd[names(rd) == "keyword"], "[[", 1))
+#   )
+# }))
+# str(index)

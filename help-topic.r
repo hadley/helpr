@@ -5,14 +5,21 @@ pkg_topic <- function(package, topic, file = NULL) {
     stopifnot(length(file) == 1)    
   }
   
-  tools:::fetchRdDB(pkg_rddb_path(package), file)
+  name_rd(tools:::fetchRdDB(pkg_rddb_path(package), file))
+}
+
+
+name_rd <- function(rd) {
+  tags <- sapply(rd, tag)
+  tags <- gsub("\\\\", "", tags)
+  names(rd) <- tags
+  
+  rd
 }
 
 # Function to turn a help topic into a convenient format.
 parse_help <- function(rd) {
   tags <- sapply(rd, tag)
-  tags <- gsub("\\\\", "", tags)
-  names(rd) <- tags
 
   # Remove top-level text strings - just line breaks between sections
   rd <- rd[tags != "TEXT"]
