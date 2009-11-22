@@ -7,6 +7,7 @@ Things that the documentation system currently doesn't do, but could:
 
 * Build index of packages and topics when started
 * interactive tutorial like http://ejohn.org/apps/learn/
+* Use jsmath (http://www.math.union.edu/~dpvc/jsMath/) for nice math display
 
 Package page
 ============
