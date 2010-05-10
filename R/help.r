@@ -1,7 +1,7 @@
 helpr <- function(installed = TRUE) {
   
   if (installed) {
-    path <- system.file("inst/", package = "helpr")
+    path <- system.file(package = "helpr")
   } else {    
     path <- normalizePath(file.path(getwd(), "inst"))
   }
