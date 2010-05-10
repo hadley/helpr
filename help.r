@@ -47,5 +47,11 @@ router$get("/packages/:package/topics/:topic", function(package, topic) {
   render_brew("topic", topic_info)
 })
 
+# Individual help topic 
+router$get("/library/:package/html/:topic.html", function(package, topic) {
+  redirect(str_join("/packages/", package, "/topics/", topic))
+})
+
 render_path <- function(path, ...) router$route(path)
 assignInNamespace("httpd", render_path, "tools")
+help.start()
