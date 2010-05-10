@@ -21,6 +21,10 @@ router$get("/doc/html/index.html", function() {
   redirect("/index.html")
 })
 
+router$get("/", function() {
+  redirect("/index.html")
+})
+
 # If package path, missing trailing /, redirect
 router$get("/packages/:package", function(package) {
   redirect(str_join("/packages/", package, "/"))
