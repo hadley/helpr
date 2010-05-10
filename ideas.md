@@ -25,6 +25,7 @@ Topic
 * "did you mean?" - include list of all topics with the same name in different packages
 * use latent dirichlet topic models to provide see also links based on description and details.
 * display hyperlinked keywords
+* view source - shows function source
 
 Dynamic help
 ============
