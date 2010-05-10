@@ -1,22 +1,20 @@
-.path <- getwd()
-
 helpr <- function(installed = TRUE) {
   
-  # Quick hack to make path available to everyone
   if (installed) {
-    .path <<- system.file("inst/", package = "helpr")
+    path <- system.file("inst/", package = "helpr")
   } else {    
-    .path <<- normalizePath(file.path(getwd(), "inst"))
+    path <- normalizePath(file.path(getwd(), "inst"))
   }
 
   router <- Router$clone()
+
   # Show list of all packages on home page
   router$get("/index.html", function() {
-    render_brew("index", list(packages = pkg_list()))
+    render_brew("index", list(packages = pkg_list()), path = path)
   })
 
   # Use file in public, if present
-  router$get("/*", static_file)
+  router$get("/*", function(splat) static_file(splat, path = path))
 
   # Redirect old home location to new
   router$get("/doc/html/index.html", function() {
@@ -43,14 +41,14 @@ helpr <- function(installed = TRUE) {
     names(description) <- tolower(names(description))
   
     render_brew("package", list(package = package, topics = topics,
-      description = description))
+      description = description), path = path)
   })
 
   # Individual help topic
   router$get("/packages/:package/topics/:topic", function(package, topic) {
     topic_info <- parse_help(pkg_topic(package, topic))
     topic_info$package <- package
-    render_brew("topic", topic_info)
+    render_brew("topic", topic_info, path = path)
   })
 
   # Individual help topic 
