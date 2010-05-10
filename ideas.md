@@ -1,37 +1,54 @@
-Things that the documentation system currently doesn't do, but could:
+Individual pages
+================
 
-* Explore using latent dirichlet topic model to provide see also links based on description and details.
-* Display hyperlinked keywords
-* Look at structure of hannah rd (http://github.com/mislav/hanna) - esp. interactive search
+Main
+
 * Main page - display latest changes from CHANGELOG
+* Pull in RSS feeds?
 
-* Build index of packages and topics when started
-* interactive tutorial like http://ejohn.org/apps/learn/
-* Use jsmath (http://www.math.union.edu/~dpvc/jsMath/) for nice math display
-
-Package page
-============
+Package
 
 * links to news & changelogs
 * demos
+* vignettes
+* see CRAN page for more ideas
 
-Topic page
-==========
+Topic
 
 * "did you mean?" - include list of all topics with the same name in different packages
+* use latent dirichlet topic models to provide see also links based on description and details.
+* display hyperlinked keywords
 
-Examples
-========
+Examples and demos
+==================
 
 * Parse examples and add links to functions that are used
-* Loupe to display usage
-* Ability to send selected expression to R console
-* Ability to evaluate all example code and interleave results back in html
+* Send selected expression to R console
+* Evaluate all example code and interleave results back in html, like:
+  http://ejohn.org/apps/learn/
+
+Search
+======
+
+* external solr search engine with separate fields for separate parts of RDoc.
+* for use by insider and by html search
+* indexes all packages - not just those installed on the users machine.
+
+Speed
+=====
+
+* Build index of packages as needed, but cache between executions.  
+  Use package dates to intelligently invalidate the cache after updates.
+
 
 Style
 =====
 
 Few images, so need creative use of typography.
+
+* Loupe to display function usage
+* Use jsmath (http://www.math.union.edu/~dpvc/jsMath/) for nice math display
+* Draw inspiration from hannah rd (http://github.com/mislav/hanna), see example at http://gitrdoc.com/mislav/will_paginate/tree/master
 
 * http://24ways.org/2006/compose-to-a-vertical-rhythm
 * implement more even line breaks (using Knuth algorithm) for headers with jquery?
