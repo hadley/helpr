@@ -10,4 +10,4 @@ Suggests: highlight
 License: GPL-2
 LazyData: true
 Collate: 'memoise.r' 'help-index.r' 'help-package.r' 'help-parse-rd.r'
-    'help-topic.r' 'help.r' 'memoise.r'
+    'help-topic.r' 'help.r'
