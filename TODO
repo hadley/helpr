@@ -1,0 +1,15 @@
+Sinatra
+=======
+
+ * when error occurs it should display proper error page including traceback
+ 
+ * sending file from disk doesn't work
+ 
+Helpr
+=====
+
+ - For pages with no author section, the author(s) title on the right hand block should probably be skipped.  There are also other examples of empty sections, e.g. looking at boot::sunspot.
+
+ - Better display for aka information (e.g. the chron package dates page)
+
+ - From the console, ?mean tries to open http://127.0.0.1:29210/library/base/html/mean.html
