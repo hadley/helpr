@@ -54,4 +54,7 @@ router$get("/library/:package/html/:topic.html", function(package, topic) {
 
 render_path <- function(path, ...) router$route(path)
 assignInNamespace("httpd", render_path, "tools")
-help.start()
+if (tools:::httpdPort == 0L) {
+  help.start()
+  options("help_type" = "html")
+}
