@@ -25,7 +25,7 @@ pkg_topics_index <- function(package) {
   help_path <- pkg_help_path(package)
 
   topics <- read.table(file.path(help_path, "AnIndex"), sep = "\t", 
-    stringsAsFactors = FALSE)
+    stringsAsFactors = FALSE, comment.char = "", quote = "", header = TRUE)
   names(topics) <- c("alias", "file")  
   topics
 }
