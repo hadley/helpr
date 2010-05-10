@@ -5,12 +5,19 @@ Main
 
 * Main page - display latest changes from CHANGELOG
 * Pull in RSS feeds?
+* Only display loaded packages
+* Display out of date packages
+* Top ten functions and most recently used 10 functions
 
 Package
 
+* link to CRAN page
 * links to news & changelogs
 * demos
 * vignettes
+* separate data and functions
+* show internal functions separately
+
 * see CRAN page for more ideas
 
 Topic
@@ -18,6 +25,15 @@ Topic
 * "did you mean?" - include list of all topics with the same name in different packages
 * use latent dirichlet topic models to provide see also links based on description and details.
 * display hyperlinked keywords
+
+Dynamic help
+============
+
+Function weights
+  * overall CRAN
+  * personal function use: parse .Rhistory and pull out functions
+
+Function mispelling
 
 Examples and demos
 ==================
