@@ -1,3 +1,6 @@
+#' @include memoise.r
+
+
 # Function to get information about a package.  List of :
 #   * parsed description
 #   * help topics

@@ -5,7 +5,9 @@ Version: 0.1
 Author: Hadley Wickham <h.wickham@gmail.com>
 Maintainer: Hadley Wickham <h.wickham@gmail.com>
 Description: Better html documentation for R
-Depends: sinartra
+Depends: sinartra, digest
 Suggests: highlight
 License: GPL-2
 LazyData: true
+Collate: 'memoise.r' 'help-index.r' 'help-package.r' 'help-parse-rd.r'
+    'help-topic.r' 'help.r' 'memoise.r'

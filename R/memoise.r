@@ -1,5 +1,3 @@
-library(digest)
-
 new_cache <- function() {
   
   cache <- NULL

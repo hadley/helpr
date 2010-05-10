@@ -1,3 +1,5 @@
+#' @include memoise.r
+
 pkg_list <- memoise(function() {
   packages <- as.data.frame(library()$results, stringsAsFactors = FALSE)
   packages <- packages[order(packages$Package), ]
