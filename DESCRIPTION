@@ -1,0 +1,11 @@
+Package: helpr
+Type: Package
+Title: Better documentation.
+Version: 0.1
+Author: Hadley Wickham <h.wickham@gmail.com>
+Maintainer: Hadley Wickham <h.wickham@gmail.com>
+Description: Better html documentation for R
+Depends: sinartra
+Suggests: highlight
+License: GPL-2
+LazyData: true
