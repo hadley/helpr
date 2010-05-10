@@ -3,7 +3,8 @@
 html {overflow: scroll;}
 
 #hd {
-  padding: 1em;
+//  padding: 1em;
+  padding: 0 1em 1em 1em;
   margin: 0 0 2em 0;
   background-color: #eee;
   }
