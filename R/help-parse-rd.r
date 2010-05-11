@@ -54,6 +54,13 @@ reconstruct <- function(rd) {
     stopifnot(length(rd) == 1)
     str_join("<a href='", rd[[1]], "'>", rd[[1]], "</a>")
 
+  } else if(tag == "\\email"){
+    cat("\n\n\n\n")
+    print(rd)
+
+    str_join("<a href=\"mailto:",rd[[1]][1],"?subject=(R-Help): \">",reconstruct(untag(rd)),"</a>")
+
+
   } else {
     message("Unknown tag ", tag)
     reconstruct(untag(rd))

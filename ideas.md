@@ -4,8 +4,8 @@ Individual pages
 Main
 
 * Main page - display latest changes from CHANGELOG
-* Pull in RSS feeds?
-* Only display loaded packages
+* DONE - Pull in RSS feeds?
+* DONE - Only display loaded packages
 * Display out of date packages
 * Top ten functions and most recently used 10 functions
 
@@ -23,9 +23,11 @@ Package
 Topic
 
 * "did you mean?" - include list of all topics with the same name in different packages
+  * requires solr
 * use latent dirichlet topic models to provide see also links based on description and details.
 * display hyperlinked keywords
 * view source - shows function source
+* DONE - links for "mailto"
 
 Dynamic help
 ============

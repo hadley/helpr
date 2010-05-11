@@ -41,6 +41,7 @@ parse_help <- function(rd) {
   out$examples <- highlight(reconstruct(untag(rd$examples)))
   out$usage <- reconstruct(untag(rd$usage))
   out$authors <- reconstruct(rd$author)
+  out$author_s <- ifelse(length(rd$author) > 1, "s","")
 
   out$seealso <- reconstruct(rd$seealso)
   
@@ -70,5 +71,16 @@ highlight <- function(examples) {
   if (!require(highlight)) return(examples)
   
   ex_parser <- parser(text = examples)
-  str_join(capture.output(highlight::highlight( parser.output = ex_parser, renderer = renderer_html(doc = F))), collapse = "\n")    
+  str_join(capture.output(highlight::highlight( parser.output = ex_parser, renderer = highlight::renderer_html(doc = F))), collapse = "\n")    
 }
+
+
+
+
+
+
+
+
+
+
+

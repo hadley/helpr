@@ -57,7 +57,7 @@ helpr <- function(installed = TRUE) {
   })
 
   render_path <- function(path, ...) router$route(path)
-  assignInNamespace("httpd", render_path, "tools")
+  utils::assignInNamespace("httpd", render_path, "tools")
   if (tools:::httpdPort == 0L) {
     help.start()
     options("help_type" = "html")
