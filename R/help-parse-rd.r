@@ -1,10 +1,17 @@
+#' Tag Something
+#'
+#' @param x item to be tagged
 tag <- function(x) attr(x, "Rd_tag")
 
+#' Untag Something
+#'
+#' @param x item to be untagged
 untag <- function(x) {
   if (is.null(x)) return()
   attr(x, "Rd_tag") <- ""
   x
 }
+
 
 all_tags <- function(rd) {
   if (is.null(rd)) return()

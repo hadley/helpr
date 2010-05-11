@@ -2,6 +2,11 @@
 
 html {overflow: scroll;}
 
+#feed-control
+{
+  margin-top: -1em;
+}
+
 #hd {
   padding: 1em;
   margin: 0 0 2em 0;

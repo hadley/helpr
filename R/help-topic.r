@@ -1,8 +1,13 @@
 pkg_topic <- function(package, topic, file = NULL) {
   if (is.null(file)) {
     topics <- pkg_topics_index(package)
+    print(topics)
     file <- topics$file[topics$alias == topic]
     file <- file[!is.na(file)]
+    
+    if(length(file) != 1)
+      print(file)
+    
     stopifnot(length(file) == 1)    
   }
   
@@ -28,6 +33,7 @@ parse_help <- function(rd) {
   out <- list()
   # Title, description, value and examples, need to be stitched into a 
   # single string.
+  print(rd)
   out$title <- reconstruct(untag(rd$title))
   out$desc <- gsub("$\n+|\n+^", "", reconstruct(rd$description))
   out$details <- reconstruct(rd$details)
@@ -60,6 +66,7 @@ parse_help <- function(rd) {
 }
 
 highlight <- function(examples) {
+  if(identical(examples,"")) return(examples)
   if (!require(highlight)) return(examples)
   
   ex_parser <- parser(text = examples)
