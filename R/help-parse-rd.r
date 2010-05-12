@@ -95,7 +95,7 @@ simple_tags <- list(
   "\\cr" =           c("<br >", ""),
   "\\dfn" =          c("<dfn>", "</dfn>"),
   "\\donttest" =     c("", ""),
-  "\\dontrun" =      c("## Not run", "## "),
+  "\\dontrun" =      c("## Not run\n", "\n## "),
   "\\dots" =         c("...", ""),
   "\\dquote" =       c("&ldquo;", "&rdquo;"),
   "\\emph" =         c("<em>", "</em>"),
