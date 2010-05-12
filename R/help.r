@@ -14,7 +14,9 @@ helpr <- function(installed = TRUE) {
   })
 
   # Use file in public, if present
-  router$get("/*", function(splat) static_file(splat, path = path))
+  router$get("/*", function(splat) {
+    static_file(file.path(path, "public", splat))
+  })
 
   # Redirect old home location to new
   router$get("/doc/html/index.html", function() {
