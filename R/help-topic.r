@@ -6,7 +6,7 @@ pkg_topic <- function(package, topic, file = NULL) {
     file <- file[!is.na(file)]
     
     if(length(file) != 1)
-      print(file)
+      bprint(file)
     
     stopifnot(length(file) == 1)    
   }
@@ -33,7 +33,7 @@ parse_help <- function(rd) {
   out <- list()
   # Title, description, value and examples, need to be stitched into a 
   # single string.
-  print(rd)
+  bprint(rd)
   out$title <- reconstruct(untag(rd$title))
   out$desc <- gsub("$\n+|\n+^", "", reconstruct(rd$description))
   out$details <- reconstruct(rd$details)
@@ -41,7 +41,7 @@ parse_help <- function(rd) {
   out$examples <- highlight(reconstruct(untag(rd$examples)))
   out$usage <- reconstruct(untag(rd$usage))
   out$authors <- reconstruct(rd$author)
-  out$author_s <- ifelse(length(rd$author) > 1, "s","")
+  out$author_str <- pluralize("Author", rd$author)
 
   out$seealso <- reconstruct(rd$seealso)
   
@@ -69,7 +69,6 @@ parse_help <- function(rd) {
 highlight <- function(examples) {
   if(identical(examples,"")) return(examples)
   if (!require(highlight)) return(examples)
-  
   ex_parser <- parser(text = examples)
   str_join(capture.output(highlight::highlight( parser.output = ex_parser, renderer = highlight::renderer_html(doc = F))), collapse = "\n")    
 }

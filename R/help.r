@@ -10,7 +10,7 @@ helpr <- function(installed = TRUE) {
 
   # Show list of all packages on home page
   router$get("/index.html", function() {
-    render_brew("index", list(packages = pkg_list()), path = path)
+    render_brew("index", list(packages = pkg_list(), old_pack = old_pkg_list()), path = path)
   })
 
   # Use file in public, if present
@@ -57,7 +57,7 @@ helpr <- function(installed = TRUE) {
   })
 
   render_path <- function(path, ...) router$route(path)
-  utils::assignInNamespace("httpd", render_path, "tools")
+  assignInNamespace("httpd", render_path, "tools")
   if (tools:::httpdPort == 0L) {
     help.start()
     options("help_type" = "html")

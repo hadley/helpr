@@ -5,6 +5,8 @@ function LoadDynamicFeedControl() {
     url: 'http://inside-r.org/blogs/feed'
   }];
   var options = {
+    displayTime: 10000,     // milli sec
+    transistionTime: 1500,  // milli sec
     stacked : false,
     horizontal : true,
     title : ""

@@ -1,9 +1,8 @@
 $(document).ready(function(){
-  $('#packages tr').quicksearch({
+  $('#packages_installed tr').quicksearch({
     position: 'before',
-    attached: '#packages',
+    attached: '#packages_installed',
     labelText: 'Search: ',
     fixWidths: true
-    
   });
 })

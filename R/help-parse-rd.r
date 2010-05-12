@@ -55,9 +55,6 @@ reconstruct <- function(rd) {
     str_join("<a href='", rd[[1]], "'>", rd[[1]], "</a>")
 
   } else if(tag == "\\email"){
-    cat("\n\n\n\n")
-    print(rd)
-
     str_join("<a href=\"mailto:",rd[[1]][1],"?subject=(R-Help): \">",reconstruct(untag(rd)),"</a>")
 
 
@@ -123,3 +120,12 @@ simple_tags <- list(
   "RCODE" =          c("", ""),
   "VERB" =           c("", "")
 )
+
+
+pluralize <- function(string, obj){
+    if( length(obj) > 1)
+      return(str_join(string,"s",sep=""))
+    else
+      return(string)
+
+}

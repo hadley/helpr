@@ -5,9 +5,13 @@ Main
 
 * Main page - display latest changes from CHANGELOG
 * DONE - Pull in RSS feeds?
+  * DONE - needs to be slower
 * DONE - Only display loaded packages
-* Display out of date packages
+* BUSY - Display out of date packages
+  * button invoked and highlight
+* Button to show all packages
 * Top ten functions and most recently used 10 functions
+* add links to the manuals
 
 Package
 
@@ -17,6 +21,8 @@ Package
 * vignettes
 * separate data and functions
 * show internal functions separately
+* integrate with crantastics
+  * ratings, reviews
 
 * see CRAN page for more ideas
 
