@@ -1,7 +1,7 @@
 pkg_topic <- function(package, topic, file = NULL) {
   if (is.null(file)) {
     topics <- pkg_topics_index(package)
-    file <- topics$file[topics$alias == topic | topics$file == topic]
+    file <- unique(topics$file[topics$alias == topic | topics$file == topic])
     
     stopifnot(length(file) == 1)    
   }
@@ -67,14 +67,3 @@ highlight <- function(examples) {
   ex_parser <- parser(text = examples)
   str_join(capture.output(highlight::highlight( parser.output = ex_parser, renderer = highlight::renderer_html(doc = F))), collapse = "\n")    
 }
-
-
-
-
-
-
-
-
-
-
-
