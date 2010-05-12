@@ -1,12 +1,7 @@
 pkg_topic <- function(package, topic, file = NULL) {
   if (is.null(file)) {
     topics <- pkg_topics_index(package)
-    print(topics)
-    file <- topics$file[topics$alias == topic]
-    file <- file[!is.na(file)]
-    
-    if(length(file) != 1)
-      bprint(file)
+    file <- topics$file[topics$alias == topic | topics$file == topic]
     
     stopifnot(length(file) == 1)    
   }

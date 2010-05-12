@@ -29,8 +29,8 @@ pkg_topics_index <- function(package) {
 
   topics <- read.table(file.path(help_path, "AnIndex"), sep = "\t", 
     stringsAsFactors = FALSE, comment.char = "", quote = "", header = TRUE)
-  names(topics) <- c("alias", "file")  
-  topics
+  names(topics) <- c("alias", "file") 
+  topics[complete.cases(topics), ]
 }
 
 pkg_topics_rd <- memoise(function(package) {
