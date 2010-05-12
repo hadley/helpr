@@ -122,10 +122,10 @@ simple_tags <- list(
 )
 
 
-pluralize <- function(string, obj){
-    if( length(obj) > 1)
-      return(str_join(string,"s",sep=""))
-    else
-      return(string)
-
+pluralize <- function(string, obj) {
+  if(length(obj) > 1) {
+    str_join(string, "s", sep = "")
+  } else {
+    string
+  }
 }
