@@ -10,7 +10,7 @@ helpr <- function(installed = TRUE) {
 
   # Show list of all packages on home page
   router$get("/index.html", function() {
-    render_brew("index", list(packages = pkg_list(), old_pack = old_pkg_list()), path = path)
+    render_brew("index", list(packages = pkg_list()), path = path)
   })
 
   # Use file in public, if present
@@ -41,9 +41,12 @@ helpr <- function(installed = TRUE) {
     info$DESCRIPTION <- NULL
     description <- defaults(info, description)
     names(description) <- tolower(names(description))
+    
+    author_str <- pluralize("Author", description$author)
+
   
     render_brew("package", list(package = package, topics = topics,
-      description = description), path = path)
+      description = description, author_str = author_str), path = path)
   })
 
   # Individual help topic
@@ -64,6 +67,12 @@ helpr <- function(installed = TRUE) {
     help.start()
     options("help_type" = "html")
   }
+  
+  # AJAX
+  router$get("/ajax/:file.html", function(file) {
+    render_brew(file, list(), path = path)
+  })
+
   
   return(invisible(router))
 }

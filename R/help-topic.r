@@ -28,7 +28,6 @@ parse_help <- function(rd) {
   out <- list()
   # Title, description, value and examples, need to be stitched into a 
   # single string.
-  bprint(rd)
   out$title <- reconstruct(untag(rd$title))
   out$desc <- gsub("$\n+|\n+^", "", reconstruct(rd$description))
   out$details <- reconstruct(rd$details)
