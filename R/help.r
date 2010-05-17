@@ -69,8 +69,8 @@ helpr <- function(installed = TRUE) {
   }
   
   # AJAX
-  router$get("/ajax/:file.html", function(file) {
-    render_brew(file, list(), path = path)
+  router$get("/ajax/:function_name.html", function(function_name) {
+    render_brew("ajax", list(function_name = function_name), path = path)
   })
 
   

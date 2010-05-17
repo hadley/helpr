@@ -7,9 +7,11 @@ Main
 * DONE - Pull in RSS feeds?
   * DONE - needs to be slower
 * DONE - Only display loaded packages
-* BUSY - Display out of date packages
-  * button invoked and highlight
-* Button to show all packages
+* DONE - Display out of date packages
+  * DONE - button invoked and highlight
+  * needs spinning wheel of death (iphone style)
+  * needs install individual button
+* BUSY - Button to show all packages
 * Top ten functions and most recently used 10 functions
 * add links to the manuals
 
