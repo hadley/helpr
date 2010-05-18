@@ -29,6 +29,12 @@
   <script type="text/javascript" src="/_scripts/ajax.js"></script>
   <script type="text/javascript" src="/_scripts/old_packs.js"></script>
 
+  <!-- Dependencies -->
+  <script src="http://yui.yahooapis.com/2.8.1/build/yahoo/yahoo-min.js"></script>
+   
+  <!-- Source file -->
+  <script src="http://yui.yahooapis.com/2.8.1/build/dom/dom-min.js"></script>
+
   
   
   
@@ -56,13 +62,20 @@
         <th>Description</th>
       </tr>
       <% for(pkg in packages) { -%>
-      <tr id="<%= pkg$Package %>">
+      <tr id="<%= pkg$Package %>" 
+          <% if(!pkg$isLoaded){ -%>
+            class ="hide" 
+          <% }%>
+      >
         <td><a href="/packages/<%= pkg$Package %>"><%= pkg$Package %></a></td>
         <td><%= pkg$Title %></td>
       </tr>
       <% }%>
       <tr>
-        <td><input id="out_of_date_button" type=button onClick="highlight_old_packages();" value="Out of Date"></td>
+        <td>
+          <input id="out_of_date_button" type=button onClick="highlight_old_packages();" value="Out of Date">
+          <input id="show_all_packs_button" type=button onClick="show_all_packages();" value="Show All Packages">
+        </td>
         <td></td>
       </tr>
   </table>

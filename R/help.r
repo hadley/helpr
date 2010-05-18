@@ -10,7 +10,7 @@ helpr <- function(installed = TRUE) {
 
   # Show list of all packages on home page
   router$get("/index.html", function() {
-    render_brew("index", list(packages = pkg_list()), path = path)
+    render_brew("index", list(packages = pkg_list(TRUE)), path = path)
   })
 
   # Use file in public, if present

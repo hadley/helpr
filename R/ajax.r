@@ -60,10 +60,10 @@ update_loaded_packs <- function()
 #' print the loaded packages in JSON format
 #'
 #' @author Barret Schloerke \email{bigbear@@iastate.edu}
-#'
-package_JSON <- function()
+#' @param all boolean of all packages or loaded packages
+package_old_JSON <- function(all = TRUE)
 {
-  pack_list <- pkg_list()
+  pack_list <- pkg_list(all)
   
   pack_list <- lapply(pack_list, function(i){
     i$status <- package_status(i$Package)
@@ -85,5 +85,10 @@ package_status <- function(pkg_name){
     "out_of_date"
   else
     "updated"
+}
+
+
+package_list_JSON <- function(){
+  write_JSON(pkg_list(TRUE))
 }
 

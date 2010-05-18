@@ -11,7 +11,8 @@ Main
   * DONE - button invoked and highlight
   * needs spinning wheel of death (iphone style)
   * needs install individual button
-* BUSY - Button to show all packages
+* DONE - Button to show all packages
+  * BUSY - needs to 'talk' with old packages button
 * Top ten functions and most recently used 10 functions
 * add links to the manuals
 
