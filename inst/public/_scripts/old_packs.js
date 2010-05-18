@@ -42,6 +42,8 @@ function highlight_old_packages()
         // if the row exists, add the class (status) to the row
   	    if(row != null){
   	      var pack_status = packs[i].status;
+  	      window.console.log(packs[i].Package + ": " +pack_status + ": " + packs[i].status + ": "+ packs[i])
+  	      window.console.log(packs[i])
   	      set_status_to(row, pack_status);
   	    }
   	  }
@@ -125,7 +127,10 @@ function set_update_button(){
 
 var showing_all_packages = 1;
 function show_all_packages(){
-  
+  var show_all_butto = document.getElementById("show_all_packs_button"); 
+  show_all_butto.disabled = true;
+  show_all_butto.value = "Thinking....";
+
   jQuery.ajaxSync({
   	url: "/packages/index.json",
   	success: function(html)
@@ -141,22 +146,23 @@ function show_all_packages(){
           var loaded = packs[i].isLoaded;
           if(showing_all_packages == 0){
             if(!loaded){
-              set_status_to(row, 'hide')
+              set_status_to(row, "hide")
             }
           }else{
             if(!loaded){
-              removeClass(row, 'hide')
+              removeClass(row, "hide")
             }
           }
              
         }  	   
   	 }
   	 
-  	   	 
+  	  var show_all_button = document.getElementById("show_all_packs_button"); 
+  	  show_all_button.disabled = false;
     	if(showing_all_packages == 0){
-        document.getElementById("show_all_packs_button").value = "Show All Packages";
+        show_all_button.value = "Show All Packages";
     	}else{
-        document.getElementById("show_all_packs_button").value = "Show Loaded Packages";
+        show_all_button.value = "Show Loaded Packages";
     	}
     	
     	set_update_button();

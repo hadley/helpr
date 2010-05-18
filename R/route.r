@@ -10,7 +10,7 @@ helpr <- function(installed = TRUE) {
 
   # Show list of all packages on home page
   router$get("/index.html", function() {
-    render_brew("index", list(packages = pkg_list(TRUE)), path = path)
+    render_brew("index", list(packages = pkg_list()), path = path)
   })
 
   # Use file in public, if present
@@ -69,14 +69,14 @@ helpr <- function(installed = TRUE) {
   }
   
   # AJAX
-  router$get("/packages/old.json", function(function_name) {
-    render_json(old_pkg_list())
+  router$get("/packages/old.json", function() {
+    render_json(package_old())
   })
-  router$get("/packages/update.json", function(function_name) {
+  router$get("/packages/update.json", function() {
     render_json(update_loaded_packs())
   })
-  router$get("/packages/index.json", function(function_name) {
-    render_json(package_old())
+  router$get("/packages/index.json", function() {
+    render_json(pkg_list())
   })
   
   return(invisible(router))

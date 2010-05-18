@@ -1,19 +1,24 @@
 #' @include memoise.r
 
-pkg_list <- function(all = TRUE) {
+pkg_matrix <- function(){
   libraryResults <- as.data.frame(library()$results, stringsAsFactors = FALSE)
 
   # subset to packages that are loaded
   
-#  if(!all)
-#    packages <- libraryResults[libraryResults$Package %in% loaded_packs(), ]
-#  else
-    packages <- libraryResults
+  packages <- libraryResults
 
   packages$isLoaded <- packages$Package %in% loaded_packs()
     
   packages <- packages[order(packages$Package), ]
-  lapply(1:nrow(packages), function(i) as.list(packages[i, ]))
+  packages  
+}
+
+pkg_dlply <- function(pkgs){
+  lapply(1:nrow(pkgs), function(i) as.list(pkgs[i, ]))  
+}
+
+pkg_list <- function() {
+  pkg_dlply(pkg_matrix())
 }
 
 #' Loaded Packages
@@ -29,10 +34,7 @@ loaded_packs <- function()
 old_pkg_list <- function() {    
   old_packages <- as.data.frame(old.packages(), stringsAsFactors = FALSE)
   old_packages <- old_packages[order(old_packages$Package), ]
-  old_packages <- lapply(1:nrow(old_packages), function(i)
-    as.list(old_packages[i, ]))
-
-  old_packages
+  pkg_dlply(old_packages)
 }
 
 #' Update Old Packages
@@ -53,17 +55,13 @@ update_loaded_packs <- function()
 #' print the loaded packages in JSON format
 #'
 #' @author Barret Schloerke \email{bigbear@@iastate.edu}
-#' @param all boolean of all packages or loaded packages
-package_old <- function(all = TRUE)
+#' 
+package_old <- function()
 {
-  pack_list <- pkg_list(all)
-  
-  pack_list <- lapply(pack_list, function(i){
-    i$status <- package_status(i$Package)
-    i
-  })
-  
-  pack_list
+  pack_matrix <- pkg_matrix()
+  pack_status <- pack_matrix$Package %in% old.packages()[,"Package"]
+  pack_matrix$status <- as.character(factor(pack_status, labels = c("updated", "out_of_date")))
+  pkg_dlply(pack_matrix)
 }
 
 #' Package Status
@@ -71,11 +69,11 @@ package_old <- function(all = TRUE)
 #'
 #' @author Barret Schloerke \email{bigbear@@iastate.edu}
 #'
-package_status <- function(pkg_name){
-  status <- pkg_name %in% old.packages()[,"Package"]
-  
-  if(status)
-    "out_of_date"
-  else
-    "updated"
-}
+#package_status <- function(pkg_name){
+#  status <- pkg_name %in% old.packages()[,"Package"]
+#  
+#  if(status)
+#    "out_of_date"
+#  else
+#    "updated"
+#}

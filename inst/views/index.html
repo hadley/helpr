@@ -57,7 +57,7 @@
       <% for(pkg in packages) { -%>
       <tr id="<%= pkg$Package %>" 
           <% if(!pkg$isLoaded){ -%>
-            class ="hide" 
+            class="hide" 
           <% }%>
       >
         <td><a href="/packages/<%= pkg$Package %>"><%= pkg$Package %></a></td>
