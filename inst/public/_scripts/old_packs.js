@@ -28,7 +28,7 @@ function highlight_old_packages()
   
   
   jQuery.ajaxSync({
-  	url: "/ajax/old_packages.html",
+  	url: "/packages/old.json",
   	success: function(html)
   	{  
   	  var packs = JSON.parse(html);
@@ -82,7 +82,7 @@ function update_packs()
   out_of_date_butto.disabled = true;
 
    jQuery.ajaxSync({
-  	url: "/ajax/update_packs.html",
+  	url: "/packages/update.json",
   	success: function(html)
   	{
       highlight_old_packages();      
@@ -104,7 +104,7 @@ showing_all_packages = 1;
 function show_all_packages(){
   
   jQuery.ajaxSync({
-  	url: "/ajax/package_list.html",
+  	url: "/packages/index.json",
   	success: function(html)
   	{
   	 var i;

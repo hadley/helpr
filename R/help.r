@@ -69,10 +69,15 @@ helpr <- function(installed = TRUE) {
   }
   
   # AJAX
-  router$get("/ajax/:function_name.html", function(function_name) {
-    render_brew("ajax", list(function_name = function_name), path = path)
+  router$get("/packages/old.json", function(function_name) {
+    render_json(old_pkg_list())
   })
-
+  router$get("/packages/update.json", function(function_name) {
+    render_json(update_loaded_packs())
+  })
+  router$get("/packages/index.json", function(function_name) {
+    render_json(package_old())
+  })
   
   return(invisible(router))
 }
