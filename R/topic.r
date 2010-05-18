@@ -16,7 +16,7 @@ name_rd <- function(rd) {
   names(rd) <- tags
   
   rd
-}
+} 
 
 # Function to turn a help topic into a convenient format.
 parse_help <- function(rd) {
