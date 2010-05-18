@@ -1,11 +1,19 @@
-#' Print JSON
-#' wrapper to print JSON
-#'
-#' @author Barret Schloerke \email{bigbear@@iastate.edu}
-#' @param ... object to be printed
-write_JSON <- function(...)
-{
-  cat(rjson::toJSON(...))  
+#' @include memoise.r
+
+pkg_list <- function(all = TRUE) {
+  libraryResults <- as.data.frame(library()$results, stringsAsFactors = FALSE)
+
+  # subset to packages that are loaded
+  
+#  if(!all)
+#    packages <- libraryResults[libraryResults$Package %in% loaded_packs(), ]
+#  else
+    packages <- libraryResults
+
+  packages$isLoaded <- packages$Package %in% loaded_packs()
+    
+  packages <- packages[order(packages$Package), ]
+  lapply(1:nrow(packages), function(i) as.list(packages[i, ]))
 }
 
 #' Loaded Packages
@@ -18,25 +26,12 @@ loaded_packs <- function()
   .packages()
 }
 
-#' Print Loaded Packages
-#' print the loaded packages in JSON format
-#'
-#' @author Barret Schloerke \email{bigbear@@iastate.edu}
-#'
-loaded_packs_JSON <- function()
-{
-  write_JSON(loaded_packs())
-}
-
-
-old_pkg_list <- function() {
-  if(!require(rjson))
-    return(c("null"))
-    
+old_pkg_list <- function() {    
   old_packages <- as.data.frame(old.packages(), stringsAsFactors = FALSE)
   old_packages <- old_packages[order(old_packages$Package), ]
-  old_packages <- lapply(1:nrow(old_packages), function(i) as.list(old_packages[i, ]))
-#  write_JSON(old_packages)  
+  old_packages <- lapply(1:nrow(old_packages), function(i)
+    as.list(old_packages[i, ]))
+
   old_packages
 }
 
@@ -50,10 +45,8 @@ update_loaded_packs <- function()
   packs <- loaded_packs()
   packs <- packs[packs %in% old.packages()[,"Package"]]
   install.packages(packs)
-  write_JSON(packs)
+  packs
 }
-
-
 
 
 #' Print Loaded Packages with Information
@@ -61,7 +54,7 @@ update_loaded_packs <- function()
 #'
 #' @author Barret Schloerke \email{bigbear@@iastate.edu}
 #' @param all boolean of all packages or loaded packages
-package_old_JSON <- function(all = TRUE)
+package_old <- function(all = TRUE)
 {
   pack_list <- pkg_list(all)
   
@@ -70,7 +63,7 @@ package_old_JSON <- function(all = TRUE)
     i
   })
   
-  write_JSON(pack_list)  
+  pack_list
 }
 
 #' Package Status
@@ -86,9 +79,3 @@ package_status <- function(pkg_name){
   else
     "updated"
 }
-
-
-package_list_JSON <- function(){
-  write_JSON(pkg_list(TRUE))
-}
-

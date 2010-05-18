@@ -9,5 +9,5 @@ Depends: sinartra, digest, parser, rjson
 Suggests: highlight
 License: GPL-2
 LazyData: true
-Collate: 'memoise.r' 'help-index.r' 'help-package.r' 'help-parse-rd.r'
-    'help-topic.r' 'help.r' 'ajax.r'
+Collate: 'memoise.r' 'memoise.r' 'package.r' 'packages.r' 'parse-rd.r'
+    'render.r' 'route.r' 'topic.r'
