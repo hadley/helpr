@@ -91,7 +91,7 @@ pre, code {
 
 /* Packages */
 .out_of_date { background-color: #FE8080;}
-.updated { background-color: #EEEEEE;}
+.updated { background-color: rgba(238,238,238,.5);} //light grey with half alpha
 .hide {display: none;}
 
 

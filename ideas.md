@@ -12,8 +12,9 @@ Main
   * needs spinning wheel of death (iphone style)
   * needs install individual button
 * DONE - Button to show all packages
-  * BUSY - needs to 'talk' with old packages button
-* Top ten functions and most recently used 10 functions
+  * DONE - needs to 'talk' with old packages button
+
+* BUSY - Top ten functions and most recently used 10 functions
 * add links to the manuals
 
 Package
