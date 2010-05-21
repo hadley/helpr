@@ -34,8 +34,7 @@ function update_packs() {
     success: function(packages) {
       for(i = 0; i < packages.length; i++) {
         pkg = packages[i];
-        $("#" + pkg).removeClass("old");
-        $("#" + pkg).addClass("update");
+        $("#" + pkg).removeClass("old").addClass("update");
       }
     }
   })
