@@ -54,9 +54,7 @@ helpr <- function(installed = TRUE) {
 
   # Individual help topic
   router$get("/packages/:package/topics/:topic", function(package, topic) {
-    topic_info <- parse_help(pkg_topic(package, topic))
-    topic_info$package <- package
-    render_brew("topic", topic_info, path = path)
+    render_brew("topic", topic(package, topic), path = path)
   })
 
   # Individual help topic 

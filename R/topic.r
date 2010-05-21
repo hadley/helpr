@@ -1,3 +1,10 @@
+topic <- function(package, topic) {
+  topic_info <- parse_help(pkg_topic(package, topic))
+  topic_info$package <- package
+
+  topic_info
+}
+
 pkg_topic <- function(package, topic, file = NULL) {
   if (is.null(file)) {
     topics <- pkg_topics_index(package)
