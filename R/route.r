@@ -43,9 +43,11 @@ helpr <- function(installed = TRUE) {
     names(description) <- tolower(names(description))
     
     author_str <- pluralize("Author", description$author)
+    
+    items <- list(datasets = get_datasets(topics), functions = get_functions(topics), idk = get_NOT_FOUND(topics))
 
   
-    render_brew("package", list(package = package, topics = topics,
+    render_brew("package", list(package = package, items = items,
       description = description, author_str = author_str), path = path)
   })
 

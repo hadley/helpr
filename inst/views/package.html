@@ -21,25 +21,47 @@
     <h1><%= package %></h1>
     <p><%= description$description %></p>
 
-    <p><%= str_join("<a href='topics/", topics, "'>", topics, "</a>", 
-      collapse = ", ") %></p>
+    <% if(has_length(items$datasets)){ -%>
+      <h2>Data Sets</h2>
+      <p><%= str_join("<a href='topics/", items$datasets, "'>", items$datasets, "</a>", 
+        collapse = ", ") %></p>
+    <% } %>
+
+    <% if(has_length(items$functions)){ -%>
+      <h2>Functions</h2>
+      <p><%= str_join("<a href='topics/", items$functions, "'>", items$functions, "</a>", 
+        collapse = ", ") %></p>
+    <% } %>
+
+    <% if(has_length(items$idk)){ -%>
+      <h2>IDK WTF Items</h2>
+      <p><%= str_join("<a href='topics/", items$idk, "'>", items$idk, "</a>", 
+        collapse = ", ") %></p>
+    <% } %>
 
   </div></div>
   <div class="yui-b"><div class = "sidebar">
     
-    <h2><%= author_str %></h2>
+    <% if(has_length(description$author)){ -%>    
+      <h2><%= author_str %></h2>
+      <p><%= description$author %></p>
+    <% }%>
     
-    <p><%= description$author %></p>
+
+    <% if(has_length(description$imports)){ -%>    
+      <h2>Imports</h2>
+      
+      <p><% imports <- sapply(description$imports, "[[", "name") %>
+      <%=str_join("<a href='/packages/", imports, "/'>", imports, "</a>", collapse = ", ") %></p>
+    <% }%>
+      
     
-    <h2>Imports</h2>
-    
-    <p><% imports <- sapply(description$imports, "[", "name") %>
-    <%=str_join("<a href='/packages/", imports, "/'>", imports, "</a>", collapse = ", ") %></p>
-    
-    <h2>Suggests</h2>
-    
-    <p><% suggests <- sapply(description$suggests, "[", "name") %>
-    <%=str_join("<a href='/packages/", suggests, "/'>", suggests, "</a>", collapse = ", ") %></p>
+    <% if(has_length(description$suggests)){ -%>    
+      <h2>Suggests</h2>
+      
+      <p><% suggests <- sapply(description$suggests, "[[", "name") %>
+      <%=str_join("<a href='/packages/", suggests, "/'>", suggests, "</a>", collapse = ", ") %></p>
+    <% }%>
     
   </div></div>
   

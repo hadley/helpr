@@ -39,16 +39,22 @@
 
     <h2>Value</h2><%= value %>
 
-    <h2>Examples</h2>
-    <%= examples %>
-
+    <% if(has_length(examples)){ -%>
+      <h2>Examples</h2>
+      <%= examples %>
+    <% }%>
+    
   </div></div>
   <div class="yui-b"><div class = "sidebar">
-    <h2>See also</h2>
-    <%= seealso %>
+    <% if(has_length(seealso)){ -%>
+      <h2>See also</h2>
+      <%= seealso %>
+    <% }%>
     
-    <h2><%= author_str %></h2>
-    <%= authors %>
+    <% if(has_length(authors)){ -%>
+      <h2><%= author_str %></h2>
+      <%= authors %>
+    <% }%>
 
     
     

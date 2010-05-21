@@ -48,7 +48,8 @@ reconstruct <- function(rd) {
     tag_link(fun, pkg)
     
   } else if (tag == "\\eqn") {
-    str_join("<code>", rd[[1]], "</code>")
+#    rd[[1]]
+    str_join("<code>", reconstruct(untag(rd)), "</code>")
     
   } else if (tag == "\\url") {
     stopifnot(length(rd) == 1)

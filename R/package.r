@@ -51,3 +51,47 @@ pkg_topics_rd <- memoise(function(package) {
 #   )
 # }))
 # str(index)
+
+has_length <- function(x){
+  length(x) > 0 && x != ""
+}
+
+get_datasets <- function(topics){
+  topics[is_function(topics) == 0]
+}
+
+get_functions <- function(topics){
+  topics[is_function(topics) == 1]
+}
+
+get_NOT_FOUND <- function(topics){
+  topics[is_function(topics) == -1]
+}
+
+
+#' Determines object type
+#'
+#' @param items items supplied from pkg_topics
+#' @return 1 = is a function, 0 = is NOT a function, -1 = item is not found.
+is_function <- function(items){
+  sapply(items, function(i){
+    item <- tryCatch(get(i), error = function(e){ "NOT_FOUND"})
+#    if(is.character(item))
+#      browser()
+      
+    if(is.character(item)){
+      if(length(item)>0 && item[1] == "NOT_FOUND"){
+        return(-1)
+      }
+    }
+    
+    is.function(item)
+    
+  })
+}
+
+
+
+
+
+
