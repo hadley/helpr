@@ -13,7 +13,7 @@ Main
   * needs install individual button
 * DONE - Button to show all packages
   * DONE - needs to 'talk' with old packages button
-* Rewrite library() so pkg_matrix is quicker for large numbers of packages
+* DONE - Rewrite alternative to installed.packages() that is much faster
 
 * Top ten functions and most recently used 10 functions
 * add links to the manuals
