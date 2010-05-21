@@ -33,6 +33,12 @@
         collapse = ", ") %></p>
     <% } %>
 
+    <% if(has_length(items$internal)){ -%>
+      <h2>Internal</h2>
+      <p><%= str_join("<a href='topics/", items$internal, "'>", items$internal, "</a>", 
+        collapse = ", ") %></p>
+    <% } %>
+
     <% if(has_length(items$idk)){ -%>
       <h2>IDK WTF Items</h2>
       <p><%= str_join("<a href='topics/", items$idk, "'>", items$idk, "</a>", 

@@ -44,7 +44,7 @@ helpr <- function(installed = TRUE) {
     
     author_str <- pluralize("Author", description$author)
     
-    items <- list(datasets = get_datasets(topics), functions = get_functions(topics), idk = get_NOT_FOUND(topics))
+    items <- list(datasets = get_datasets(package), functions = get_functions(topics), idk = get_NOT_FOUND(topics), internal = get_internal(topics))
 
   
     render_brew("package", list(package = package, items = items,

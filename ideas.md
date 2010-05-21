@@ -22,9 +22,9 @@ Package
 * link to CRAN page
 * links to news & changelogs
 * demos
-* vignettes
-* BUSY - separate data and functions
-* show internal functions separately
+* BUSY - vignettes
+* NEEDS VALIDATION - separate data and functions
+* NEEDS VALIDATION - show internal functions separately
 * integrate with crantastics
   * ratings, reviews
 * show package dependencies
