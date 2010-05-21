@@ -14,7 +14,7 @@ Main
 * DONE - Button to show all packages
   * DONE - needs to 'talk' with old packages button
 
-* BUSY - Top ten functions and most recently used 10 functions
+* Top ten functions and most recently used 10 functions
 * add links to the manuals
 
 Package
@@ -23,10 +23,11 @@ Package
 * links to news & changelogs
 * demos
 * vignettes
-* separate data and functions
+* BUSY - separate data and functions
 * show internal functions separately
 * integrate with crantastics
   * ratings, reviews
+* show package dependencies
 
 * see CRAN page for more ideas
 
