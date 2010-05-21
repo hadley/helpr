@@ -22,12 +22,8 @@ as.list.packages <- function(x) {
 
 #' Out of date packages.
 #' Local packages that need updating.
-old_packages <- function() {
-  packages <- installed_packages()
-  old <- as.data.frame(old.packages(), stringsAsFactors = FALSE)$Package
-  
-  packages$status[packages$Package %in% old] <- "old"
-  packages
+old_package_names <- function() {
+  as.data.frame(old.packages(), stringsAsFactors = FALSE)$Package
 }
 
 #' Update old packages

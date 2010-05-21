@@ -1,88 +1,44 @@
-// determines if the element has a class or not
-function hasClass(ele,cls) {
-	return ele.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
+function show_all_packages() {
+  $("#packages").toggleClass("loaded");
 }
-
-// adds a class to the element, if it doesn't exist already
-function addClass(ele,cls) {
-	if (!this.hasClass(ele,cls)) 
-	 ele.className += " "+cls;
-}
-
-// removes a class from an element if it exists
-function removeClass(ele,cls) {
-	if (hasClass(ele,cls)) {
-    	var reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');
-		ele.className=ele.className.replace(reg,' ');
-	}
-}
-
 
 // highlight all old, out-of-date packages
-var has_exec_highlight = 0;
-function highlight_old_packages()
-{
-  // start spinning
-  var out_of_date_butto = document.getElementById("out_of_date_button");
-  out_of_date_butto.value = "Thinking...";
-  out_of_date_butto.disabled = true;
-  has_exec_highlight = 1;  
-  
-  jQuery.ajaxSync({
-  	url: "/packages/old.json",
-  	success: function(html)
-  	{  
-  	  var packs = JSON.parse(html);
-  	  var i;
-      
-      // change the class name according to the package status
-  	  for(i = 0; i < packs.length; i++){
-  	    var row = document.getElementById("" + packs[i].Package);
+function highlight_old_packages() {
+  button = $("#out_of_date_button");
+  button.attr("value", "Thinking...");
+  button.attr("disabled", true)
 
-        // if the row exists, add the class (status) to the row
-  	    if(row != null){
-  	      var pack_status = packs[i].status;
-  	      window.console.log(packs[i].Package + ": " +pack_status + ": " + packs[i].status + ": "+ packs[i])
-  	      window.console.log(packs[i])
-  	      set_status_to(row, pack_status);
-  	    }
-  	  }
-  	  
-  	  set_update_button();
-  	  
-  	  // stop spinning
-  	}
-  });
+  jQuery.ajax({
+    url: "/packages/old.json",
+    dataType: "json",
+    success: function(packages) {
+      for(i = 0; i < packages.length; i++) {
+        pkg = packages[i];
+        $("#" + pkg).addClass("old");
+      }
+    }
+  })
+  button.attr("value", "Updated");
+  
 }
-
-// make sure other classes are removed before adding new class
-function set_status_to(element, pack_status){
-  
-  if(pack_status == "out_of_date"){
-    removeClass(element, "updated");
-  }else if(pack_status == "updated"){
-    removeClass(element, "out_of_date");    
-  }
-  
-  addClass(element, pack_status);
-}
-
 
 // update all out-of-date packages
-function update_packs()
-{
+function update_packs() {
   var out_of_date_butto = document.getElementById("out_of_date_button");
   out_of_date_butto.value = "Updating...";
   out_of_date_butto.disabled = true;
 
-   jQuery.ajaxSync({
-  	url: "/packages/update.json",
-  	success: function(html)
-  	{
-      highlight_old_packages();
-  	}
-  });
- 
+  jQuery.ajax({
+    url: "/packages/update.json",
+    dataType: "json",
+    success: function(packages) {
+      for(i = 0; i < packages.length; i++) {
+        pkg = packages[i];
+        $("#" + pkg).removeClass("old");
+        $("#" + pkg).addClass("update");
+      }
+    }
+  })
 }
 
 function pluralize(count, word)
@@ -125,7 +81,3 @@ function set_update_button(){
 
 }
 
-function show_all_packages() {
-  var showing_installed = $("#packages").attr("class") == "installed";
-  $("#packages").attr("class", !showing_installed ? "installed" : "loaded");
-}

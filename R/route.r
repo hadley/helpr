@@ -71,7 +71,7 @@ helpr <- function(installed = TRUE) {
   
   # AJAX
   router$get("/packages/old.json", function() {
-    render_json(old_packages())
+    render_json(old_package_names())
   })
   router$get("/packages/index.json", function() {
     render_json(installed_packages())
