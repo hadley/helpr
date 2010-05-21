@@ -86,6 +86,7 @@ get_datasets <- function(package){
   sets[sets[,"Package"] == package, "Item"]
 }
 
+
 get_functions <- function(topics){
   topics[is_function(topics) == 1]
 }

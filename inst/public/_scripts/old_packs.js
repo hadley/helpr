@@ -125,54 +125,7 @@ function set_update_button(){
 
 }
 
-var showing_all_packages = 1;
-function show_all_packages(){
-  var show_all_butto = document.getElementById("show_all_packs_button"); 
-  show_all_butto.disabled = true;
-  show_all_butto.value = "Thinking....";
-
-  jQuery.ajaxSync({
-  	url: "/packages/index.json",
-  	success: function(html)
-  	{
-  	 var i;
-	   var packs = JSON.parse(html);
-
-  	 for(i = 0; i < packs.length; i++){
-        var row = document.getElementById("" + packs[i].Package);
-        
-        if(row != null){
-          
-          var loaded = packs[i].isLoaded;
-          if(showing_all_packages == 0){
-            if(!loaded){
-              set_status_to(row, "hide")
-            }
-          }else{
-            if(!loaded){
-              removeClass(row, "hide")
-            }
-          }
-             
-        }  	   
-  	 }
-  	 
-  	  var show_all_button = document.getElementById("show_all_packs_button"); 
-  	  show_all_button.disabled = false;
-    	if(showing_all_packages == 0){
-        show_all_button.value = "Show All Packages";
-    	}else{
-        show_all_button.value = "Show Loaded Packages";
-    	}
-    	
-    	set_update_button();
-
-      showing_all_packages = (showing_all_packages+1) % 2;
-  
-  	
-  	}
-  })  
+function show_all_packages() {
+  var showing_installed = $("#packages").attr("class") == "installed";
+  $("#packages").attr("class", !showing_installed ? "installed" : "loaded");
 }
-
-
-

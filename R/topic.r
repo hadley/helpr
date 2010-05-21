@@ -18,6 +18,11 @@ name_rd <- function(rd) {
   rd
 } 
 
+topic_is_internal <- function(help) {
+  "internal" %in% help$keywords
+}
+
+
 # Function to turn a help topic into a convenient format.
 parse_help <- function(rd) {
   tags <- sapply(rd, tag)

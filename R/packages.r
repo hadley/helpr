@@ -1,49 +1,38 @@
-#' @include memoise.r
-
-pkg_matrix <- function(){
-  libraryResults <- as.data.frame(library()$results, stringsAsFactors = FALSE)
-
-  # subset to packages that are loaded
+#' Installed packages.
+#'
+#' Runs about 10x faster than \code{\link{installed.packages}}
+#' @return a list of packages
+installed_packages <- function() {
+  paths <- unlist(lapply(.libPaths(), dir, full.names = TRUE))
+  desc <- file.path(paths, "DESCRIPTION")
+  desc <- desc[file.exists(desc)]
   
-  packages <- libraryResults
-
-  packages$isLoaded <- packages$Package %in% loaded_packs()
-    
-  packages <- packages[order(packages$Package), ]
-  packages  
+  dcf <- lapply(desc, read.dcf, fields = c("Package", "Title", "Version"))
+  packages <- as.data.frame(do.call("rbind", dcf), stringsAsFactors = FALSE)
+  
+  packages$status <- ifelse(packages$Package %in% .packages(), 
+    "loaded", "installed")
+  class(packages) <- c("packages", class(packages))
+  packages
 }
 
-pkg_dlply <- function(pkgs){
-  lapply(1:nrow(pkgs), function(i) as.list(pkgs[i, ]))  
+as.list.packages <- function(x) {
+  alply(x, 1, as.list)
 }
 
-pkg_list <- function() {
-  pkg_dlply(pkg_matrix())
+#' Out of date packages.
+#' Local packages that need updating.
+old_packages <- function() {    
+  old <- as.data.frame(old.packages(), stringsAsFactors = FALSE)
+  installed_packages()[old$Package]
 }
 
-#' Loaded Packages
-#' return the packages that are loaded in the current R session
-#'
-#' @author Barret Schloerke \email{bigbear@@iastate.edu}
-#'
-loaded_packs <- function()
-{
-  .packages()
-}
-
-old_pkg_list <- function() {    
-  old_packages <- as.data.frame(old.packages(), stringsAsFactors = FALSE)
-  old_packages <- old_packages[order(old_packages$Package), ]
-  pkg_dlply(old_packages)
-}
-
-#' Update Old Packages
+#' Update old packages
 #' update all packages that are old and currently loaded
 #'
 #' @author Barret Schloerke \email{bigbear@@iastate.edu}
 #'
-update_loaded_packs <- function()
-{
+update_loaded_packs <- function() {
   packs <- loaded_packs()
   packs <- packs[packs %in% old.packages()[,"Package"]]
   install.packages(packs)

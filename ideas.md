@@ -13,6 +13,7 @@ Main
   * needs install individual button
 * DONE - Button to show all packages
   * DONE - needs to 'talk' with old packages button
+* Rewrite library() so pkg_matrix is quicker for large numbers of packages
 
 * Top ten functions and most recently used 10 functions
 * add links to the manuals
@@ -38,6 +39,8 @@ Topic
 * use latent dirichlet topic models to provide see also links based on description and details.
 * display hyperlinked keywords
 * view source - shows function source
+* rate a function
+* add comments - look at something like disqus
 * DONE - links for "mailto"
 
 Dynamic help

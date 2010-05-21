@@ -90,8 +90,7 @@ pre, code {
 
 
 /* Packages */
+#packages.loaded .installed {display: none;}
+
 .out_of_date { background-color: #FE8080;}
 .updated { background-color: rgba(238,238,238,.5);} 
-.hide {display: none;}
-
-
