@@ -22,9 +22,12 @@ as.list.packages <- function(x) {
 
 #' Out of date packages.
 #' Local packages that need updating.
-old_packages <- function() {    
-  old <- as.data.frame(old.packages(), stringsAsFactors = FALSE)
-  installed_packages()[old$Package]
+old_packages <- function() {
+  packages <- installed_packages()
+  old <- as.data.frame(old.packages(), stringsAsFactors = FALSE)$Package
+  
+  packages$status[packages$Package %in% old] <- "old"
+  packages
 }
 
 #' Update old packages
@@ -38,31 +41,3 @@ update_loaded_packs <- function() {
   install.packages(packs)
   packs
 }
-
-
-#' Print Loaded Packages with Information
-#' print the loaded packages in JSON format
-#'
-#' @author Barret Schloerke \email{bigbear@@iastate.edu}
-#' 
-package_old <- function()
-{
-  pack_matrix <- pkg_matrix()
-  pack_status <- pack_matrix$Package %in% old.packages()[,"Package"]
-  pack_matrix$status <- as.character(factor(pack_status, labels = c("updated", "out_of_date")))
-  pkg_dlply(pack_matrix)
-}
-
-#' Package Status
-#' return whether the package is up-to-date or not
-#'
-#' @author Barret Schloerke \email{bigbear@@iastate.edu}
-#'
-#package_status <- function(pkg_name){
-#  status <- pkg_name %in% old.packages()[,"Package"]
-#  
-#  if(status)
-#    "out_of_date"
-#  else
-#    "updated"
-#}
