@@ -46,11 +46,12 @@ reconstruct <- function(rd) {
     pkg <- attr(rd, "Rd_option")
     
     tag_link(fun, pkg)
-    
+  } else if (tag == "\\dontrun") {
+    dr <- reconstruct(untag(rd))
+    str_c("## Not run\n# ", str_replace(dr, "\n", "\n# "), "\n## ")
   } else if (tag == "\\eqn") {
 #    rd[[1]]
     str_join("<code>", reconstruct(untag(rd)), "</code>")
-    
   } else if (tag == "\\url") {
     stopifnot(length(rd) == 1)
     str_join("<a href='", rd[[1]], "'>", rd[[1]], "</a>")
@@ -96,7 +97,7 @@ simple_tags <- list(
   "\\cr" =           c("<br >", ""),
   "\\dfn" =          c("<dfn>", "</dfn>"),
   "\\donttest" =     c("", ""),
-  "\\dontrun" =      c("## Not run\n", "\n## "),
+  "\\dontshow" =     c("", ""),
   "\\dots" =         c("...", ""),
   "\\dquote" =       c("&ldquo;", "&rdquo;"),
   "\\emph" =         c("<em>", "</em>"),

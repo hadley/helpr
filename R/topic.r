@@ -45,6 +45,7 @@ parse_help <- function(rd) {
   out$details <- reconstruct(rd$details)
   out$value <- reconstruct(rd$value)
   out$examples <- highlight(reconstruct(untag(rd$examples)))
+  
   out$usage <- reconstruct(untag(rd$usage))
   out$authors <- reconstruct(rd$author)
   out$author_str <- pluralize("Author", rd$author)
