@@ -5,6 +5,12 @@
 <head>
   <link rel="stylesheet" type="text/css" href="/_styles/reset-fonts-grids.css" />
   <link rel="stylesheet" type="text/css" href="/_styles/r-help.css" />
+  <link rel="stylesheet" type="text/css" href="/_styles/jquery.rating.css" />
+  
+  <script type="text/javascript" src="/_scripts/jquery-latest.js"></script>
+  <script type="text/javascript" src="/_scripts/package.js"></script>
+  <script type="text/javascript" src="/_scripts/jquery.rating.pack.js"></script>
+
 
   <title><%= package %>. R help</title>
 </head>
@@ -68,7 +74,21 @@
       <p><% suggests <- sapply(description$suggests, "[[", "name") %>
       <%=str_join("<a href='/packages/", suggests, "/'>", suggests, "</a>", collapse = ", ") %></p>
     <% }%>
-    
+
+    <% if(has_length(extras$vigs$paths)){ -%>    
+      <h2><%= extras$vigs$vig_str %></h2>
+      <p><%=str_join("<a href='",extras$vigs$paths,"' target=\"_blank\">", extras$vigs$titles, "</a>", collapse = ", ") %></p>
+    <% }%>
+
+
+<!--      <h2>Rating</h2>
+      <div id="rating">
+        <script language="javascript">
+          <%= str_join("get_rating('", package, "');", collapse = "") %>
+        </script>
+      </div> -->
+
+          
   </div></div>
   
   </div><!-- end bd -->

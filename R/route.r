@@ -45,11 +45,19 @@ helpr <- function(installed = TRUE) {
     
     author_str <- pluralize("Author", description$author)
     
-    items <- list(datasets = get_datasets(package), functions = get_functions(topics), idk = get_NOT_FOUND(topics), internal = get_internal(topics))
-
+    items <- list(
+      datasets = get_datasets(package), 
+      functions = get_functions(topics), 
+      idk = get_NOT_FOUND(topics), 
+      internal = get_internal(topics)
+    )
+    
+    extras <- list(
+      vigs = pkg_vigs(package)
+    )
   
     render_brew("package", list(package = package, items = items,
-      description = description, author_str = author_str), path = path)
+      description = description, author_str = author_str, extras = extras), path = path)
   })
 
   # Individual help topic
@@ -79,6 +87,11 @@ helpr <- function(installed = TRUE) {
   router$get("/packages/update.json", function() {
     render_json(update_loaded_packs())
   })
+#  router$get("/packages/:package/rating.json", function(package) {
+#
+##    render_json(rating_text(as.character(package)))
+#    render_json(rating_text(package))
+#  })
   
   return(invisible(router))
 }
