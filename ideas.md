@@ -23,11 +23,12 @@ Package
 * link to CRAN page
 * links to news & changelogs
 * demos
-* BUSY - vignettes
+* DONE - vignettes
 * NEEDS VALIDATION - separate data and functions
 * NEEDS VALIDATION - show internal functions separately
 * integrate with crantastics
-  * ratings, reviews
+  * DONE - ratings
+  * reviews
 * show package dependencies
 
 * see CRAN page for more ideas

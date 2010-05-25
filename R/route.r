@@ -87,11 +87,12 @@ helpr <- function(installed = TRUE) {
   router$get("/packages/update.json", function() {
     render_json(update_loaded_packs())
   })
-#  router$get("/packages/:package/rating.json", function(package) {
-#
-##    render_json(rating_text(as.character(package)))
-#    render_json(rating_text(package))
-#  })
+  router$get("/packages/:package/rating.json", function(package) {
+
+#    render_json(rating_text(as.character(package)))
+    string <- rating_text(package)
+    render_json(string)
+  })
   
   return(invisible(router))
 }

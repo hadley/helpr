@@ -75,8 +75,10 @@ rating_text <- function(pkg_name){
   )
   
   stars_txt <- str_join(stars_txt, collapse = "" )
+  cran_txt <- str_join("http://crantastic.org/packages/", pkg_name)
+  link_start <- str_join("<a href='",cran_txt,"' target=\"_blank\">")
   
-  str_join(rating_txt, "<br />", stars_txt)
+  str_join(link_start, rating_txt, "</a>", "<br />", stars_txt)
 }
 
 
