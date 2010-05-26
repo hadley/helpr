@@ -3,7 +3,7 @@ Individual pages
 
 Main
 
-* Main page - display latest changes from CHANGELOG
+* BUSY - Main page - display latest changes from CHANGELOG
 * DONE - Pull in RSS feeds?
   * DONE - needs to be slower
 * DONE - Only display loaded packages
@@ -15,13 +15,13 @@ Main
   * DONE - needs to 'talk' with old packages button
 * DONE - Rewrite alternative to installed.packages() that is much faster
 
-* Top ten functions and most recently used 10 functions
+* DONE - Top ten functions and most recently used 10 functions
 * add links to the manuals
 
 Package
 
 * link to CRAN page
-* links to news & changelogs
+* BUSY - links to news & changelogs
 * demos
 * DONE - vignettes
 * NEEDS VALIDATION - separate data and functions
