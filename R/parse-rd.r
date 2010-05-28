@@ -21,14 +21,18 @@ all_tags <- function(rd) {
 }
 
 reconstruct <- function(rd) {
+
   if (is.null(rd)) return("")
-  if (!is.list(rd)) return(as.character(rd))
+  if (!is.list(rd) && is.null(attr(rd, "Rd_tag"))) return(as.character(rd))
+#  if (!is.list(rd)) return(as.character(rd))
   
   tag <- tag(rd)
-
+  
   if (length(tag) == 0 || tag == "TEXT" || tag == "") {
     # Collapse text strings
-    str_trim(str_join(sapply(rd, reconstruct), collapse = ""))
+#    str_trim(str_join(sapply(rd, reconstruct), collapse = ""))
+    
+    as.character(str_join(sapply(rd, reconstruct), collapse = ""))
 
   } else if (is_section(tag)) {
     # Sections should be arranged into paragraphs    
@@ -58,9 +62,13 @@ reconstruct <- function(rd) {
 
   } else if(tag == "\\email"){
     str_join("<a href=\"mailto:",rd[[1]][1],"?subject=(R-Help): \">",reconstruct(untag(rd)),"</a>")
-
-
+      
+  } else if(tag == "COMMENT") {
+    
+    txt <- as.character(rd)
+    str_replace(txt, "%", "#")
   } else {
+    
     message("Unknown tag ", tag)
     reconstruct(untag(rd))
   }
@@ -95,11 +103,13 @@ simple_tags <- list(
   "\\code" =         c("<code>", "</code>"),
   "\\command" =      c("<code>", "</code>"),
   "\\cr" =           c("<br >", ""),
+  "\\describe" =     c("<span class=\"describe\">", "</span"),
   "\\dfn" =          c("<dfn>", "</dfn>"),
   "\\donttest" =     c("", ""),
   "\\dontshow" =     c("", ""),
   "\\dots" =         c("...", ""),
   "\\dquote" =       c("&ldquo;", "&rdquo;"),
+  "\\dQuote" =       c("&ldquo;", "&rdquo;"),
   "\\emph" =         c("<em>", "</em>"),
   "\\enumerate" =    c("<ol>", "</ol>"),
   "\\env" =          c('<span class = "env">', '</span>'),
@@ -118,9 +128,10 @@ simple_tags <- list(
   "\\text" =         c("<p>", "</p>"),
   "\\var" =          c("<var>", "</var>"),
   "\\verb" =         c("<pre>", "</pre>"),
-  
+
   "RCODE" =          c("", ""),
-  "VERB" =           c("", "")
+  "VERB" =           c("", ""),
+  "LIST" =          c("<ul/>", "</ul>")
 )
 
 
