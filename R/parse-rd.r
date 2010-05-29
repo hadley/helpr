@@ -131,7 +131,7 @@ simple_tags <- list(
 
   "RCODE" =          c("", ""),
   "VERB" =           c("", ""),
-  "LIST" =          c("<ul/>", "</ul>")
+  "LIST" =          c("<ul>", "</ul>")
 )
 
 

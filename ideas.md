@@ -3,7 +3,8 @@ Individual pages
 
 Main
 
-* BUSY - Main page - display latest changes from CHANGELOG
+* WAIT - Main page - display latest changes from CHANGELOG
+  * Needs Change Log
 * DONE - Pull in RSS feeds?
   * DONE - needs to be slower
 * DONE - Only display loaded packages
@@ -16,7 +17,8 @@ Main
 * DONE - Rewrite alternative to installed.packages() that is much faster
 
 * DONE - Top ten functions and most recently used 10 functions
-* add links to the manuals
+* DONE - add links to the manuals
+  * should be memoised or hard coded?
 
 Package
 
@@ -24,8 +26,8 @@ Package
 * BUSY - links to news & changelogs
 * demos
 * DONE - vignettes
-* NEEDS VALIDATION - separate data and functions
-* NEEDS VALIDATION - show internal functions separately
+* NOT FULLY CORRECT - separate data and functions
+* NOT FULLY CORRECT - show internal functions separately
 * integrate with crantastics
   * DONE - ratings
   * reviews
@@ -58,7 +60,7 @@ Examples and demos
 
 * Parse examples and add links to functions that are used
 * Send selected expression to R console
-* Evaluate all example code and interleave results back in html, like:
+* BUSY - Evaluate all example code and interleave results back in html, like:
   http://ejohn.org/apps/learn/
 
 Search

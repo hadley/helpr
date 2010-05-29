@@ -62,23 +62,39 @@
   </div></div>
   <div class="yui-b"><div class = "sidebar">
     
-    <h2>Top Ten Function</h2>
-    <ol>
-      <% for(i in seq_len(nrow(ten_functions$top_ten))) { -%>
-        <li>
-          <%= str_join("<a href='", ten_functions$top_ten[i,"paths"], "'>", ten_functions$top_ten[i,"functions"], "</a></li>") %>
-        </li>
-      <% } %>
-    </ol>
+    <% if(has_length(ten_functions$top_ten)) { %>
+      <h2>Top Ten Function</h2>
+      <ol>
+        <% for(i in seq_len(nrow(ten_functions$top_ten))) { %>
+          <li>
+            <%= str_join("<a href='", ten_functions$top_ten[i,"paths"], "'>", ten_functions$top_ten[i,"functions"], "</a></li>") %>
+          </li>
+        <% } %>
+      </ol>
+    <% } %>
 
-    <h2>Last Ten Function</h2>
-    <ol>
-      <% for(i in seq_len(nrow(ten_functions$last_ten))) { -%>
-        <li>
-          <%= str_join("<a href='", ten_functions$last_ten[i,"paths"], "'>", ten_functions$last_ten[i,"functions"], "</a></li>") %>
-        </li>
-      <% } %>
-    </ol>
+    <% if(has_length(ten_functions$last_ten)) { %>
+      <h2>Last Ten Function</h2>
+      <ol>
+        <% for(i in seq_len(nrow(ten_functions$last_ten))) { -%>
+          <li>
+            <%= str_join("<a href='", ten_functions$last_ten[i,"paths"], "'>", ten_functions$last_ten[i,"functions"], "</a>") %>
+          </li>
+        <% } %>
+      </ol>
+    <% } %>
+    
+    <% if(has_length(manuels)) { %>
+      <h2>Manuels</h2>
+      <ol>
+        <% for(i in seq_len(nrow(manuels))) { %>
+          <li>
+            <%= str_join("<a href='", manuels[i,"html_link"], "'>", manuels[i,"title"], "</a>") %>
+          </li>
+        <% } %>
+      </ol>
+    <% } %>
+        
 
 
   </div></div>
