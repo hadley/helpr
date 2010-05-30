@@ -23,8 +23,9 @@ Main
 Package
 
 * link to CRAN page
-* BUSY - links to news & changelogs
-* demos
+* PARTIAL - links to news & changelogs
+  * needs to have a render brew template
+* BUSY - demos
 * DONE - vignettes
 * NOT FULLY CORRECT - separate data and functions
 * NOT FULLY CORRECT - show internal functions separately

@@ -24,6 +24,22 @@ pkg_topics <- function(package) {
   files <- unique(pkg_topics_index(package)$alias)
 }
 
+pkg_demos <- function(package) {
+#  demos <- demo(package = package)$results
+#  files <- apply(demos, 1, function(dem){ 
+#   pkg_demo_src_file(dem[ "Package"], dem[ "Item"])
+#  })
+  demo(package = package)$results
+}
+
+#pkg_demo_src_file <- function(package, dem) {
+#  system.file("demo", dem, package = package)
+#}
+
+exec_pkg_demo <- function(package, dem) {
+  demo(dem, character = TRUE, package = package, ask = TRUE)
+}
+
 pkg_vigs <- function(package) {
 
 #  vignettes <- vignette(package= package)$results[, 3]
@@ -44,7 +60,9 @@ pkg_vigs <- function(package) {
   titles <- str_replace(titles, "source, pdf", "")
   titles <- str_trim(str_replace(titles, "[()]", ""))
   
-  paths <- str_join("http://cran.r-project.org/web/packages/", package, "/vignettes/", pdfNames, ".pdf", sep = "")
+  paths <- character(0)
+  if(has_length(titles))
+    paths <- str_join("http://cran.r-project.org/web/packages/", package, "/vignettes/", pdfNames, ".pdf", sep = "")
   
   list(titles = titles, paths = paths, vig_str = pluralize("Vignette", paths))
 }
@@ -112,17 +130,6 @@ pkg_topics_rd <- memoise(function(package) {
 #   )
 # }))
 # str(index)
-
-has_length <- function(x){
-  if(is.list(x)){
-    !is.null(dim(x)) && dim(x)[1] > 0
-  }
-  else{
-    length(x) > 0 && x != ""
-  }
-}
-
-
 
 
 get_datasets <- function(package){

@@ -134,9 +134,18 @@ simple_tags <- list(
   "LIST" =          c("<ul>", "</ul>")
 )
 
+has_length <- function(x){
+  if(is.list(x)){
+    !is.null(dim(x)) && dim(x)[1] > 0
+  }
+  else{
+    length(x) > 0 && x != ""
+  }
+}
+
 
 pluralize <- function(string, obj) {
-  if(length(obj) > 1) {
+  if(has_length(obj)) {
     str_join(string, "s", sep = "")
   } else {
     string

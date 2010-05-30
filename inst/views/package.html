@@ -54,7 +54,7 @@
   </div></div>
   <div class="yui-b"><div class = "sidebar">
     
-    <% if(has_length(description$author)){ -%>    
+    <% if(has_length(description$author)){ -%>
       <h2><%= author_str %></h2>
       <p><%= description$author %></p>
     <% }%>
@@ -68,17 +68,32 @@
     <% }%>
       
     
-    <% if(has_length(description$suggests)){ -%>    
+    <% if(has_length(description$suggests)){ %>    
       <h2>Suggests</h2>
       
       <p><% suggests <- sapply(description$suggests, "[[", "name") %>
       <%=str_join("<a href='/packages/", suggests, "/'>", suggests, "</a>", collapse = ", ") %></p>
     <% }%>
 
+    <% if(has_length(demos$demos)) { -%>    
+      <h2><%= demos$demo_str %></h2>
+      <dl>
+      <% for(i in seq_len( nrow(demos$demos))) { -%>
+        <dt>
+          <%= str_join( "<a href=\"/packages/", package, "/demos/", demos$demos[i, "Item"], "\" >", demos$demos[i, "Item"], "</a>") %>
+        </dt>
+        <dd>
+          <%= demos$demos[i, "Title"] %>
+        </dd>
+      <% } %>
+      </dl>
+    <% } %>
+      
+
     <% if(has_length(extras$vigs$paths)){ -%>    
       <h2><%= extras$vigs$vig_str %></h2>
-      <p><%=str_join("<a href='",extras$vigs$paths,"' target=\"_blank\">", extras$vigs$titles, "</a>", collapse = ", ") %></p>
-    <% }%>
+      <p><%= str_join("<a href='",extras$vigs$paths,"' target=\"_blank\">", extras$vigs$titles, "</a>", collapse = ", ") %></p>
+    <% } %>
 
 
 <!--      <h2>Rating</h2>
@@ -89,9 +104,9 @@
       </div> -->
 
 <!--      <h2>Change Log</h2> -->
-      <div id="changelog">
+<!--      <div id="changelog">
         <%= pkg_news(package) %>
-      </div> 
+      </div> -->
 
           
   </div></div>

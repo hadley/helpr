@@ -62,9 +62,26 @@ helpr <- function(installed = TRUE) {
     extras <- list(
       vigs = pkg_vigs(package)
     )
+    
+    demos <- list(
+      demos = pkg_demos(package)
+    )
+    demos$demo_str <- pluralize("Demo", demos$demos)
+
   
-    render_brew("package", list(package = package, items = items,
-      description = description, author_str = author_str, extras = extras), path = path)
+    render_brew(
+      "package", 
+      list(
+        package = package, 
+        items = items,
+        description = description, 
+        author_str = author_str, 
+        extras = extras,
+        demos = demos        
+      ), 
+      path = path
+    )
+    
   })
 
   # Individual help topic
