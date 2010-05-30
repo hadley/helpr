@@ -85,8 +85,16 @@ pre, code {
 .prompt {color:black ;}
 
 /* Packages */
-#packages.loaded .installed {display: none;}
+#packages.loaded .installed, #thinking_wheel {display: none;}
 
 .out_of_date { background-color: #FE8080;}
 .updated { background-color: rgba(238,238,238,.5);} 
 .old a:link, .old a:visited {color: red;}
+
+#thinking_wheel{
+  margin: 0;
+  line-height: 16px;
+  width: 16px;
+  height: 16px;
+}
+

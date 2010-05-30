@@ -10,8 +10,8 @@ Main
 * DONE - Only display loaded packages
 * DONE - Display out of date packages
   * DONE - button invoked and highlight
-  * needs spinning wheel of death (iphone style)
-  * needs install individual button
+  * DONE - needs spinning wheel of death (iphone style)
+  * BUSY - needs install individual button
 * DONE - Button to show all packages
   * DONE - needs to 'talk' with old packages button
 * DONE - Rewrite alternative to installed.packages() that is much faster

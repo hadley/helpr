@@ -18,7 +18,8 @@ function highlight_old_packages() {
   has_highlighted = 1;
   button = $("#out_of_date_button");
   button.attr("value", "Thinking...");
-  button.attr("disabled", true)
+  button.attr("disabled", true);
+  document.getElementById("thinking_wheel").style.display = "inline";
 
   jQuery.ajax({
     url: "/packages/old.json",
@@ -96,6 +97,8 @@ function set_update_button(){
     out_of_date_butto.onClick = "";
     out_of_date_butto.disabled = true;
   }
+  
+  document.getElementById("thinking_wheel").style.display = "none";
 
 }
 
