@@ -67,9 +67,14 @@ reconstruct <- function(rd) {
     
     txt <- as.character(rd)
     str_replace(txt, "%", "#")
+  } else if(tag == "\\enc"){
+    
+    reconstruct(rd[[1]])
+    
   } else {
     
     message("Unknown tag ", tag)
+    browser()
     reconstruct(untag(rd))
   }
 }
