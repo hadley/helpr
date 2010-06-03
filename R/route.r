@@ -15,7 +15,7 @@ helpr <- function(installed = TRUE) {
       list(
         packages = as.list(installed_packages()), 
         ten_functions = ten_functions(),
-        manuels = get_manuels()
+        manuels = get_manuals()
       ), 
       path = path
     )

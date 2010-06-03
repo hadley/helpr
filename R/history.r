@@ -35,7 +35,7 @@ get_function_history <- function(){
   rawhist <- grep(pattern, rawhist, value = TRUE )
   funcs <- unlist(str_extract_all(rawhist, pattern))
   funcs <- str_join(funcs, ")")
-  funcs <- funcs[ ! funcs %in% "if()"]
+  funcs <- funcs[ ! funcs %in% c("if()", "for()", "while()")]
   
   parsed_funcs <- as.data.frame(attributes(parser(text = funcs))$data, stringsAsFactors = FALSE)
   functions <- parsed_funcs$text[parsed_funcs$token.desc == "SYMBOL_FUNCTION_CALL"]

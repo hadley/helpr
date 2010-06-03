@@ -68,7 +68,7 @@ make_paragraph <- function(text){
 #  
 #  str_join(str_trim(str_split(subString, "\n")[[1]][2:3]), collapse = "<br />")  
 
-get_manuels <- memoise(function(){
+get_manuals <- memoise(function(){
   
   # download manual page and find links
   txt <- RCurl::getURL("http://cran.r-project.org/manuals.html")
