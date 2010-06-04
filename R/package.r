@@ -29,7 +29,17 @@ pkg_demos <- function(package) {
 #  files <- apply(demos, 1, function(dem){ 
 #   pkg_demo_src_file(dem[ "Package"], dem[ "Item"])
 #  })
-  demo(package = package)$results
+
+  dems <- demo(package = package)$results
+  
+  if(!has_length(dems))
+    NULL
+  else
+    list(
+      dems = dems, 
+      demo_str = pluralize("Demo", dems)
+    )
+  
 }
 
 #pkg_demo_src_file <- function(package, dem) {
@@ -37,32 +47,25 @@ pkg_demos <- function(package) {
 #}
 
 exec_pkg_demo <- function(package, dem) {
-  demo(dem, character = TRUE, package = package, ask = TRUE)
+#  demo(dem, character = TRUE, package = package, ask = TRUE)
+  demo(dem, character = TRUE, package = package, ask = FALSE)
 }
 
 pkg_vigs <- function(package) {
-
-#  vignettes <- vignette(package= package)$results[, 3]
-#  paths <- sapply(vignettes, function(v) vignette(v, package = package)$file)   
-#
-#  paths <- sapply(paths, function(i){
-#    if(str_sub(i, str_length(i)-3, str_length(i)) != ".pdf"){
-#      str_c(str_sub(i, end = str_length(i)-4), ".pdf")
-#    }else{
-#      i
-#    }
-#  })
+  vignettes <- vignette(package = package)$results
   
-#  http://cran.r-project.org/web/packages/roxygen/vignettes/roxygen.pdf
-  titles <- vignette(package = package)$results[,4]
-  pdfNames <- vignette(package= package)$results[, 3]
+  if(!has_length(vignettes))
+    return(NULL)
+
+  titles <- vignettes[,4]
+  pdfNames <- vignettes[, 3]
+  paths <- vignettes[, 2]
   
   titles <- str_replace(titles, "source, pdf", "")
   titles <- str_trim(str_replace(titles, "[()]", ""))
   
-  paths <- character(0)
-  if(has_length(titles))
-    paths <- str_join("http://cran.r-project.org/web/packages/", package, "/vignettes/", pdfNames, ".pdf", sep = "")
+#    paths <- str_join("http://cran.r-project.org/web/packages/", package, "/vignettes/", pdfNames, ".pdf", sep = "")
+    paths <- str_join("/_",str_join(paths, package, "doc", str_join(pdfNames, ".pdf"), sep = .Platform$file.sep))
   
   list(titles = titles, paths = paths, vig_str = pluralize("Vignette", paths))
 }

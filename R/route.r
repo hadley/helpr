@@ -59,15 +59,12 @@ helpr <- function(installed = TRUE) {
       internal = get_internal(topics)
     )
     
+    dems <- 
     extras <- list(
+      demos = pkg_demos(package),
       vigs = pkg_vigs(package)
     )
     
-    demos <- list(
-      demos = pkg_demos(package)
-    )
-    demos$demo_str <- pluralize("Demo", demos$demos)
-
   
     render_brew(
       "package", 
@@ -76,8 +73,7 @@ helpr <- function(installed = TRUE) {
         items = items,
         description = description, 
         author_str = author_str, 
-        extras = extras,
-        demos = demos        
+        extras = extras
       ), 
       path = path
     )
@@ -119,9 +115,16 @@ helpr <- function(installed = TRUE) {
   })
   
   # Local Host Files
-  router$get("/_*", function(splat) {
+  router$get("/manual/_*", function(splat) {
     static_file(splat)
   })
+  
+  #execute demos
+  router$get("/packages/:package/demo/:demo", function(package, demo) {
+    exec_pkg_demo(package, demo)
+    redirect(str_join("/packages/", package, "/"))
+  })
+
   
   return(invisible(router))
 }

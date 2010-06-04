@@ -22,7 +22,6 @@ make_paragraph <- function(text){
 
 -->
 
-
   <%= str_join("<h2>",change_log$title,"</h2>","<span class=\"changelog_date\">",change_log$date,"</span>")
   <% for(i in names(chage_log$news)) { -%>
     <%= if(!is.na(i)) str_join("<h3>",chage_log$news[i],"</h3>") %>

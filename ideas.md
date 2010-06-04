@@ -4,6 +4,7 @@ Individual pages
 Main
 
 * WAIT - Main page - display latest changes from CHANGELOG
+  * a function page should show all change logs related to that function
   * Needs Change Log
 * DONE - Pull in RSS feeds?
   * DONE - needs to be slower
@@ -18,15 +19,16 @@ Main
 
 * DONE - Top ten functions and most recently used 10 functions
 * DONE - add links to the manuals
-  * should be memoised or hard coded?
+  * DONE - Had coded: should be memoised or hard coded?
 
 Package
-
 * link to CRAN page
 * PARTIAL - links to news & changelogs
   * needs to have a render brew template
-* BUSY - demos
+* DONE - demos
+  * Add jQuery to notify user
 * DONE - vignettes
+  * change URL
 * NOT FULLY CORRECT - separate data and functions
 * NOT FULLY CORRECT - show internal functions separately
 * integrate with crantastics

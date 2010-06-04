@@ -75,22 +75,22 @@
       <%=str_join("<a href='/packages/", suggests, "/'>", suggests, "</a>", collapse = ", ") %></p>
     <% }%>
 
-    <% if(has_length(demos$demos)) { -%>    
-      <h2><%= demos$demo_str %></h2>
+    <% if(has_length(extras$demos)) { -%>    
+      <h2><%= extras$demos$demo_str %></h2>
       <dl>
-      <% for(i in seq_len( nrow(demos$demos))) { -%>
+      <% for(i in seq_len( nrow(extras$demos$dems))) { -%>
         <dt>
-          <%= str_join( "<a href=\"/packages/", package, "/demos/", demos$demos[i, "Item"], "\" >", demos$demos[i, "Item"], "</a>") %>
+          <%= str_join( "<a href=\"/packages/", package, "/demo/", extras$demos$dems[i, "Item"], "\" >", extras$demos$dems[i, "Item"], "</a>") %>
         </dt>
         <dd>
-          <%= demos$demos[i, "Title"] %>
+          <%= extras$demos$dems[i, "Title"] %>
         </dd>
       <% } %>
       </dl>
     <% } %>
       
-
-    <% if(has_length(extras$vigs$paths)){ -%>    
+      
+    <% if(has_length(extras$vigs)){ -%>    
       <h2><%= extras$vigs$vig_str %></h2>
       <p><%= str_join("<a href='",extras$vigs$paths,"' target=\"_blank\">", extras$vigs$titles, "</a>", collapse = ", ") %></p>
     <% } %>
@@ -102,10 +102,10 @@
           <%= str_join("get_rating('", package, "');", collapse = "") %>
         </script>
       </div> -->
-
+      
 <!--      <h2>Change Log</h2> -->
 <!--      <div id="changelog">
-        <%= pkg_news(package) %>
+        <%# = pkg_news(package) %>
       </div> -->
 
           
