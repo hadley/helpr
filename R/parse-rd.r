@@ -71,6 +71,10 @@ reconstruct <- function(rd) {
     
     reconstruct(rd[[1]])
     
+  } else if(tag == "\\method") {
+    
+    str_join(reconstruct(rd[[1]]),".",reconstruct(rd[[2]]))
+
   } else {
     
     message("Unknown tag ", tag)
@@ -140,12 +144,7 @@ simple_tags <- list(
 )
 
 has_length <- function(x){
-  if(is.list(x)){
-    !is.null(dim(x)) && dim(x)[1] > 0
-  }
-  else{
-    length(x) > 0 && x != ""
-  }
+    NROW(x) > 0 && x != ""
 }
 
 
@@ -155,4 +154,8 @@ pluralize <- function(string, obj) {
   } else {
     string
   }
+}
+
+strip_html <- function(x) {
+  str_replace(x, "</?.*?>", "")
 }

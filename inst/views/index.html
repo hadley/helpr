@@ -86,12 +86,12 @@
       </ol>
     <% } %>
     
-    <% if(has_length(manuels)) { %>
-      <h2>Manuels</h2>
+    <% if(has_length(manuals)) { %>
+      <h2>Manuals</h2>
       <ol>
-        <% for(i in seq_len(nrow(manuels))) { %>
+        <% for(i in seq_len(length(manuals$titles))) { %>
           <li>
-            <%= str_join("<a href='", manuels[i,"html_link"], "'>", manuels[i,"title"], "</a>") %>
+            <%= str_join("<a href='", manuals$html_files[i], "'>", manuals$titles[i], "</a>") %>
           </li>
         <% } %>
       </ol>

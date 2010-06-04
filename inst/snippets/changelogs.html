@@ -1,0 +1,30 @@
+<!-- make_title_wDate <- function(title, date){
+  str_join(
+    make_section(title),
+    "<span class=\"changelog_date\">",date,"</span>"
+  )
+}
+
+make_section <- function(text){
+  str_join("<h2>",text,"</h2>")
+}
+
+make_subsection <- function(text){
+  if(!is.na(text))
+    str_join("<h3>",text,"</h3>")
+  else
+    ""
+}
+
+make_paragraph <- function(text){
+    
+}
+
+-->
+
+
+  <%= str_join("<h2>",change_log$title,"</h2>","<span class=\"changelog_date\">",change_log$date,"</span>")
+  <% for(i in names(chage_log$news)) { -%>
+    <%= if(!is.na(i)) str_join("<h3>",chage_log$news[i],"</h3>") %>
+    <%= str_join("<ul><li>",str_join(i$text, collapse="</li><li>") ,"</li></ul>") %>
+  <% } >

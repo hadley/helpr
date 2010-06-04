@@ -15,7 +15,7 @@ helpr <- function(installed = TRUE) {
       list(
         packages = as.list(installed_packages()), 
         ten_functions = ten_functions(),
-        manuels = get_manuals()
+        manuals = get_manuals()
       ), 
       path = path
     )
@@ -116,6 +116,11 @@ helpr <- function(installed = TRUE) {
 #    render_json(rating_text(as.character(package)))
     string <- rating_text(package)
     render_json(string)
+  })
+  
+  # Local Host Files
+  router$get("/_*", function(splat) {
+    static_file(splat)
   })
   
   return(invisible(router))
