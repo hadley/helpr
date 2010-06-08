@@ -115,9 +115,11 @@ helpr <- function(installed = TRUE) {
   })
   
   # Local Host Files
-  router$get("/manual/_*", function(splat) {
-    static_file(splat)
+  router$get("/manuals/:name.html", function(name) {
+    file_loc <- as.character(subset(get_manuals(), file_name == name, select = "file_loc"))
+    static_file(file_loc)
   })
+  
   
   #execute demos
   router$get("/packages/:package/demo/:demo", function(package, demo) {

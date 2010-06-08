@@ -18,13 +18,20 @@ pkg_news <- function(package){
 get_manuals <- function(){
   # /Library/Frameworks/R.framework/Resources/doc/manual/
   # get files in the manual directory with full path
-  manual_dir <- str_join(Sys.getenv("R_DOC_DIR"),"manual", sep = .Platform$file.sep)
-  html_files <- str_join(manual_dir, dir(manual_dir), sep=.Platform$file.sep)
+  manual_dir <- file.path(Sys.getenv("R_DOC_DIR"),"manual")
+  manuals <- dir(manual_dir)
   
-  list(
-    html_files = str_join("/_",html_files),
-    titles = sapply(html_files, function(x){
+  file_loc <- file.path(manual_dir, manuals)
+  link <- str_join("manuals/",manuals)
+  file_name <- str_replace(manuals, ".html", "")
+  
+  data.frame(
+    title = sapply(file_loc, function(x){
       strip_html(readLines(x, 3)[3])
-    })
+    }),
+    file_loc = file_loc,
+    link = link,
+    file_name = file_name,
+    stringsAsFactors = FALSE
   )
 }
