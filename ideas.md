@@ -25,8 +25,11 @@ Package
 * link to CRAN page
 * PARTIAL - links to news & changelogs
   * needs to have a render brew template
-* DONE - demos
-  * Add jQuery to notify user
+* demos
+  * BUSY - Send to a new page
+  * See Code Execution
+  * Have interaction with demo things
+  * Have output done within the example
 * DONE - vignettes
   * change URL
 * NOT FULLY CORRECT - separate data and functions
@@ -38,6 +41,14 @@ Package
 
 * see CRAN page for more ideas
 
+Code Execution
+  * Add jQuery to notify user
+  * shows syntax coloured source
+  * big run button
+  * ability to select code and then run just that
+  * links to everything usefull (i.e. function names)
+
+
 Topic
 
 * "did you mean?" - include list of all topics with the same name in different packages
@@ -48,6 +59,9 @@ Topic
 * rate a function
 * add comments - look at something like disqus
 * DONE - links for "mailto"
+* list of all fuctions that are under the topic
+  * links to the source code of said function
+    * See Code Execution minus 'run' functionality
 
 Dynamic help
 ============
