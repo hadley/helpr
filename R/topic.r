@@ -62,14 +62,30 @@ parse_help <- function(rd) {
 
   # Pull apart arguments
   arguments <- rd$arguments
-  arguments <- arguments[sapply(arguments, tag) != "TEXT"]
-  out$params <- lapply(arguments, function(argument) {
+#  arguments <- arguments[! sapply(arguments, tag) %in% c("TEXT", "COMMENT")]
+  argument_tags <- sapply(arguments, tag)
+  args <- lapply(arguments[argument_tags == "\\item"], function(argument) {
     list(
       param = reconstruct(untag(argument[[1]])), 
       desc = reconstruct(untag(argument[[2]]))
     )
   })
   
+  pre_text <- reconstruct(arguments[ seq_len( first_item_pos( argument_tags) - 1)])
+  
+  post_text <- reconstruct(
+    arguments[seq(
+      from = last_item_pos(argument_tags)+1, 
+      length.out = length(arguments) - last_item_pos(argument_tags)
+    )]
+  )
+
+  out$params <- list(
+    args = args,
+    pre_text = pre_text,
+    post_text = post_text
+  )
+
   out
 }
 
@@ -78,4 +94,18 @@ highlight <- function(examples) {
   if (!require(highlight)) return(examples)
   ex_parser <- parser(text = examples)
   str_join(capture.output(highlight::highlight( parser.output = ex_parser, renderer = highlight::renderer_html(doc = F))), collapse = "\n")    
+}
+
+first_item_pos <- function(arr){
+  for(i in seq_along(arr))
+    if(arr[i] == "\\item")
+      return(i)
+  1
+}
+
+last_item_pos <- function(arr){
+  for(i in rev(seq_along(arr)))
+    if(arr[i] == "\\item")
+      return(i)
+  0  
 }

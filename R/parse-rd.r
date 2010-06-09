@@ -54,8 +54,12 @@ reconstruct <- function(rd) {
     dr <- reconstruct(untag(rd))
     str_c("## Not run\n# ", str_replace(dr, "\n", "\n# "), "\n## ")
   } else if (tag == "\\eqn") {
-#    rd[[1]]
-    str_join("<code>", reconstruct(untag(rd)), "</code>")
+    str_join("<code>", reconstruct(untag(rd[[1]])), "</code>")
+  } else if (tag == "\\deqn") {
+    if(length(rd) < 2)
+      str_join("<code>", reconstruct(untag(rd[[1]])), "</code>")
+    else
+      str_join("<code>", reconstruct(untag(rd[[2]])), "</code>")
   } else if (tag == "\\url") {
     stopifnot(length(rd) == 1)
     str_join("<a href='", rd[[1]], "'>", rd[[1]], "</a>")
@@ -72,9 +76,9 @@ reconstruct <- function(rd) {
     reconstruct(rd[[1]])
     
   } else if(tag == "\\method" || tag == "\\S3method") {
-    
     str_join(reconstruct(rd[[1]]),".",reconstruct(rd[[2]]))
-
+  } else if(tag %in% c("\\dontshow", "\\testonly")){
+    "" # don't show it to the user
   } else {
     
     message("Unknown tag ", tag)
@@ -114,7 +118,6 @@ simple_tags <- list(
   "\\describe" =     c("<span class=\"describe\">", "</span"),
   "\\dfn" =          c("<dfn>", "</dfn>"),
   "\\donttest" =     c("", ""),
-  "\\dontshow" =     c("", ""),
   "\\dots" =         c("...", ""),
   "\\dquote" =       c("&ldquo;", "&rdquo;"),
   "\\dQuote" =       c("&ldquo;", "&rdquo;"),

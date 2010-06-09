@@ -28,13 +28,14 @@
     <pre><%= usage %></pre>
 
     <h2>Arguments</h2>
-
-    <table><% for(param in params) { -%>
+    <%= params$pre_text %>
+    <table><% for(param in params$args) { -%>
     <tr>
       <td><code><%= param$param %></code></td>
       <td><%= param$desc %></td>
     </tr>
     <% } -%></table>
+    <%= params$post_text %>
 
     <h2>Details</h2><%= details %>
 
