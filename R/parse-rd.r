@@ -82,6 +82,7 @@ reconstruct <- function(rd) {
   } else {
     
     message("Unknown tag ", tag)
+    browser()
     reconstruct(untag(rd))
   }
 }
@@ -136,9 +137,11 @@ simple_tags <- list(
   "\\samp" =         c('<span class = "samp">',"</span>"),
   "\\sQuote" =       c("&lsquo;","&rsquo;"),
   "\\strong" =       c("<strong>", "</strong>"),
+  "\\tab" =         c("&nbsp;&nbsp;", ""),
   "\\text" =         c("<p>", "</p>"),
   "\\var" =          c("<var>", "</var>"),
-  "\\verb" =         c("<pre>", "</pre>"),
+#  "\\verb" =         c("<pre>", "</pre>"),
+  "\\verb" =         c("<code>", "</code>"),
 
   "RCODE" =          c("", ""),
   "VERB" =           c("", ""),
