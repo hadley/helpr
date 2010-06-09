@@ -82,7 +82,6 @@ reconstruct <- function(rd) {
   } else {
     
     message("Unknown tag ", tag)
-    browser()
     reconstruct(untag(rd))
   }
 }
