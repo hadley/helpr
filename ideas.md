@@ -30,6 +30,7 @@ Package
   * See Code Execution
   * Have interaction with demo things
   * Have output done within the example
+  * Use parser to count all the functions used by the demo.  For functions that are called most offline, add cross-links to the demo from their topic page
 * DONE - vignettes
   * change URL
 * NEEDS VALIDATION - separate data and functions
