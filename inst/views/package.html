@@ -27,27 +27,33 @@
     <h1><%= package %></h1>
     <p><%= description$description %></p>
 
-    <% if(has_length(items$datasets)){ -%>
-      <h2>Data Sets</h2>
-      <p><%= str_join("<a href='topics/", items$datasets, "'>", items$datasets, "</a>", 
+    <% if(has_length(items$package)){ -%>
+      <h2>Package Info</h2>
+      <p><%= str_join("<a href='topics/", items$package$file, "'>", items$package$alias, "</a>", 
         collapse = ", ") %></p>
     <% } %>
 
-    <% if(has_length(items$functions)){ -%>
+    <% if(has_length(items$dataset)){ -%>
+      <h2>Data Sets</h2>
+      <p><%= str_join("<a href='topics/", items$dataset$file, "'>", items$dataset$alias, "</a>", 
+        collapse = ", ") %></p>
+    <% } %>
+
+    <% if(has_length(items$func)){ -%>
       <h2>Functions</h2>
-      <p><%= str_join("<a href='topics/", items$functions, "'>", items$functions, "</a>", 
+      <p><%= str_join("<a href='topics/", items$func$file, "'>", items$func$alias, "</a>", 
         collapse = ", ") %></p>
     <% } %>
 
     <% if(has_length(items$internal)){ -%>
       <h2>Internal</h2>
-      <p><%= str_join("<a href='topics/", items$internal, "'>", items$internal, "</a>", 
+      <p><%= str_join("<a href='topics/", items$internal$file, "'>", items$internal$alias, "</a>", 
         collapse = ", ") %></p>
     <% } %>
 
     <% if(has_length(items$idk)){ -%>
       <h2>IDK WTF Items</h2>
-      <p><%= str_join("<a href='topics/", items$idk, "'>", items$idk, "</a>", 
+      <p><%= str_join("<a href='topics/", items$idk$file, "'>", items$idk$alias, "</a>", 
         collapse = ", ") %></p>
     <% } %>
 
@@ -80,7 +86,7 @@
       <dl>
       <% for(i in seq_len( nrow(extras$demos$dems))) { -%>
         <dt>
-          <%= str_join( "<a href=\"/packages/", package, "/demo/", extras$demos$dems[i, "Item"], "\" >", extras$demos$dems[i, "Item"], "</a>") %>
+          <%= str_join( "<a href=\"/packages/", package, "/demos/", extras$demos$dems[i, "Item"], "\" >", extras$demos$dems[i, "Item"], "</a>") %>
         </dt>
         <dd>
           <%= extras$demos$dems[i, "Title"] %>

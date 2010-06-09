@@ -32,8 +32,10 @@ Package
   * Have output done within the example
 * DONE - vignettes
   * change URL
-* NOT FULLY CORRECT - separate data and functions
-* NOT FULLY CORRECT - show internal functions separately
+* NEEDS VALIDATION - separate data and functions
+  * improved
+* NEEDS VALIDATION - show internal functions separately
+  * improved
 * integrate with crantastics
   * DONE - ratings
   * reviews

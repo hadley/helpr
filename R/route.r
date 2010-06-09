@@ -42,6 +42,7 @@ helpr <- function(installed = TRUE) {
 
   # Package index page, list topics etc
   router$get("/packages/:package/", function(package) {
+    
     topics <- pkg_topics(package)
 
     info <- .readRDS(system.file("Meta", "package.rds", package = package))
@@ -52,14 +53,10 @@ helpr <- function(installed = TRUE) {
     
     author_str <- pluralize("Author", description$author)
     
-    items <- list(
-      datasets = get_datasets(package), 
-      functions = get_functions(topics), 
-      idk = get_NOT_FOUND(topics), 
-      internal = get_internal(topics)
-    )
     
-    dems <- 
+    package_topics_index <- pkg_topics_index(package)
+    items <- get_pkg_topic_type(package)
+    
     extras <- list(
       demos = pkg_demos(package),
       vigs = pkg_vigs(package)
@@ -79,6 +76,25 @@ helpr <- function(installed = TRUE) {
     )
     
   })
+  
+  # Package Demo
+  router$get("/packages/:package/demos/:demo", function(package, demo) {
+    
+    info <- subset(demos()$results, Item == demo)
+#    src <- readLines(
+    
+    render_brew(
+      "demo", 
+      list(
+        package = package, 
+        name = demo,
+        info = info,
+        src = src
+      ), 
+      path = path
+    )
+  })
+  
 
   # Individual help topic
   router$get("/packages/:package/topics/:topic", function(package, topic) {
