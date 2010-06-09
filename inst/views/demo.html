@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="/_styles/reset-fonts-grids.css" />
+  <link rel="stylesheet" type="text/css" href="/_styles/r-help.css" />
+  <link rel="stylesheet" type="text/css" href="/_styles/jquery.rating.css" />
+  
+  <script type="text/javascript" src="/_scripts/jquery-latest.js"></script>
+  <script type="text/javascript" src="/_scripts/package.js"></script>
+
+
+  <title><%= package %> <%= name %>. R help</title>
+</head>
+
+<body>
+  <div id="watermark"><%= package %></div>
+  <div id="doc" class="yui-t6">
+  <div id="hd">
+    <a href="/index.html">R</a> &#8594; <a href=".."><%= package %></a> &#8594; <%= name %> (demo) 
+  </div>
+
+  <div id="bd">
+  <div id="yui-main"><div class="yui-b">
+    <h1><%= name %></h1>
+    <p><%= info["Title"] %></p>
+
+    <h2>Demo Source</h2>
+    <%= src %>
+
+
+  </div></div>
+  <div class="yui-b"><div class = "sidebar">
+    <% if(has_length(demos$dems)) { -%>    
+    <h2><%= demos$demo_str %></h2>
+    <dl>
+    <% for(i in seq_len( nrow(demos$dems))) { -%>
+      <dt>
+        <%= str_join( "<a href=\"/packages/", package, "/demos/", demos$dems[i, "Item"], ".html\" >", demos$dems[i, "Item"], "</a>") %>
+      </dt>
+      <dd>
+        <%= demos$dems[i, "Title"] %>
+      </dd>
+    <% } %>
+    </dl>
+  <% } %>
+    
+  </div></div>
+
+  </div><!-- end bd -->
+
+  <div id="ft">
+    <p>R help.  Style created by <a href="http://had.co.nz/">Hadley Wickham</a></p>
+  </div>
+</div></body>
+</html>

@@ -24,13 +24,15 @@ pkg_topics <- function(package) {
   files <- unique(pkg_topics_index(package)$alias)
 }
 
-pkg_demos <- function(package) {
+pkg_demos <- function(package, omit = "") {
 #  demos <- demo(package = package)$results
 #  files <- apply(demos, 1, function(dem){ 
 #   pkg_demo_src_file(dem[ "Package"], dem[ "Item"])
 #  })
 
   dems <- demo(package = package)$results
+  dems <- dems[dems[,"Item"] != omit, ]
+  
   
   if(!has_length(dems))
     NULL

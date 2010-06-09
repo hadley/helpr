@@ -78,10 +78,14 @@ helpr <- function(installed = TRUE) {
   })
   
   # Package Demo
-  router$get("/packages/:package/demos/:demo", function(package, demo) {
-    
-    info <- subset(demos()$results, Item == demo)
+  router$get("/packages/:package/demos/:demo.html", function(package, demo) {
+    dems <- demo()$results
+    info <- dems[dems[,"Item"] == demo, ]
 #    src <- readLines(
+    # just incase the Item changes from the file name rather than a system.file call
+    item_path <- file.path(info["LibPath"], package, "demo", str_join(info["Item"], ".R"))
+    src <- str_join(readLines(item_path), collapse = "\n")
+    
     
     render_brew(
       "demo", 
@@ -89,7 +93,8 @@ helpr <- function(installed = TRUE) {
         package = package, 
         name = demo,
         info = info,
-        src = src
+        src = highlight(src),
+        demos = pkg_demos(package, omit = demo)
       ), 
       path = path
     )

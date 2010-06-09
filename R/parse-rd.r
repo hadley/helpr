@@ -71,14 +71,13 @@ reconstruct <- function(rd) {
     
     reconstruct(rd[[1]])
     
-  } else if(tag == "\\method") {
+  } else if(tag == "\\method" || tag == "\\S3method") {
     
     str_join(reconstruct(rd[[1]]),".",reconstruct(rd[[2]]))
 
   } else {
     
     message("Unknown tag ", tag)
-    browser()
     reconstruct(untag(rd))
   }
 }

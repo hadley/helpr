@@ -34,22 +34,18 @@ Package
   * change URL
 * NEEDS VALIDATION - separate data and functions
   * improved
+  * needs to be able to find functions that are in a namespace, such as the package tools
 * NEEDS VALIDATION - show internal functions separately
   * improved
 * integrate with crantastics
   * DONE - ratings
   * reviews
 * show package dependencies
+* reverse dependencies
+  * dependsOnPkgs("lattice")
+  * see "tools"
 
 * see CRAN page for more ideas
-
-Code Execution
-  * Add jQuery to notify user
-  * shows syntax coloured source
-  * big run button
-  * ability to select code and then run just that
-  * links to everything usefull (i.e. function names)
-
 
 Topic
 
@@ -64,13 +60,19 @@ Topic
 * list of all fuctions that are under the topic
   * links to the source code of said function
     * See Code Execution minus 'run' functionality
+    
+Unknown Parse Tags
+  * ?checkRd
+    * \tabular
+    * \tab
+
 
 Dynamic help
 ============
 
 Function weights
   * overall CRAN
-  * personal function use: parse .Rhistory and pull out functions
+  * DONE - personal function use: parse .Rhistory and pull out functions
 
 Function mispelling
 
@@ -78,9 +80,11 @@ Examples and demos
 ==================
 
 * Parse examples and add links to functions that are used
-* Send selected expression to R console
+* Send selected/highlighted expression to R console
 * BUSY - Evaluate all example code and interleave results back in html, like:
   http://ejohn.org/apps/learn/
+* Add jQuery to notify user
+* "Easy"(run) button
 
 Search
 ======
