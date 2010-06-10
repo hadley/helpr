@@ -35,27 +35,29 @@ get_function_history <- function(){
   rawhist <- grep(pattern, rawhist, value = TRUE )
   funcs <- unlist(str_extract_all(rawhist, pattern))
   funcs <- str_join(funcs, ")")
-  funcs <- funcs[ ! funcs %in% c("if()", "for()", "while()")]
+  funcs <- funcs[ ! funcs %in% c("if()", "for()", "while()", "get_function_history()")]
+    
+  function_and_link(funcs)
   
-  parsed_funcs <- as.data.frame(attributes(parser(text = funcs))$data, stringsAsFactors = FALSE)
+}
+
+function_and_link <- function(text){
+  parsed_funcs <- as.data.frame(attributes(parser(text = text))$data, stringsAsFactors = FALSE)
   functions <- parsed_funcs$text[parsed_funcs$token.desc == "SYMBOL_FUNCTION_CALL"]
   
-  functions <- functions[ ! functions %in% c("get_function_history")]
   paths <- function_help_path(functions)
   
   funcs_and_paths <- as.data.frame(list(functions = functions, paths = paths), stringsAsFactors = FALSE)
   
-  funcs_and_paths[complete.cases(funcs_and_paths),]
-  
+  funcs_and_paths[complete.cases(funcs_and_paths),]  
 }
-
 
 function_help_path <- function(func){
   sapply(func, function(x){
     
     tmp <- help(x)[1] 
     if(is.na(tmp)){
-      tmp
+      NA
     }else{
       pos <- str_locate(tmp, "/library/")
       str_sub(tmp, start = pos[1])
@@ -63,8 +65,8 @@ function_help_path <- function(func){
   })  
 }
 
-is_package_function <- function(func){
-  !is.na(function_help_path())
+is_a_package_function <- function(func){
+  !is.na(function_help_path(func))
 }
 
 last_ten_functions <- function(fun_list){
@@ -84,7 +86,7 @@ top_ten_functions <- function(fun_list){
   func_counts <- func_counts[order(func_counts, decreasing = TRUE)]
   
   func_names <- names(func_counts[1:top_ten])
-#  pkg_function_names <- func_names[is_package_function(func_names)]
+#  pkg_function_names <- func_names[is_a_package_function(func_names)]
   paths <- function_help_path(func_names)
   
   as.data.frame(list(functions = func_names, paths = paths), stringsAsFactors = TRUE)
