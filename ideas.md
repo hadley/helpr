@@ -67,6 +67,11 @@ Unknown Parse Tags
     * \tabular
     * \tab
 
+Things to fix
+  * \\item
+    * does not have a </li>
+    * inside a \\describe
+    * from ?nlm
 
 Dynamic help
 ============
@@ -80,8 +85,8 @@ Function mispelling
 Examples and demos
 ==================
 
-* Parse examples and add links to functions that are used
-* Send selected/highlighted expression to R console
+* DONE - Parse examples and add links to functions that are used
+* BUSY - Send selected/highlighted expression to R console
 * BUSY - Evaluate all example code and interleave results back in html, like:
   http://ejohn.org/apps/learn/
 * Add jQuery to notify user

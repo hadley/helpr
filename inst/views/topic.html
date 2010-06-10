@@ -41,10 +41,6 @@
 
     <h2>Value</h2><%= value %>
 
-    <% if(has_length(examples)){ -%>
-      <h2>Examples</h2>
-      <%= examples %>
-    <% }%>
     
   </div></div>
   <div class="yui-b"><div class = "sidebar">
@@ -61,6 +57,27 @@
     
     
   </div></div>
+  
+  <div id="yui-main"><div class="yui-b">
+      <% if(has_length(examples)){ -%>
+        <h2>Examples</h2>
+        <%= examples %>
+      <% } %>
+  </div></div>
+  <div class="yui-b"><div class = "sidebar">
+
+      <% if(has_length(example_functions$count)) { -%>    
+        <h2><%= example_functions$str %></h2>
+        <ul>
+        <% for(i in seq_along(example_functions$count)) { -%>
+          <li>
+            <%= str_join( "<a href='",example_functions$link[i] , "' >", example_functions$name[i],"</a> - ", example_functions$count[i]) %>
+          </li>
+        <% } %>
+        </ul>
+    <% }%>
+  </div></div>
+
   
   </div><!-- end bd -->
 

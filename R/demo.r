@@ -29,11 +29,7 @@ demo_src <- function(demoInfo){
 
 demo_top_functions <- function(demo){
   src <- demo_src(demo_info(demo))$src
-  functions <- src_top_functions(src)
-  list(
-    functions = functions,
-    src_str = pluralize("Top Function", functions$count)
-  )
+  src_top_functions(src)
 }
 
 src_top_functions <- function(text){
@@ -43,18 +39,14 @@ src_top_functions <- function(text){
   order <- order(funcs, decreasing = TRUE)
   uni_funs <- unique(funcs_and_paths)
   uni_funs <- uni_funs[order(uni_funs$functions), ]
-#  browser()
   funcs <- funcs[order]
   uni_funs <- uni_funs[order, ]
-#  link <- character(length(funcs))
-#  for(i in seq_along(funcs))
-#    link[i] <- uni_funs[uni_funs$functions == funcs[i], "paths"]
-  
-  
+
   list(
     name = uni_funs$functions,
     count = funcs,
-    link = uni_funs$paths
+    link = uni_funs$paths,
+    str = pluralize("Top Function", funcs)
   )
 }
 
