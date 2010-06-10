@@ -41,7 +41,7 @@ get_function_history <- function(){
   functions <- parsed_funcs$text[parsed_funcs$token.desc == "SYMBOL_FUNCTION_CALL"]
   
   functions <- functions[ ! functions %in% c("get_function_history")]
-  paths <- package_function_path(functions)
+  paths <- function_help_path(functions)
   
   funcs_and_paths <- as.data.frame(list(functions = functions, paths = paths), stringsAsFactors = FALSE)
   
@@ -50,7 +50,7 @@ get_function_history <- function(){
 }
 
 
-package_function_path <- function(func){
+function_help_path <- function(func){
   sapply(func, function(x){
     
     tmp <- help(x)[1] 
@@ -64,7 +64,7 @@ package_function_path <- function(func){
 }
 
 is_package_function <- function(func){
-  !is.na(package_function_path())
+  !is.na(function_help_path())
 }
 
 last_ten_functions <- function(fun_list){
@@ -85,7 +85,7 @@ top_ten_functions <- function(fun_list){
   
   func_names <- names(func_counts[1:top_ten])
 #  pkg_function_names <- func_names[is_package_function(func_names)]
-  paths <- package_function_path(func_names)
+  paths <- function_help_path(func_names)
   
   as.data.frame(list(functions = func_names, paths = paths), stringsAsFactors = TRUE)
 }

@@ -79,25 +79,7 @@ helpr <- function(installed = TRUE) {
   
   # Package Demo
   router$get("/packages/:package/demos/:demo.html", function(package, demo) {
-    dems <- demo()$results
-    info <- dems[dems[,"Item"] == demo, ]
-#    src <- readLines(
-    # just incase the Item changes from the file name rather than a system.file call
-    item_path <- file.path(info["LibPath"], package, "demo", str_join(info["Item"], ".R"))
-    src <- str_join(readLines(item_path), collapse = "\n")
-    
-    
-    render_brew(
-      "demo", 
-      list(
-        package = package, 
-        name = demo,
-        info = info,
-        src = highlight(src),
-        demos = pkg_demos(package, omit = demo)
-      ), 
-      path = path
-    )
+    render_brew("demo", pkg_demo(package, demo), path = path)
   })
   
 
@@ -108,6 +90,9 @@ helpr <- function(installed = TRUE) {
 
   # Individual help topic 
   router$get("/library/:package/html/:topic.html", function(package, topic) {
+    redirect(str_join("/packages/", package, "/topics/", topic))
+  })
+  router$get("/library/:package/help/:topic", function(package, topic) {
     redirect(str_join("/packages/", package, "/topics/", topic))
   })
 

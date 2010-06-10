@@ -96,7 +96,7 @@ tag_link <- function(fun, pkg = NULL) {
   if (!is.null(pkg)) {
     str_join("<a href='/packages/", pkg, "/topics/", fun, "'>", fun, "</a>")        
   } else {
-    str_join("<a href='", fun, "'>", fun, "</a>")
+    str_join("<a href='", function_help_path(fun), "'>", fun, "</a>")
   }
 }
 
