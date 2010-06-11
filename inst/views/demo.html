@@ -47,16 +47,7 @@
     </dl>
   <% } %>
 
-    <% if(has_length(src_functions$count)) { -%>    
-    <h2><%= src_functions$str %></h2>
-    <ul>
-    <% for(i in seq_along(src_functions$count)) { -%>
-      <li>
-        <%= str_join( "<a href='",src_functions$link[i] , "' >", src_functions$name[i],"</a> - ", src_functions$count[i]) %>
-      </li>
-    <% } %>
-    </ul>
-  <% } %>
+    <%= render_snippet("top_functions", list(functions = src_functions, title = src_functions_str)) %>
     
   </div></div>
 

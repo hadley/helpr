@@ -75,16 +75,9 @@
   </div></div>
   <div class="yui-b"><div class = "sidebar">
 
-      <% if(has_length(example_functions$count)) { -%>    
-        <h2><%= example_functions_str %></h2>
-        <ul>
-        <% for(i in seq_along(example_functions$count)) { -%>
-          <li>
-            <%= str_join( "<a href='",example_functions$link[i] , "' >", example_functions$name[i],"</a> - ", example_functions$count[i]) %>
-          </li>
-        <% } %>
-        </ul>
-    <% }%>
+    <%= render_snippet("top_functions", list(functions = example_functions, title = example_functions_str)) %>
+
+
   </div></div>
 
   

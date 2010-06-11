@@ -5,6 +5,8 @@ demo_info <- function(demo){
 
 pkg_demo <- function(package, demo){
   info <- demo_info(demo)
+  
+  demo_functions <- demo_top_functions(demo)
 
   list(
     package = package, 
@@ -12,7 +14,8 @@ pkg_demo <- function(package, demo){
     info = info,
     src = highlight(demo_src(info)),
     demos = pkg_demos(package, omit = demo),
-    src_functions = demo_top_functions(demo)
+    src_functions = demo_functions,
+    src_functions_str = pluralize("Top Function", demo_functions)
   )
 }
 

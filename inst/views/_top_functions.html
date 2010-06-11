@@ -1,0 +1,10 @@
+<% if(has_length(functions$count)) { -%>    
+  <h2><%= title %></h2>
+  <ul>
+  <% for(i in seq_along(functions$count)) { -%>
+    <li>
+      <%= str_join( "<a href='",functions$link[i] , "' >", functions$name[i],"</a> - ", functions$count[i]) %>
+    </li>
+  <% } %>
+  </ul>
+<% } %>
