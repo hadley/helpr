@@ -151,9 +151,9 @@ has_length <- function(x){
 }
 
 
-pluralize <- function(string, obj) {
+pluralize <- function(string, obj, plural = str_join(string, "s", sep = "")){
   if(has_length(obj)) {
-    str_join(string, "s", sep = "")
+    plural
   } else {
     string
   }

@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link rel="stylesheet" type="text/css" href="/_styles/reset-fonts-grids.css" />
+  <link rel="stylesheet" type="text/css" href="/_styles/r-help.css" />
+  <link rel="stylesheet" type="text/css" href="/_styles/jquery.rating.css" />
+  
+  <script type="text/javascript" src="/_scripts/jquery-latest.js"></script>
+  <script type="text/javascript" src="/_scripts/package.js"></script>
+
+
+  <title><%= package %> <%= name %>. R help</title>
+</head>
+
+<body>
+  <div id="watermark"><%= package %></div>
+  <div id="doc2" class="yui-t6">
+  <div id="hd">
+    <a href="/index.html">R</a> &#8594; <a href=".."><%= package %></a> &#8594; <%= name %> (source) 
+  </div>
+
+  <div id="bd">
+  <div id="yui-main"><div class="yui-b">
+    <h1><%= name %></h1>
+    <p><%= desc %></p>
+
+    <h2><%= name %> Source</h2>
+    <%= src %>
+
+
+  </div></div>
+  <div class="yui-b"><div class = "sidebar">
+
+  <% if(has_length(aliases$alias)) { -%>    
+    <h2><%= aliases$str %></h2>
+    <ul>
+    <% for(alias in aliases$alias) { -%>
+      <li>
+        <%= str_join("<a href='/packages/",package,"/source/",alias,"'>",alias,"</a>" ) %>
+      </li>
+    <% } %>
+    </ul>
+  <% } %>
+
+    <% if(has_length(src_functions$count)) { -%>    
+    <h2><%= src_functions$str %></h2>
+    <ul>
+    <% for(i in seq_along(src_functions$count)) { -%>
+      <li>
+        <%= str_join( "<a href='",src_functions$link[i] , "' >", src_functions$name[i],"</a> - ", src_functions$count[i]) %>
+      </li>
+    <% } %>
+    </ul>
+  <% } %>
+    
+  </div></div>
+
+  </div><!-- end bd -->
+
+  <div id="ft">
+    <p>R help.  Style created by <a href="http://had.co.nz/">Hadley Wickham</a></p>
+  </div>
+</div></body>
+</html>

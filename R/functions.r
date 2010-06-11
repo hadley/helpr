@@ -60,7 +60,7 @@ function_help_path <- function(func){
 #'
 #' @param text text to be parsed
 src_function_count <- function(text){
-  if(is.null(text) || text == "")
+  if(is.null(text) || text == "" || text == "NULL")
     return(list())
   
   funcs_and_paths <- function_and_link(as.character(text))
@@ -84,14 +84,28 @@ src_function_count <- function(text){
 }
 
 
-topic_src <- function(package, topic){
-  info <- demo_info(topic)
-
+function_src <- function(package, func){
+  
+  index <- pkg_topics_index(package)
+  topic <- index[index$alias == func, "file"]
+  
   list(
     package = package, 
-    name = topic,
+    name = func,
+    aliases = topic_and_alias(package, topic, omit = func),
     desc = topic(package, topic)$desc,
-    src = highlight(body_text(topic)),
-    src_functions = function_calls(topic)
+    src = highlight(body_text(func)),
+    src_functions = function_calls(func)
+  )
+}
+
+
+topic_and_alias <- function(package, topic, omit = ""){
+  index <- pkg_topics_index(package)
+  index <- index[topic == index$file, ]
+  aliases <- index[index$alias != omit, "alias"]
+  list(
+    alias = aliases,
+    str = pluralize("Alias (Source)", aliases, plural="Aliases (Source)")
   )
 }
