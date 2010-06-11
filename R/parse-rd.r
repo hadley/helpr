@@ -162,3 +162,4 @@ pluralize <- function(string, obj) {
 strip_html <- function(x) {
   str_replace(x, "</?.*?>", "")
 }
+

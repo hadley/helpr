@@ -15,7 +15,7 @@ function_calls <- function(fun) {
 #  
 #  as.data.frame(table(fun = calls), responseName = "freq",
 #    stringsAsFactors = FALSE)
-  src_function_countsrc_function_count(body_text(fun))
+  src_function_count(body_text(fun))
 
 }
 
@@ -23,15 +23,19 @@ function_calls <- function(fun) {
 #' Return the package functions and links of a given text
 #'
 #' @param text text to be parsed
-function_and_link <- function(text){
+function_and_link <- function(text, complete = TRUE){
+  
   parsed_funcs <- as.data.frame(attributes(parser(text = text))$data, stringsAsFactors = FALSE)
   functions <- subset(parsed_funcs, token.desc == "SYMBOL_FUNCTION_CALL")$text
   
   paths <- function_help_path(functions)
   
   funcs_and_paths <- as.data.frame(list(functions = functions, paths = paths), stringsAsFactors = FALSE)
-  
-  funcs_and_paths[complete.cases(funcs_and_paths),]  
+
+  if(complete)
+    funcs_and_paths[complete.cases(funcs_and_paths),]  
+  else
+    funcs_and_paths
 }
 
 #' Return the help path of a function
@@ -79,3 +83,15 @@ src_function_count <- function(text){
   )
 }
 
+
+topic_src <- function(package, topic){
+  info <- demo_info(topic)
+
+  list(
+    package = package, 
+    name = topic,
+    desc = topic(package, topic)$desc,
+    src = highlight(body_text(topic)),
+    src_functions = function_calls(topic)
+  )
+}

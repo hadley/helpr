@@ -78,10 +78,14 @@ helpr <- function(installed = TRUE) {
   })
   
   # Package Demo
-  router$get("/packages/:package/demos/:demo.html", function(package, demo) {
+  router$get("/packages/:package/demos/:demo", function(package, demo) {
     render_brew("demo", pkg_demo(package, demo), path = path)
   })
   
+  # Individual topic source
+  router$get("/packages/:package/source/:topic", function(package, topic) {
+    render_brew("source", topic_src(package, topic), path = path)
+  })
 
   # Individual help topic
   router$get("/packages/:package/topics/:topic", function(package, topic) {

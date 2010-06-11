@@ -45,7 +45,7 @@ parse_help <- function(rd) {
   out$details <- reconstruct(rd$details)
   out$value <- reconstruct(rd$value)
   out$examples <- highlight(reconstruct(untag(rd$examples)))
-  out$example_functions <- src_function_count(unlist(rd$examples))
+  out$example_functions <- src_function_count(reconstruct(untag(rd$examples)))
   out$usage <- reconstruct(untag(rd$usage))
   out$authors <- reconstruct(rd$author)
   out$author_str <- pluralize("Author", rd$author)
@@ -91,7 +91,7 @@ parse_help <- function(rd) {
 
 
 highlight <- function(examples) {
-  if(identical(examples,"")) return(examples)
+  if(identical(examples,"") | identical(examples, "NULL")) return(examples)
   if (!require(highlight)) return(examples)
   
   # add links before being sent to be highlighted
@@ -104,14 +104,20 @@ highlight <- function(examples) {
 add_function_links_into_parsed <- function(ex_parser){
   # pull out data
   d <- attr(ex_parser, "data")
-  funcs <- d[d[,"token.desc"] == "SYMBOL_FUNCTION_CALL","text"]
   
-  # make links for functions
-  links <- function_and_link(str_join(funcs, "()"))
+#  funcs <- d[d[,"token.desc"] == "SYMBOL_FUNCTION_CALL" ,"text"]
+  rows <- (d[,"token.desc"] == "SYMBOL_FUNCTION_CALL" & !d[,"text"] %in% c("", "(",")") ) | d[,"text"] %in% c("UseMethod")
+  funcs <- d[rows,"text"]
+
+  # make links for functions and not for non-package functions
+  links <- function_and_link(str_join(funcs, "()"), complete = FALSE)
   text <- str_join("<a href='", links$paths, "' >", links$functions,"</a>")
+  text[is.na(links$paths)] <- links$functions[is.na(links$paths)]
   
   # return data
-  d[d[,"token.desc"] == "SYMBOL_FUNCTION_CALL","text"] <- text
+  d[rows,"text"] <- text
+
+#  d[d[,"token.desc"] == "SYMBOL_FUNCTION_CALL","text"] <- text
   attr(ex_parser, "data") <- d
   ex_parser
   

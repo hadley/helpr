@@ -38,7 +38,7 @@
     <dl>
     <% for(i in seq_len( nrow(demos$dems))) { -%>
       <dt>
-        <%= str_join( "<a href=\"/packages/", package, "/demos/", demos$dems[i, "Item"], ".html\" >", demos$dems[i, "Item"], "</a>") %>
+        <%= str_join( "<a href=\"/packages/", package, "/demos/", demos$dems[i, "Item"], "\" >", demos$dems[i, "Item"], "</a>") %>
       </dt>
       <dd>
         <%= demos$dems[i, "Title"] %>
