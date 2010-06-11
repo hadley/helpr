@@ -96,6 +96,7 @@ highlight <- function(examples) {
   
   # add links before being sent to be highlighted
   ex_parser <- add_function_links_into_parsed(parser(text = examples))
+  
   str_join(capture.output(highlight::highlight( parser.output = ex_parser, renderer = highlight::renderer_html(doc = F))), collapse = "\n")    
 }
 
