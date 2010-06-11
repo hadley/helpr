@@ -1,26 +1,3 @@
-#[a-zA-Z_.][a-zA-Z_.0-9]*\\(
-
-
-#  #taken from history()
-#  nlines <- length(rawhist)
-#  if (nlines) {
-#      inds <- max(1, nlines - max.show):nlines
-#      if (reverse) 
-#          inds <- rev(inds)
-#  }
-#  else inds <- integer(0L)
-#  file2 <- tempfile("hist")
-#  writeLines(rawhist[inds], file2)
-#  file.show(file2, title = "R History", delete.file = TRUE)
-
-#  rawhist <- sapply(rawhist, function(row){
-#    sub("[\"]", "\"", row)
-#  })
-
-#  good_ <- 
-
-  
-#  table(functions)
 
 get_function_history <- function(){
   rawhist <- NULL
@@ -41,10 +18,6 @@ get_function_history <- function(){
   
 }
 
-is_a_package_function <- function(func){
-  !is.na(function_help_path(func))
-}
-
 last_ten_functions <- function(fun_list){
   
   unique_fun_list <- unique(fun_list[rev(seq_len(nrow(fun_list))), ])
@@ -62,7 +35,6 @@ top_ten_functions <- function(fun_list){
   func_counts <- func_counts[order(func_counts, decreasing = TRUE)]
   
   func_names <- names(func_counts[1:top_ten])
-#  pkg_function_names <- func_names[is_a_package_function(func_names)]
   paths <- function_help_path(func_names)
   
   as.data.frame(list(functions = func_names, paths = paths), stringsAsFactors = TRUE)
