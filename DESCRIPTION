@@ -9,4 +9,4 @@ Depends: sinartra, digest, parser, rjson, RCurl
 Suggests: highlight
 License: GPL-2
 LazyData: true
-Collate: 'memoise.r' 'changelog.r' 'demo.r' 'history.r' 'package.r' 'packages.r' 'parse-rd.r' 'render.r' 'route.r' 'topic.r'
+Collate: 'memoise.r' 'changelog.r' 'demo.r' 'functions.r' 'history.r' 'package.r' 'packages.r' 'parse-rd.r' 'render.r' 'route.r' 'topic.r'

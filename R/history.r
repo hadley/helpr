@@ -41,31 +41,6 @@ get_function_history <- function(){
   
 }
 
-function_and_link <- function(text){
-  parsed_funcs <- as.data.frame(attributes(parser(text = text))$data, stringsAsFactors = FALSE)
-  functions <- parsed_funcs$text[parsed_funcs$token.desc == "SYMBOL_FUNCTION_CALL"]
-  
-  paths <- function_help_path(functions)
-  
-  funcs_and_paths <- as.data.frame(list(functions = functions, paths = paths), stringsAsFactors = FALSE)
-  
-  funcs_and_paths[complete.cases(funcs_and_paths),]  
-}
-
-function_help_path <- function(func){
-  sapply(func, function(x){
-    
-    tmp <- help(x)[1] 
-    if(is.na(tmp)){
-      NA
-    }else{
-      # retrieve last three folders/file and keep the package and topic
-      pack_and_topic <- rev(rev(str_split(tmp, .Platform$file.sep)[[1]])[1:3])[c(1,3)]
-      str_join("/packages/",pack_and_topic[1], "/topics/", pack_and_topic[2])
-    }
-  })  
-}
-
 is_a_package_function <- function(func){
   !is.na(function_help_path(func))
 }
