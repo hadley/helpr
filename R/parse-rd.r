@@ -50,9 +50,6 @@ reconstruct <- function(rd) {
     pkg <- attr(rd, "Rd_option")
     
     tag_link(fun, pkg)
-  } else if (tag == "\\dontrun") {
-    dr <- reconstruct(untag(rd))
-    str_c("## Not run\n# ", str_replace(dr, "\n", "\n# "), "\n## ")
   } else if (tag == "\\eqn") {
     str_join("<code>", reconstruct(untag(rd[[1]])), "</code>")
   } else if (tag == "\\deqn") {
@@ -117,6 +114,7 @@ simple_tags <- list(
   "\\cr" =           c("<br >", ""),
   "\\describe" =     c("<span class=\"describe\">", "</span"),
   "\\dfn" =          c("<dfn>", "</dfn>"),
+  "\\dontrun" =      c("## <b>Not run</b>:", "## <b>End(Not run)</b>"),
   "\\donttest" =     c("", ""),
   "\\dots" =         c("...", ""),
   "\\dquote" =       c("&ldquo;", "&rdquo;"),
