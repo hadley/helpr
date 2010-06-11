@@ -107,7 +107,7 @@ add_function_links_into_parsed <- function(ex_parser){
   d <- attr(ex_parser, "data")
   
 #  funcs <- d[d[,"token.desc"] == "SYMBOL_FUNCTION_CALL" ,"text"]
-  rows <- (d[,"token.desc"] == "SYMBOL_FUNCTION_CALL" & !d[,"text"] %in% c("", "(",")") ) | d[,"text"] %in% c("UseMethod")
+  rows <- with(d, (token.desc == "SYMBOL_FUNCTION_CALL" & ! text %in% c("", "(",")") ) | text %in% c("UseMethod"))
   funcs <- d[rows,"text"]
 
   # make links for functions and not for non-package functions
