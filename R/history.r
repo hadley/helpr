@@ -59,8 +59,9 @@ function_help_path <- function(func){
     if(is.na(tmp)){
       NA
     }else{
-      pos <- str_locate(tmp, "/library/")
-      str_sub(tmp, start = pos[1])
+      # retrieve last three folders/file and keep the package and topic
+      pack_and_topic <- rev(rev(str_split(tmp, .Platform$file.sep)[[1]])[1:3])[c(1,3)]
+      str_join("/packages/",pack_and_topic[1], "/topics/", pack_and_topic[2])
     }
   })  
 }
