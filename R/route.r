@@ -84,7 +84,7 @@ helpr <- function(installed = TRUE) {
   
   # Individual topic source
   router$get("/packages/:package/source/:func", function(package, func) {
-    render_brew("source", function_src(package, func), path = path)
+    render_brew("source", function_info(package, func), path = path)
   })
 
   # Individual help topic

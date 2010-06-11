@@ -1,22 +1,10 @@
 #' Work out the source code of a function.
 body_text <- function(fun) {
-  str_c(deparse(body(fun)), collapse = "\n")
-}
-
-#' Count how many times a function calls other functions.
-# 
-#' @param fun string giving name of function, or function
-#' @export
-function_calls <- function(fun) {
-#  text <- body_text(fun)
-#  
-#  pieces <- attr(parser(text = text), "data")
-#  calls <- subset(pieces, token.desc == "SYMBOL_FUNCTION_CALL")$text
-#  
-#  as.data.frame(table(fun = calls), responseName = "freq",
-#    stringsAsFactors = FALSE)
-  src_function_count(body_text(fun))
-
+  text <- body(fun)
+  if(is.null(text))
+    NULL
+  else
+    str_c(deparse(text), collapse = "\n")
 }
 
 
@@ -26,7 +14,7 @@ function_calls <- function(fun) {
 function_and_link <- function(text, complete = TRUE){
   
   parsed_funcs <- as.data.frame(attributes(parser(text = text))$data, stringsAsFactors = FALSE)
-  functions <- subset(parsed_funcs, token.desc == "SYMBOL_FUNCTION_CALL")$text
+  functions <- subset(parsed_funcs, token.desc %in% c("SYMBOL_FUNCTION_CALL", "NULL_CONST"))$text
   
   paths <- function_help_path(functions)
   
@@ -59,8 +47,8 @@ function_help_path <- function(func){
 #' Find functions, counts, and links of given R text
 #'
 #' @param text text to be parsed
-src_function_count <- function(text){
-  if(is.null(text) || text == "" || text == "NULL")
+code_info <- function(text){
+  if(is.null(text) || text == "")
     return(list())
   
   funcs_and_paths <- function_and_link(as.character(text))
@@ -75,27 +63,27 @@ src_function_count <- function(text){
   # make alphabetical to match table output
   uni_funs <- uni_funs[order(uni_funs$functions)[order], ]
 
-  list(
+  data.frame(
     name = uni_funs$functions,
     count = funcs,
-    link = uni_funs$paths,
-    str = pluralize("Top Function", funcs)
+    link = uni_funs$paths
   )
 }
 
 
-function_src <- function(package, func){
+function_info <- function(package, func){
   
   index <- pkg_topics_index(package)
   topic <- index[index$alias == func, "file"]
-  
+  src_frunctions <- code_info(body_text(func))
   list(
     package = package, 
     name = func,
     aliases = topic_and_alias(package, topic, omit = func),
     desc = topic(package, topic)$desc,
-    src = highlight(body_text(func)),
-    src_functions = function_calls(func)
+    src = highlight(reconstruct(body_text(func))),
+    src_functions = src_frunctions,
+    src_functions_str = pluralize("Top Function", src_frunctions)
   )
 }
 
