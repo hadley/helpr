@@ -33,8 +33,10 @@ demo_top_functions <- function(demo){
 }
 
 src_top_functions <- function(text){
+  if(is.null(text) || text == "")
+    return(list())
   
-  funcs_and_paths <- function_and_link(text)
+  funcs_and_paths <- function_and_link(as.character(text))
   funcs <- table(funcs_and_paths$functions)
   order <- order(funcs, decreasing = TRUE)
   uni_funs <- unique(funcs_and_paths)

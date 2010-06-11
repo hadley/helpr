@@ -45,8 +45,7 @@ parse_help <- function(rd) {
   out$details <- reconstruct(rd$details)
   out$value <- reconstruct(rd$value)
   out$examples <- highlight(reconstruct(untag(rd$examples)))
-  out$example_functions <- src_top_functions(as.character(rd$examples))
-  out$example_function
+  out$example_functions <- src_top_functions(rd$examples)
   out$usage <- reconstruct(untag(rd$usage))
   out$authors <- reconstruct(rd$author)
   out$author_str <- pluralize("Author", rd$author)
@@ -90,12 +89,33 @@ parse_help <- function(rd) {
   out
 }
 
+
 highlight <- function(examples) {
   if(identical(examples,"")) return(examples)
   if (!require(highlight)) return(examples)
-  ex_parser <- parser(text = examples)
+  
+  # add links before being sent to be highlighted
+  ex_parser <- add_function_links_into_parsed(parser(text = examples))
   str_join(capture.output(highlight::highlight( parser.output = ex_parser, renderer = highlight::renderer_html(doc = F))), collapse = "\n")    
 }
+
+
+add_function_links_into_parsed <- function(ex_parser){
+  # pull out data
+  d <- attr(ex_parser, "data")
+  funcs <- d[d[,"token.desc"] == "SYMBOL_FUNCTION_CALL","text"]
+  
+  # make links for functions
+  links <- function_and_link(str_join(funcs, "()"))
+  text <- str_join("<a href='", links$paths, "' >", links$functions,"</a>")
+  
+  # return data
+  d[d[,"token.desc"] == "SYMBOL_FUNCTION_CALL","text"] <- text
+  attr(ex_parser, "data") <- d
+  ex_parser
+  
+}
+
 
 first_item_pos <- function(arr){
   for(i in seq_along(arr))

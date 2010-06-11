@@ -148,7 +148,8 @@ simple_tags <- list(
 )
 
 has_length <- function(x){
-    NROW(x) > 0 && x != ""
+  
+    !is.null(x) && NROW(x) > 0 && x != ""
 }
 
 
