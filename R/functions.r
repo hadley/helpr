@@ -12,7 +12,6 @@ body_text <- function(fun) {
 #'
 #' @param text text to be parsed
 function_and_link <- function(text, complete = TRUE){
-  
   parsed_funcs <- as.data.frame(attributes(parser(text = text))$data, stringsAsFactors = FALSE)
   functions <- subset(parsed_funcs, token.desc %in% c("SYMBOL_FUNCTION_CALL", "NULL_CONST"))$text
   
@@ -48,10 +47,12 @@ function_help_path <- function(func){
 #'
 #' @param text text to be parsed
 code_info <- function(text){
-  if(is.null(text) || text == "")
+  if(is.null(text) || str_trim(text) == "")
+    return(list())
+  funcs_and_paths <- function_and_link(as.character(text))
+  if(!has_length(funcs_and_paths))
     return(list())
   
-  funcs_and_paths <- function_and_link(as.character(text))
   funcs <- table(funcs_and_paths$functions)
   order <- order(funcs, decreasing = TRUE)
 

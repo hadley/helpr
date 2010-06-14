@@ -10,6 +10,9 @@ pkg_topic <- function(package, topic, file = NULL) {
     topics <- pkg_topics_index(package)
     file <- unique(topics$file[topics$alias == topic | topics$file == topic])
     
+    if(length(file) > 1)
+      file <- unique(topics$file[topics$alias == topic])
+    
     stopifnot(length(file) == 1)    
   }
   
@@ -92,7 +95,7 @@ parse_help <- function(rd) {
 
 
 highlight <- function(examples) {
-  if(identical(examples,"") | identical(examples, "NULL")) return(examples)
+  if(identical(str_trim(examples),"") | identical(examples, "NULL")) return(examples)
   if (!require(highlight)) return(examples)
   
   # add links before being sent to be highlighted
@@ -108,6 +111,10 @@ add_function_links_into_parsed <- function(ex_parser){
   
 #  funcs <- d[d[,"token.desc"] == "SYMBOL_FUNCTION_CALL" ,"text"]
   rows <- with(d, (token.desc == "SYMBOL_FUNCTION_CALL" & ! text %in% c("", "(",")") ) | text %in% c("UseMethod"))
+
+  if(!TRUE %in% rows)
+    return(ex_parser)
+    
   funcs <- d[rows,"text"]
 
   # make links for functions and not for non-package functions

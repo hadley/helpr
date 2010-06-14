@@ -76,6 +76,9 @@ reconstruct <- function(rd) {
     str_join(reconstruct(rd[[1]]),".",reconstruct(rd[[2]]))
   } else if(tag %in% c("\\dontshow", "\\testonly")){
     "" # don't show it to the user
+  } else if(tag == "\\dontrun"){
+    str_join("## <strong>Not run</strong>:", str_replace(reconstruct(untag(rd)), "\n", "\n#"), "## <strong>End(Not run)</strong>")
+
   } else {
     
     message("Unknown tag ", tag)
@@ -114,7 +117,7 @@ simple_tags <- list(
   "\\cr" =           c("<br >", ""),
   "\\describe" =     c("<span class=\"describe\">", "</span"),
   "\\dfn" =          c("<dfn>", "</dfn>"),
-  "\\dontrun" =      c("## <strong>Not run</strong>:", "## <strong>End(Not run)</strong>"),
+#  "\\dontrun" =      c("## <strong>Not run</strong>:\n", "\n## <strong>End(Not run)</strong>"),
   "\\donttest" =     c("", ""),
   "\\dots" =         c("...", ""),
   "\\dquote" =       c("&ldquo;", "&rdquo;"),
@@ -132,9 +135,10 @@ simple_tags <- list(
   "\\preformatted" = c("<pre>","</pre>"),
   "\\R" =            c('<span style="R">R</span>', ""),
   "\\samp" =         c('<span class = "samp">',"</span>"),
+  "\\special" =      c("<em>","</em>"),
   "\\sQuote" =       c("&lsquo;","&rsquo;"),
   "\\strong" =       c("<strong>", "</strong>"),
-  "\\tab" =         c("&nbsp;&nbsp;", ""),
+  "\\tab" =          c("&nbsp;&nbsp;", ""),
   "\\text" =         c("<p>", "</p>"),
   "\\var" =          c("<var>", "</var>"),
 #  "\\verb" =         c("<pre>", "</pre>"),

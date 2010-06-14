@@ -110,8 +110,13 @@ rating_text <- function(pkg_name){
 
 pkg_topics_index <- function(package) {
   help_path <- pkg_help_path(package)
+  
+  file_path <- file.path(help_path, "AnIndex")
+  ### check to see if there is anything that exists, aka sinartra
+  if(!has_length(readLines(file_path, n = 1)))
+    return(NULL)
 
-  topics <- read.table(file.path(help_path, "AnIndex"), sep = "\t", 
+  topics <- read.table(file_path, sep = "\t", 
     stringsAsFactors = FALSE, comment.char = "", quote = "", header = TRUE)
   names(topics) <- c("alias", "file") 
   topics[complete.cases(topics), ]
