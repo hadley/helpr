@@ -108,7 +108,7 @@ rating_text <- function(pkg_name){
 
 
 
-pkg_topics_index <- function(package) {
+pkg_topics_index <- memoise(function(package) {
   help_path <- pkg_help_path(package)
   
   file_path <- file.path(help_path, "AnIndex")
@@ -120,7 +120,7 @@ pkg_topics_index <- function(package) {
     stringsAsFactors = FALSE, comment.char = "", quote = "", header = TRUE)
   names(topics) <- c("alias", "file") 
   topics[complete.cases(topics), ]
-}
+})
 
 pkg_topics_rd <- memoise(function(package) {
   rd <- tools:::fetchRdDB(pkg_rddb_path(package))
