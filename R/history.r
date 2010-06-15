@@ -1,4 +1,6 @@
-
+#' Session History
+#' 
+#' @return fuctions that are from a package
 get_function_history <- function(){
   rawhist <- NULL
   a <- NULL
@@ -11,42 +13,63 @@ get_function_history <- function(){
   # subset then find function names
   rawhist <- grep(pattern, rawhist, value = TRUE )
   funcs <- unlist(str_extract_all(rawhist, pattern))
-  funcs <- str_join(funcs, ")")
-  funcs <- funcs[ ! funcs %in% c("if()", "for()", "while()", "get_function_history()")]
-    
-  function_and_link(funcs)
-  
-}
+  funcs <- funcs[ ! funcs %in% c("if(", "for(", "while(", "get_function_history(")]
+  funcs <- str_replace(funcs, "[(]", "")
 
-last_ten_functions <- function(fun_list){
-  
-  unique_fun_list <- unique(fun_list[rev(seq_len(nrow(fun_list))), ])
-  
-  last_ten <- min(10, nrow(unique_fun_list))
-
-  unique_fun_list[seq_len(last_ten),]
-}
-
-top_ten_functions <- function(fun_list){
-  
-  func_counts <- table(fun_list$functions)
-  top_ten <- min(10, length(func_counts))
-  
-  func_counts <- func_counts[order(func_counts, decreasing = TRUE)]
-  
-  func_names <- names(func_counts[1:top_ten])
-  paths <- function_help_path(func_names)
-  
-  as.data.frame(list(functions = func_names, paths = paths), stringsAsFactors = TRUE)
+  funcs
 }
 
 
+#' Last Ten Functions
+#' 
+#' @param fun_list function list
+#' @return fuctions that are from a package and their help paths
+last_ten_functions <- function(fun_list = get_function_history()){  
+  unique_fun_list <- unique(rev(fun_list))
+  
+  last_ten <- min(10, NROW(fun_and_path))
+  subset(
+    data.frame(
+      funcs = unique_fun_list, 
+      path = function_help_path(unique_fun_list), 
+      stringsAsFactors = FALSE
+    ), 
+    !is.na(path)
+  )[seq_len(last_ten), ]
+}
+
+#' Top Ten Functions
+#' 
+#' @param fun_list function list
+#' @return fuctions that are from a package and their help paths
+top_ten_functions <- function(fun_list = get_function_history()){  
+  func_count <- table(fun_list)
+  top_ten <- min(10, length(func_count))
+  
+  func_count <- func_count[order(func_count, decreasing = TRUE)]
+  
+  func_name <- names(func_count)
+
+  subset(
+    data.frame(
+      funcs = func_name, 
+      path = function_help_path(func_name), 
+      stringsAsFactors = FALSE
+    ), 
+    !is.na(path)
+  )[seq_len(top_ten), ]
+}
+
+
+#' Top Ten and Last Ten Functions
+#' 
+#' @return list containing the \code{\link{top_ten_functions}} and \code{\link{last_ten_functions}}
 ten_functions <- function(){
   fun_hist <- get_function_history()
-  
+
   list(
-    top_ten = top_ten_functions(fun_hist), 
-    last_ten = last_ten_functions(fun_hist)
+    last_ten = last_ten_functions(fun_hist),
+    top_ten = top_ten_functions(fun_hist)
   )
 }
 
