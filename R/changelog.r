@@ -12,11 +12,10 @@ pkg_news <- function(package){
     news = split(package_news$Text, addNA(package_news$Category))
   )
 
-  render_snippet("_changelogs", change_log)
+  render_snippet("changelogs", change_log)
 }
 
 get_manuals <- function(){
-  # /Library/Frameworks/R.framework/Resources/doc/manual/
   # get files in the manual directory with full path
   manual_dir <- file.path(Sys.getenv("R_DOC_DIR"),"manual")
   manuals <- dir(manual_dir)
