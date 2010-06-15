@@ -6,6 +6,7 @@ Author: Hadley Wickham <h.wickham@gmail.com>
 Maintainer: Hadley Wickham <h.wickham@gmail.com>
 Description: Better html documentation for R
 Depends: highlight, sinartra, digest, parser, rjson, RCurl
+Imports: brew
 License: GPL-2
 LazyData: true
 Collate: 'memoise.r' 'changelog.r' 'demo.r' 'functions.r' 'history.r' 'package.r' 'packages.r' 'parse-rd.r' 'render.r' 'route.r' 'topic.r'

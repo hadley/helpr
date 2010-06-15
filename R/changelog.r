@@ -12,7 +12,7 @@ pkg_news <- function(package){
     news = split(package_news$Text, addNA(package_news$Category))
   )
   
-  capture.output(brew("inst/snippets/changelogs.html", change_log))
+  capture.output(brew::brew("inst/snippets/changelogs.html", change_log))
 }
 
 get_manuals <- function(){
