@@ -58,10 +58,7 @@ helpr <- function(installed = TRUE) {
     
     author_str <- pluralize("Author", description$author)
     
-    package_topics_index <- pkg_topics_index(package)
-    topics <- unique(pkg_topics_index(package)$alias)
-    
-    items <- get_pkg_topic_type(package)
+    items <- pkg_topics_index_and_type(package)
     
     demos <- pkg_demos(package)
     vigs <- pkg_vigs(package)

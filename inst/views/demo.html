@@ -33,10 +33,9 @@
   </div></div>
   <div class="yui-b"><div class = "sidebar">
 
-    <% if(NROW(other_demos) > 0) { -%>    
+    <% if(dataframe_has_rows(other_demos)) { -%>    
     <h2><%= other_demos_str %></h2>
     <dl>
-    <% for(i in seq_len(NROW(other_demos))) { -%>
       <dt>
         <%= str_join( "<a href=\"/packages/", package, "/demo/", other_demos[i, "Item"], "\" >", other_demos[i, "Item"], "</a>") %>
       </dt>

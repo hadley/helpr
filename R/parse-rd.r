@@ -152,6 +152,9 @@ has_length <- function(x){
     !is.null(x) && NROW(x) > 0 && x != ""
 }
 
+dataframe_has_rows <- function(x){
+  NROW(x) > 0
+}
 
 pluralize <- function(string, obj, plural = str_join(string, "s", sep = ""), bool_statement = has_length(obj)){
   if(bool_statement) {

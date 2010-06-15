@@ -27,32 +27,32 @@
     <h1><%= package %></h1>
     <p><%= description$description %></p>
 
-    <% if(has_length(items$package)){ -%>
+    <% if(dataframe_has_rows(items$package)){ -%>
       <h2>Package Info</h2>
       <p><%= str_join("<a href='topics/", items$package$file, "'>", items$package$alias, "</a>", 
         collapse = ", ") %></p>
     <% } %>
 
-    <% if(has_length(items$dataset)){ -%>
+    <% if(dataframe_has_rows(items$dataset)){ -%>
       <h2>Data Sets</h2>
       <p><%= str_join("<a href='topics/", items$dataset$file, "'>", items$dataset$alias, "</a>", 
         collapse = ", ") %></p>
     <% } %>
 
-    <% if(has_length(items$func)){ -%>
+    <% if(dataframe_has_rows(items$func)){ -%>
       <h2>Functions</h2>
       <p><%= str_join("<a href='topics/", items$func$file, "'>", items$func$alias, "</a>", 
         collapse = ", ") %></p>
     <% } %>
 
-    <% if(has_length(items$internal)){ -%>
+    <% if(dataframe_has_rows(items$internal)){ -%>
       <h2>Internal</h2>
       <p><%= str_join("<a href='topics/", items$internal$file, "'>", items$internal$alias, "</a>", 
         collapse = ", ") %></p>
     <% } %>
 
-    <% if(has_length(items$idk)){ -%>
-      <h2>IDK WTF Items</h2>
+    <% if(dataframe_has_rows(items$idk)){ -%>
+      <h2>Items Not Loaded</h2>
       <p><%= str_join("<a href='topics/", items$idk$file, "'>", items$idk$alias, "</a>", 
         collapse = ", ") %></p>
     <% } %>
