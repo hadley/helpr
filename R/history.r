@@ -27,15 +27,17 @@ get_function_history <- function(){
 last_ten_functions <- function(fun_list = get_function_history()){  
   unique_fun_list <- unique(rev(fun_list))
   
-  last_ten <- min(10, NROW(fun_and_path))
-  subset(
+  last_ten_funcs <- subset(
     data.frame(
-      funcs = unique_fun_list, 
+      func = unique_fun_list, 
       path = function_help_path(unique_fun_list), 
       stringsAsFactors = FALSE
     ), 
     !is.na(path)
-  )[seq_len(last_ten), ]
+  )
+  last_ten <- min(10, NROW(last_ten_funcs))
+  last_ten_funcs[seq_len(last_ten), ]
+
 }
 
 #' Top Ten Functions
@@ -44,20 +46,22 @@ last_ten_functions <- function(fun_list = get_function_history()){
 #' @return fuctions that are from a package and their help paths
 top_ten_functions <- function(fun_list = get_function_history()){  
   func_count <- table(fun_list)
-  top_ten <- min(10, length(func_count))
   
   func_count <- func_count[order(func_count, decreasing = TRUE)]
   
   func_name <- names(func_count)
 
-  subset(
+  top_ten_funcs <- subset(
     data.frame(
-      funcs = func_name, 
+      func = func_name, 
       path = function_help_path(func_name), 
       stringsAsFactors = FALSE
     ), 
     !is.na(path)
-  )[seq_len(top_ten), ]
+  )
+
+  top_ten <- min(10, NROW(top_ten_funcs))
+  top_ten_funcs[seq_len(top_ten), ]
 }
 
 

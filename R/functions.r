@@ -27,20 +27,23 @@ function_and_link <- function(text, complete = TRUE){
 
 #' Return the help path of a function
 #'
-#' @param func function to find the help path
+#' @param x item to find the help path
+function_help_path_mem <- memoise(function(x){
+  tmp <- help(x)[1] 
+  if(is.na(tmp)){
+    NA
+  }else{
+    # retrieve last three folders/file and keep the package and topic
+    pack_and_topic <- rev(rev(str_split(tmp, .Platform$file.sep)[[1]])[1:3])[c(1,3)]
+    str_join("/packages/",pack_and_topic[1], "/topics/", pack_and_topic[2])
+  }
+})
+
 function_help_path <- function(func){
-  sapply(func, function(x){
-    
-    tmp <- help(x)[1] 
-    if(is.na(tmp)){
-      NA
-    }else{
-      # retrieve last three folders/file and keep the package and topic
-      pack_and_topic <- rev(rev(str_split(tmp, .Platform$file.sep)[[1]])[1:3])[c(1,3)]
-      str_join("/packages/",pack_and_topic[1], "/topics/", pack_and_topic[2])
-    }
-  })  
+  sapply(func, function_help_path_mem)
 }
+
+
 
 
 #' Find functions, counts, and links of given R text

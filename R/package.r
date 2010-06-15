@@ -20,34 +20,6 @@ pkg_help_path <- function(package) {
   system.file("help", package = package)
 }
 
-pkg_demos <- function(package, omit = "") {
-#  demos <- demo(package = package)$results
-#  files <- apply(demos, 1, function(dem){ 
-#   pkg_demo_src_file(dem[ "Package"], dem[ "Item"])
-#  })
-
-  dems <- demo(package = package)$results
-  dems <- dems[dems[,"Item"] != omit, ]
-  
-  
-  if(!has_length(dems))
-    NULL
-  else
-    list(
-      dems = dems, 
-      demo_str = pluralize("Demo", dems)
-    )
-  
-}
-
-#pkg_demo_src_file <- function(package, dem) {
-#  system.file("demo", dem, package = package)
-#}
-
-exec_pkg_demo <- function(package, dem) {
-#  demo(dem, character = TRUE, package = package, ask = TRUE)
-  demo(dem, character = TRUE, package = package, ask = FALSE)
-}
 
 pkg_vigs <- function(package) {
   vignettes <- vignette(package = package)$results
@@ -55,17 +27,10 @@ pkg_vigs <- function(package) {
   if(!has_length(vignettes))
     return(NULL)
 
-  titles <- vignettes[,4]
-  pdfNames <- vignettes[, 3]
-  paths <- vignettes[, 2]
-  
-  titles <- str_replace(titles, "source, pdf", "")
+  titles <- str_replace(vignettes[,4], "source, pdf", "")
   titles <- str_trim(str_replace(titles, "[()]", ""))
   
-#    paths <- str_join("http://cran.r-project.org/web/packages/", package, "/vignettes/", pdfNames, ".pdf", sep = "")
-    paths <- str_join("/_",str_join(paths, package, "doc", str_join(pdfNames, ".pdf"), sep = .Platform$file.sep))
-  
-  list(titles = titles, paths = paths, vig_str = pluralize("Vignette", paths))
+  data.frame(item = vignettes[,"Item"], title = titles, stringsAsFactors = FALSE)
 }
 
 crantastic_rating <- function(pkg_name){

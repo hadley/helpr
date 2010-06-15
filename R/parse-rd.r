@@ -153,8 +153,8 @@ has_length <- function(x){
 }
 
 
-pluralize <- function(string, obj, plural = str_join(string, "s", sep = "")){
-  if(has_length(obj)) {
+pluralize <- function(string, obj, plural = str_join(string, "s", sep = ""), bool_statement = has_length(obj)){
+  if(bool_statement) {
     plural
   } else {
     string

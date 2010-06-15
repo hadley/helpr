@@ -21,8 +21,8 @@ get_manuals <- function(){
   manuals <- dir(manual_dir)
   
   file_loc <- file.path(manual_dir, manuals)
-  link <- str_join("manuals/",manuals)
   file_name <- str_replace(manuals, ".html", "")
+  link <- str_join("manuals/",file_name)
   
   data.frame(
     title = sapply(file_loc, function(x){

@@ -81,24 +81,24 @@
       <%=str_join("<a href='/packages/", suggests, "/'>", suggests, "</a>", collapse = ", ") %></p>
     <% }%>
 
-    <% if(has_length(extras$demos$dems)) { -%>    
-      <h2><%= extras$demos$demo_str %></h2>
+    <% if(has_length(demos)) { -%>    
+      <h2><%= demos_str %></h2>
       <dl>
-      <% for(i in seq_len( nrow(extras$demos$dems))) { -%>
+      <% for(i in seq_len( nrow(demos))) { -%>
         <dt>
-          <%= str_join( "<a href=\"/packages/", package, "/demos/", extras$demos$dems[i, "Item"], "\" >", extras$demos$dems[i, "Item"], "</a>") %>
+          <%= str_join( "<a href=\"/packages/", package, "/demo/", demos[i, "Item"], "\" >", demos[i, "Item"], "</a>") %>
         </dt>
         <dd>
-          <%= extras$demos$dems[i, "Title"] %>
+          <%= demos[i, "Title"] %>
         </dd>
       <% } %>
       </dl>
     <% } %>
       
-      
-    <% if(has_length(extras$vigs)){ -%>    
-      <h2><%= extras$vigs$vig_str %></h2>
-      <p><%= str_join("<a href='",extras$vigs$paths,"' target=\"_blank\">", extras$vigs$titles, "</a>", collapse = ", ") %></p>
+
+    <% if(has_length(vigs)){ -%>    
+      <h2><%= vigs_str %></h2>
+      <ul><%= str_join( "<li><a href=\"/packages/", package, "/vignette/", vigs[, "item"], "\" >", vigs[, "title"], "</a></li>") %></ul>
     <% } %>
 
 

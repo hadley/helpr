@@ -1,31 +1,68 @@
-demo_info <- function(demo){
-  dems <- demo()$results
-  dems[dems[,"Item"] == demo, ]
+#' Demo Source File
+#'
+#' @param package package name
+#' @param demo_name demo name
+#' @return "" if the demo is not found for that package, file.path if the demo folder is found
+demo_src_file <- function(package, demo_name){
+  system.file("demo", str_join(demo_name, ".R"), package = package)
 }
 
-pkg_demo <- function(package, demo){
-  info <- demo_info(demo)
+#' Demo Information
+#'
+#' @param package package name
+#' @param demo_name demo name
+#' @return demo() information for the \code{demo_name} in \code{package}
+# '
+demo_info <- function(package, demo_name){
+  subset(pkg_demos(package), Item == demo_name)
+}
+
+#' Helpr Demo Information
+#'
+#' @param package package name
+#' @param demo_name demo name
+helpr_demo <- function(package, demo_name){
+  info <- demo_info(package, demo_name)
   
-  demo_functions <- demo_top_functions(demo)
+  demo_functions <- code_info(demo_src(package, demo_name))
+  other_demos <- suppressWarnings(subset(as.data.frame(pkg_demos(package)), Item != demo_name))
 
   list(
     package = package, 
-    name = demo,
-    info = info,
-    src = highlight(demo_src(info)),
-    demos = pkg_demos(package, omit = demo),
+    name = demo_name,
+    description = info[1,"Title"],
+    src = highlight(demo_src(package, demo_name)),
+    other_demos = other_demos,
+    other_demos_str = pluralize("Demo", other_demos),
     src_functions = demo_functions,
     src_functions_str = pluralize("Top Function", demo_functions)
   )
 }
 
-demo_src <- function(demoInfo){
-  # just incase the Item changes from the file name rather than a system.file call
-  item_path <- file.path(demoInfo["LibPath"], demoInfo["Package"], "demo", str_join(demoInfo["Item"], ".R"))
-  str_join(readLines(item_path), collapse = "\n")
+#' Demo Source
+#'
+#' @param package package name
+#' @param demo_name demo name
+#' @return source for the demo
+demo_src <- function(package, demo_name){
+  str_join(readLines(demo_src_file(package, demo_name)), collapse = "\n")
 }
 
-demo_top_functions <- function(demo){
-  src <- demo_src(demo_info(demo))
-  code_info(src)
+
+#' Package Demos
+#'
+#' @param package package name
+#' @param demo_name demo name
+#' @return demo() information for the \code{demo_name} in \code{package}
+pkg_demos <- function(package) {
+  as.data.frame(demo(package = package)$results, stringsAsFactors = FALSE)
+}
+
+
+
+
+## should be replaced with something else
+exec_pkg_demo <- function(package, dem) {
+#  demo(dem, character = TRUE, package = package, ask = TRUE)
+  demo(dem, character = TRUE, package = package, ask = FALSE)
 }

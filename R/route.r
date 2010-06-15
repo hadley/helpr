@@ -13,11 +13,15 @@ helpr <- function(installed = TRUE) {
 
   # Show list of all packages on home page
   router$get("/index.html", function() {
+    ten_funcs <- ten_functions()
     render_brew(
       "index", 
       list(
         packages = as.list(installed_packages()), 
-        ten_functions = ten_functions(),
+        last_ten_funcs_str = pluralize("Last Function", bool_statement = (NROW(ten_funcs$last_ten) > 1), plural = str_join("Last ", NROW(ten_funcs$last_ten), " Functions")),
+        last_ten_funcs = ten_funcs$last_ten,
+        top_ten_funcs_str = pluralize("Top Function", bool_statement = (NROW(ten_funcs$top_ten) > 1), plural = str_join("Top ", NROW(ten_funcs$top_ten), " Functions")),
+        top_ten_funcs = ten_funcs$top_ten,
         manuals = get_manuals()
       ), 
       path = path
@@ -59,12 +63,9 @@ helpr <- function(installed = TRUE) {
     
     items <- get_pkg_topic_type(package)
     
-    extras <- list(
-      demos = pkg_demos(package),
-      vigs = pkg_vigs(package)
-    )
+    demos <- pkg_demos(package)
+    vigs <- pkg_vigs(package)
     
-  
     render_brew(
       "package", 
       list(
@@ -72,16 +73,24 @@ helpr <- function(installed = TRUE) {
         items = items,
         description = description, 
         author_str = author_str, 
-        extras = extras
+        demos_str = pluralize("Demo", demos),
+        demos = demos,
+        vigs_str = pluralize("Vignette", vigs),
+        vigs = vigs
       ), 
       path = path
     )
     
   })
   
+  # Package Vignette
+  router$get("/packages/:package/vignette/:vignette", function(package, vignette) {
+    static_file(system.file("doc", str_join(vignette, ".pdf"), package = package))
+  })
+
   # Package Demo
-  router$get("/packages/:package/demos/:demo", function(package, demo) {
-    render_brew("demo", pkg_demo(package, demo), path = path)
+  router$get("/packages/:package/demo/:demo", function(package, demo) {
+    render_brew("demo", helpr_demo(package, demo), path = path)
   })
   
   # Individual topic source
@@ -134,7 +143,7 @@ helpr <- function(installed = TRUE) {
   
   
   #execute demos
-  router$get("/packages/:package/demo/:demo", function(package, demo) {
+  router$get("/packages/:package/exec_demo/:demo", function(package, demo) {
     exec_pkg_demo(package, demo)
     redirect(str_join("/packages/", package, "/"))
   })

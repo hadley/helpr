@@ -24,7 +24,7 @@
   <div id="bd">
   <div id="yui-main"><div class="yui-b">
     <h1><%= name %></h1>
-    <p><%= info["Title"] %></p>
+    <p><%= description %></p>
 
     <h2>Demo Source</h2>
     <%= src %>
@@ -33,15 +33,15 @@
   </div></div>
   <div class="yui-b"><div class = "sidebar">
 
-    <% if(has_length(demos$dems)) { -%>    
-    <h2><%= demos$demo_str %></h2>
+    <% if(NROW(other_demos) > 0) { -%>    
+    <h2><%= other_demos_str %></h2>
     <dl>
-    <% for(i in seq_len( nrow(demos$dems))) { -%>
+    <% for(i in seq_len(NROW(other_demos))) { -%>
       <dt>
-        <%= str_join( "<a href=\"/packages/", package, "/demos/", demos$dems[i, "Item"], "\" >", demos$dems[i, "Item"], "</a>") %>
+        <%= str_join( "<a href=\"/packages/", package, "/demo/", other_demos[i, "Item"], "\" >", other_demos[i, "Item"], "</a>") %>
       </dt>
       <dd>
-        <%= demos$dems[i, "Title"] %>
+        <%= other_demos[i, "Title"] %>
       </dd>
     <% } %>
     </dl>
