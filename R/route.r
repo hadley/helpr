@@ -45,8 +45,6 @@ helpr <- function(installed = TRUE) {
 
   # Package index page, list topics etc
   router$get("/packages/:package/", function(package) {
-    
-    topics <- pkg_topics(package)
 
     info <- .readRDS(system.file("Meta", "package.rds", package = package))
     description <- as.list(info$DESCRIPTION)
@@ -56,8 +54,9 @@ helpr <- function(installed = TRUE) {
     
     author_str <- pluralize("Author", description$author)
     
-    
     package_topics_index <- pkg_topics_index(package)
+    topics <- unique(pkg_topics_index(package)$alias)
+    
     items <- get_pkg_topic_type(package)
     
     extras <- list(
