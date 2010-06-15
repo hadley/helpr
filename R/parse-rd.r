@@ -148,11 +148,6 @@ simple_tags <- list(
   "LIST" =          c("<ul>", "</ul>")
 )
 
-has_length <- function(x){
-  
-    !is.null(x) && NROW(x) > 0 && x != ""
-}
-
 
 pluralize <- function(string, obj, plural = str_join(string, "s", sep = "")){
   if(has_length(obj)) {

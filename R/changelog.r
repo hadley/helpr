@@ -11,8 +11,8 @@ pkg_news <- function(package){
     date = unique(package_news$Version),
     news = split(package_news$Text, addNA(package_news$Category))
   )
-  
-  capture.output(brew::brew("inst/snippets/changelogs.html", change_log))
+
+  render_snippet("_changelogs", change_log)
 }
 
 get_manuals <- function(){
