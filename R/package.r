@@ -20,10 +20,6 @@ pkg_help_path <- function(package) {
   system.file("help", package = package)
 }
 
-pkg_topics <- function(package) {
-  files <- unique(pkg_topics_index(package)$alias)
-}
-
 pkg_demos <- function(package, omit = "") {
 #  demos <- demo(package = package)$results
 #  files <- apply(demos, 1, function(dem){ 
