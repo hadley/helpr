@@ -1,6 +1,6 @@
 #' Work out the source code of a function.
 body_text <- function(fun) {
-  text <- body(fun)
+  text <- get(fun, mode = "function")
   if(is.null(text))
     NULL
   else
