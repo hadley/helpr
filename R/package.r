@@ -12,19 +12,31 @@
 # paths <- sapply(vignettes, function(v) vignette(v, package = pkg)$file)
 
 
+#' Documentation Database Path
+#'
+#' @return \code{file.path} to the documentation database
+#' @param package package to explore
 pkg_rddb_path <- function(package) {
   file.path(pkg_help_path(package), package)
 }
 
+#' Package Help Path
+#'
+#' @return \code{file.path} to the help folder
+#' @param package package to explore
 pkg_help_path <- function(package) {
   system.file("help", package = package)
 }
 
 
+#' Package Vignettes
+#'
+#' @return \code{\link{subset}} of the \code{\link{vignette()}$results} \code{\link{data.frame}} ("Package", "LibPath", "Item" and "Title")
+#' @param package package to explore
 pkg_vigs <- function(package) {
   vignettes <- vignette(package = package)$results
   
-  if(!has_length(vignettes))
+  if(!NROW(vignettes))
     return(NULL)
 
   titles <- str_replace(vignettes[,4], "source, pdf", "")
@@ -33,12 +45,16 @@ pkg_vigs <- function(package) {
   data.frame(item = vignettes[,"Item"], title = titles, stringsAsFactors = FALSE)
 }
 
+#' Package Topics Alias to File Index
+#'
+#' @return \code{\link{data.frame}} containing \code{alias} (function name) and \code{file} that it is associated with
+#' @param package package to explore
 pkg_topics_index <- memoise(function(package) {
   help_path <- pkg_help_path(package)
   
   file_path <- file.path(help_path, "AnIndex")
   ### check to see if there is anything that exists, aka sinartra
-  if(!has_length(readLines(file_path, n = 1)))
+  if(length(readLines(file_path, n = 1)) < 1)
     return(NULL)
 
   topics <- read.table(file_path, sep = "\t", 
@@ -47,6 +63,12 @@ pkg_topics_index <- memoise(function(package) {
   topics[complete.cases(topics), ]
 })
 
+
+#' Package Topics File Documentation
+#'
+#' Items can be accessed by \code{\emph{list()}$file_name}
+#' @return \code{\link{list}} containing the documentation file of each file of a package
+#' @param package package to explore
 pkg_topics_rd <- memoise(function(package) {
   rd <- tools:::fetchRdDB(pkg_rddb_path(package))
   lapply(rd, name_rd)
@@ -67,10 +89,10 @@ pkg_topics_rd <- memoise(function(package) {
 # str(index)
 
 
-#' Get All Dataset Names
+#' All Dataset Names
 #' 
+#' @return \code{\link{vector}} of names that can be a dataset
 #' @param package package to explore
-#' @return collection of names that can be a dataset
 get_datasets <- function(package){
   sets <- suppressWarnings(data(package = package)$results)
   
@@ -87,16 +109,33 @@ get_datasets <- function(package){
   data_sets[order(data_sets)]
 }
 
+pkg_internal_function_files <- function(package){
+  rd_docs <- pkg_topics_rd(package)
+  
+  subset(
+    names(rd_docs), 
+    sapply(rd_docs, function(x){
+      identical(as.character(x$keyword[[1]]), "internal")
+    })
+  )
+  
+}
 
+
+#' All Dataset Names
+#' 
+#' @return \code{\link{list}} of the items in \code{\link{pkg_topics_index}} as \code{function}, \code{dataset}, \code{internal}, \code{package}, or \code{idk}.
+#' @param package package to explore
 pkg_topics_index_and_type <- function(package){
   types <- pkg_topic_index_type(package)
   
   list(
-    func = types[types$type == "function", 1:2],
-    dataset = types[types$type == "dataset", 1:2],
-    internal = types[types$type == "internal", 1:2],
-    idk = types[types$type == "IDK", 1:2],
-    package = types[types$type == "package", 1:2]
+    package = subset(types, type == "package", select = 1:2),
+    help_name = subset(types, type == "help_name", select = 1:2),
+    dataset = subset(types, type == "dataset", select = 1:2),
+    func = subset(types, type == "function", select = 1:2),
+    internal = subset(types, type == "internal", select = 1:2),
+    idk = subset(types, type == "IDK", select = 1:2)
   )
 }
 
@@ -105,19 +144,28 @@ pkg_topics_index_and_type <- function(package){
 #'
 #' @param items items supplied from pkg_topics
 #' @return boolean
-is_function <- function(items){
-  exists(items, mode="function")
+is_function <- function(package, items){
+  sapply(items, function(x){
+    exists(x, envir = asNamespace(package), mode="function") |
+    exists(x, str_join("package:", package))
+  })
 }
 
 #' Determines object type
 #'
+#' Requires the package to be loaded to accurately determine the type of the object
 #' @param package package to explore
-#' @return returns a type ("package", "
+#' @return returns a type ("package", "dataset", "function", "internal", "help_name" or "IDK")
 pkg_topic_index_type <- function(package){
+  suppressMessages(require(package, character.only = TRUE))
+  
   index <- pkg_topics_index(package)
   
   index$type <- "IDK"
   
+  # package
+  index[str_detect(index$file, "-package"), "type"] <- "package"
+
   # dataset
   rows <- with(index,
     file %in% get_datasets(package) |
@@ -127,21 +175,25 @@ pkg_topic_index_type <- function(package){
   index[rows,"type"] <- "dataset"
   
   # function
-  rows <- index$type == "IDK"
-  func_exists <- as.character(is_function(index[rows, "alias"]))
+  rows <- with(index, type == "IDK")
+  
+  func_exists <- as.character(is_function(package, index[rows, "alias"]))
+    # Sometimes there are only functions, so factoring doesn't work
   func_exists[func_exists == "TRUE"] <- "function"
   func_exists[func_exists == "FALSE"] <- "IDK"
-#  factor(func_exists, labels = c("IDK", "function"))
   index[rows, "type"] <- func_exists
   
   # internal
-  rows <- str_sub(index$alias, start = 0, end = 1) == "."
+  rows <- with(index, file %in% pkg_internal_function_files(package))
   index[rows, "type"] <- "internal"
   
-  # package
-  index[str_detect(index$file, "-package"), "type"] <- "package"
-
-  index    
+  rows <- with(index, type == "IDK")
+  help_name <- as.character(sapply(index[rows, "alias"], exists))
+    # Sometimes there are only functions, so factoring doesn't work
+  help_name[help_name == "TRUE"] <- "IDK"
+  help_name[help_name == "FALSE"] <- "help_name"
+  index[rows, "type"] <- help_name
   
+  index  
 }
 

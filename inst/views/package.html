@@ -3,6 +3,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
   <link rel="stylesheet" type="text/css" href="/_styles/reset-fonts-grids.css" />
   <link rel="stylesheet" type="text/css" href="/_styles/r-help.css" />
   <link rel="stylesheet" type="text/css" href="/_styles/jquery.rating.css" />
@@ -30,6 +31,12 @@
     <% if(dataframe_has_rows(items$package)){ -%>
       <h2>Package Info</h2>
       <p><%= str_join("<a href='topics/", items$package$file, "'>", items$package$alias, "</a>", 
+        collapse = ", ") %></p>
+    <% } %>
+
+    <% if(dataframe_has_rows(items$help_name)){ -%>
+      <h2>Groups</h2>
+      <p><%= str_join("<a href='topics/", items$help_name$file, "'>", items$help_name$alias, "</a>", 
         collapse = ", ") %></p>
     <% } %>
 

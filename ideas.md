@@ -58,6 +58,7 @@ Topic
 * rate a function
 * add comments - look at something like disqus
 * DONE - links for "mailto"
+* display keywords
 * list of all fuctions that are under the topic
   * links to the source code of said function
     * See Code Execution minus 'run' functionality
@@ -98,6 +99,8 @@ Search
 * external solr search engine with separate fields for separate parts of RDoc.
 * for use by insider and by html search
 * indexes all packages - not just those installed on the users machine.
+* lists of functions indexed by keyword
+
 
 Speed
 =====
