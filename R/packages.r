@@ -31,8 +31,12 @@ old_package_names <- function() {
 #'
 #' @author Barret Schloerke \email{bigbear@@iastate.edu}
 #'
-update_loaded_packs <- function() {
-  packs <- loaded_packs()
+update_loaded_packs <- function(all = FALSE) {
+  if(all){
+    packs <- installed_packages()[,"Package"]
+  }else{
+    packs <- (.packages())
+  }
   packs <- packs[packs %in% old.packages()[,"Package"]]
   install.packages(packs)
   packs

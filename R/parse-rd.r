@@ -102,10 +102,7 @@ tag_link <- function(fun, pkg = NULL) {
 
 
 is_section <- function(tag) {
-  
   tag %in% c("\\details", "\\description", "\\value", "\\author", "\\seealso")
-  
-  
 }
 
 simple_tags <- list(
@@ -154,6 +151,14 @@ has_length <- function(x){
 
 dataframe_has_rows <- function(x){
   NROW(x) > 0
+}
+
+parse_text <- function(text){
+  output <- suppressWarnings(parser(text = text))
+  if(!dataframe_has_rows(attr(output, "data")))
+    NULL
+  else
+    output
 }
 
 pluralize <- function(string, obj, plural = str_join(string, "s", sep = ""), bool_statement = has_length(obj)){

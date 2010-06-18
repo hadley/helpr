@@ -1,10 +1,20 @@
-topic <- function(package, topic) {
+#' Helpr Home
+#'
+#' @return all the information necessary to produce the home site ("index.html")
+helpr_topic <- function(package, topic) {
   topic_info <- parse_help(pkg_topic(package, topic))
   topic_info$package <- package
 
   topic_info
 }
 
+#' Package Topic R Documentation
+#'
+#' @param package package to explore
+#' @param topic topic of the package to retrieve
+#' @param file location of the rd database.  If it is \code{NULL}, it will be found.
+#'
+#' @return text of the .rd file
 pkg_topic <- function(package, topic, file = NULL) {
   if (is.null(file)) {
     topics <- pkg_topics_index(package)
@@ -20,6 +30,10 @@ pkg_topic <- function(package, topic, file = NULL) {
 }
 
 
+#' Name R Documentation
+#'
+#' @param rd rd file to use
+#' @return rd file properly named according to the tags
 name_rd <- function(rd) {
   tags <- sapply(rd, tag)
   tags <- gsub("\\\\", "", tags)
@@ -28,12 +42,19 @@ name_rd <- function(rd) {
   rd
 } 
 
+#' Internal Topic Function
+#'
+#' @param help \code{\link{pkg_topic(\emph{topic})}}  is checked to see if a keyword is "internal"
+#' @return boolean
 topic_is_internal <- function(help) {
   "internal" %in% help$keywords
 }
 
-
-# Function to turn a help topic into a convenient format.
+#' Parse Help File
+#' Function to turn a help topic into a convenient format.
+#'
+#' @param rd item to be tagged recursively
+#' @return item reformatted to be used in HTML
 parse_help <- function(rd) {
   tags <- sapply(rd, tag)
 
@@ -47,8 +68,9 @@ parse_help <- function(rd) {
   out$desc <- gsub("$\n+|\n+^", "", reconstruct(rd$description))
   out$details <- reconstruct(rd$details)
   out$value <- reconstruct(rd$value)
-  out$examples <- highlight(reconstruct(untag(rd$examples)))
-  out$example_functions <- code_info(reconstruct(untag(rd$examples)))
+  par_text <- parse_text(reconstruct(untag(rd$examples)))
+  out$examples <- highlight(par_text)
+  out$example_functions <- code_info(par_text)
   out$example_functions_str <- pluralize("Top Function", out$example_functions)
   out$usage <- reconstruct(untag(rd$usage))
   out$authors <- reconstruct(rd$author)
@@ -94,20 +116,28 @@ parse_help <- function(rd) {
 }
 
 
-highlight <- function(examples) {
-  if(identical(str_trim(examples),"") | identical(examples, "NULL")) return(examples)
-  if (!require(highlight)) return(examples)
+#' Highlight R Text
+#' Highlights R text to include links to all functions and make it easier to read
+#' @param parser_output text to be parsed and highlighted
+#' @return highlighted text
+highlight <- function(parser_output) {
+  if(is.null(parser_output))
+    return("")
   
   # add links before being sent to be highlighted
-  ex_parser <- add_function_links_into_parsed(parser(text = examples))
+  ex_parser <- add_function_links_into_parsed(parser_output)
   
   str_join(capture.output(highlight::highlight( parser.output = ex_parser, renderer = highlight::renderer_html(doc = F))), collapse = "\n")    
 }
 
-
-add_function_links_into_parsed <- function(ex_parser){
+#' Add Funciton Link
+#' Add the function link to the preparsed R code
+#'
+#' @param parser_output pre-parsed output
+#' @return parsed output with functions with html links around them
+add_function_links_into_parsed <- function(parser_output){
   # pull out data
-  d <- attr(ex_parser, "data")
+  d <- attr(parser_output, "data")
   
 #  funcs <- d[d[,"token.desc"] == "SYMBOL_FUNCTION_CALL" ,"text"]
   rows <- with(d, (token.desc == "SYMBOL_FUNCTION_CALL" & ! text %in% c("", "(",")") ) | text %in% c("UseMethod"))
@@ -118,9 +148,9 @@ add_function_links_into_parsed <- function(ex_parser){
   funcs <- d[rows,"text"]
 
   # make links for functions and not for non-package functions
-  links <- function_and_link(str_join(funcs, "()"), complete = FALSE)
-  text <- str_join("<a href='", links$paths, "' >", links$functions,"</a>")
-  text[is.na(links$paths)] <- links$functions[is.na(links$paths)]
+  paths <- function_help_path(funcs)
+  text <- str_join("<a href='", paths, "'>", funcs,"</a>")
+  text[is.na(paths)] <- funcs[is.na(paths)]
   
   # return data
   d[rows,"text"] <- text
@@ -131,7 +161,10 @@ add_function_links_into_parsed <- function(ex_parser){
   
 }
 
-
+#' Find the First Item Position
+#' @param arr arr of items to look at
+#' @return position of the first item to match "\\item" else 1
+# '
 first_item_pos <- function(arr){
   for(i in seq_along(arr))
     if(arr[i] == "\\item")
@@ -139,6 +172,9 @@ first_item_pos <- function(arr){
   1
 }
 
+#' Find the Last Item Position
+#' @param arr arr of items to look at
+#' @return position of the last item to match "\\item" else 0
 last_item_pos <- function(arr){
   for(i in rev(seq_along(arr)))
     if(arr[i] == "\\item")

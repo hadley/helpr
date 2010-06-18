@@ -41,9 +41,13 @@ function update_packs() {
   var out_of_date_butto = $("#out_of_date_button");
   out_of_date_butto.value = "Updating...";
   out_of_date_butto.disabled = true;
+  
+  var all = "FALSE";
+  if(showing_all == 1)
+    all = "TRUE";
 
   jQuery.ajax({
-    url: "/packages/update.json",
+    url: "/packages/update.json/"+all,
     dataType: "json",
     success: function(packages) {
       for(i = 0; i < packages.length; i++) {

@@ -1,6 +1,10 @@
+# Global path for render_snippets
 helpr_path <- NULL   
 
-
+#' Helpr Documentation
+#'
+#' Execute to show documentation
+#' @param installed use TRUE if the package is installed on from CRAN
 helpr <- function(installed = TRUE) {
   if (installed) {
     path <- system.file(package = "helpr")
@@ -13,19 +17,7 @@ helpr <- function(installed = TRUE) {
 
   # Show list of all packages on home page
   router$get("/index.html", function() {
-    ten_funcs <- ten_functions()
-    render_brew(
-      "index", 
-      list(
-        packages = as.list(installed_packages()), 
-        last_ten_funcs_str = pluralize("Last Function", bool_statement = (NROW(ten_funcs$last_ten) > 1), plural = str_join("Last ", NROW(ten_funcs$last_ten), " Functions")),
-        last_ten_funcs = ten_funcs$last_ten,
-        top_ten_funcs_str = pluralize("Top Function", bool_statement = (NROW(ten_funcs$top_ten) > 1), plural = str_join("Top ", NROW(ten_funcs$top_ten), " Functions")),
-        top_ten_funcs = ten_funcs$top_ten,
-        manuals = get_manuals()
-      ), 
-      path = path
-    )
+    render_brew("index", helpr_home(), path = path)
   })
 
   # Use file in public, if present
@@ -49,35 +41,7 @@ helpr <- function(installed = TRUE) {
 
   # Package index page, list topics etc
   router$get("/packages/:package/", function(package) {
-
-    info <- .readRDS(system.file("Meta", "package.rds", package = package))
-    description <- as.list(info$DESCRIPTION)
-    info$DESCRIPTION <- NULL
-    description <- defaults(info, description)
-    names(description) <- tolower(names(description))
-    
-    author_str <- pluralize("Author", description$author)
-    
-    items <- pkg_topics_index_and_type(package)
-    
-    demos <- pkg_demos(package)
-    vigs <- pkg_vigs(package)
-    
-    render_brew(
-      "package", 
-      list(
-        package = package, 
-        items = items,
-        description = description, 
-        author_str = author_str, 
-        demos_str = pluralize("Demo", demos),
-        demos = demos,
-        vigs_str = pluralize("Vignette", vigs),
-        vigs = vigs
-      ), 
-      path = path
-    )
-    
+    render_brew("package", helpr_package(package), path = path)    
   })
   
   # Package Vignette
@@ -92,12 +56,12 @@ helpr <- function(installed = TRUE) {
   
   # Individual topic source
   router$get("/packages/:package/source/:func", function(package, func) {
-    render_brew("source", function_info(package, func), path = path)
+    render_brew("source", helpr_function(package, func), path = path)
   })
 
   # Individual help topic
   router$get("/packages/:package/topics/:topic", function(package, topic) {
-    render_brew("topic", topic(package, topic), path = path)
+    render_brew("topic", helpr_topic(package, topic), path = path)
   })
 
   # Individual help topic 
@@ -107,13 +71,6 @@ helpr <- function(installed = TRUE) {
   router$get("/library/:package/help/:topic", function(package, topic) {
     redirect(str_join("/packages/", package, "/topics/", topic))
   })
-
-  render_path <- function(path, ...) router$route(path)
-  assignInNamespace("httpd", render_path, "tools")
-  if (tools:::httpdPort == 0L) {
-    help.start()
-    options("help_type" = "html")
-  }
   
   # AJAX
   router$get("/packages/old.json", function() {
@@ -122,22 +79,20 @@ helpr <- function(installed = TRUE) {
   router$get("/packages/index.json", function() {
     render_json(installed_packages())
   })
-  router$get("/packages/update.json", function() {
-    render_json(update_loaded_packs())
+  router$get("/packages/update.json/:all_packs", function(all_packs) {
+    render_json(update_loaded_packs(all_packs))
   })
   router$get("/packages/:package/rating.json", function(package) {
-
 #    render_json(rating_text(as.character(package)))
     string <- rating_text(package)
     render_json(string)
   })
   
-  # Local Host Files
+  # Manual HTML Files
   router$get("/manuals/:name.html", function(name) {
     file_loc <- as.character(subset(get_manuals(), file_name == name, select = "file_loc"))
     static_file(file_loc)
   })
-  
   
   #execute demos
   router$get("/packages/:package/exec_demo/:demo", function(package, demo) {
@@ -145,7 +100,76 @@ helpr <- function(installed = TRUE) {
     redirect(str_join("/packages/", package, "/"))
   })
 
-  
+  render_path <- function(path, ...) router$route(path)
+  assignInNamespace("httpd", render_path, "tools")
+  if (tools:::httpdPort == 0L) {
+    help.start()
+    options("help_type" = "html")
+  }
+
   return(invisible(router))
 }
 
+
+#' Helpr Home
+#'
+#' @return all the information necessary to produce the home site ("index.html")
+helpr_home <- function(){
+
+  ten_funcs <- ten_functions()
+
+  last_ten_length <- NROW(ten_funcs$last_ten)
+  top_ten_length <- NROW(ten_funcs$top_ten)
+
+  list(
+    packages = as.list(installed_packages()), 
+    last_ten_funcs_str = pluralize(
+      "Last Function", 
+      bool_statement = (last_ten_length > 1), 
+      plural = str_join("Last ", last_ten_length, " Functions")
+    ),
+    last_ten_funcs = ten_funcs$last_ten,
+    top_ten_funcs_str = pluralize(
+      "Top Function", 
+      bool_statement = (top_ten_length > 1), 
+      plural = str_join("Top ", top_ten_length, " Functions")
+    ),
+    top_ten_funcs = ten_funcs$top_ten,
+    manuals = get_manuals()
+  )
+}
+
+
+
+
+
+
+#' Helpr Package
+#'
+#' @return all the information necessary to produce a package site ("/packages/:package/")
+helpr_package <- function(package){
+  
+  info <- .readRDS(system.file("Meta", "package.rds", package = package))
+  description <- as.list(info$DESCRIPTION)
+  info$DESCRIPTION <- NULL
+  description <- defaults(info, description)
+  names(description) <- tolower(names(description))
+  
+  author_str <- pluralize("Author", description$author)
+  
+  items <- pkg_topics_index_by_type(package)
+  
+  demos <- pkg_demos(package)
+  vigs <- pkg_vigs(package)
+
+  list(
+    package = package, 
+    items = items,
+    description = description, 
+    author_str = author_str, 
+    demos_str = pluralize("Demo", demos),
+    demos = demos,
+    vigs_str = pluralize("Vignette", vigs),
+    vigs = vigs
+  )
+}

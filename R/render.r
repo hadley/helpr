@@ -1,11 +1,21 @@
 # Render methods to eventually be moved into sinartra
 
+#' Render JSON
+#'
+#' Produce JSON from an R object
+#' @param object object to be turned into JSON
 render_json <- function(object) {
   json <- rjson::toJSON(object)
   list(payload = json)
 }
 
 
+#' Render HTML Snippet
+#'
+#' @param template name of file to use in the folder "views"
+#' @param params list containing objects to be sent to the template
+#' @param path path to be used to find the "views" folder
+#' @return text rendered from the template
 render_snippet <- function(template, params, path = helpr_path){
   if (is.list(params)) {
       env <- new.env(TRUE)
@@ -18,6 +28,6 @@ render_snippet <- function(template, params, path = helpr_path){
   if (!file.exists(path)) 
       stop("Can not find ", template, " template ", call. = FALSE)
       
-  str_join(capture.output(brew(path, envir = params)), 
+  str_join(capture.output(brew:::brew(path, envir = params)), 
         collapse = "\n")
 }

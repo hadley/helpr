@@ -124,19 +124,11 @@ pkg_internal_function_files <- function(package){
 
 #' All Dataset Names
 #' 
-#' @return \code{\link{list}} of the items in \code{\link{pkg_topics_index}} as \code{function}, \code{dataset}, \code{internal}, \code{package}, or \code{idk}.
+#' @return \code{\link{list}} of the items in \code{\link{pkg_topics_index}} as \code{function}, \code{dataset}, \code{internal}, \code{package}, or \code{NA}.
 #' @param package package to explore
-pkg_topics_index_and_type <- function(package){
+pkg_topics_index_by_type <- function(package){
   types <- pkg_topic_index_type(package)
-  
-  list(
-    package = subset(types, type == "package", select = 1:2),
-    help_name = subset(types, type == "help_name", select = 1:2),
-    dataset = subset(types, type == "dataset", select = 1:2),
-    func = subset(types, type == "function", select = 1:2),
-    internal = subset(types, type == "internal", select = 1:2),
-    idk = subset(types, type == "IDK", select = 1:2)
-  )
+  split(types[,1:2], types[,"type"])
 }
 
 
@@ -155,13 +147,13 @@ is_function <- function(package, items){
 #'
 #' Requires the package to be loaded to accurately determine the type of the object
 #' @param package package to explore
-#' @return returns a type ("package", "dataset", "function", "internal", "help_name" or "IDK")
+#' @return returns a type ("package", "dataset", "function", "internal", "help_name" or "NA")
 pkg_topic_index_type <- function(package){
   suppressMessages(require(package, character.only = TRUE))
   
   index <- pkg_topics_index(package)
   
-  index$type <- "IDK"
+  index$type <- "NA"
   
   # package
   index[str_detect(index$file, "-package"), "type"] <- "package"
@@ -175,22 +167,22 @@ pkg_topic_index_type <- function(package){
   index[rows,"type"] <- "dataset"
   
   # function
-  rows <- with(index, type == "IDK")
+  rows <- with(index, type == "NA")
   
   func_exists <- as.character(is_function(package, index[rows, "alias"]))
     # Sometimes there are only functions, so factoring doesn't work
   func_exists[func_exists == "TRUE"] <- "function"
-  func_exists[func_exists == "FALSE"] <- "IDK"
+  func_exists[func_exists == "FALSE"] <- "NA"
   index[rows, "type"] <- func_exists
   
   # internal
   rows <- with(index, file %in% pkg_internal_function_files(package))
   index[rows, "type"] <- "internal"
   
-  rows <- with(index, type == "IDK")
+  rows <- with(index, type == "NA")
   help_name <- as.character(sapply(index[rows, "alias"], exists))
     # Sometimes there are only functions, so factoring doesn't work
-  help_name[help_name == "TRUE"] <- "IDK"
+  help_name[help_name == "TRUE"] <- "NA"
   help_name[help_name == "FALSE"] <- "help_name"
   index[rows, "type"] <- help_name
   

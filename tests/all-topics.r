@@ -1,5 +1,5 @@
 do_all <- function(start_letter = "a"){
-  packages <- library()$results[,"Package"]
+  packages <- suppressWarnings(library()$results[,"Package"])
   packages <- packages[order(tolower(packages))]
   first_letter <- sapply(strsplit(packages, ""), function(x){tolower(x[1])})
   rows <- str_detect(first_letter, str_join("[", tolower(start_letter), "-z]"))
@@ -15,7 +15,7 @@ do_all <- function(start_letter = "a"){
     for (i in seq_along(unique_topics)) {
       cat(i,": ", unique_topics[i],"... ")
       start_time <- Sys.time()
-      topic(pkg, unique_topics[i])
+      helpr_topic(pkg, unique_topics[i])
       time <- Sys.time() - start_time
       cat("  ", str_sub(capture.output(time), 20), "\n")
       if(time > 1){
