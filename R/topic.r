@@ -125,9 +125,9 @@ highlight <- function(parser_output) {
     return("")
   
   # add links before being sent to be highlighted
-  ex_parser <- add_function_links_into_parsed(parser_output)
+  parser_output <- add_function_links_into_parsed(parser_output)
   
-  str_join(capture.output(highlight::highlight( parser.output = ex_parser, renderer = highlight::renderer_html(doc = F))), collapse = "\n")    
+  str_join(capture.output(highlight::highlight( parser.output = parser_output, renderer = highlight::renderer_html(doc = F))), collapse = "\n")    
 }
 
 #' Add Funciton Link
@@ -143,7 +143,7 @@ add_function_links_into_parsed <- function(parser_output){
   rows <- with(d, (token.desc == "SYMBOL_FUNCTION_CALL" & ! text %in% c("", "(",")") ) | text %in% c("UseMethod"))
 
   if(!TRUE %in% rows)
-    return(ex_parser)
+    return(parser_output)
     
   funcs <- d[rows,"text"]
 
@@ -156,8 +156,8 @@ add_function_links_into_parsed <- function(parser_output){
   d[rows,"text"] <- text
 
 #  d[d[,"token.desc"] == "SYMBOL_FUNCTION_CALL","text"] <- text
-  attr(ex_parser, "data") <- d
-  ex_parser
+  attr(parser_output, "data") <- d
+  parser_output
   
 }
 
