@@ -24,14 +24,16 @@ demo_info <- function(package, demo_name){
 helpr_demo <- function(package, demo_name){
   info <- demo_info(package, demo_name)
   
-  demo_functions <- code_info(demo_src(package, demo_name))
+  parsed_src <- parser(file = demo_src_file(package, demo_name))
+  
+  demo_functions <- code_info(parsed_src)
   other_demos <- suppressWarnings(subset(as.data.frame(pkg_demos(package)), Item != demo_name))
 
   list(
     package = package, 
     name = demo_name,
     description = info[1,"Title"],
-    src = highlight(demo_src(package, demo_name)),
+    src = highlight(parsed_src),
     other_demos = other_demos,
     other_demos_str = pluralize("Demo", other_demos),
     src_functions = demo_functions,
@@ -66,3 +68,27 @@ exec_pkg_demo <- function(package, dem) {
 #  demo(dem, character = TRUE, package = package, ask = TRUE)
   demo(dem, character = TRUE, package = package, ask = FALSE)
 }
+
+
+
+
+
+evaluate_text <- function(text){
+  output <- c()
+  input <- parse(text = text)
+  
+  for(i in seq_len(length(input))){
+    item <- capture.output(eval(input[i]))
+    if(length(item) < 1)
+      item <- ""
+    output[i] <- str_join(item, collapse = "\n")
+  }
+  
+  data.frame(input = as.character(input), output = output, stringsAsFactors = FALSE)
+}
+
+evaluate_file <- function(file){
+  source(file)
+}
+
+

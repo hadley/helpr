@@ -87,6 +87,12 @@ helpr <- function(installed = TRUE) {
     string <- rating_text(package)
     render_json(string)
   })
+  router$get("/packages/:package/exec_demo/:demo", function(package, demo) {
+    exec_pkg_demo(package, demo)
+    render_json(TRUE)
+  })
+
+  
   
   # Manual HTML Files
   router$get("/manuals/:name.html", function(name) {
@@ -94,10 +100,9 @@ helpr <- function(installed = TRUE) {
     static_file(file_loc)
   })
   
-  #execute demos
-  router$get("/packages/:package/exec_demo/:demo", function(package, demo) {
-    exec_pkg_demo(package, demo)
-    redirect(str_join("/packages/", package, "/"))
+  #execute code  
+  router$get("/eval_text/:text", function(text){
+    
   })
 
   render_path <- function(path, ...) router$route(path)

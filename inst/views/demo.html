@@ -10,6 +10,7 @@
   <script type="text/javascript" src="/_scripts/jquery-latest.js"></script>
   <script type="text/javascript" src="/_scripts/package.js"></script>
 
+  <%= render_snippet("growl") %>
 
   <title><%= package %> <%= name %>. R help</title>
 </head>
@@ -27,7 +28,10 @@
     <p><%= description %></p>
 
     <h2>Demo Source</h2>
-    <%= src %>
+    <input id="run_demo" type="button" value="Execute Demo" onclick="<%= str_join("execute_demo('",package, "','", name,"')") %>" />
+    <div id="demo_source_code" >
+      <%= src %>
+    </div>
 
 
   </div></div>
@@ -36,6 +40,7 @@
     <% if(dataframe_has_rows(other_demos)) { -%>    
     <h2><%= other_demos_str %></h2>
     <dl>
+      <% for(i in seq_len(NROW(other_demos))) {-%>
       <dt>
         <%= str_join( "<a href=\"/packages/", package, "/demo/", other_demos[i, "Item"], "\" >", other_demos[i, "Item"], "</a>") %>
       </dt>

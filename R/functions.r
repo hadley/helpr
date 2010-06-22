@@ -16,7 +16,7 @@ body_text <- function(fun) {
 #'
 #' @param parser_output text that has been parsed
 function_and_link <- function(parser_output){
-  
+
   parsed_funcs <- as.data.frame(attr(parser_output, "data"), stringsAsFactors = FALSE)
   functions <- subset(parsed_funcs, token.desc %in% c("SYMBOL_FUNCTION_CALL", "NULL_CONST"))$text
   

@@ -16,7 +16,7 @@ render_json <- function(object) {
 #' @param params list containing objects to be sent to the template
 #' @param path path to be used to find the "views" folder
 #' @return text rendered from the template
-render_snippet <- function(template, params, path = helpr_path){
+render_snippet <- function(template, params = list(), path = helpr_path){
   if (is.list(params)) {
       env <- new.env(TRUE)
       for (name in names(params)) {
