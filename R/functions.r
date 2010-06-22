@@ -30,19 +30,23 @@ function_and_link <- function(parser_output){
 #' Return the help path of a function
 #'
 #' @param x item to find the help path
-function_help_path_mem <- memoise(function(x){
+function_help_path_mem <- memoise(function(x, source_link = FALSE){
   tmp <- help(x)[1] 
   if(is.na(tmp)){
     NA
   }else{
     # retrieve last three folders/file and keep the package and topic
     pack_and_topic <- rev(rev(str_split(tmp, .Platform$file.sep)[[1]])[1:3])[c(1,3)]
-    str_join("/packages/",pack_and_topic[1], "/topics/", pack_and_topic[2])
+    if(source_link)
+      ending <- str_join("/source/", x)
+    else
+      ending <- str_join("/topics/", pack_and_topic[2])
+    str_join("/packages/",pack_and_topic[1], ending)
   }
 })
 
-function_help_path <- function(func){
-  sapply(func, function_help_path_mem)
+function_help_path <- function(func, source_link = FALSE){
+  sapply(func, function_help_path_mem, source_link = source_link)
 }
 
 
@@ -82,14 +86,17 @@ code_info <- function(parser_output){
 helpr_function <- function(package, func){
   
   index <- pkg_topics_index(package)
-  topic <- index[index$alias == func, "file"]
-  par_text <- reconstruct(body_text(func))
+  topic <- as.character(subset(index, alias == func, "file"))
+  aliases <- subset(index, (file == topic) & (alias != func), "alias")
+  par_text <- parse_text(reconstruct(body_text(func)))
   src_frunctions <- code_info(par_text)
+  
   list(
     package = package, 
     name = func,
-    aliases = topic_and_alias(package, topic, omit = func),
-    desc = topic(package, topic)$desc,
+    aliases = aliases,
+    aliases_str = pluralize("Alias (Source)", aliases, plural="Aliases (Source)"),
+    desc = helpr_topic(package, topic)$desc,
     src = highlight(par_text),
     src_functions = src_frunctions,
     src_functions_str = pluralize("Top Function", src_frunctions)
@@ -100,9 +107,5 @@ helpr_function <- function(package, func){
 topic_and_alias <- function(package, topic, omit = ""){
   index <- pkg_topics_index(package)
   index <- index[topic == index$file, ]
-  aliases <- index[index$alias != omit, "alias"]
-  list(
-    alias = aliases,
-    str = pluralize("Alias (Source)", aliases, plural="Aliases (Source)")
-  )
+  index[index$alias != omit, "alias"]
 }

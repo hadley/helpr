@@ -101,8 +101,14 @@ helpr <- function(installed = TRUE) {
   })
   
   #execute code  
-  router$get("/eval_text/:text", function(text){
-    
+  router$get("/eval_text/:encoded_text", function(encoded_text){
+    execute_text(URLdecode(encoded_text))
+    render_json(TRUE)
+  })
+  
+  # Individual help topic 
+  router$get("/g", function() {
+    redirect("packages/stats/demo/glm.vr")
   })
 
   render_path <- function(path, ...) router$route(path)

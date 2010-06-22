@@ -34,6 +34,23 @@ function notify(text)
     });
 }  
 
+//http://www.codetoad.com/javascript_get_selected_text.asp
+function getSelText()
+{
+  var txt = '';
+  if (window.getSelection){
+    txt = window.getSelection();
+  } else if (document.getSelection) {
+    txt = document.getSelection();
+  }else if (document.selection){
+    txt = document.selection.createRange().text;
+  }else
+   return;
+  
+  window.console.log("Selected Text:\n\t"+txt);
+  return txt;
+}
+
 
 //http://jquery.malsup.com/block/#page
 function execute_demo(package, demo){
@@ -49,6 +66,21 @@ function execute_demo(package, demo){
     }
   })
  
+}
+
+function run_selected_code(){
+  $.blockUI({ message: '<h1><img src="/_images/busy.gif" /> Running selected code in the R console</h1>' }); 
+
+  var code = getSelText();
+
+  jQuery.ajax({
+    url: "/eval_text/"+code,
+    dataType: "json",
+    success: function() {
+      $.unblockUI();
+      notify("The highlighted selection has finished executing in the R console.");      
+    }
+  })
 }
 
 

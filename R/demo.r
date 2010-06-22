@@ -63,32 +63,3 @@ pkg_demos <- function(package) {
 
 
 
-## should be replaced with something else
-exec_pkg_demo <- function(package, dem) {
-#  demo(dem, character = TRUE, package = package, ask = TRUE)
-  demo(dem, character = TRUE, package = package, ask = FALSE)
-}
-
-
-
-
-
-evaluate_text <- function(text){
-  output <- c()
-  input <- parse(text = text)
-  
-  for(i in seq_len(length(input))){
-    item <- capture.output(eval(input[i]))
-    if(length(item) < 1)
-      item <- ""
-    output[i] <- str_join(item, collapse = "\n")
-  }
-  
-  data.frame(input = as.character(input), output = output, stringsAsFactors = FALSE)
-}
-
-evaluate_file <- function(file){
-  source(file)
-}
-
-

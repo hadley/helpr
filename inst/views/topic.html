@@ -24,10 +24,10 @@
     <h1><%= title%></h1>
     <%= desc %>
 
-    <h2>Source</h2>
-    <% names <- c(name, aliases) %>
-    <%= str_join(str_join("<a href='/packages/",package,"/source/",names,"'>",names,"</a>" ), collapse = ", ") %>
-
+<!--    <h2>Source</h2>
+    <%# names <- c(name, aliases) %>
+    <%#= str_join(str_join("<a href='/packages/",package,"/source/",names,"'>",names,"</a>" ), collapse = ", ") %>
+-->
     <h2>Usage</h2>
     <p>Click the functions to view their source</p>
     <pre><%= usage %></pre>

@@ -72,7 +72,8 @@ parse_help <- function(rd) {
   out$examples <- highlight(par_text)
   out$example_functions <- code_info(par_text)
   out$example_functions_str <- pluralize("Top Function", out$example_functions)
-  out$usage <- reconstruct(untag(rd$usage))
+#  out$usage <- reconstruct(untag(rd$usage))
+  out$usage <- highlight(parse_text(reconstruct(untag(rd$usage))), source_link = TRUE)
   out$authors <- reconstruct(rd$author)
   out$author_str <- pluralize("Author", rd$author)
 
@@ -120,12 +121,12 @@ parse_help <- function(rd) {
 #' Highlights R text to include links to all functions and make it easier to read
 #' @param parser_output text to be parsed and highlighted
 #' @return highlighted text
-highlight <- function(parser_output) {
+highlight <- function(parser_output, source_link = FALSE) {
   if(is.null(parser_output))
     return("")
   
   # add links before being sent to be highlighted
-  parser_output <- add_function_links_into_parsed(parser_output)
+  parser_output <- add_function_links_into_parsed(parser_output, source_link)  
   
   str_join(capture.output(highlight::highlight( parser.output = parser_output, renderer = highlight::renderer_html(doc = F))), collapse = "\n")    
 }
@@ -135,7 +136,7 @@ highlight <- function(parser_output) {
 #'
 #' @param parser_output pre-parsed output
 #' @return parsed output with functions with html links around them
-add_function_links_into_parsed <- function(parser_output){
+add_function_links_into_parsed <- function(parser_output, source_link = FALSE){
   # pull out data
   d <- attr(parser_output, "data")
   
@@ -148,7 +149,7 @@ add_function_links_into_parsed <- function(parser_output){
   funcs <- d[rows,"text"]
 
   # make links for functions and not for non-package functions
-  paths <- function_help_path(funcs)
+  paths <- function_help_path(funcs, source_link)  
   text <- str_join("<a href='", paths, "'>", funcs,"</a>")
   text[is.na(paths)] <- funcs[is.na(paths)]
   
