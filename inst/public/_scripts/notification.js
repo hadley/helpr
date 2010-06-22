@@ -38,7 +38,7 @@ function notify(text)
 //http://jquery.malsup.com/block/#page
 function execute_demo(package, demo){
   
-  $.blockUI({ message: '<h1><img src="/_images/busy.gif" /> Thinking about how awesome this demo is...</h1>' }); 
+  $.blockUI({ message: '<h1><img src="/_images/busy.gif" /> Please view the R console to advance the demo</h1>' }); 
   
   jQuery.ajax({
     url: "/packages/"+package+"/exec_demo/"+demo,
