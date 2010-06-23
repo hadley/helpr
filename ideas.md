@@ -1,7 +1,7 @@
 Individual pages
 ================
 
-Main
+## Main
 
 * WAIT - Main page - display latest changes from CHANGELOG
   * a function page should show all change logs related to that function
@@ -21,7 +21,8 @@ Main
 * DONE - add links to the manuals
   * DONE - Had coded: should be memoised or hard coded?
 
-Package
+## Package
+
 * link to CRAN page
 * PARTIAL - links to news & changelogs
   * needs to have a render brew template
@@ -48,7 +49,7 @@ Package
 
 * see CRAN page for more ideas
 
-Topic
+## Topic
 
 * "did you mean?" - include list of all topics with the same name in different packages
   * requires solr
@@ -63,12 +64,14 @@ Topic
   * links to the source code of said function
     * See Code Execution minus 'run' functionality
     
-Unknown Parse Tags
+## Unknown Parse Tags
+
   * ?checkRd
     * \tabular
     * \tab
 
-Things to fix
+## Things to fix
+
   * \\item
     * does not have a </li>
     * inside a \\describe
