@@ -1,91 +1,100 @@
-function notify(function_text, start_text, end_text){
-  
-  jQuery.ajax({
-    url: "/packages/:package/exec_demo/:demo",
-    dataType: "json",
-    success: function(packages) {
-      for(i = 0; i < packages.length; i++) {
-        pkg = packages[i];
-        $("#" + pkg).removeClass("old").addClass("update");
-      }
-      set_update_button();
-    }
-  })
+// Notification:
+//   http://awgy.net/achtung/demo/
 
-  
-}
+// Block Screen:
+//   http://jquery.malsup.com/block/#page
 
-//http://awgy.net/achtung/demo/
+// Produces black with checkmark
 var notice_settings = {
   timeout: 3,
-//  className: 'achtungSuccess',
-//  hideEffects: false,
+  className: 'achtungSuccess',
   icon: 'ui-icon-check'
 }
 
-
-function tell_highlighted(){
-  alert ($().selectedText());
-}
-
-function notify(text)
-{
+// Wrapper to notify user with text
+function notify(text){
     $.achtung(notice_settings, {
         message: text
     });
 }  
 
-//http://www.codetoad.com/javascript_get_selected_text.asp
+// Produces red with error symbol
+var error_settings = {
+  timeout: 3,
+  className: 'achtungFail',
+  icon: 'ui-icon-alert'
+}
+
+// Wrapper to notify user of error
+function error_notify(text){
+    $.achtung(error_settings, {
+        message: text
+    });
+}  
+
+
+
+// Retrive the selected text on the page
+// http://www.codetoad.com/javascript_get_selected_text.asp
 function getSelText()
 {
-  var txt = '';
   if (window.getSelection){
-    txt = window.getSelection();
+    return window.getSelection();
   } else if (document.getSelection) {
-    txt = document.getSelection();
+    return document.getSelection();
   }else if (document.selection){
-    txt = document.selection.createRange().text;
+    return document.selection.createRange().text;
   }else
    return;
-  
-  window.console.log("Selected Text:\n\t"+txt);
-  return txt;
 }
 
 
-//http://jquery.malsup.com/block/#page
+// Block the screen while executing a package demo
 function execute_demo(package, demo){
-  
   $.blockUI({ message: '<h1><img src="/_images/busy.gif" /> Please view the R console to advance the demo</h1>' }); 
   
-  jQuery.ajax({
-    url: "/packages/"+package+"/exec_demo/"+demo,
-    success: function() {
-      $.unblockUI();
-      notify("The demo:" +demo+" has finished executing in the R console.");
-      
-    }
-  })
+  setTimeout(function(){
+    jQuery.ajax({
+      url: "/packages/"+package+"/exec_demo/"+demo,
+      success: function() {
+        $.unblockUI();
+        notify("The demo:" +demo+" has finished executing in the R console.");
+      },
+      error:function (xhr, ajaxOptions, thrownError){
+        $.unblockUI();
+        error_notify("The demo did not run execute properly.");
+      }
+    })
+  }, 500);
  
 }
 
+// Block the screen while code is executed
 function run_selected_code(){
-  $.blockUI({ message: '<h1><img src="/_images/busy.gif" /> Running selected code in the R console</h1>' }); 
 
   var code = getSelText();
+  if(code == "")
+    return;
 
-  jQuery.ajax({
-    url: "/eval_text/"+code,
-    dataType: "json",
-    success: function() {
-      setTimeout($.unblockUI, 500); 
-      notify("The highlighted selection has finished executing in the R console.");      
-    }
-  })
+  if( $("#demo_source_code").text().indexOf(code) >= 0) {
+    error_notify("Select demo text only.");    
+    return;
+  }
+  
+  $.blockUI({ message: '<h1><img src="/_images/busy.gif" /> Running selected code in the R console</h1>' }); 
+  
+  setTimeout(function(){
+    jQuery.ajax({
+      url: "/eval_text/" + code,
+      dataType: "json",
+      success: function() {
+        $.unblockUI();
+        notify("The highlighted selection has finished executing in the R console.");
+      },
+      error:function (xhr, ajaxOptions, thrownError){
+        $.unblockUI();
+        error_notify("The code that was selected did not run execute properly.");
+      }
+    })
+  }, 500);
 }
-
-
-$('#demo_source_code').click(function() {
-  alert("You selected: " + $.selectedText());
-});
-
