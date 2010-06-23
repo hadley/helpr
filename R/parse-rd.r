@@ -79,6 +79,19 @@ reconstruct <- function(rd) {
   } else if(tag == "\\dontrun"){
     str_join("## <strong>Not run</strong>:", str_replace(reconstruct(untag(rd)), "\n", "\n#"), "## <strong>End(Not run)</strong>")
 
+  } else if(tag == "\\special"){
+#    "\\special" =      c("<em>","</em>"),    
+    txt <- reconstruct(untag(rd))
+    txt <- str_replace(txt, "<", "&lt;")
+    txt <- str_replace(txt, ">", "&gt;")
+    txt <- str_replace(txt, "\\\\dots", "...")
+
+    stupid <- unlist(str_match_all(txt, "\\\\[a-zA-Z]*"))
+    for(i in seq_len(length(stupid)))
+      message("Uknown tag (", stupid[i], ") in a special")
+    
+    str_join("<em>", txt, "</em>")
+
   } else {
     
     message("Unknown tag ", tag)
@@ -131,7 +144,7 @@ simple_tags <- list(
   "\\preformatted" = c("<pre>","</pre>"),
   "\\R" =            c('<span style="R">R</span>', ""),
   "\\samp" =         c('<span class = "samp">',"</span>"),
-  "\\special" =      c("<em>","</em>"),
+#  "\\special" =      c("<em>","</em>"),
   "\\sQuote" =       c("&lsquo;","&rsquo;"),
   "\\strong" =       c("<strong>", "</strong>"),
   "\\tab" =          c("&nbsp;&nbsp;", ""),

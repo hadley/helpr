@@ -73,7 +73,7 @@ parse_help <- function(rd) {
   out$example_functions <- code_info(par_text)
   out$example_functions_str <- pluralize("Top Function", out$example_functions)
 #  out$usage <- reconstruct(untag(rd$usage))
-  out$usage <- highlight(parse_text(reconstruct(untag(rd$usage))), source_link = TRUE)
+  out$usage <- parse_usage(rd$usage)
   out$authors <- reconstruct(rd$author)
   out$author_str <- pluralize("Author", rd$author)
 
@@ -182,3 +182,37 @@ last_item_pos <- function(arr){
       return(i)
   0  
 }
+
+
+parse_usage <- function(usage){
+  
+  text <- reconstruct(untag(usage))
+  
+  pattern <- "[a-zA-Z_.][a-zA-Z_.0-9]*\\("  
+  funcs_text <- unlist(str_extract_all(text, pattern))
+  funcs <- str_replace(funcs_text, "\\(", "")
+  
+  paths <- function_help_path(funcs, source_link = TRUE)
+  
+  links <- str_join("<a href=\"", paths, "\">", funcs, "</a>(" )
+  links[is.na(paths)] <- str_join(funcs[is.na(paths)], "(")
+  
+  funcs_text <- str_replace(funcs_text, "\\(", "\\\\(")
+  
+  for(i in seq_along(paths)){
+    text <- str_replace(text, funcs_text[i], links[i])
+  }
+  
+  text
+}
+
+
+
+
+
+
+
+
+
+
+
