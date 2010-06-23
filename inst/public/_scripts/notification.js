@@ -19,6 +19,7 @@ function notify(function_text, start_text, end_text){
 var notice_settings = {
   timeout: 3,
 //  className: 'achtungSuccess',
+//  hideEffects: false,
   icon: 'ui-icon-check'
 }
 
@@ -77,7 +78,7 @@ function run_selected_code(){
     url: "/eval_text/"+code,
     dataType: "json",
     success: function() {
-      $.unblockUI();
+      setTimeout($.unblockUI, 500); 
       notify("The highlighted selection has finished executing in the R console.");      
     }
   })
