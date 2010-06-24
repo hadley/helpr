@@ -73,7 +73,7 @@ parse_help <- function(rd) {
   out$example_functions <- code_info(par_text)
   out$example_functions_str <- pluralize("Top Function", out$example_functions)
 #  out$usage <- reconstruct(untag(rd$usage))
-  out$usage <- parse_usage2(rd$usage)
+  out$usage <- parse_usage(rd$usage)
   out$authors <- reconstruct(rd$author)
   out$author_str <- pluralize("Author", rd$author)
 
