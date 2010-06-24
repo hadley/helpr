@@ -22,7 +22,7 @@ function highlight_old_packages() {
   document.getElementById("thinking_wheel").style.display = "inline";
 
   jQuery.ajax({
-    url: "/packages/old.json",
+    url: "/package/old.json",
     dataType: "json",
     success: function(packages) {
       for(i = 0; i < packages.length; i++) {
@@ -47,7 +47,7 @@ function update_packs() {
     all = "TRUE";
 
   jQuery.ajax({
-    url: "/packages/update.json/"+all,
+    url: "/package/update.json/"+all,
     dataType: "json",
     success: function(packages) {
       for(i = 0; i < packages.length; i++) {

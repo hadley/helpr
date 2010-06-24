@@ -82,17 +82,20 @@ reconstruct <- function(rd) {
   } else if(tag == "\\special"){
 #    "\\special" =      c("<em>","</em>"),    
     txt <- reconstruct(untag(rd))
+    # replace '<' and '>' with html markings avoid browser misinterpretation
     txt <- str_replace(txt, "<", "&lt;")
     txt <- str_replace(txt, ">", "&gt;")
     txt <- str_replace(txt, "\\\\dots", "...")
 
     stupid <- unlist(str_match_all(txt, "\\\\[a-zA-Z]*"))
     for(i in seq_len(length(stupid)))
-      message("Uknown tag (", stupid[i], ") in a special")
+      message("Uknown tag (", stupid[i], ") found in 'special' tag")
     
     str_join("<em>", txt, "</em>")
 
-  } else {
+  } else if(tag == "\\tabular"){
+    parse_tabular(untag(rd))
+  }else {
     
     message("Unknown tag ", tag)
     reconstruct(untag(rd))
@@ -107,7 +110,7 @@ tag_simple <- function(tag, text) {
 
 tag_link <- function(fun, pkg = NULL) {
   if (!is.null(pkg)) {
-    str_join("<a href='/packages/", pkg, "/topics/", fun, "'>", fun, "</a>")        
+    str_join("<a href='/package/", pkg, "/topic/", fun, "'>", fun, "</a>")        
   } else {
     str_join("<a href='", function_help_path(fun), "'>", fun, "</a>")
   }
@@ -147,7 +150,7 @@ simple_tags <- list(
 #  "\\special" =      c("<em>","</em>"),
   "\\sQuote" =       c("&lsquo;","&rsquo;"),
   "\\strong" =       c("<strong>", "</strong>"),
-  "\\tab" =          c("&nbsp;&nbsp;", ""),
+#  "\\tab" =          c("&nbsp;&nbsp;", ""),
   "\\text" =         c("<p>", "</p>"),
   "\\var" =          c("<var>", "</var>"),
 #  "\\verb" =         c("<pre>", "</pre>"),
@@ -185,4 +188,53 @@ pluralize <- function(string, obj, plural = str_join(string, "s", sep = ""), boo
 strip_html <- function(x) {
   str_replace(x, "</?.*?>", "")
 }
+
+
+#' Parse a Tabular Section
+#' Parse a tabular section to include the text alignments
+#'
+#' @param tabular rd item to parsed
+parse_tabular <- function(tabular){
+  #' make all alignements into left, right or center
+  alignments <- unlist(str_split(tabular[[1]][[1]], ""))
+  alignments <- alignments[nchar(alignments) > 0]
+  #' remove line markings
+  alignments <- alignments[alignments != "|"]
+  
+  alignments[alignments == "l"] <- "left"
+  alignments[alignments == "r"] <- "right"
+  alignments[alignments == "c"] <- "center"
+  
+  
+  rows <- tabular[[2]]
+  column <- 1
+  output <- character(length(rows))
+  
+  #' Go through each item and reconstruct it if it is not a tab or carriage return
+  for(i in seq_along(rows)){
+    row_tag <- tag(rows[[i]])
+
+    if(row_tag == "\\tab"){
+      column <- column + 1
+      output[i] <- str_join("</td><td align=\"", alignments[column], "\">")
+    } else if(row_tag == "\\cr"){
+      output[i] <- str_join("</td></tr><tr><td align=\"", alignments[1], "\">")
+      column <- 1
+    } else {
+      output[i] <- reconstruct(rows[[i]])
+    }
+  }
+  
+  output[1] <- str_join("<table><tr><td align=\"", alignments[1], "\">", output[1])
+  output[length(rows)] <- str_join(output[length(rows)], "</td></tr></table>")
+
+  str_join(output, collapse = "")
+}
+
+
+
+
+
+
+
 

@@ -49,7 +49,7 @@
       </tr>
       <% for(pkg in packages) { -%>
       <tr id="<%= pkg$Package %>" class="<%= pkg$status %>">
-        <td><a href="/packages/<%= pkg$Package %>"><%= pkg$Package %></a></td>
+        <td><a href="/package/<%= pkg$Package %>"><%= pkg$Package %></a></td>
         <td><%= pkg$Title %></td>
       </tr>
       <% } %>

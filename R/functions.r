@@ -37,11 +37,11 @@ function_help_path_mem <- memoise(function(x, source_link = FALSE){
   }else{
     # retrieve last three folders/file and keep the package and topic
     pack_and_topic <- rev(rev(str_split(tmp, .Platform$file.sep)[[1]])[1:3])[c(1,3)]
+
+    ending <- str_join("/topic/", pack_and_topic[2])
     if(source_link)
-      ending <- str_join("/source/", x)
-    else
-      ending <- str_join("/topics/", pack_and_topic[2])
-    str_join("/packages/",pack_and_topic[1], ending)
+      ending <- str_join(ending, "/source/", x)
+    str_join("/package/",pack_and_topic[1], ending)
   }
 })
 
@@ -93,6 +93,7 @@ helpr_function <- function(package, func){
   
   list(
     package = package, 
+    topic = topic,
     name = func,
     aliases = aliases,
     aliases_str = pluralize("Alias (Source)", aliases, plural="Aliases (Source)"),

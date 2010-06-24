@@ -43,7 +43,7 @@
     <dl>
       <% for(i in seq_len(NROW(other_demos))) {-%>
       <dt>
-        <%= str_join( "<a href=\"/packages/", package, "/demo/", other_demos[i, "Item"], "\" >", other_demos[i, "Item"], "</a>") %>
+        <%= str_join( "<a href=\"/package/", package, "/demo/", other_demos[i, "Item"], "\" >", other_demos[i, "Item"], "</a>") %>
       </dt>
       <dd>
         <%= other_demos[i, "Title"] %>

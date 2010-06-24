@@ -35,59 +35,59 @@ helpr <- function(installed = TRUE) {
   })
 
   # If package path, missing trailing /, redirect
-  router$get("/packages/:package", function(package) {
-    redirect(str_join("/packages/", package, "/"))
+  router$get("/package/:package", function(package) {
+    redirect(str_join("/package/", package, "/"))
   })
 
   # Package index page, list topics etc
-  router$get("/packages/:package/", function(package) {
+  router$get("/package/:package/", function(package) {
     render_brew("package", helpr_package(package), path = path)    
   })
   
   # Package Vignette
-  router$get("/packages/:package/vignette/:vignette", function(package, vignette) {
+  router$get("/package/:package/vignette/:vignette", function(package, vignette) {
     static_file(system.file("doc", str_join(vignette, ".pdf"), package = package))
   })
 
   # Package Demo
-  router$get("/packages/:package/demo/:demo", function(package, demo) {
+  router$get("/package/:package/demo/:demo", function(package, demo) {
     render_brew("demo", helpr_demo(package, demo), path = path)
   })
   
   # Individual topic source
-  router$get("/packages/:package/source/:func", function(package, func) {
+  router$get("/package/:package/topic/:topic/source/:func", function(package, topic, func) {
     render_brew("source", helpr_function(package, func), path = path)
   })
 
   # Individual help topic
-  router$get("/packages/:package/topics/:topic", function(package, topic) {
+  router$get("/package/:package/topic/:topic", function(package, topic) {
     render_brew("topic", helpr_topic(package, topic), path = path)
   })
 
   # Individual help topic 
   router$get("/library/:package/html/:topic.html", function(package, topic) {
-    redirect(str_join("/packages/", package, "/topics/", topic))
+    redirect(str_join("/package/", package, "/topic/", topic))
   })
   router$get("/library/:package/help/:topic", function(package, topic) {
-    redirect(str_join("/packages/", package, "/topics/", topic))
+    redirect(str_join("/package/", package, "/topic/", topic))
   })
   
   # AJAX
-  router$get("/packages/old.json", function() {
+  router$get("/package/old.json", function() {
     render_json(old_package_names())
   })
-  router$get("/packages/index.json", function() {
+  router$get("/package/index.json", function() {
     render_json(installed_packages())
   })
-  router$get("/packages/update.json/:all_packs", function(all_packs) {
+  router$get("/package/update.json/:all_packs", function(all_packs) {
     render_json(update_loaded_packs(all_packs))
   })
-  router$get("/packages/:package/rating.json", function(package) {
+  router$get("/package/:package/rating.json", function(package) {
 #    render_json(rating_text(as.character(package)))
     string <- rating_text(package)
     render_json(string)
   })
-  router$get("/packages/:package/exec_demo/:demo", function(package, demo) {
+  router$get("/package/:package/exec_demo/:demo", function(package, demo) {
     exec_pkg_demo(package, demo)
     render_json(TRUE)
   })
@@ -108,7 +108,7 @@ helpr <- function(installed = TRUE) {
   
   # Individual help topic 
   router$get("/g", function() {
-    redirect("packages/stats/demo/glm.vr")
+    redirect("package/stats/demo/glm.vr")
   })
 
   render_path <- function(path, ...) router$route(path)
@@ -157,7 +157,7 @@ helpr_home <- function(){
 
 #' Helpr Package
 #'
-#' @return all the information necessary to produce a package site ("/packages/:package/")
+#' @return all the information necessary to produce a package site ("/package/:package/")
 helpr_package <- function(package){
   
   info <- .readRDS(system.file("Meta", "package.rds", package = package))

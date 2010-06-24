@@ -138,8 +138,11 @@ pkg_topics_index_by_type <- function(package){
 #' @return boolean
 is_function <- function(package, items){
   sapply(items, function(x){
-    exists(x, envir = asNamespace(package), mode="function") |
-    exists(x, str_join("package:", package))
+    bool <- exists(x, str_join("package:", package))    
+    if(package %in% loadedNamespaces())
+      bool | exists(x, envir = asNamespace(package), mode="function")
+    else
+      bool
   })
 }
 

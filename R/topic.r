@@ -73,7 +73,7 @@ parse_help <- function(rd) {
   out$example_functions <- code_info(par_text)
   out$example_functions_str <- pluralize("Top Function", out$example_functions)
 #  out$usage <- reconstruct(untag(rd$usage))
-  out$usage <- parse_usage(rd$usage)
+  out$usage <- parse_usage2(rd$usage)
   out$authors <- reconstruct(rd$author)
   out$author_str <- pluralize("Author", rd$author)
 
@@ -176,6 +176,7 @@ first_item_pos <- function(arr){
 #' Find the Last Item Position
 #' @param arr arr of items to look at
 #' @return position of the last item to match "\\item" else 0
+#'
 last_item_pos <- function(arr){
   for(i in rev(seq_along(arr)))
     if(arr[i] == "\\item")
@@ -184,31 +185,60 @@ last_item_pos <- function(arr){
 }
 
 
+#' Parse Usage
+#' Parse the topic usage to add links to functions
+#'
+#' @param usage rd usage
 parse_usage <- function(usage){
   
   text <- reconstruct(untag(usage))
   
   pattern <- "[a-zA-Z_.][a-zA-Z_.0-9]*\\("  
+  func_text <- str_extract(text, pattern)
   funcs_text <- unlist(str_extract_all(text, pattern))
   funcs <- str_replace(funcs_text, "\\(", "")
-  
-  paths <- function_help_path(funcs, source_link = TRUE)
-  
-  links <- str_join("<a href=\"", paths, "\">", funcs, "</a>(" )
-  links[is.na(paths)] <- str_join(funcs[is.na(paths)], "(")
-  
-  funcs_text <- str_replace(funcs_text, "\\(", "\\\\(")
-  
-  for(i in seq_along(paths)){
-    text <- str_replace(text, funcs_text[i], links[i])
+  funcs <- safely_order_funcs(funcs)
+
+  #' add links to each safely ordered function
+  for(i in seq_along(funcs)){
+    func <- funcs[i]
+    
+    path <- function_help_path(func, source_link = TRUE)
+    
+    if(is.na(path))
+      link <- str_join("<em>",func, "<em>(")
+    else
+      link <- str_join("<a href=\"", path, "\">", func, "</a>(" )
+    
+    text <- str_replace(text, str_join(func,"\\("), link)
+    
+    func_text <- str_extract(text, pattern)
   }
   
   text
 }
 
-
-
-
+#' Order Functions Safely by Name
+#'
+#' @param vect string vector to be processed
+safely_order_funcs <- function(vect){
+  
+  # add a ending string to only allow for end of string comparisons
+  vect <- str_join(vect, "_helpr")
+  
+  # search from i in 1:n; j in i+1:n
+  len <- length(vect)
+  for(i in seq_len(len)){
+    for(j in (seq_len(len - i) + i)){
+      if(str_detect(vect[j], vect[i])){
+        tmp <- vect[j]
+        vect[j] <- vect[i]
+        vect[i] <- tmp
+      }
+    }
+  }
+  str_replace(vect, "_helpr", "")
+}
 
 
 

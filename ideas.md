@@ -91,10 +91,11 @@ Examples and demos
 
 * DONE - Parse examples and add links to functions that are used
 * BUSY - Send selected/highlighted expression to R console
-* BUSY - Evaluate all example code and interleave results back in html, like:
+  * silently remove "bad" text
+* Evaluate all example code and interleave results back in html, like:
   http://ejohn.org/apps/learn/
-* Add jQuery to notify user
-* "Easy"(run) button
+* DONE - Add jQuery to notify user
+* DONE - "Easy"(run) button
 
 Search
 ======

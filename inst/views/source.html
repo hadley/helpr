@@ -18,7 +18,7 @@
   <div id="watermark"><%= package %></div>
   <div id="doc2" class="yui-t6">
   <div id="hd">
-    <a href="/index.html">R</a> &#8594; <a href=".."><%= package %></a> &#8594; <%= name %> (source) 
+    <a href="/index.html">R</a> &#8594; <a href="../../../"><%= package %></a> &#8594; <a href=<%= str_join("\"../../", topic,"\"") %> ><%= topic %></a> &#8594; <%= name %> (source) 
   </div>
 
   <div id="bd">
@@ -38,7 +38,7 @@
     <ul>
     <% for(alias in aliases$alias) { -%>
       <li>
-        <%= str_join("<a href='/packages/",package,"/source/",alias,"'>",alias,"</a>" ) %>
+        <%= str_join("<a href='/package/",package,"/source/",alias,"'>",alias,"</a>" ) %>
       </li>
     <% } %>
     </ul>

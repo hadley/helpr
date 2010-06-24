@@ -30,37 +30,37 @@
 
     <% if(dataframe_has_rows(items$package)){ -%>
       <h2>Package Info</h2>
-      <p><%= str_join("<a href='topics/", items$package$file, "'>", items$package$alias, "</a>", 
+      <p><%= str_join("<a href='topic/", items$package$file, "'>", items$package$alias, "</a>", 
         collapse = ", ") %></p>
     <% } %>
 
     <% if(dataframe_has_rows(items$help_name)){ -%>
       <h2>Groups</h2>
-      <p><%= str_join("<a href='topics/", items$help_name$file, "'>", items$help_name$alias, "</a>", 
+      <p><%= str_join("<a href='topic/", items$help_name$file, "'>", items$help_name$alias, "</a>", 
         collapse = ", ") %></p>
     <% } %>
 
     <% if(dataframe_has_rows(items$dataset)){ -%>
       <h2>Data Sets</h2>
-      <p><%= str_join("<a href='topics/", items$dataset$file, "'>", items$dataset$alias, "</a>", 
+      <p><%= str_join("<a href='topic/", items$dataset$file, "'>", items$dataset$alias, "</a>", 
         collapse = ", ") %></p>
     <% } %>
 
     <% if(dataframe_has_rows(items$func)){ -%>
       <h2>Functions</h2>
-      <p><%= str_join("<a href='topics/", items$func$file, "'>", items$func$alias, "</a>", 
+      <p><%= str_join("<a href='topic/", items$func$file, "'>", items$func$alias, "</a>", 
         collapse = ", ") %></p>
     <% } %>
 
     <% if(dataframe_has_rows(items$internal)){ -%>
       <h2>Internal</h2>
-      <p><%= str_join("<a href='topics/", items$internal$file, "'>", items$internal$alias, "</a>", 
+      <p><%= str_join("<a href='topic/", items$internal$file, "'>", items$internal$alias, "</a>", 
         collapse = ", ") %></p>
     <% } %>
 
     <% if(dataframe_has_rows(items$idk)){ -%>
       <h2>Items Not Loaded</h2>
-      <p><%= str_join("<a href='topics/", items$idk$file, "'>", items$idk$alias, "</a>", 
+      <p><%= str_join("<a href='topic/", items$idk$file, "'>", items$idk$alias, "</a>", 
         collapse = ", ") %></p>
     <% } %>
 
@@ -77,7 +77,7 @@
       <h2>Imports</h2>
       
       <p><% imports <- sapply(description$imports, "[[", "name") %>
-      <%=str_join("<a href='/packages/", imports, "/'>", imports, "</a>", collapse = ", ") %></p>
+      <%=str_join("<a href='/package/", imports, "/'>", imports, "</a>", collapse = ", ") %></p>
     <% }%>
       
     
@@ -85,7 +85,7 @@
       <h2>Suggests</h2>
       
       <p><% suggests <- sapply(description$suggests, "[[", "name") %>
-      <%=str_join("<a href='/packages/", suggests, "/'>", suggests, "</a>", collapse = ", ") %></p>
+      <%=str_join("<a href='/package/", suggests, "/'>", suggests, "</a>", collapse = ", ") %></p>
     <% }%>
 
     <% if(has_length(demos)) { -%>    
@@ -93,7 +93,7 @@
       <dl>
       <% for(i in seq_len( nrow(demos))) { -%>
         <dt>
-          <%= str_join( "<a href=\"/packages/", package, "/demo/", demos[i, "Item"], "\" >", demos[i, "Item"], "</a>") %>
+          <%= str_join( "<a href=\"/package/", package, "/demo/", demos[i, "Item"], "\" >", demos[i, "Item"], "</a>") %>
         </dt>
         <dd>
           <%= demos[i, "Title"] %>
@@ -105,7 +105,7 @@
 
     <% if(has_length(vigs)){ -%>    
       <h2><%= vigs_str %></h2>
-      <ul><%= str_join( "<li><a href=\"/packages/", package, "/vignette/", vigs[, "item"], "\" >", vigs[, "title"], "</a></li>") %></ul>
+      <ul><%= str_join( "<li><a href=\"/package/", package, "/vignette/", vigs[, "item"], "\" >", vigs[, "title"], "</a></li>") %></ul>
     <% } %>
 
 

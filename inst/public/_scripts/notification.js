@@ -55,7 +55,7 @@ function execute_demo(package, demo){
   
   setTimeout(function(){
     jQuery.ajax({
-      url: "/packages/"+package+"/exec_demo/"+demo,
+      url: "/package/"+package+"/exec_demo/"+demo,
       success: function() {
         $.unblockUI();
         notify("The demo:" +demo+" has finished executing in the R console.");
