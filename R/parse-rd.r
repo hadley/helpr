@@ -62,8 +62,7 @@ reconstruct <- function(rd) {
     str_join("<a href='", rd[[1]], "'>", rd[[1]], "</a>")
 
   } else if(tag == "\\email"){
-    str_join("<a href=\"mailto:",rd[[1]][1],"?subject=(R-Help): \">",reconstruct(untag(rd)),"</a>")
-      
+    author_email(reconstruct(untag(rd)), rd[[1]][1])      
   } else if(tag == "COMMENT") {
     
     txt <- as.character(rd)
@@ -100,6 +99,10 @@ reconstruct <- function(rd) {
     message("Unknown tag ", tag)
     reconstruct(untag(rd))
   }
+}
+
+author_email <- function(name, address){
+  str_join("<a href=\"mailto:",address,"?subject=(R-Help): \">",name,"</a>")
 }
 
 tag_simple <- function(tag, text) {
@@ -200,11 +203,7 @@ parse_tabular <- function(tabular){
   alignments <- alignments[nchar(alignments) > 0]
   #' remove line markings
   alignments <- alignments[alignments != "|"]
-  
-  alignments[alignments == "l"] <- "left"
-  alignments[alignments == "r"] <- "right"
-  alignments[alignments == "c"] <- "center"
-  
+  alignments <- c("r" = "right", "l" = "left", "c" = "center")[alignments]
   
   rows <- tabular[[2]]
   column <- 1

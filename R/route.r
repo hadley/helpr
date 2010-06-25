@@ -149,38 +149,3 @@ helpr_home <- function(){
     manuals = get_manuals()
   )
 }
-
-
-
-
-
-
-#' Helpr Package
-#'
-#' @return all the information necessary to produce a package site ("/package/:package/")
-helpr_package <- function(package){
-  
-  info <- .readRDS(system.file("Meta", "package.rds", package = package))
-  description <- as.list(info$DESCRIPTION)
-  info$DESCRIPTION <- NULL
-  description <- defaults(info, description)
-  names(description) <- tolower(names(description))
-  
-  author_str <- pluralize("Author", description$author)
-  
-  items <- pkg_topics_index_by_type(package)
-  
-  demos <- pkg_demos(package)
-  vigs <- pkg_vigs(package)
-
-  list(
-    package = package, 
-    items = items,
-    description = description, 
-    author_str = author_str, 
-    demos_str = pluralize("Demo", demos),
-    demos = demos,
-    vigs_str = pluralize("Vignette", vigs),
-    vigs = vigs
-  )
-}

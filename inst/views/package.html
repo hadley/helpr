@@ -69,26 +69,11 @@
     
     <% if(has_length(description$author)){ -%>
       <h2><%= author_str %></h2>
-      <p><%= description$author %></p>
+      <p><%= str_join(description$author, collapse = ", ") %></p>
     <% }%>
     
 
-    <% if(has_length(description$imports)){ -%>    
-      <h2>Imports</h2>
-      
-      <p><% imports <- sapply(description$imports, "[[", "name") %>
-      <%=str_join("<a href='/package/", imports, "/'>", imports, "</a>", collapse = ", ") %></p>
-    <% }%>
-      
-    
-    <% if(has_length(description$suggests)){ -%>    
-      <h2>Suggests</h2>
-      
-      <p><% suggests <- sapply(description$suggests, "[[", "name") %>
-      <%=str_join("<a href='/package/", suggests, "/'>", suggests, "</a>", collapse = ", ") %></p>
-    <% }%>
-
-    <% if(has_length(demos)) { -%>    
+    <% if(dataframe_has_rows(demos)) { -%>    
       <h2><%= demos_str %></h2>
       <dl>
       <% for(i in seq_len( nrow(demos))) { -%>
@@ -103,10 +88,63 @@
     <% } %>
       
 
-    <% if(has_length(vigs)){ -%>    
+    <% if(dataframe_has_rows(vigs)){ -%>    
       <h2><%= vigs_str %></h2>
       <ul><%= str_join( "<li><a href=\"/package/", package, "/vignette/", vigs[, "item"], "\" >", vigs[, "title"], "</a></li>") %></ul>
     <% } %>
+
+    <% if(!is.null(description$imports)){ -%>    
+      <h2>Imports</h2>      
+      <p><%= str_join(sapply(description$imports, function(x){str_join("<a href=\"/package/", x$name, "/\">", x$name, str_join("</a>", x$version, sep = " "))}), collapse = ", ")  %></p>
+    <% }%>
+    
+    <% if(!is.null(description$suggests)){ -%>    
+      <h2>Suggests</h2>
+      
+      <p><%= str_join(sapply(description$suggests, function(x){str_join("<a href=\"/package/", x$name, "/\">", x$name, str_join("</a>", x$version, sep = " "))}), collapse = ", ")  %></p>
+    <% }%>
+
+    <% if(!is.null(description$extends)){ -%>    
+      <h2>Extends</h2>
+      
+      <p><%= str_join(sapply(description$extends, function(x){str_join("<a href=\"/package/", x$name, "/\">", x$name, str_join("</a>", x$version, sep = " "))}), collapse = ", ")  %></p>
+    <% }%>
+
+    <% if(!is.null(description$depends)){ -%>    
+      <h2>Depends</h2>
+      
+      <p><%= str_join(sapply(description$depends, function(x){str_join("<a href=\"/package/", x$name, "/\">", x$name, str_join("</a>", x$version, sep = " "))}), collapse = ", ")  %></p>
+    <% }%>
+
+    <% if(dataframe_has_rows(description$reverse)){ -%>    
+      <h2>Reverse Dependencies</h2>
+      
+      <p><%= str_join("<a href=\"/package/", description$reverse, "/\">", description$reverse,"</a>", collapse = ", ")  %></p>
+    <% }%>
+    
+    
+    <h2>General Info</h2>
+    <table>      
+      <% if(!is.null(description$version)){ -%>
+        <tr><td>Version:</td><td><%= description$version %></td></tr>
+      <% } %>
+      <% if(!is.null(description$packaged)){ -%>
+        <tr><td>Built:</td><td><%= str_split(description$packaged, " ")[[1]][1] %></td></tr>
+      <% } %>
+      <% if(!is.null(description$'date/publication')){ -%>
+        <tr><td>Published:</td><td><%= str_split(description$'date/publication'
+, " ")[[1]][1] %></td></tr>
+      <% } %>
+      <% if(!is.null(description$url)){ -%>
+        <tr><td>URL:</td><td><%= str_join("<a href\"",description$url,"\">",description$url,"</a>") %></td></tr>
+      <% } %>
+      <% if(!is.null(description$license)){ -%>
+        <tr><td>License:</td><td><%= description$license %></td></tr>
+      <% } %>
+      <tr><td colspan=2><%= str_join("<a href=\"http://cran.r-project.org/web/packages/", package, "/index.html\" target=\"_blank\">CRAN</a>", collapse = "") %></td></tr>
+      <tr><td colspan=2><%= str_join("<a href=\"http://cran.r-project.org/web/checks/check_results_", package, ".html\" target=\"_blank\">CRAN Package Check</a>", collapse = "") %></td></tr>
+    </table>
+
 
 
 <!--      <h2>Rating</h2>

@@ -16,38 +16,39 @@ Individual pages
 * DONE - Button to show all packages
   * DONE - needs to 'talk' with old packages button
 * DONE - Rewrite alternative to installed.packages() that is much faster
-
 * DONE - Top ten functions and most recently used 10 functions
 * DONE - add links to the manuals
   * DONE - Had coded: should be memoised or hard coded?
 
 ## Package
 
-* link to CRAN page
+* DONE - link to CRAN page
 * PARTIAL - links to news & changelogs
   * needs to have a render brew template
-* demos
-  * BUSY - Send to a new page
-  * See Code Execution
-  * Have interaction with demo things
-  * Have output done within the example
-  * Use parser to count all the functions used by the demo.  For functions that are called most offline, add cross-links to the demo from their topic page
+* DONE - Link to demos
 * DONE - vignettes
-  * change URL
 * NEEDS VALIDATION - separate data and functions
   * improved
-  * needs to be able to find functions that are in a namespace, such as the package tools
-* NEEDS VALIDATION - show internal functions separately
-  * improved
-* integrate with crantastics
+  * VALIDATION - needs to be able to find functions that are in a namespace, such as the package tools
+* DONE - show internal functions separately
+* WAIT - integrate with crantastics
   * DONE - ratings
   * reviews
-* show package dependencies
-* reverse dependencies
-  * dependsOnPkgs("lattice")
-  * see "tools"
+* DONE - show package dependencies
+* DONE - show package suggests
+* DONE - show package imports
+* DONE - show package extends
+* DONE - reverse dependencies
 
 * see CRAN page for more ideas
+
+## Demo
+
+* BUSY - Send to a new page
+* See Code Execution
+* Have interaction with demo things
+* Have output done within the example
+* Use parser to count all the functions used by the demo.  For functions that are called most offline, add cross-links to the demo from their topic page
 
 ## Topic
 
