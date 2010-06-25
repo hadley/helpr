@@ -10,7 +10,10 @@
   <script type="text/javascript" src="/_scripts/jquery-latest.js"></script>
   <script type="text/javascript" src="/_scripts/package.js"></script>
 
+
   <%= render_snippet("growl") %>
+
+  <script type="text/javascript" src="/_scripts/disqus.js"></script>
 
   <title><%= package %> <%= name %>. R help</title>
 </head>
@@ -55,11 +58,33 @@
     <%= render_snippet("top_functions", list(functions = src_functions, title = src_functions_str)) %>
     
   </div></div>
+  
 
   </div><!-- end bd -->
 
   <div id="ft">
+  <div id="disqus_thread"></div>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript=barretschloerke">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
     <p>R help.  Style created by <a href="http://had.co.nz/">Hadley Wickham</a></p>
   </div>
-</div></body>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+(function() {
+	var links = document.getElementsByTagName('a');
+	var query = '?';
+	for(var i = 0; i < links.length; i++) {
+	if(links[i].href.indexOf('#disqus_thread') >= 0) {
+		query += 'url' + i + '=' + encodeURIComponent(links[i].href) + '&';
+	}
+	}
+	document.write('<script charset="utf-8" type="text/javascript" src="http://disqus.com/forums/barretschloerke/get_num_replies.js' + query + '"></' + 'script>');
+})();
+//]]>
+</script>
+
+
+</body>
 </html>

@@ -44,20 +44,25 @@ Individual pages
 
 ## Demo
 
-* BUSY - Send to a new page
+* DONE - Send to a new page
 * See Code Execution
-* Have interaction with demo things
-* Have output done within the example
-* Use parser to count all the functions used by the demo.  For functions that are called most offline, add cross-links to the demo from their topic page
+  * DONE - blocks screen
+  * DONE - performs in Terminal
+* DONE - Have interaction with demo things
+  * DONE - Execute whole demo
+  * DONE - Execute highlighted part
+* WAIT - Have output done within the example
+* DONE - Use parser to count all the functions used by the demo.  For functions that are called most offline, add cross-links to the demo from their topic page
 
 ## Topic
 
-* "did you mean?" - include list of all topics with the same name in different packages
+* WAIT - "did you mean?" - include list of all topics with the same name in different packages
   * requires solr
-* use latent dirichlet topic models to provide see also links based on description and details.
-* display hyperlinked keywords
-* view source - shows function source
-* rate a function
+* DEB - use latent dirichlet topic models to provide see also links based on description and details.
+* WAIT/DEB - display hyperlinked keywords
+* DONE - view source - shows function source
+* WAIT - rate a function
+  * Crantastic
 * add comments - look at something like disqus
 * DONE - links for "mailto"
 * display keywords
