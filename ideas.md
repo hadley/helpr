@@ -63,25 +63,21 @@ Individual pages
 * DONE - view source - shows function source
 * WAIT - rate a function
   * Crantastic
-* add comments - look at something like disqus
+* WAIT - add comments - look at something like disqus
+  * set up host
+  * use the host
 * DONE - links for "mailto"
-* display keywords
-* list of all fuctions that are under the topic
-  * links to the source code of said function
-    * See Code Execution minus 'run' functionality
+* WAIT/DEB - display keywords
+* DONE - list of all fuctions that are under the topic
+  * DONE - links to the source code of said function
+* DONE - Execute example functionality
+  * See Code Execution
     
-## Unknown Parse Tags
-
-  * ?checkRd
-    * \tabular
-    * \tab
-
 ## Things to fix
 
-  * \\item
-    * does not have a </li>
-    * inside a \\describe
-    * from ?nlm
+* HTML get selected text does not include \n or \cr or anything useful for new lines
+  * need to get new line characters to allow for executing highlighted code
+
 
 Dynamic help
 ============
@@ -92,16 +88,17 @@ Function weights
 
 Function mispelling
 
-Examples and demos
+Code Execution
 ==================
 
 * DONE - Parse examples and add links to functions that are used
 * BUSY - Send selected/highlighted expression to R console
   * silently remove "bad" text
-* Evaluate all example code and interleave results back in html, like:
-  http://ejohn.org/apps/learn/
+* WAIT - Evaluate all example code and interleave results back in html
+  * see: http://ejohn.org/apps/learn/
 * DONE - Add jQuery to notify user
 * DONE - "Easy"(run) button
+* DONE - all executed code should appear in the console
 
 Search
 ======
