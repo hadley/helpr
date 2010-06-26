@@ -7,11 +7,9 @@
   <link rel="stylesheet" type="text/css" href="/_styles/r-help.css" />
   <link rel="stylesheet" type="text/css" href="/_styles/jquery.rating.css" />
   
-  <script type="text/javascript" src="/_scripts/jquery-latest.js"></script>
-  <script type="text/javascript" src="/_scripts/package.js"></script>
-
-
   <%= render_snippet("growl") %>
+
+  <script type="text/javascript" src="/_scripts/package.js"></script>
 
   <script type="text/javascript" src="/_scripts/disqus.js"></script>
 
@@ -32,7 +30,7 @@
 
     <h2>Demo Source</h2>
     <input id="run_demo" type="button" value="Execute Whole Demo" onclick="<%= str_join("execute_demo('",package, "','", name,"')") %>" />
-    <input id="run_highlight" type="button" value="Execute Highlighted" onclick="run_selected_code()" />
+    <input id="run_highlight" type="button" value="Execute Highlighted" onclick="run_selected_code('#demo_source_code')" />
     <div id="demo_source_code" >
       <%= src %>
     </div>
@@ -55,7 +53,7 @@
     </dl>
   <% } %>
 
-    <%= render_snippet("top_functions", list(functions = src_functions, title = src_functions_str)) %>
+  <%= render_snippet("top_functions", list(functions = src_functions, title = src_functions_str)) %>
     
   </div></div>
   

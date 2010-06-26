@@ -41,26 +41,31 @@ helpr <- function(installed = TRUE) {
 
   # Package index page, list topics etc
   router$get("/package/:package/", function(package) {
+    require(package, character.only = TRUE)
     render_brew("package", helpr_package(package), path = path)    
   })
   
   # Package Vignette
   router$get("/package/:package/vignette/:vignette", function(package, vignette) {
+    require(package, character.only = TRUE)
     static_file(system.file("doc", str_join(vignette, ".pdf"), package = package))
   })
 
   # Package Demo
   router$get("/package/:package/demo/:demo", function(package, demo) {
+    require(package, character.only = TRUE)
     render_brew("demo", helpr_demo(package, demo), path = path)
   })
   
   # Individual topic source
   router$get("/package/:package/topic/:topic/source/:func", function(package, topic, func) {
+    require(package, character.only = TRUE)
     render_brew("source", helpr_function(package, func), path = path)
   })
 
   # Individual help topic
   router$get("/package/:package/topic/:topic", function(package, topic) {
+    require(package, character.only = TRUE)
     render_brew("topic", helpr_topic(package, topic), path = path)
   })
 
@@ -88,7 +93,13 @@ helpr <- function(installed = TRUE) {
     render_json(string)
   })
   router$get("/package/:package/exec_demo/:demo", function(package, demo) {
+    require(package, character.only = TRUE)
     exec_pkg_demo(package, demo)
+    render_json(TRUE)
+  })
+  router$get("/package/:package/topic/:topic/exec_example", function(package, topic) {
+    require(package, character.only = TRUE)
+    exec_example(package, topic)
     render_json(TRUE)
   })
 
@@ -110,6 +121,10 @@ helpr <- function(installed = TRUE) {
   router$get("/g", function() {
     redirect("package/stats/demo/glm.vr")
   })
+  router$get("/n", function() {
+    redirect("package/stats/topic/nlm")
+  })
+  
 
   render_path <- function(path, ...) router$route(path)
   assignInNamespace("httpd", render_path, "tools")

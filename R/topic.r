@@ -240,7 +240,3 @@ safely_order_funcs <- function(vect){
   str_replace(vect, "_helpr", "")
 }
 
-
-exec_example <- function(package, topic){
-  example(topic, package = package)
-}

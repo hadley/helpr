@@ -7,6 +7,8 @@
   <link rel="stylesheet" type="text/css" href="/_styles/reset-fonts-grids.css" />
   <link rel="stylesheet" type="text/css" href="/_styles/r-help.css" />
 
+  <%= render_snippet("growl") %>
+
   <title><%= name %> / <%= package %>. R help</title>
 </head>
 
@@ -66,7 +68,14 @@
   <div id="yui-main"><div class="yui-b">
       <% if(has_length(examples)){ -%>
         <h2>Examples</h2>
-        <%= examples %>
+        <input id="run_example" type="button" value="Execute Whole Example" onclick="
+          <%= str_join("execute_example('",package, "','", name,"')") %>" 
+        />
+        <input id="run_highlight" type="button" value="Execute Highlighted" onclick="run_selected_code('#example_source_code')" />
+
+        <div id="example_source_code">
+          <%= examples  %>
+        </div>
       <% } %>
   </div></div>
   <div class="yui-b"><div class = "sidebar">

@@ -70,14 +70,16 @@ function execute_demo(package, demo){
 }
 
 // Block the screen while code is executed
-function run_selected_code(){
+function run_selected_code(section){
 
   var code = getSelText();
+  window.console.log("Selected Code: \n" + code);
   if(code == "")
     return;
-
-  if( $("#demo_source_code").text().indexOf(code) >= 0) {
-    error_notify("Select demo text only.");    
+  
+  window.console.log("Section: "+section+"\ncode_index: "+$(section).text().indexOf(code));
+  if( $(section).text().indexOf(code) < 0) {
+    error_notify("Select R code only.");    
     return;
   }
   
@@ -97,4 +99,23 @@ function run_selected_code(){
       }
     })
   }, 500);
+}
+
+
+function execute_example(package, topic){
+   $.blockUI({ message: '<h1><img src="/_images/busy.gif" /> Please view the R console to advance the example</h1>' }); 
+  
+  setTimeout(function(){
+    jQuery.ajax({
+      url: "/package/"+package+"/topic/"+topic + "/exec_example",
+      success: function() {
+        $.unblockUI();
+        notify("The example for " +topic+" has finished executing in the R console.");
+      },
+      error:function (xhr, ajaxOptions, thrownError){
+        $.unblockUI();
+        error_notify("The example did not run execute properly.");
+      }
+    })
+  }, 500); 
 }
