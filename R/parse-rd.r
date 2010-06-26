@@ -20,15 +20,28 @@ all_tags <- function(rd) {
   sort(unique(c(tag(rd), unlist(lapply(rd, all_tags)))))
 }
 
-reconstruct <- function(rd) {
+list_tags <- function(rd){
+  tags <- c()
+  for(i in seq_along(rd)){
+    tag_item <- tag(rd[[i]])
+    if(length(tag_item) < 1)
+      tag_item <- ""
+    tags[i] <- tag_item
+  }
+  tags
+}
 
+visited <- "no"
+reconstruct <- function(rd) {
+  
   if (is.null(rd)) return("")
   if (!is.list(rd) && is.null(attr(rd, "Rd_tag"))) return(as.character(rd))
-#  if (!is.list(rd)) return(as.character(rd))
   
   tag <- tag(rd)
-  
-  if (length(tag) == 0 || tag == "TEXT" || tag == "") {
+    
+  if(is.list(rd) & length(rd) > 0 & "\\item" %in% list_tags(rd)){
+    reconstruct(parse_items(rd))
+  }else if (length(tag) == 0 || tag == "TEXT" || tag == "") {
     # Collapse text strings
 #    str_trim(str_join(sapply(rd, reconstruct), collapse = ""))
     
@@ -131,7 +144,7 @@ simple_tags <- list(
   "\\code" =         c("<code>", "</code>"),
   "\\command" =      c("<code>", "</code>"),
   "\\cr" =           c("<br >", ""),
-  "\\describe" =     c("<span class=\"describe\">", "</span"),
+  "\\describe" =     c("<span class=\"describe\">", "</span>"),
   "\\dfn" =          c("<dfn>", "</dfn>"),
   "\\donttest" =     c("", ""),
   "\\dots" =         c("...", ""),
@@ -141,7 +154,7 @@ simple_tags <- list(
   "\\enumerate" =    c("<ol>", "</ol>"),
   "\\env" =          c('<span class = "env">', '</span>'),
   "\\file" =         c('&lsquo;<span class = "file">', '</span>&rsquo;'),
-  "\\item" =         c("<li>", ""),
+  "\\item" =         c("<li>", "</li>"),
   "\\itemize" =      c("<ul>", "</ul>"),
   "\\kbd" =          c("<kbd>", "</kbd>"),
   "\\ldots" =        c("...", ""),
@@ -231,9 +244,63 @@ parse_tabular <- function(tabular){
 }
 
 
+#' Parse List with Items
+#' parse a list containing "\\item" tags.
+#'
+#' It will replace the items with plan, non-attributed text.  It needs to be a 'pre-parser' as it must be done before the whole list is reconstructed
+#' @param rd R documentation item to be altered and then returned
+parse_items <- function(rd){
+  tags <- list_tags(rd)
+  is_items <- rep(TRUE, length(tags))
+
+  for(i in rev(seq_along(tags))){
+    if(tags[i] == "TEXT"){
+      if(str_trim(rd[[i]]) != ""){
+        is_items[i] <- FALSE
+      }else if(str_trim(rd[[i]]) == ""){
+        if(i == length(tags)){
+          is_items[i] <- FALSE
+        }else{
+          is_items[i] <- is_items[i+1]
+        }
+      }
+        
+    }
+  }
+    
+  item_groups <- group_int_arr(subset(seq_along(tags), is_items))
+#  non_item_groups <- group_int_arr(subset(seq_along(tags), !is_items))
+  
+  for(i in item_groups){
+    item_text <- parse_item_list(rd[i])
+    rd[i] <- ""
+    rd[i[1]] <- item_text
+  }
+  
+  rd
+}
 
 
+#' Group Integer Array
+#' Group items into similar sections
+group_int_arr <- function(arr){
+  n <- length(arr)
+  groups <- c(0, cumsum(arr[-n] != arr[-1] - 1))
+  split(arr, groups)
+}
 
+#' Parse Item List
+#' parse a group of "\\item" into a table with a bold item and reconstructed description
+#' @param rd item to be parsed
+#' return table text with no attributes
+parse_item_list <- function(rd){
+  tags <- list_tags(rd)
+  items <- rd[tags == "\\item"]
+  
+  items_text <- sapply(items, function(x) str_join("<tr><td><strong>",reconstruct(x[[1]]), "</strong></td><td>", reconstruct(x[[2]]), "</td></tr>", collapse = ""))
+  
+  str_join("<table>", str_join(items_text, collapse = ""), "</table>", collapse = "")
+}
 
 
 

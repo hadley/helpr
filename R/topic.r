@@ -206,7 +206,7 @@ parse_usage <- function(usage){
     path <- function_help_path(func, source_link = TRUE)
     
     if(is.na(path))
-      link <- str_join("<em>",func, "<em>(")
+      link <- str_join("<em>",func, "</em>(")
     else
       link <- str_join("<a href=\"", path, "\">", func, "</a>(" )
     
@@ -241,8 +241,6 @@ safely_order_funcs <- function(vect){
 }
 
 
-
-
-
-
-
+exec_example <- function(package, topic){
+  example(topic, package = package)
+}
