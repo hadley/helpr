@@ -20,7 +20,7 @@ helpr_package <- function(package){
   description$imports <- parse_pkg_desc_item(description$imports)
   description$suggests <- parse_pkg_desc_item(description$suggests)
   description$extends <- parse_pkg_desc_item(description$extends)
-  description$reverse <- dependsOnPkgs(package)
+  description$reverse <- tools:::dependsOnPkgs(package)
   description$author <- pkg_author_and_maintainers(description)
 #  description$maintainer <- NULL
   
