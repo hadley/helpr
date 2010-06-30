@@ -1,3 +1,19 @@
+
+// hide/show the R output 
+var output_hidden = 0;
+function hide_show_output(){
+  if(output_hidden == 0){
+    window.console.log("Hide output!");
+    $(".R_output").hide();    
+//    $(".R_output").hide('slow');    
+  }else{
+    window.console.log("Show output!");
+    $(".R_output").show('slow');    
+  }
+  output_hidden = (output_hidden+1) % 2;  
+}
+
+
 // Notification:
 //   http://awgy.net/achtung/demo/
 
@@ -31,6 +47,13 @@ function error_notify(text){
         message: text
     });
 }  
+
+function message_notify(text){
+    $.achtung({timeout: 3, icon: 'ui-icon-alert'}, {
+        message: text
+    });
+}  
+ 
 
 
 
@@ -84,15 +107,10 @@ function run_selected_code(section){
   for(i =0; i < lines.length; i++){
     window.console.log("Section: "+lines[i]+"\ncode_index: "+$(section).text().indexOf(lines[i])+"\noutput_index: "+$(".R_output").text().indexOf(lines[i]));
     if( $(section).text().indexOf(lines[i]) < 0) {
-//      error_notify("Select R code only.");    
-//      return;
-
-      notify("Removing: \n"+lines[i]);
+      message_notify("Removing: \n"+lines[i]);
       lines[i] = "";
-      return;
-    }    
-    if( $(".R_output").text().indexOf(lines[i]) >= 0) {
-      notify("Removing: \n"+lines[i]);
+    } else if( $(".R_output").text().indexOf(lines[i]) >= 0) {
+      message_notify("Removing: \n"+lines[i]);
       lines[i] = "";
     }
   }
