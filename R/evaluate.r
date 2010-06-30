@@ -1,3 +1,78 @@
+#' Replay a list of evaluated results.
+#' Replay a list of evaluated results, just like you'd run them in a R
+#' terminal.
+#'
+#' @param x result from \code{\link{evaluate}}
+#'
+helpr_replay <- function(x) UseMethod("helpr_replay", x)
+
+helpr_replay.list <- function(x) {
+  lapply(x, helpr_replay)
+}
+
+helpr_replay.character <- function(x) {
+  helpr_replay_cat(x)
+}
+
+helpr_replay.source <- function(x) {
+  helpr_replay_cat(x$src)
+}
+
+helpr_replay.warning <- function(x) {
+  helpr_replay_message("Warning message:\n", x$message)
+}
+
+helpr_replay.message <- function(x) {
+  helpr_replay_message(gsub("\n$", "", x$message))
+}
+
+helpr_replay.error <- function(x) {
+  if (is.null(x$call)) {
+    helpr_replay_message("Error: ", x$message)    
+  } else {
+    call <- deparse(x$call)
+    helpr_replay_message("Error in ", call, ": ", x$message)    
+  }
+}
+
+helpr_replay.value <- function(x) {
+  if (x$visible) eval_tag_output(str_join(capture.output(print(x$value)), collapse = "\n"))
+}
+
+helpr_replay.recordedplot <- function(x) {
+  print(x)
+}
+
+helpr_replay_cat <- function(x){
+  if(str_trim(x) == "")
+    return(x)
+
+  parsed <- parser(text = x)
+  highlight(parsed)
+}
+
+helpr_replay_message <- function(x){
+  eval_tag_output(str_c("\n<strong>",x,"</strong>"))
+}
+
+
+evaluate_text <- function(txt){
+  replayed <- helpr_replay(evaluate:::evaluate(txt))
+  str_join(unlist(replayed), collapse = "\n")
+}
+
+eval_tag_output <- function(x){
+  str_c("<span class=\"R_output\"><pre>", x, "</pre></span>")
+}
+
+
+
+
+
+
+
+
+
 ## should be replaced with something else
 exec_pkg_demo <- function(package, dem) {
 #  demo(dem, character = TRUE, package = package, ask = TRUE)
@@ -93,8 +168,8 @@ exec_example <- function(package, topic){
 }
 
 
-execute_text <- function(text_string){
-  in_and_out <- evaluate_text(text_string)
+OLD_execute_text <- function(text_string){
+  in_and_out <- OLD_evaluate_text(text_string)
   for(i in seq_len(NROW(in_and_out))){
     cat("\n> ",in_and_out[i, "input"])
     output <- in_and_out[i, "output"] 
@@ -104,7 +179,7 @@ execute_text <- function(text_string){
   cat("\n> ")
 }
 
-evaluate_text <- function(text_string){
+OLD_evaluate_text <- function(text_string){
   output <- c()
   input <- parse(text = text_string)
   
@@ -118,7 +193,7 @@ evaluate_text <- function(text_string){
   data.frame(input = as.character(input), output = output, stringsAsFactors = FALSE)
 }
 
-evaluate_file <- function(file){
+OLD_evaluate_file <- function(file){
   source(file)
 }
 

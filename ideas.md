@@ -75,18 +75,9 @@ Individual pages
     
 ## Things to fix
 
-* HTML get selected text does not include \n or \cr or anything useful for new lines
+* HTML "get selected text" does not include \n or \cr or anything useful for new lines
   * need to get new line characters to allow for executing highlighted code
 
-
-Dynamic help
-============
-
-Function weights
-  * overall CRAN
-  * DONE - personal function use: parse .Rhistory and pull out functions
-
-Function mispelling
 
 Code Execution
 ==================
@@ -99,6 +90,19 @@ Code Execution
 * DONE - Add jQuery to notify user
 * DONE - "Easy"(run) button
 * DONE - all executed code should appear in the console
+* BUSY - Rewrite the "replay" method for eval with details to produce html output.
+  * be cool, make it S3
+
+
+Dynamic help
+============
+
+Function weights
+  * overall CRAN
+  * DONE - personal function use: parse .Rhistory and pull out functions
+
+Function mispelling
+
 
 Search
 ======

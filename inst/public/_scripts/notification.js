@@ -78,10 +78,26 @@ function run_selected_code(section){
     return;
   
   window.console.log("Section: "+section+"\ncode_index: "+$(section).text().indexOf(code));
-  if( $(section).text().indexOf(code) < 0) {
-    error_notify("Select R code only.");    
-    return;
+  var i;
+  code = "" + code;
+  var lines = code.split("\n");
+  for(i =0; i < lines.length; i++){
+    if( $(section).text().indexOf(lines[i]) < 0) {
+//      error_notify("Select R code only.");    
+//      return;
+
+      notify("Removing: \n"+lines[i]);
+      lines[i] = "";
+      return;
+    }    
+    if( $(".R_output").text().indexOf(lines[i]) > 0) {
+      notify("Removing: \n"+lines[i]);
+      lines[i] = "";
+    }
   }
+  
+  code = lines.join("%0D");
+  
   
   $.blockUI({ message: '<h1><img src="/_images/busy.gif" /> Running selected code in the R console</h1>' }); 
   

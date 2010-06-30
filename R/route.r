@@ -113,7 +113,10 @@ helpr <- function(installed = TRUE) {
   
   #execute code  
   router$get("/eval_text/:encoded_text", function(encoded_text){
-    execute_text(URLdecode(encoded_text))
+    cat("\n")
+    evaluate:::replay.list(evaluate:::evaluate(URLdecode(encoded_text), envir = .GlobalEnv))
+    cat(options("prompt")$prompt)
+
     render_json(TRUE)
   })
   

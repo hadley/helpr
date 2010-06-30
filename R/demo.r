@@ -28,12 +28,15 @@ helpr_demo <- function(package, demo_name){
   
   demo_functions <- code_info(parsed_src)
   other_demos <- suppressWarnings(subset(as.data.frame(pkg_demos(package)), Item != demo_name))
+  
+  demo_src_c <- demo_src(package, demo_name)
 
   list(
     package = package, 
     name = demo_name,
     description = info[1,"Title"],
-    src = highlight(parsed_src),
+#    src = highlight(parsed_src),
+    src = evaluate_text(demo_src_c),
     other_demos = other_demos,
     other_demos_str = pluralize("Demo", other_demos),
     src_functions = demo_functions,
