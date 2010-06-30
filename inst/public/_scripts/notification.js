@@ -82,6 +82,7 @@ function run_selected_code(section){
   code = "" + code;
   var lines = code.split("\n");
   for(i =0; i < lines.length; i++){
+    window.console.log("Section: "+lines[i]+"\ncode_index: "+$(section).text().indexOf(lines[i])+"\noutput_index: "+$(".R_output").text().indexOf(lines[i]));
     if( $(section).text().indexOf(lines[i]) < 0) {
 //      error_notify("Select R code only.");    
 //      return;
@@ -90,14 +91,15 @@ function run_selected_code(section){
       lines[i] = "";
       return;
     }    
-    if( $(".R_output").text().indexOf(lines[i]) > 0) {
+    if( $(".R_output").text().indexOf(lines[i]) >= 0) {
       notify("Removing: \n"+lines[i]);
       lines[i] = "";
     }
   }
   
-  code = lines.join("%0D");
-  
+  code = lines.join("%0A");
+  // '+' url encoding
+  code = code.replace("+", "%2B");
   
   $.blockUI({ message: '<h1><img src="/_images/busy.gif" /> Running selected code in the R console</h1>' }); 
   
