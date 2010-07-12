@@ -22,7 +22,7 @@ get_manuals <- function(){
   
   file_loc <- file.path(manual_dir, manuals)
   file_name <- str_replace(manuals, ".html", "")
-  link <- str_join("manuals/",file_name)
+  link <- str_join("manuals/",file_name, ".html")
   
   data.frame(
     title = sapply(file_loc, function(x){

@@ -62,7 +62,14 @@ reconstruct <- function(rd) {
     fun <- rd[[1]]
     pkg <- attr(rd, "Rd_option")
     
-    tag_link(fun, pkg)
+    if(!is.null(pkg)){
+      if(str_sub(pkg, end = 1) == "=")
+        tag_link(str_sub(pkg, start = 2))
+      else
+        tag_link(fun, pkg)
+    }else{
+      tag_link(fun, pkg)
+    }
   } else if (tag == "\\eqn") {
     str_join("<code>", reconstruct(untag(rd[[1]])), "</code>")
   } else if (tag == "\\deqn") {
@@ -254,10 +261,11 @@ parse_items <- function(rd){
   is_items <- rep(TRUE, length(tags))
 
   for(i in rev(seq_along(tags))){
-    if(tags[i] == "TEXT"){
-      if(str_trim(rd[[i]]) != ""){
+    if(tags[i] != "\\item"){
+      rd_i <- reconstruct(rd[[i]])
+      if(str_trim(rd_i) != ""){
         is_items[i] <- FALSE
-      }else if(str_trim(rd[[i]]) == ""){
+      }else if(str_trim(rd_i) == ""){
         if(i == length(tags)){
           is_items[i] <- FALSE
         }else{
@@ -270,7 +278,7 @@ parse_items <- function(rd){
     
   item_groups <- group_int_arr(subset(seq_along(tags), is_items))
 #  non_item_groups <- group_int_arr(subset(seq_along(tags), !is_items))
-  
+ 
   for(i in item_groups){
     item_text <- parse_item_list(rd[i])
     rd[i] <- ""
@@ -297,7 +305,14 @@ parse_item_list <- function(rd){
   tags <- list_tags(rd)
   items <- rd[tags == "\\item"]
   
-  items_text <- sapply(items, function(x) str_join("<tr><td><strong>",reconstruct(x[[1]]), "</strong></td><td>", reconstruct(x[[2]]), "</td></tr>", collapse = ""))
+  items_text <- sapply(items, function(x){
+    if(length(x) < 1){
+      # small item in item list
+      ""
+    }else{
+      str_join("<tr><td><strong>",reconstruct(x[[1]]), "</strong></td><td>", reconstruct(x[[2]]), "</td></tr>", collapse = "")
+    }
+  })
   
   str_join("<table>", str_join(items_text, collapse = ""), "</table>", collapse = "")
 }

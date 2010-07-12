@@ -37,6 +37,10 @@ helpr_package <- function(package){
   )
 }
 
+pkg_version <- function(pkg){
+  .readRDS(system.file("Meta", "package.rds", package = pkg))$DESCRIPTION[["Version"]]
+}
+
 parse_pkg_desc_item <- function(obj){
   if(NROW(obj) < 1){
     return(NULL)

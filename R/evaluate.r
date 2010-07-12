@@ -4,43 +4,50 @@
 #'
 #' @param x result from \code{\link{evaluate}}
 #'
-helpr_replay <- function(x) UseMethod("helpr_replay", x)
+helpr_replay <- function(x, pic_base_name) UseMethod("helpr_replay", x)
 
-helpr_replay.list <- function(x) {
-  lapply(x, helpr_replay)
+helpr_replay.list <- function(x, pic_base_name) {
+  lapply(seq_along(x), function(i, base_name = pic_base_name){
+    item <- x[[i]]
+    item_name <- str_join(base_name, "_", i, collapse = "")
+    helpr_replay(item, item_name)
+  })
 }
 
-helpr_replay.character <- function(x) {
-  helpr_replay_cat(x)
+helpr_replay.character <- function(x, pic_base_name) {
+#  helpr_replay_cat(x)
+  eval_tag_output(x)
 }
 
-helpr_replay.source <- function(x) {
+helpr_replay.source <- function(x, pic_base_name) {
   helpr_replay_cat(x$src)
 }
 
-helpr_replay.warning <- function(x) {
-  helpr_replay_message("Warning message:\n", x$message)
+helpr_replay.warning <- function(x, pic_base_name) {
+  helpr_replay_message(str_join("Warning message:\n", x$message, collapse = ""))
 }
 
-helpr_replay.message <- function(x) {
+helpr_replay.message <- function(x, pic_base_name) {
   helpr_replay_message(gsub("\n$", "", x$message))
 }
 
-helpr_replay.error <- function(x) {
+helpr_replay.error <- function(x, pic_base_name) {
   if (is.null(x$call)) {
-    helpr_replay_message("Error: ", x$message)    
+    helpr_replay_message(str_join("Error: ", x$message, collapse = "\n"))    
   } else {
     call <- deparse(x$call)
-    helpr_replay_message("Error in ", call, ": ", x$message)    
+    helpr_replay_message(str_join("Error in ", call, ": ", x$message, collapse = "\n"))    
   }
 }
 
-helpr_replay.value <- function(x) {
+helpr_replay.value <- function(x, pic_base_name) {
   if (x$visible) eval_tag_output(str_join(capture.output(print(x$value)), collapse = "\n"))
 }
 
-helpr_replay.recordedplot <- function(x) {
-  print(x)
+helpr_replay.recordedplot <- function(x, pic_base_name) {
+  
+  file_loc <- save_picture( pic_base_name, x)
+  eval_tag_output(str_join("<img src=\"", file_loc, "\" alt=\"", pic_base_name, "\" />", collapse = ""))
 }
 
 helpr_replay_cat <- function(x){
@@ -56,9 +63,10 @@ helpr_replay_message <- function(x){
 }
 
 
-evaluate_text <- function(txt){
-  replayed <- helpr_replay(evaluate:::evaluate(txt))
-  str_join(unlist(replayed), collapse = "\n")
+evaluate_text <- function(txt, pic_base_name){
+  evaluated <- evaluate:::evaluate(txt)
+  replayed <- helpr_replay(evaluated, pic_base_name)
+  str_join(as.character(unlist(replayed)), collapse = "\n")
 }
 
 eval_tag_output <- function(x){
@@ -196,4 +204,3 @@ OLD_evaluate_text <- function(text_string){
 OLD_evaluate_file <- function(file){
   source(file)
 }
-

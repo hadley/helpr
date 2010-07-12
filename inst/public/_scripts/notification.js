@@ -1,4 +1,21 @@
 
+function r_urlencode (str) {
+  str = escape(str);
+  return str.replace(/[*+\/@]|%20/g,
+    function (s) {
+      switch (s) {
+        case "*": s = "%2A"; break;
+        case "+": s = "%2B"; break;
+        case "/": s = "%2F"; break;
+        case "@": s = "%40"; break;
+      }
+      return s;
+    }
+  );
+}
+
+
+
 // hide/show the R output 
 var output_hidden = 0;
 function hide_show_output(){
@@ -89,8 +106,27 @@ function execute_demo(package, demo){
       }
     })
   }, 500);
- 
 }
+
+function execute_example(package, topic){
+   $.blockUI({ message: '<h1><img src="/_images/busy.gif" /> Please view the R console to advance the example</h1>' }); 
+  
+  setTimeout(function(){
+    jQuery.ajax({
+      url: "/package/"+package+"/topic/"+topic + "/exec_example",
+      success: function() {
+        $.unblockUI();
+        notify("The example for " +topic+" has finished executing in the R console.");
+      },
+      error:function (xhr, ajaxOptions, thrownError){
+        $.unblockUI();
+        error_notify("The example did not run execute properly.");
+      }
+    })
+  }, 500); 
+}
+
+
 
 // Block the screen while code is executed
 function run_selected_code(section){
@@ -116,8 +152,8 @@ function run_selected_code(section){
   }
   
   code = lines.join("%0A");
-  // '+' url encoding
-  code = code.replace("+", "%2B");
+  code = r_urlencode(code);
+  window.console.log("code : " + code);
   
   $.blockUI({ message: '<h1><img src="/_images/busy.gif" /> Running selected code in the R console</h1>' }); 
   
@@ -128,30 +164,13 @@ function run_selected_code(section){
       success: function() {
         $.unblockUI();
         notify("The highlighted selection has finished executing in the R console.");
-      },
-      error:function (xhr, ajaxOptions, thrownError){
-        $.unblockUI();
-        error_notify("The code that was selected did not run execute properly.");
-      }
+      }//,
+//      error:function (xhr, ajaxOptions, thrownError){
+//        $.unblockUI();
+//        error_notify("The code that was selected did not run execute properly.");
+//      }
     })
   }, 500);
 }
 
 
-function execute_example(package, topic){
-   $.blockUI({ message: '<h1><img src="/_images/busy.gif" /> Please view the R console to advance the example</h1>' }); 
-  
-  setTimeout(function(){
-    jQuery.ajax({
-      url: "/package/"+package+"/topic/"+topic + "/exec_example",
-      success: function() {
-        $.unblockUI();
-        notify("The example for " +topic+" has finished executing in the R console.");
-      },
-      error:function (xhr, ajaxOptions, thrownError){
-        $.unblockUI();
-        error_notify("The example did not run execute properly.");
-      }
-    })
-  }, 500); 
-}

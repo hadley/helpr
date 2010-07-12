@@ -36,7 +36,7 @@ helpr_demo <- function(package, demo_name){
     name = demo_name,
     description = info[1,"Title"],
 #    src = highlight(parsed_src),
-    src = evaluate_text(demo_src_c),
+    src = evaluate_text(demo_src_c, pic_base_name = str_join(package, "_", pkg_version(package),"_demo")),
     other_demos = other_demos,
     other_demos_str = pluralize("Demo", other_demos),
     src_functions = demo_functions,
@@ -50,7 +50,10 @@ helpr_demo <- function(package, demo_name){
 #' @param demo_name demo name
 #' @return source for the demo
 demo_src <- function(package, demo_name){
-  str_join(readLines(demo_src_file(package, demo_name)), collapse = "\n")
+  demo_lines <- readLines(demo_src_file(package, demo_name))
+  rows <- str_detect(demo_lines, "example[[:space:]]*\\(")
+  demo_lines[rows] <- str_join("# ", demo_lines[rows])
+  str_join(demo_lines, collapse = "\n")
 }
 
 

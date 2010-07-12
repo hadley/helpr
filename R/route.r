@@ -1,4 +1,4 @@
-# Global path for render_snippets
+# Global path for render_snippets and pictures
 helpr_path <- NULL   
 
 #' Helpr Documentation
@@ -112,9 +112,11 @@ helpr <- function(installed = TRUE) {
   })
   
   #execute code  
-  router$get("/eval_text/:encoded_text", function(encoded_text){
+#  router$get("/eval_text/:encoded_text", function(encoded_text){
+  router$get("/eval_text/*", function(splat){
+    decoded_text <- URLdecode(splat)
     cat("\n")
-    evaluate:::replay.list(evaluate:::evaluate(URLdecode(encoded_text), envir = .GlobalEnv))
+    evaluate:::replay.list(evaluate:::evaluate(decoded_text, envir = .GlobalEnv))
     cat(options("prompt")$prompt)
 
     render_json(TRUE)
@@ -128,6 +130,14 @@ helpr <- function(installed = TRUE) {
     redirect("package/stats/topic/nlm")
   })
   
+  # pictures
+  router$get("/picture/:file_name", function(file_name) {
+    redirect(str_join("/_tmp_pictures/", file_name, collapse = ""))
+  })
+  # remove all the pictures from the previous session
+  delete_folder_contents(file.path(path, "public", "_tmp_pictures")) 
+
+    
 
   render_path <- function(path, ...) router$route(path)
   assignInNamespace("httpd", render_path, "tools")
