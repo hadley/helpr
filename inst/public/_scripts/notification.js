@@ -164,7 +164,10 @@ function run_selected_code(section){
       success: function() {
         $.unblockUI();
         notify("The highlighted selection has finished executing in the R console.");
-      }//,
+      }
+      
+      // blocked right now to receive error as to why it sucked
+      //,
 //      error:function (xhr, ajaxOptions, thrownError){
 //        $.unblockUI();
 //        error_notify("The code that was selected did not run execute properly.");
