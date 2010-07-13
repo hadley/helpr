@@ -45,6 +45,8 @@ function update_packs() {
   var all = "FALSE";
   if(showing_all == 1)
     all = "TRUE";
+    
+  $.blockUI({ message: "<h1><img src=\"/_images/busy.gif\" />Updating Packages</h1>" });   
 
   jQuery.ajax({
     url: "/package/update.json/"+all,
@@ -55,6 +57,14 @@ function update_packs() {
         $("#" + pkg).removeClass("old").addClass("update");
       }
       set_update_button();
+      
+      $.unblockUI();
+      
+      if(packages.length < 2)
+        notify(packages[1] + " has been updated");
+      else
+        notify(packages.length + " packages have been updated");
+
     }
   })
 }
