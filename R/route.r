@@ -1,3 +1,84 @@
+#  add pre
+#  png format
+
+#tempfile("helpr")
+#loc <- tempfile("helpr")
+#create.dir(loc)
+
+#floor to top 5 or ten
+#only >= 2
+
+
+#' help files with topic for helpr
+#' route to the correct website
+#'
+#' function taken from utils
+#'
+#' @param x path to help
+#' @param ... other arguments ignored
+print.help_files_with_topic <- function (x, ...) 
+{
+    browser <- getOption("browser")
+    topic <- attr(x, "topic")
+    type <- attr(x, "type")
+    paths <- as.character(x)
+    if (!length(paths)) {
+        writeLines(c(gettextf("No documentation for '%s' in specified packages and libraries:", 
+            topic), gettextf("you could try '??%s'", topic)))
+        return(invisible(x))
+    }
+    if (attr(x, "tried_all_packages")) {
+        paths <- unique(dirname(dirname(paths)))
+        msg <- gettextf("Help for topic '%s' is not in any loaded package but can be found in the following packages:", 
+            topic)
+        if (type == "html" && tools:::httpdPort > 0L) {
+            path <- file.path(tempdir(), ".R/doc/html")
+            dir.create(path, recursive = TRUE, showWarnings = FALSE)
+            out <- paste("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n", 
+                "<html><head><title>R: help</title>\n", "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=\"UTF-8\">\n", 
+                "<link rel=\"stylesheet\" type=\"text/css\" href=\"/doc/html/R.css\">\n", 
+                "</head><body>\n\n<hr>\n", sep = "")
+            out <- c(out, "<p>", msg, "</p><br>")
+            out <- c(out, "<table width=\"100%\" summary=\"R Package list\">\n", 
+                "<tr align=\"left\" valign=\"top\">\n", "<td width=\"25%\">Package</td><td>Library</td></tr>\n")
+            pkgs <- basename(paths)
+            links <- paste("<a href=\"http://127.0.0.1:", tools:::httpdPort, 
+                "/library/", pkgs, "/help/", topic, "\">", pkgs, 
+                "</a>", sep = "")
+            out <- c(out, paste("<tr align=\"left\" valign=\"top\">\n", 
+                "<td>", links, "</td><td>", dirname(paths), "</td></tr>\n", 
+                sep = ""))
+            out <- c(out, "</table>\n</p>\n<hr>\n</body></html>")
+            writeLines(out, file.path(path, "all.available.html"))
+            browseURL(paste("http://127.0.0.1:", tools:::httpdPort, 
+                "/doc/html/all.available.html", sep = ""), browser)
+        }
+        else {
+            writeLines(c(strwrap(msg), "", paste(" ", formatDL(c(gettext("Package"), 
+                basename(paths)), c(gettext("Library"), dirname(paths)), 
+                indent = 22))))
+        }
+    }
+    else {
+        if (tools:::httpdPort == 0L) 
+            tools::startDynamicHelp()
+        file <- paths
+        pkgname <- basename(dirname(dirname(file)))
+        topic <- basename(file)
+
+        if(length(pkgname) > 1){
+          browseURL(paste("http://127.0.0.1:", tools:::httpdPort, 
+          "/multiple_help_paths/", str_join(pkgname, topic, sep = "::", collapse = ";"), sep = ""), browser)
+        }else{
+          browseURL(paste("http://127.0.0.1:", tools:::httpdPort, 
+          "/library/", pkgname, "/html/", topic, 
+          ".html", sep = ""), browser)            
+        }
+    }
+    invisible(x)
+}
+
+
 # Global path for render_snippets and pictures
 helpr_path <- NULL   
 
@@ -68,14 +149,30 @@ helpr <- function(installed = TRUE) {
     require(package, character.only = TRUE)
     render_brew("topic", helpr_topic(package, topic), path = path)
   })
-
-  # Individual help topic 
   router$get("/library/:package/html/:topic.html", function(package, topic) {
     redirect(str_join("/package/", package, "/topic/", topic))
   })
   router$get("/library/:package/help/:topic", function(package, topic) {
     redirect(str_join("/package/", package, "/topic/", topic))
   })
+
+  # Individual help topic with multiple reponses
+  router$get("/multiple_help_paths/:path_string", function(path_string) {
+    pkg_and_topic <- str_split(str_split(path_string, ";")[[1]], "::")
+
+    pkg <- c()
+    topic <- c()
+    descriptions <- c()
+    for(i in seq_along(pkg_and_topic)){
+      pkg[i] <- pkg_and_topic[[i]][1]
+      topic[i] <- pkg_and_topic[[i]][2]
+      descriptions[i] <- gsub("$\n+|\n+^", "", reconstruct(pkg_topic(pkg[i], topic[i])$description))
+    }
+    
+    render_brew("help", list(pkg = pkg, topic = topic, desc = descriptions), path = path)
+  })
+  
+  
   
   # AJAX
   router$get("/package/old.json", function() {
@@ -88,7 +185,6 @@ helpr <- function(installed = TRUE) {
     render_json(update_loaded_packs(all_packs))
   })
   router$get("/package/:package/rating.json", function(package) {
-#    render_json(rating_text(as.character(package)))
     string <- rating_text(package)
     render_json(string)
   })
@@ -111,8 +207,9 @@ helpr <- function(installed = TRUE) {
     static_file(file_loc)
   })
   
+  
+  
   #execute code  
-#  router$get("/eval_text/:encoded_text", function(encoded_text){
   router$get("/eval_text/*", function(splat){
     decoded_text <- URLdecode(splat)
     cat("\n")
@@ -122,6 +219,7 @@ helpr <- function(installed = TRUE) {
     render_json(TRUE)
   })
   
+
   # Individual help topic 
   router$get("/g", function() {
     redirect("package/stats/demo/glm.vr")
@@ -130,6 +228,7 @@ helpr <- function(installed = TRUE) {
     redirect("package/stats/topic/nlm")
   })
   
+
   # pictures
   router$get("/picture/:file_name", function(file_name) {
     redirect(str_join("/_tmp_pictures/", file_name, collapse = ""))
@@ -137,7 +236,6 @@ helpr <- function(installed = TRUE) {
   # remove all the pictures from the previous session
   delete_folder_contents(file.path(path, "public", "_tmp_pictures")) 
 
-    
 
   render_path <- function(path, ...) router$route(path)
   assignInNamespace("httpd", render_path, "tools")

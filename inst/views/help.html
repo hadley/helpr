@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+
+  <link rel="stylesheet" type="text/css" href="/_styles/reset-fonts-grids.css" />
+  <link rel="stylesheet" type="text/css" href="/_styles/r-help.css" />
+  <link rel="stylesheet" type="text/css" href="/_styles/jquery.rating.css" />
+  
+  <script type="text/javascript" src="/_scripts/jquery-latest.js"></script>
+
+
+  <title>R help</title>
+</head>
+
+<body>
+  <div id="watermark">help</div>
+  <div id="doc2" class="yui-t6">
+  <div id="hd">
+    <a href="/index.html">R</a> 
+  </div>
+
+  <div id="bd">
+  <div id="yui-main"><div class="yui-b">
+    <h1>Multiple Topics</h1>
+
+    <% for(i in seq_along(pkg)){ -%>
+      <h2>
+        <a href=<%= str_join("/package/",pkg[i], collapse = "") %> ><%= pkg[i] %></a>
+         &#8594; 
+        <a href=<%= str_join("/package/",pkg[i], "/topic/", topic[i], collapse = "") %> ><%= topic[i] %></a>
+      </h2>
+      <%= desc[i] %>
+      <br />
+    <% } %>
+    
+  </div></div>
+  <div class="yui-b"><div class = "sidebar"></div></div>
+
+  </div><!-- end bd -->
+
+  <div id="ft">
+    <p>R help.  Style created by <a href="http://had.co.nz/">Hadley Wickham</a></p>
+  </div>
+</div></body>
+</html>
