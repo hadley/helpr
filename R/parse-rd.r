@@ -188,6 +188,10 @@ has_length <- function(x){
     !is.null(x) && NROW(x) > 0 && x != ""
 }
 
+has_text <- function(x){
+  !is.null(x) && str_trim(x) != ""
+}
+
 dataframe_has_rows <- function(x){
   NROW(x) > 0
 }

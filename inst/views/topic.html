@@ -26,37 +26,43 @@
     <h1><%= title%></h1>
     <%= desc %>
 
-    <h2>Usage</h2>
-    <p>Click the functions to view their source</p>
-    <pre><%= usage %></pre>
+    <% if(has_text(usage)){ -%>
+      <h2>Usage</h2>
+      <p>Click the functions to view their source</p>
+      <pre><%= usage %></pre>
+    <% } %>
 
-    <h2>Arguments</h2>
-    <%= params$pre_text %>
-    <table><% for(param in params$args) { -%>
-    <tr>
-      <td><code><%= param$param %></code></td>
-      <td><%= param$desc %></td>
-    </tr>
-    <% } -%></table>
-    <%= params$post_text %>
+    <% if(dataframe_has_rows(params$args) || has_text(params$pre_text) || has_text(params$post_text)){ -%>
+      <h2>Arguments</h2>
+      <%= params$pre_text %>
+      <table>
+        <% for(param in params$args) { -%>
+          <tr>
+            <td><code><%= param$param %></code></td>
+            <td><%= param$desc %></td>
+          </tr>
+        <% } -%>
+      </table>
+      <%= params$post_text %>
+    <% } %>
 
-    <% if(has_length(details)){ -%>
+    <% if(has_text(details)){ -%>
       <h2>Details</h2><%= details %>
     <% }%>
 
-    <% if(has_length(value)){ -%>
+    <% if(has_text(value)){ -%>
       <h2>Value</h2><%= value %>
     <% }%>
 
     
   </div></div>
   <div class="yui-b"><div class = "sidebar">
-    <% if(has_length(seealso)){ -%>
+    <% if(has_text(seealso)){ -%>
       <h2>See also</h2>
       <%= seealso %>
     <% }%>
     
-    <% if(has_length(authors)){ -%>
+    <% if(has_text(authors)){ -%>
       <h2><%= author_str %></h2>
       <%= authors %>
     <% }%>

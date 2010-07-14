@@ -184,7 +184,7 @@ pkg_topics_index <- memoise(function(package) {
     return(NULL)
 
   topics <- read.table(file_path, sep = "\t", 
-    stringsAsFactors = FALSE, comment.char = "", quote = "", header = TRUE)
+    stringsAsFactors = FALSE, comment.char = "", quote = "", header = FALSE)
   names(topics) <- c("alias", "file") 
   topics[complete.cases(topics), ]
 })
@@ -293,6 +293,10 @@ pkg_topic_index_type <- function(package){
   
   # package
   index[str_detect(index$file, "-package"), "type"] <- "package"
+  rows <- with(index, type == "package")
+  if(sum(rows) > 1){
+    index <- subset(index, !str_detect(index$alias, "-package"))
+  }
 
   # dataset
   rows <- with(index,
