@@ -67,6 +67,20 @@ print.help_files_with_topic <- function (x, ...)
     invisible(x)
 }
 
+load_html <- function(...){
+  url_path <- str_join(as.character(substitute(...)), collapse = "/")
+
+  if(str_sub(url_path, end = 1) != "/")
+    url_path <- str_join("/", url_path, collapse = "")
+
+  if(str_sub(url_path, end = 2) == "//")
+    url_path <- str_sub(url_path, start = 2)
+  
+  print(url_path)
+  browseURL(paste("http://127.0.0.1:", tools:::httpdPort, url_path, sep = ""), getOption("browser"))            
+  
+}
+
 
 # Global path for render_snippets and pictures
 helpr_path <- NULL   
