@@ -5,10 +5,6 @@
 #loc <- tempfile("helpr")
 #create.dir(loc)
 
-#floor to top 5 or ten
-#only >= 2
-
-
 #' help files with topic for helpr
 #' route to the correct website
 #'

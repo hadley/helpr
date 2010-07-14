@@ -99,18 +99,22 @@ pkg_author_and_maintainers <- function(description){
   maintainer_email <- str_replace(maintainer_email, "<", "")
   maintainer_email <- str_replace(maintainer_email, ">", "")
 
-  authors <- str_replace(
-    authors, 
-    str_join("</?.*?>",maintainer_name,"</?.*?>", collapse = ""),
-    maintainer_name
-  )
-  
-  authors <- str_replace(
-    authors, 
-    maintainer_name,
-    str_join("<strong>", author_email(maintainer_name, maintainer_email), "</strong>", collapse = "")
-  )
-  
+  maintainer_string <- str_join("<strong>", author_email(maintainer_name, maintainer_email), "</strong>", collapse = "")  
+  if(str_detect(authors, maintainer_name)){
+    authors <- str_replace(
+      authors, 
+      str_join("</?.*?>",maintainer_name,"</?.*?>", collapse = ""),
+      maintainer_name
+    )
+    
+    authors <- str_replace(
+      authors, 
+      maintainer_name,
+      maintainer_string
+    )
+  }else{
+    authors <- str_join(authors, "; ", maintainer_string, collapse = "")
+  }
   authors
 }
 
