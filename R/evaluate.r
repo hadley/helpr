@@ -70,7 +70,7 @@ evaluate_text <- function(txt, pic_base_name){
 }
 
 eval_tag_output <- function(x){
-  str_c("<span class=\"R_output\"><pre>", x, "</pre></span>")
+  str_c("<pre class=\"R_output\">", x, "</pre>")
 }
 
 

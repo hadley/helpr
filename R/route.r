@@ -1,10 +1,3 @@
-#  add pre
-#  png format
-
-#tempfile("helpr")
-#loc <- tempfile("helpr")
-#create.dir(loc)
-
 #' help files with topic for helpr
 #' route to the correct website
 #'
