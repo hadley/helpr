@@ -3,15 +3,11 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
-  <link rel="stylesheet" type="text/css" href="/_styles/reset-fonts-grids.css" />
-  <link rel="stylesheet" type="text/css" href="/_styles/r-help.css" />
-  <link rel="stylesheet" type="text/css" href="/_styles/jquery.rating.css" />
-  
-  <script type="text/javascript" src="/_scripts/jquery-latest.js"></script>
-  <script type="text/javascript" src="/_scripts/package.js"></script>
-  <script type="text/javascript" src="/_scripts/jquery.rating.pack.js"></script>
+  <%= render_snippet("html_header") %>
 
+  <%= render_snippet("rating") %>
+
+  <%= render_snippet("disqus_header", list(name = str_join(package, "_package"))) %>
 
   <title><%= package %>. R help</title>
 </head>
@@ -165,7 +161,11 @@
   </div><!-- end bd -->
 
   <div id="ft">
+    <%= render_snippet("disqus_footer") %>
     <p>R help.  Style created by <a href="http://had.co.nz/">Hadley Wickham</a></p>
   </div>
-</div></body>
+</div>
+<%= render_snippet("disqus_end_body_script") %>
+
+</body>
 </html>

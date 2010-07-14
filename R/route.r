@@ -83,7 +83,9 @@ load_html <- function(...){
 
 
 # Global path for render_snippets and pictures
-helpr_path <- NULL   
+helpr_path <- NULL
+helpr_pic_path <- base::tempdir()
+   
 
 #' Helpr Documentation
 #'
@@ -234,7 +236,7 @@ helpr <- function(installed = TRUE) {
 
   # pictures
   router$get("/picture/:file_name", function(file_name) {
-    redirect(str_join("/_tmp_pictures/", file_name, collapse = ""))
+    static_file(file.path(helpr_pic_path, file_name))
   })
   # remove all the pictures from the previous session
   delete_folder_contents(file.path(path, "public", "_tmp_pictures")) 

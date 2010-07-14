@@ -9,4 +9,4 @@ Depends: highlight, sinartra, digest, parser, rjson, tools, stringr, evaluate
 Imports: brew
 License: GPL-2
 LazyData: true
-Collate: 'memoise.r' 'changelog.r' 'demo.r' 'evaluate.r' 'functions.r' 'history.r' 'package.r' 'packages.r' 'parse-rd.r' 'pictures.r' 'render.r' 'route.r' 'topic.r'
+Collate: 'memoise.r' 'route.r' 'changelog.r' 'demo.r' 'evaluate.r' 'functions.r' 'history.r' 'package.r' 'packages.r' 'parse-rd.r' 'pictures.r' 'render.r' 'topic.r'

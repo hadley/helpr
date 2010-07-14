@@ -36,7 +36,7 @@ helpr_demo <- function(package, demo_name){
     name = demo_name,
     description = info[1,"Title"],
 #    src = highlight(parsed_src),
-    src = evaluate_text(demo_src_c, pic_base_name = str_join(package, "_", pkg_version(package),"_demo")),
+    src = evaluate_text(demo_src_c, pic_base_name = str_join(package, "_", pkg_version(package),"_demo_", demo_name)),
     other_demos = other_demos,
     other_demos_str = pluralize("Demo", other_demos),
     src_functions = demo_functions,

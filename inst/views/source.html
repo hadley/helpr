@@ -3,15 +3,9 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+  <%= render_snippet("html_header") %>
 
-  <link rel="stylesheet" type="text/css" href="/_styles/reset-fonts-grids.css" />
-  <link rel="stylesheet" type="text/css" href="/_styles/r-help.css" />
-  <link rel="stylesheet" type="text/css" href="/_styles/jquery.rating.css" />
-  
-  <script type="text/javascript" src="/_scripts/jquery-latest.js"></script>
-  <script type="text/javascript" src="/_scripts/package.js"></script>
-
+  <%= render_snippet("disqus_header", list(name = str_join(package, "_topic_",name,"_source"))) %>
 
   <title><%= package %> <%= name %>. R help</title>
 </head>
@@ -26,7 +20,7 @@
   <div id="bd">
   <div id="yui-main"><div class="yui-b">
     <h1><%= name %></h1>
-    <p><%= desc %></p>
+    <%= desc %>
 
     <h2><%= name %> Source</h2>
     <%= src %>
@@ -53,7 +47,10 @@
   </div><!-- end bd -->
 
   <div id="ft">
+    <%= render_snippet("disqus_footer") %>
     <p>R help.  Style created by <a href="http://had.co.nz/">Hadley Wickham</a></p>
   </div>
-</div></body>
+</div>
+<%= render_snippet("disqus_end_body_script") %>
+</body>
 </html>

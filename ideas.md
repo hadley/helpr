@@ -51,7 +51,8 @@ Individual pages
 * DONE - Have interaction with demo things
   * DONE - Execute whole demo
   * DONE - Execute highlighted part
-* WAIT - Have output done within the example
+* BUSY - Have output done within the example
+  * NEEDS - an update from evaluate
 * DONE - Use parser to count all the functions used by the demo.  For functions that are called most offline, add cross-links to the demo from their topic page
 
 ## Topic
@@ -63,14 +64,18 @@ Individual pages
 * DONE - view source - shows function source
 * WAIT - rate a function
   * Crantastic
-* WAIT - add comments - look at something like disqus
-  * set up host
-  * use the host
+* BUSY - add comments - look at something like disqus
+  * add to every page
+    * DONE - demo
+    * NO - index.html
+    * DONE - package
+    * DONE - source
+    * DONE - topic
 * DONE - links for "mailto"
 * WAIT/DEB - display keywords
 * DONE - list of all fuctions that are under the topic
   * DONE - links to the source code of said function
-* DONE - Execute example functionality
+* BUSY - Execute example functionality
   * See Code Execution
     
 ## Things to fix
@@ -83,15 +88,17 @@ Code Execution
 ==================
 
 * DONE - Parse examples and add links to functions that are used
-* BUSY - Send selected/highlighted expression to R console
-  * silently remove "bad" text
-* WAIT - Evaluate all example code and interleave results back in html
+* DONE - Send selected/highlighted expression to R console
+  * DONE - silently remove "bad" text
+    * NEED - to remove the notification
+* BUSY - Evaluate all example code and interleave results back in html
   * see: http://ejohn.org/apps/learn/
+  * using evaluate package
 * DONE - Add jQuery to notify user
 * DONE - "Easy"(run) button
 * DONE - all executed code should appear in the console
-* BUSY - Rewrite the "replay" method for eval with details to produce html output.
-  * be cool, make it S3
+* DONE - Rewrite the "replay" method for eval with details to produce html output.
+  * DONE - baller status achieved - be cool, make it S3
 
 
 Dynamic help

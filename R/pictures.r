@@ -1,16 +1,11 @@
-#tempfile("helpr")
-#loc <- tempfile("helpr")
-#create.dir(loc)
-
 
 save_picture <- function(obj_name, obj_plot){
-  file_path <- file.path(helpr_path, "public", "_tmp_pictures", str_join(obj_name, ".png", collapse = ""))
+  file_path <- file.path(helpr_pic_path, str_join(obj_name, ".png", collapse = ""))
   
-#  browser()
   # only make the picture if you have to
   # duplicates do not exist as naming should be done well
   if(!file.exists(file_path)){ 
-    print(str_join("Saving picture... ", obj_name, collapse = ""))
+    print(str_join("Saving picture... ", obj_name, "\n\t", filepath, collapse = ""))
     png(file_path)
       print(obj_plot)
     dev.off()
