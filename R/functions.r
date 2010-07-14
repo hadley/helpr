@@ -75,11 +75,21 @@ code_info <- function(parser_output){
   # make alphabetical to match table output
   uni_funs <- uni_funs[order(uni_funs$functions)[order], ]
 
-  data.frame(
+  name_count_link <- data.frame(
     name = uni_funs$functions,
     count = funcs,
     link = uni_funs$paths
   )
+  
+  name_count_link <- subset(name_count_link, count > 1)
+  
+  rows <- NROW(name_count_link)
+  if(rows > 10)
+    rows <- 10
+  else if(rows > 5)
+    rows <- 5
+  
+  name_count_link[seq_len(rows), ]
 }
 
 
