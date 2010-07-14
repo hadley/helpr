@@ -88,16 +88,29 @@ pkg_author_and_maintainers <- function(description){
     author_and_email <- author_email(auths, emails)
   }
   
-  # make the maintainer bold
-  maintainer <- str_extract_all(description$maintainer, name_pattern)[[1]][1]
-  pos <- auths == maintainer
-  author_and_email[pos] <- str_join("<strong>", author_and_email[pos], "</strong>", collapse = "")
-  
   # replace the original authors with the linked authors
   for(i in seq_along(author_and_email)){
     authors <- str_replace(authors, auths_string[i], author_and_email[i])
   }
 
+  # make the maintainer bold
+  maintainer_name <- str_extract_all(description$maintainer, name_pattern)[[1]][1]
+  maintainer_email <- str_extract_all(description$maintainer, email_pattern)[[1]][1]
+  maintainer_email <- str_replace(maintainer_email, "<", "")
+  maintainer_email <- str_replace(maintainer_email, ">", "")
+
+  authors <- str_replace(
+    authors, 
+    str_join("</?.*?>",maintainer_name,"</?.*?>", collapse = ""),
+    maintainer_name
+  )
+  
+  authors <- str_replace(
+    authors, 
+    maintainer_name,
+    str_join("<strong>", author_email(maintainer_name, maintainer_email), "</strong>", collapse = "")
+  )
+  
   authors
 }
 
