@@ -3,8 +3,17 @@
 #'
 #' @param fun function to get the source code from
 #' @return NULL or source code of of the function
-body_text <- function(fun) {
-  text <- get(fun, mode = "function")
+body_text <- function(package, fun) {
+  text <- tryCatch(
+    get(fun, mode = "function"),
+    error = function(e)
+      tryCatch(
+        get(fun, mode = "function", envir = asNamespace(package)),
+        error = function(e)
+          stop("can't find the function ", fun)
+      )
+    )
+    
   if(is.null(text))
     NULL
   else
@@ -98,8 +107,31 @@ helpr_function <- function(package, func){
   index <- pkg_topics_index(package)
   topic <- as.character(subset(index, alias == func, "file"))
   aliases <- subset(index, (file == topic) & (alias != func), "alias")
-  par_text <- parse_text(reconstruct(body_text(func)))
-  src_frunctions <- code_info(par_text)
+  
+  par_text <- tryCatch(
+    parse_text(reconstruct(body_text(package, func))),
+    error = function(e){
+      "bad_function"
+    }
+  )
+  
+  if(identical(par_text, "bad_function")){
+    
+    input <- str_join("str(",func,")", collapse = "")
+    src <- capture.output(eval(parser(text = input)[1]))
+    src <- str_replace(src, "<", "&lt;")
+    src <- str_replace(src, ">", "&gt;")
+    src <- eval_tag_output(str_join(src, collapse = "\n"))
+    src <- str_c("<pre>", input,"</pre>", src)
+    src_functions <- NULL
+    src_functions_str <- ""
+    
+  }else{
+      
+    src_functions <- code_info(par_text)
+    src <- highlight(par_text)
+    src_functions_str <- pluralize("Top Function", src_functions)
+  }
   
   list(
     package = package, 
@@ -108,9 +140,9 @@ helpr_function <- function(package, func){
     aliases = aliases,
     aliases_str = pluralize("Alias (Source)", aliases, plural="Aliases (Source)"),
     desc = helpr_topic(package, topic)$desc,
-    src = highlight(par_text),
-    src_functions = src_frunctions,
-    src_functions_str = pluralize("Top Function", src_frunctions)
+    src = src,
+    src_functions = src_functions,
+    src_functions_str = src_functions_str
   )
 }
 
