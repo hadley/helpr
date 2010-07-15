@@ -74,7 +74,7 @@ pkg_author_and_maintainers <- function(description){
 
   # retrieve the author and email separately
   all_pattern <- "[a-zA-Z][a-zA-Z]* [a-zA-Z][a-zA-Z]* <[a-zA-Z0-9._-]*@[a-zA-Z0-9._-]*.[a-zA-Z]{2,7}>"
-  name_pattern <- "[a-zA-Z][a-zA-Z]* [a-zA-Z][a-zA-Z]*"
+  name_pattern <- "[a-zA-Z][a-zA-Z_-]*[ ]{0,1}[a-zA-Z][a-zA-Z]*"
   email_pattern <- "<[a-zA-Z0-9._-]*@[a-zA-Z0-9._-]*.[a-zA-Z]{2,7}>"
   auths_string <- str_extract_all(authors, all_pattern)[[1]]
   auths <- sapply(str_extract_all(auths_string, name_pattern), "[[", 1)
@@ -100,6 +100,7 @@ pkg_author_and_maintainers <- function(description){
   maintainer_email <- str_replace(maintainer_email, ">", "")
 
   maintainer_string <- str_join("<strong>", author_email(maintainer_name, maintainer_email), "</strong>", collapse = "")  
+  
   if(str_detect(authors, maintainer_name)){
     authors <- str_replace(
       authors, 
