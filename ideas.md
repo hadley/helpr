@@ -27,8 +27,7 @@ Individual pages
   * needs to have a render brew template
 * DONE - Link to demos
 * DONE - vignettes
-* NEEDS VALIDATION - separate data and functions
-  * improved
+* DONE - separate data and functions
   * VALIDATION - needs to be able to find functions that are in a namespace, such as the package tools
 * DONE - show internal functions separately
 * WAIT - integrate with crantastics
@@ -78,11 +77,6 @@ Individual pages
 * BUSY - Execute example functionality
   * See Code Execution
     
-## Things to fix
-
-* HTML "get selected text" does not include \n or \cr or anything useful for new lines
-  * need to get new line characters to allow for executing highlighted code
-
 
 Code Execution
 ==================
@@ -91,8 +85,7 @@ Code Execution
 * DONE - Send selected/highlighted expression to R console
   * DONE - silently remove "bad" text
     * NEED - to remove the notification
-* BUSY - Evaluate all example code and interleave results back in html
-  * see: http://ejohn.org/apps/learn/
+* BUSY/WAIT - Evaluate all example code and interleave results back in html
   * using evaluate package
 * DONE - Add jQuery to notify user
 * DONE - "Easy"(run) button
