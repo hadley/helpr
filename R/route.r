@@ -76,7 +76,6 @@ load_html <- function(...){
   if(str_sub(url_path, end = 2) == "//")
     url_path <- str_sub(url_path, start = 2)
   
-  print(url_path)
   browseURL(paste("http://127.0.0.1:", tools:::httpdPort, url_path, sep = ""), getOption("browser"))            
   
 }
@@ -236,10 +235,12 @@ helpr <- function(installed = TRUE) {
 
   # pictures
   router$get("/picture/:file_name", function(file_name) {
-    static_file(file.path(helpr_pic_path, file_name))
+    file_path <- file.path(helpr_pic_path, file_name)
+    cat("retrieving picture at \n\t", file_path,"\n");
+    static_file(file_path)
   })
-  # remove all the pictures from the previous session
-  delete_folder_contents(file.path(path, "public", "_tmp_pictures")) 
+#  # remove all the pictures from the previous session
+#  delete_folder_contents(file.path(path, "public", "_tmp_pictures")) 
 
 
   render_path <- function(path, ...) router$route(path)

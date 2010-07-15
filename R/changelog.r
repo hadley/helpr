@@ -15,6 +15,27 @@ pkg_news <- function(package){
   render_snippet("changelogs", change_log)
 }
 
+function_news <- function(package, topic){
+  package_news <- news(package = package)
+  if(is.null(package_news)) return(NULL)
+  
+  # retain only the infomation that contains the topic name
+  package_news <- package_news[str_detect(package_news$Text, topic), ]
+  
+  if(!dataframe_has_rows(package_news)) return("")
+    
+  package_news$title <- str_join(package_news$Version, " - ", package_news$Category)
+  
+  change_log <- list(
+    title = str_join("Change Log for '", topic, "'", collapse = ""),
+    news = split(package_news$Text, addNA(package_news$title))
+  )
+  
+  render_snippet("changelogs_topic_source", change_log)  
+}
+
+
+
 get_manuals <- function(){
   # get files in the manual directory with full path
   manual_dir <- file.path(Sys.getenv("R_DOC_DIR"),"manual")

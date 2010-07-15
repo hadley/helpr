@@ -21,9 +21,11 @@
   <div id="yui-main"><div class="yui-b">
     <h1><%= name %></h1>
     <%= desc %>
-
+    
     <h2><%= name %> Source</h2>
     <%= src %>
+<hr>
+    <%= function_news(package, name) %>
 
 
   </div></div>
@@ -34,7 +36,7 @@
     <ul>
     <% for(alias in aliases$alias) { -%>
       <li>
-        <%= str_join("<a href='/package/",package,"/source/",alias,"'>",alias,"</a>" ) %>
+        <%= str_join("<a href=\"/package/", package, "/topic/", topic, "/source/", alias, "\">", alias, "</a>" ) %>
       </li>
     <% } %>
     </ul>
@@ -54,3 +56,4 @@
 <%= render_snippet("disqus_end_body_script") %>
 </body>
 </html>
+

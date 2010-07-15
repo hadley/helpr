@@ -64,6 +64,8 @@ helpr_replay_message <- function(x){
 
 
 evaluate_text <- function(txt, pic_base_name){
+  if(!has_text(txt))
+    return("")
   evaluated <- evaluate:::evaluate(txt)
   replayed <- helpr_replay(evaluated, pic_base_name)
   str_join(as.character(unlist(replayed)), collapse = "\n")

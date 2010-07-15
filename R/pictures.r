@@ -5,7 +5,7 @@ save_picture <- function(obj_name, obj_plot){
   # only make the picture if you have to
   # duplicates do not exist as naming should be done well
   if(!file.exists(file_path)){ 
-    print(str_join("Saving picture... ", obj_name, "\n\t", filepath, collapse = ""))
+    cat("Saving picture... ", obj_name, "\n\t", file_path, "\n",sep = "")
     png(file_path)
       print(obj_plot)
     dev.off()
