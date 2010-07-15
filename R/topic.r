@@ -2,7 +2,7 @@
 #'
 #' @return all the information necessary to produce the home site ("index.html")
 helpr_topic <- function(package, topic) {
-  topic_info <- parse_help(pkg_topic(package, topic))
+  topic_info <- parse_help(pkg_topic(package, topic), package = package)
   topic_info$package <- package
 
   topic_info
@@ -55,13 +55,22 @@ topic_is_internal <- function(help) {
 #'
 #' @param rd item to be tagged recursively
 #' @return item reformatted to be used in HTML
-parse_help <- function(rd) {
+parse_help <- function(rd, package) {
   tags <- sapply(rd, tag)
 
   # Remove top-level text strings - just line breaks between sections
   rd <- rd[tags != "TEXT"]
 
   out <- list()
+  
+  # Join together aliases and keywords
+  out$name <- reconstruct(untag(rd$name))
+  out$aliases <- setdiff(
+    unname(sapply(rd[names(rd) == "alias"], "[[", 1)),
+    out$name
+  )
+  out$keywords <- unname(sapply(rd[names(rd) == "keyword"], "[[", 1))
+
   # Title, description, value and examples, need to be stitched into a 
   # single string.
   out$title <- reconstruct(untag(rd$title))
@@ -70,8 +79,8 @@ parse_help <- function(rd) {
   out$value <- reconstruct(rd$value)
   reconstructed_examples <- reconstruct(untag(rd$examples))
   par_text <- parse_text(reconstructed_examples)
-  out$examples <- highlight(par_text)
-#  out$examples <- evaluate_text(reconstructed_examples)
+#  out$examples <- highlight(par_text)
+  out$examples <- evaluate_text(reconstructed_examples, pic_base_name = str_join(package, "_", pkg_version(package),"_topic_", out$name))
   out$example_functions <- code_info(par_text)
   out$example_functions_str <- pluralize("Top Function", out$example_functions)
 #  out$usage <- reconstruct(untag(rd$usage))
@@ -81,13 +90,6 @@ parse_help <- function(rd) {
 
   out$seealso <- reconstruct(rd$seealso)
   
-  # Join together aliases and keywords
-  out$name <- reconstruct(untag(rd$name))
-  out$aliases <- setdiff(
-    unname(sapply(rd[names(rd) == "alias"], "[[", 1)),
-    out$name
-  )
-  out$keywords <- unname(sapply(rd[names(rd) == "keyword"], "[[", 1))
 
   # Pull apart arguments
   arguments <- rd$arguments
