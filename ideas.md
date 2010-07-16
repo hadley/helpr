@@ -107,6 +107,7 @@ Function mispelling
 Search
 ======
 
+* BUSY
 * external solr search engine with separate fields for separate parts of RDoc.
 * for use by insider and by html search
 * indexes all packages - not just those installed on the users machine.
