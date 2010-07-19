@@ -1,6 +1,6 @@
 #http://lucene.apache.org/solr/tutorial.html
 #http://localhost:8983/solr/select/?q=Samsung&version=2.2&start=0&rows=10&indent=on
-#load_html(/search/q=YaleToolkit;start=0)
+#load_html("/search/q=YaleToolkit;start=0")
 
 #' make a field for a solr document
 make_field <- function(name, value){
