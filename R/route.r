@@ -246,7 +246,6 @@ helpr <- function(installed = TRUE) {
   # pictures
   router$get("/picture/:file_name", function(file_name) {
     file_path <- file.path(helpr_pic_path, file_name)
-    cat("retrieving picture at \n\t", file_path,"\n");
     static_file(file_path)
   })
 #  # remove all the pictures from the previous session
