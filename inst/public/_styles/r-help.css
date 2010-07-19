@@ -88,10 +88,19 @@ pre {
 .slot {font-style:italic;}
 .symbol {color:black ;}
 .prompt {color:black ;}
-.R_output {
-  background-color: rgb(221,232,235) ! important;
+.R_output {background-color: rgb(221,232,235) ! important;}
+.R_output_image { 
+  border-width: 2px ! important; border-style: solid;
+  background-color: rgb(255,255,255);
+  border-color: rgb(135,179,190); /* darker output blue */
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.R_output, .R_output_image {
   margin-top: 0.5em ! important;
-  margin-bottom: 0.5em ! important;
+  margin-bottom: 0.5em ! important;  
 }
 
 

@@ -44,10 +44,9 @@ helpr_replay.value <- function(x, pic_base_name) {
   if (x$visible) eval_tag_output(str_join(capture.output(print(x$value)), collapse = "\n"))
 }
 
-helpr_replay.recordedplot <- function(x, pic_base_name) {
-  
+helpr_replay.recordedplot <- function(x, pic_base_name) {  
   file_loc <- save_picture( pic_base_name, x)
-  eval_tag_output(str_join("<img src=\"", file_loc, "\" alt=\"", pic_base_name, "\" />", collapse = ""))
+  str_join("<img class=\"R_output_image\" src=\"", file_loc, "\" alt=\"", pic_base_name, "\" />", collapse = "")
 }
 
 helpr_replay_cat <- function(x){
