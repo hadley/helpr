@@ -1,11 +1,13 @@
 #http://lucene.apache.org/solr/tutorial.html
 #http://localhost:8983/solr/select/?q=Samsung&version=2.2&start=0&rows=10&indent=on
+#load_html(/search/q=YaleToolkit;start=0)
 
 #' make a field for a solr document
 make_field <- function(name, value){
   value <- str_trim(value)
   value <- str_replace(value, "\n", "")
   value <- str_replace(value, "\t", "")
+  if(!identical(name, "id")) name <- str_join(name, "_t")
   str_join("<field name=\"", name, "\">", str_join(value, collapse = "; "),"</field>", collapse = "")
 }
 
@@ -46,7 +48,7 @@ make_add_xml <- function(obj){
 #' Save page info into xml for solr
 #'   
 #' @examples
-#'   save_xml("example.xml", helpr_topic_xml("grDevices", "png"))
+#'   save_xml("all_topics.xml", make_add_xml(helpr_topic_xml_all("y")))
 save_xml <- function(file_name, txt){
   txt <- str_replace(txt, "<doc>", "<doc>\n\t")
   txt <- str_replace(txt, "</field>", "</field>\n\t")
@@ -112,12 +114,112 @@ helpr_topic_xml_all <- function(start_letter = "a", verbose = TRUE){
        
     }
     output[j] <- str_join(
-      "\n\n\n<!----------", packages[j], "---------->\n", 
+      "\n\n\n<!--         ", packages[j], "         -->\n", 
       str_join(pkg_output, collapse = "\n\n")
       , collapse = "")
 
   }
   str_join(output, collapse = "")
 }
+
+
+helpr_search_row_count <- 10
+
+get_solr_query <- function(query_string){
+  rows <- helpr_search_row_count
+  xml_response <- xmlTreeParse(str_join("http://0.0.0.0:8983/solr/select/?version=2.2&rows=",rows,"&indent=on&", query_string), isURL = TRUE)$doc$children
+  
+  docs <- xml_response$response[2]$result
+  header <- xml_response$response[1]
+  query <- as.character(header$lst[[3]][[3]][[1]]$value)
+
+  start_pos <- as.numeric(docs$attributes["start"])
+
+  total_item_count <- as.numeric(docs$attributes["numFound"])
+  list(
+    response = docs, 
+    items_before = start_pos, 
+    items_after = max(0, total_item_count - start_pos - rows),
+    total_item_count = total_item_count, 
+    query = query
+  )
+}
+
+xmlResponse_to_list <- function(xml_response){
+  return_item <- list()
+  for(i in seq_along(xml_response))
+    return_item[[i]] <- xmlDoc_to_list(xml_response[[i]])
+  return_item
+}
+
+xmlDoc_to_list <- function(xml_response){
+  nodes <- xml_response
+  
+  new_list <- list()
+  
+  for(i in seq_along(nodes)){
+    node <- nodes[[i]]
+    attr(node, "class") <- NULL
+    field <- str_replace(node$attributes, "_t", "")
+    if(identical(field, "id")) field <- "url"
+    
+    value <- node[3]$children$text$value
+    if(is.null(value)) value <- ""
+    
+    new_list[[field]] <- value
+  }
+  
+  new_list
+}
+
+package_and_topic_from_url <- function(url_txt){
+  pkg <- ""
+  topic <- ""
+  if(str_detect(url_txt, "/package/")){
+    pkg <- str_extract(url_txt, "/package/[a-zA-Z_0-9]*/")
+    pkg <- str_replace(pkg, "/package/", "")
+    pkg <- str_replace(pkg, "/", "")
+    
+    if(str_detect(url_txt, "/topic/")){
+      topic <- str_extract(url_txt, "/topic/[a-zA-Z_0-9]*")
+      topic <- str_replace(topic, "/topic/", "")
+      topic <- str_replace(topic, "/", "")      
+    }
+  }
+  
+  list(pkg = pkg, topic = topic)
+}
+
+package_description <- function(pkg, topic){
+  gsub("$\n+|\n+^", "", reconstruct(pkg_topic(pkg, topic)$description))
+}
+
+search_query_path <- function(query, start_pos){
+  str_join(base_html_path(),"/search/start=",start_pos,";q=",query)  
+}
+
+
+helpr_solr_search <- function(query_string){
+  xml <- get_solr_query(query_string)
+  items <- xmlResponse_to_list(xml$response)
+  
+  urls <- sapply(items, function(x) x$id)
+  desc <- sapply(items, function(x) x$desc)
+  
+  list(
+    urls = urls,
+    desc = desc,
+    items_before = xml$items_before,
+    items_after = xml$items_after,
+    query = xml$query,
+    start_pos = xml$items_before,
+    row_count = helpr_search_row_count,
+    total_item_count = xml$total_item_count
+  )
+  
+  
+}
+
+
 
 

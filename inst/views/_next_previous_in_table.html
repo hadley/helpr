@@ -1,0 +1,43 @@
+<table>
+
+  <tr>
+  
+    <% if(start_pos != 0){ -%>
+      <td class="helpr_prev_next">
+        <%= str_join("<a href = \"", search_query_path(query, start_pos-row_count), "\">") %>
+          &lt; h<br />
+          Previous
+        </a>
+      </td>
+    <% }else{ -%>
+      <td>h</td>
+    <% } %>
+    
+    
+    <% for(i in (seq_len(ceiling(total_item_count/helpr_search_row_count))-1)){ -%>
+      <td>
+        <% cur <- i == floor(start_pos / helpr_search_row_count) %>
+        <% if(!cur) { -%>
+        <%= str_join("<a href = \"", search_query_path(query, i*row_count), "\">") %>
+        <% } %>
+                
+        <span class="helpr_prev_next">e</span><br />
+        <%= i+1 %>
+        
+        <% if(!cur) { -%>
+          </a>
+        <% } %>
+      </td>
+    <% } %>
+    
+    
+    <% if((row_count+start_pos) < total_item_count){ -%>
+      <td><a href = ""><span class="helpr_prev_next">lpr &gt;</span><br />Next</a></td>
+    <% }else{ -%>
+      <td><span class="helpr_prev_next">lpr</span></td>
+    <% } %>
+  </tr>
+</table>
+<%= total_item_count %>
+
+

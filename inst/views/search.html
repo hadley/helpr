@@ -16,7 +16,7 @@
 </head>
 
 <body>
-  <div id="watermark">help</div>
+  <div id="watermark">search</div>
   <div id="doc2" class="yui-t6">
   <div id="hd">
     <a href="/index.html">R</a> 
@@ -24,12 +24,35 @@
 
   <div id="bd">
   <div id="yui-main"><div class="yui-b">
-    <h1>Multiple Topics</h1>
+    <h1>Results</h1>
 
-    <% for(i in seq_along(pkg)){ -%>
-      <%= render_snippet("package_topic_desc", list(pkg = pkg[i], topic = topic[i], desc = desc[i])) %>
+
+    <% if(length(urls) < 1){ -%>
+
+      <!-- style and text taken from google.com with a bad search -->
+      Your search - <strong><%= query %></strong> - did not match any documents.<br/>
+      <br/>
+      Suggestions:<br/>
+      <ul>
+        <li>Make sure all words are spelled correctly.</li>
+        <li>Try different keywords.</li>
+        <li>Try more general keywords.</li>
+        <li>Try fewer keywords. </li>
+      </ul>
     <% } %>
-    
+
+    <% for(i in seq_along(urls)){ -%>
+      <% pkg_and_topic = package_and_topic_from_url(urls[i]) %>
+      <%= render_snippet("package_topic_desc", list(pkg = pkg_and_topic$pkg, topic = pkg_and_topic$topic, desc = desc[i])) %>
+    <% } %>
+<br />
+    <%= render_snippet("next_previous", list(
+      query = query,
+      start_pos = start_pos,
+      row_count = row_count,
+      total_item_count = total_item_count
+    )) %>
+
   </div></div>
   <div class="yui-b"><div class = "sidebar"></div></div>
 
@@ -38,6 +61,6 @@
   <div id="ft">
     <p>R help.  Style created by <a href="http://had.co.nz/">Hadley Wickham</a></p>
   </div>
-  
+
 </div></body>
 </html>

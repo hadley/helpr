@@ -31,7 +31,7 @@ print.help_files_with_topic <- function (x, ...)
             out <- c(out, "<table width=\"100%\" summary=\"R Package list\">\n", 
                 "<tr align=\"left\" valign=\"top\">\n", "<td width=\"25%\">Package</td><td>Library</td></tr>\n")
             pkgs <- basename(paths)
-            links <- paste("<a href=\"http://127.0.0.1:", tools:::httpdPort, 
+            links <- paste("<a href=\"", base_html_path(), 
                 "/library/", pkgs, "/help/", topic, "\">", pkgs, 
                 "</a>", sep = "")
             out <- c(out, paste("<tr align=\"left\" valign=\"top\">\n", 
@@ -39,7 +39,7 @@ print.help_files_with_topic <- function (x, ...)
                 sep = ""))
             out <- c(out, "</table>\n</p>\n<hr>\n</body></html>")
             writeLines(out, file.path(path, "all.available.html"))
-            browseURL(paste("http://127.0.0.1:", tools:::httpdPort, 
+            browseURL(paste(base_html_path(), 
                 "/doc/html/all.available.html", sep = ""), browser)
         }
         else {
@@ -56,10 +56,10 @@ print.help_files_with_topic <- function (x, ...)
         topic <- basename(file)
 
         if(length(pkgname) > 1){
-          browseURL(paste("http://127.0.0.1:", tools:::httpdPort, 
-          "/multiple_help_paths/", str_join(pkgname, topic, sep = "::", collapse = ";"), sep = ""), browser)
+          browseURL(paste(base_html_path(), 
+          "/multiple_help_paths/", str_join(pkgname, topic, sep = "-", collapse = ";"), sep = ""), browser)
         }else{
-          browseURL(paste("http://127.0.0.1:", tools:::httpdPort, 
+          browseURL(paste(base_html_path(), 
           "/library/", pkgname, "/html/", topic, 
           ".html", sep = ""), browser)            
         }
@@ -76,8 +76,12 @@ load_html <- function(...){
   if(str_sub(url_path, end = 2) == "//")
     url_path <- str_sub(url_path, start = 2)
   
-  browseURL(paste("http://127.0.0.1:", tools:::httpdPort, url_path, sep = ""), getOption("browser"))            
+  browseURL(paste(base_html_path(), url_path, sep = ""), getOption("browser"))            
   
+}
+
+base_html_path <- function(){
+  str_join("http://127.0.0.1:", tools:::httpdPort, collapse = "")
 }
 
 
@@ -162,7 +166,7 @@ helpr <- function(installed = TRUE) {
 
   # Individual help topic with multiple reponses
   router$get("/multiple_help_paths/:path_string", function(path_string) {
-    pkg_and_topic <- str_split(str_split(path_string, ";")[[1]], "::")
+    pkg_and_topic <- str_split(str_split(path_string, ";")[[1]], "-")
 
     pkg <- c()
     topic <- c()
@@ -170,10 +174,16 @@ helpr <- function(installed = TRUE) {
     for(i in seq_along(pkg_and_topic)){
       pkg[i] <- pkg_and_topic[[i]][1]
       topic[i] <- pkg_and_topic[[i]][2]
-      descriptions[i] <- gsub("$\n+|\n+^", "", reconstruct(pkg_topic(pkg[i], topic[i])$description))
+      descriptions[i] <- package_description(pkg[i], topic[i])
     }
     
     render_brew("help", list(pkg = pkg, topic = topic, desc = descriptions), path = path)
+  })
+  
+  # Search
+  router$get("/search/:query_string", function(query_string) {
+    query_string <- str_replace(query_string, ";", "&")
+    render_brew("search", helpr_solr_search(query_string), path = path)  
   })
   
   
@@ -265,7 +275,8 @@ helpr_home <- function(){
   top_ten_length <- NROW(ten_funcs$top_ten)
 
   list(
-    packages = as.list(installed_packages()), 
+    packages = installed_packages(), 
+  
     last_ten_funcs_str = pluralize(
       "Last Function", 
       bool_statement = (last_ten_length > 1), 

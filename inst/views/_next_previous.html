@@ -1,0 +1,19 @@
+<% "layout from failblog.org" %>
+<span class="helpr_prev_next">
+  <% if(start_pos != 0){ -%>
+    <%= str_join("<a href = \"", search_query_path(query, start_pos-row_count), "\">") %>&#8810; Previous</a>
+  <% } %>    
+    
+  <% for(i in (seq_len(ceiling(total_item_count/helpr_search_row_count))-1)){ -%>
+    <% if(i == floor(start_pos / helpr_search_row_count)) { -%>
+      [<%= i+1 %>]
+    <% }else{ %>
+      <%= str_join("<a href = \"", search_query_path(query, i*row_count), "\">") %><%= i+1 %></a>
+    <% } %>
+  <% } %>
+    
+  <% if((row_count+start_pos) < total_item_count){ -%>
+    <%= str_join("<a href = \"", search_query_path(query, start_pos+row_count), "\">") %>Next &#8811;</a>
+  <% } %>
+</span>
+

@@ -119,3 +119,10 @@ pre {
   height: 16px;
 }
 
+
+/* Search */
+.helpr_prev_next{
+  text-align: right;
+  font-size: 1.5em;
+}
+
