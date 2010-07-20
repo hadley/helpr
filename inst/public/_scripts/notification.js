@@ -1,3 +1,20 @@
+function set_on_click(section){
+  $("body").mouseup(function(e){
+    var offset = $(section).offset();
+    window.status = e.pageX +', '+ e.pageY + "\tdiv position: " + offset.left + ", " + offset.top;
+    
+      var code = get_output_selected_text(section);
+    if(code == ""){
+      $("#run_highlight").hide();
+      return;
+    }
+
+    $("#run_highlight").offset({ top: e.pageY, left: (offset.left - $("#run_highlight").width() - 20) });
+    $("#run_highlight").show('slow');
+  }); 
+}
+
+
 
 function r_urlencode (str) {
   str = escape(str);
@@ -127,14 +144,11 @@ function execute_example(package, topic){
 }
 
 
-
-// Block the screen while code is executed
-function run_selected_code(section){
-
+function get_output_selected_text(section){
   var code = getSelText();
   window.console.log("Selected Code: \n" + code);
   if(code == "")
-    return;
+    return "";
   
   window.console.log("Section: "+section+"\ncode_index: "+$(section).text().indexOf(code));
   var i;
@@ -155,6 +169,18 @@ function run_selected_code(section){
   code = r_urlencode(code);
   window.console.log("code : " + code);
   
+  return code;
+  
+}
+
+// Block the screen while code is executed
+function run_selected_code(section){
+  
+  var code = get_output_selected_text(section);
+
+  if(code == "")
+    return;
+  
   $.blockUI({ message: '<h1><img src="/_images/busy.gif" /> Running selected code in the R console</h1>' }); 
   
   setTimeout(function(){
@@ -164,14 +190,11 @@ function run_selected_code(section){
       success: function() {
         $.unblockUI();
         notify("The highlighted selection has finished executing in the R console.");
+      },
+      error:function (xhr, ajaxOptions, thrownError){
+        $.unblockUI();
+        error_notify("The code that was selected did not run execute properly.");
       }
-      
-      // blocked right now to receive error as to why it sucked
-      //,
-//      error:function (xhr, ajaxOptions, thrownError){
-//        $.unblockUI();
-//        error_notify("The code that was selected did not run execute properly.");
-//      }
     })
   }, 500);
 }
