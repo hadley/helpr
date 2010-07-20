@@ -2,6 +2,26 @@
 #http://localhost:8983/solr/select/?q=Samsung&version=2.2&start=0&rows=10&indent=on
 #load_html("/search/q=YaleToolkit;start=0")
 
+
+#' Read URL
+#' Retrieve the text from a url
+#' 
+#' @param url_string url to explore
+#' @return plain text from that url
+read_url <- function(url_string){
+  url_connect <- url(url_string)
+  output <- suppressWarnings(str_join(readLines(url_connect), collapse = ""))
+  close(url_connect)
+  output
+}
+
+#' URL made of JSON to list
+#'
+#' @param url_string url that contains a JSON output to be turned into a list
+urlJSON_to_list <- function(url_string){
+  rjson::fromJSON(read_url(url_string))
+}
+
 #' make a field for a solr document
 make_field <- function(name, value){
   value <- str_trim(value)
@@ -123,19 +143,17 @@ helpr_topic_xml_all <- function(start_letter = "a", verbose = TRUE){
 }
 
 
-helpr_search_row_count <- 10
+helpr_search_row_count <- 6
 
-get_solr_query <- function(query_string){
+get_solr_query_result <- function(query_string){
   rows <- helpr_search_row_count
-  xml_response <- xmlTreeParse(str_join("http://0.0.0.0:8983/solr/select/?version=2.2&rows=",rows,"&indent=on&", query_string), isURL = TRUE)$doc$children
-  
-  docs <- xml_response$response[2]$result
-  header <- xml_response$response[1]
-  query <- as.character(header$lst[[3]][[3]][[1]]$value)
+  response <- urlJSON_to_list(str_join("http://0.0.0.0:8983/solr/select/?version=2.2&wt=json&rows=",rows,"&indent=on&", query_string))
+  docs <- response$response$docs
+  query <- response$responseHeader$params$q
 
-  start_pos <- as.numeric(docs$attributes["start"])
+  start_pos <- as.numeric(response$responseHeader$params$start)
 
-  total_item_count <- as.numeric(docs$attributes["numFound"])
+  total_item_count <- as.numeric(response$response$numFound)
   list(
     response = docs, 
     items_before = start_pos, 
@@ -145,32 +163,6 @@ get_solr_query <- function(query_string){
   )
 }
 
-xmlResponse_to_list <- function(xml_response){
-  return_item <- list()
-  for(i in seq_along(xml_response))
-    return_item[[i]] <- xmlDoc_to_list(xml_response[[i]])
-  return_item
-}
-
-xmlDoc_to_list <- function(xml_response){
-  nodes <- xml_response
-  
-  new_list <- list()
-  
-  for(i in seq_along(nodes)){
-    node <- nodes[[i]]
-    attr(node, "class") <- NULL
-    field <- str_replace(node$attributes, "_t", "")
-    if(identical(field, "id")) field <- "url"
-    
-    value <- node[3]$children$text$value
-    if(is.null(value)) value <- ""
-    
-    new_list[[field]] <- value
-  }
-  
-  new_list
-}
 
 package_and_topic_from_url <- function(url_txt){
   pkg <- ""
@@ -200,8 +192,8 @@ search_query_path <- function(query, start_pos){
 
 
 helpr_solr_search <- function(query_string){
-  xml <- get_solr_query(query_string)
-  items <- xmlResponse_to_list(xml$response)
+  result <- get_solr_query_result(query_string)
+  items <- result$response
   
   urls <- sapply(items, function(x) x$id)
   desc <- sapply(items, function(x) x$desc)
@@ -209,12 +201,12 @@ helpr_solr_search <- function(query_string){
   list(
     urls = urls,
     desc = desc,
-    items_before = xml$items_before,
-    items_after = xml$items_after,
-    query = xml$query,
-    start_pos = xml$items_before,
+    items_before = result$items_before,
+    items_after = result$items_after,
+    query = result$query,
+    start_pos = result$items_before,
     row_count = helpr_search_row_count,
-    total_item_count = xml$total_item_count
+    total_item_count = result$total_item_count
   )
   
   
