@@ -39,10 +39,12 @@ function hide_show_output(){
   if(output_hidden == 0){
     window.console.log("Hide output!");
     $(".R_output").hide();    
+    $(".R_output_image").hide();    
 //    $(".R_output").hide('slow');    
   }else{
     window.console.log("Show output!");
     $(".R_output").show('slow');    
+    $(".R_output_image").show('slow'); 
   }
   output_hidden = (output_hidden+1) % 2;  
 }
