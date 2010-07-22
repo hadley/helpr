@@ -31,7 +31,7 @@ Running the development version:
   * Execute the command below in the /example solr directory to start the server `java -jar start.jar`
   * To add/update files, execute one of the index commands from R
 
-    'index_topic(package, topic)'
-    'index_package(package)'
-    'index_all()'
+    `index_topic(package, topic)`
+    `index_package(package)`
+    `index_all()`
 
