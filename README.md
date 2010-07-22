@@ -28,10 +28,9 @@ Running the development version:
     
 # Running solr
 
-  * Follow the (http://lucene.apache.org/solr/tutorial.html)[tutorial] to get a feel how it works.
+  * Follow the [tutorial](http://lucene.apache.org/solr/tutorial.html) to get a feel how it works.
   * Add/replace the two files in solr-conf to solr's example/solr/conf folder
-  * Execute the command below in the /example solr directory to start the server
-    java -jar start.jar 
+  * Execute the command below in the /example solr directory to start the server `java -jar start.jar`
   * To add/update files, execute one of the index commands from R
     index_topic(package, topic)
     index_package(package)
