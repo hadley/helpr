@@ -27,7 +27,7 @@ solr_topic <- function(package, topic){
   out$Name <- strip_html(reconstruct(untag(rd$name)))
   out$Aliases <- setdiff(
     unname(sapply(rd[names(rd) == "alias"], "[[", 1)),
-    out$name
+    out$Name
   )
   out$Keywords <- unname(sapply(rd[names(rd) == "keyword"], "[[", 1))
 
@@ -68,7 +68,12 @@ urlJSON_to_list <- function(url_string){
 
 #' make a field for a solr document
 make_field <- function(name, value){
+  if(length(value) < 1)
+    value <- ""
   value <- str_trim(value)
+  value <- gsub("&(?![#]{1})", "&#38;", value, perl=TRUE)
+  value <- str_replace(value, "<", "&#60;")
+  value <- str_replace(value, ">", "&#62;")
   value <- str_replace(value, "\n", "")
   value <- str_replace(value, "\t", "")
   if(!identical(name, "id")) name <- str_join(name, "_t")
@@ -80,7 +85,6 @@ make_field <- function(name, value){
 list_to_xml <- function(id, obj){
   
   obj$id <- id
-  
   new_obj <- list_to_double_list(obj)
 
   fields <- sapply(new_obj, function(x){
@@ -190,9 +194,7 @@ package_and_topic_from_url <- function(url_txt){
     pkg <- str_replace(pkg, "/", "")
     
     if(str_detect(url_txt, "/topic/")){
-      topic <- str_extract(url_txt, "/topic/[a-zA-Z_0-9]*")
-      topic <- str_replace(topic, "/topic/", "")
-      topic <- str_replace(topic, "/", "")      
+      topic <- str_split(url_txt, "/topic/")[[1]][2]
     }
   }
   
@@ -238,8 +240,44 @@ parse_highlighted_desc <- function(item){
 }
 
 
+index_all_sep <- function(start_letter = "a", verbose = TRUE){
+  packages <- suppressWarnings(library()$results[,"Package"])
+  packages <- packages[order(tolower(packages))]
+  first_letter <- sapply(strsplit(packages, ""), function(x){tolower(x[1])})
+  rows <- str_detect(first_letter, str_join("[", tolower(start_letter), "-z]"))
+  packages <- packages[rows]
+  
+  sapply(packages, tmp_package)
+}
 
+index_package_sep <- function(package, verbose=TRUE){
+  
+  suppressWarnings(dir.create("solr"))
+  suppressWarnings(dir.create(str_join("solr/", package)))
+    
+  if(verbose)
+    cat("\n\n\n", package,"\n")
+  all_topics <- pkg_topics_index(package)
+  unique_topics <- all_topics[!duplicated(all_topics$file), "alias"]
 
+  for (i in seq_along(unique_topics)) {
+    if(verbose)
+      cat(i,": ", unique_topics[i],"... ")
+    start_time <- Sys.time()
+    pkg_output <- solr_topic(package, unique_topics[i])
+    time <- Sys.time() - start_time
+    if(verbose)
+      cat("  ", str_sub(capture.output(time), 20), "\n")
+      
+    save_xml(str_join("solr/",package,"/",unique_topics[i], ".xml", collapse = ""), make_add_xml(
+      str_join(
+        "\n<!--         ", package, "         -->\n", 
+        str_join(pkg_output, collapse = "\n\n")
+        , collapse = "")
+    ))
+  }
+
+}
 
 
 
