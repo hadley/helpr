@@ -24,10 +24,9 @@ solr_topic <- function(package, topic){
   out <- list()
   
   # Join together aliases and keywords
-  out$Name <- strip_html(reconstruct(untag(rd$name)))
   out$Aliases <- setdiff(
     unname(sapply(rd[names(rd) == "alias"], "[[", 1)),
-    out$Name
+    strip_html(reconstruct(untag(rd$name)))
   )
   out$Keywords <- unname(sapply(rd[names(rd) == "keyword"], "[[", 1))
 
@@ -116,36 +115,45 @@ make_add_xml <- function(obj){
 #' Save page info into xml for solr
 #'   
 #' @examples
-#'   save_xml("all_topics.xml", make_add_xml(index_all("y")))
-save_xml <- function(file_name, txt){
+#'   save_xml(make_add_xml(index_all("y")), "all_topics.xml")
+save_xml <- function(txt, file_name=tempfile()){
   txt <- str_replace(txt, "<doc>", "<doc>\n\t")
   txt <- str_replace(txt, "</field>", "</field>\n\t")
   txt <- str_replace(txt, "\t</doc>", "</doc>")
   cat(txt, file = file_name)
+  file_name
+}
+
+index_topic <- function(package, topic){
+  put_string(make_add_xml(solr_topic(package, topic)))
 }
 
 index_package <- function(package, verbose = TRUE){
   
-  if(verbose)
-    cat("\n\n\n", package,"\n")
+  if(verbose == TRUE)
+    cat("\n\n\n")
+  if(verbose == TRUE || verbose == "package")
+    cat(package,"\n")
   all_topics <- pkg_topics_index(package)
   unique_topics <- all_topics[!duplicated(all_topics$file), "alias"]
 
   pkg_output <- c()
   for (i in seq_along(unique_topics)) {
-    if(verbose)
+    if(verbose==TRUE)
       cat(i,": ", unique_topics[i],"... ")
     start_time <- Sys.time()
     pkg_output[i] <- solr_topic(package, unique_topics[i])
     time <- Sys.time() - start_time
-    if(verbose)
+    if(verbose==TRUE)
       cat("  ", str_sub(capture.output(time), 20), "\n")
       
   }
-  str_join(
-    "\n\n\n<!--         ", package, "         -->\n", 
-    str_join(pkg_output, collapse = "\n\n")
-    , collapse = "")
+  put_string(make_add_xml(
+    str_join(
+      "\n\n\n<!--         ", package, "         -->\n", 
+      str_join(pkg_output, collapse = "\n\n")
+      , collapse = "")
+  ))
 
 }
 
@@ -158,6 +166,7 @@ index_all <- function(start_letter = "a", verbose = TRUE){
   packages <- packages[rows]
   
   str_join(sapply(packages, index_package, verbose = verbose), collapse = "")
+  "Finished"
 }
 
 
@@ -247,39 +256,56 @@ index_all_sep <- function(start_letter = "a", verbose = TRUE){
   rows <- str_detect(first_letter, str_join("[", tolower(start_letter), "-z]"))
   packages <- packages[rows]
   
-  sapply(packages, tmp_package)
+  sapply(packages, index_package_sep, verbose = verbose)
 }
 
 index_package_sep <- function(package, verbose=TRUE){
   
   suppressWarnings(dir.create("solr"))
   suppressWarnings(dir.create(str_join("solr/", package)))
-    
-  if(verbose)
-    cat("\n\n\n", package,"\n")
+  
+  if(verbose == TRUE)
+    cat("\n\n\n")
+  if(verbose == TRUE || verbose == "package")
+    cat(package,"\n")
   all_topics <- pkg_topics_index(package)
   unique_topics <- all_topics[!duplicated(all_topics$file), "alias"]
 
   for (i in seq_along(unique_topics)) {
-    if(verbose)
+    if(verbose == TRUE)
       cat(i,": ", unique_topics[i],"... ")
     start_time <- Sys.time()
     pkg_output <- solr_topic(package, unique_topics[i])
     time <- Sys.time() - start_time
-    if(verbose)
+    if(verbose == TRUE)
       cat("  ", str_sub(capture.output(time), 20), "\n")
       
-    save_xml(str_join("solr/",package,"/",unique_topics[i], ".xml", collapse = ""), make_add_xml(
-      str_join(
-        "\n<!--         ", package, "         -->\n", 
-        str_join(pkg_output, collapse = "\n\n")
-        , collapse = "")
-    ))
+    save_xml(
+      make_add_xml(
+        str_join(
+          "\n<!--         ", package, "         -->\n", 
+          str_join(pkg_output, collapse = "\n\n")
+          , collapse = "")
+      ),
+      str_join("solr/",package,"/",unique_topics[i], ".xml", collapse = "")
+    )
   }
 
 }
 
+send_commit_command <- function(){
+  system("curl http://localhost:8983/solr/update --data-binary '<commit/>' -H 'Content-type:text/xml; charset=utf-8'")
+}
 
+put_string <- function(string){
+  put_file(save_xml(string))
+}
+
+put_file <- function(file_name){
+  cat("posting file: ", file_name,"\n")
+  system(str_join("curl http://localhost:8983/solr/update --data-binary @", file_name, " -H 'Content-type:text/xml; charset=utf-8'", collapse = ""))
+  send_commit_command()  
+}
 
 #solr_topic
 #solr_package

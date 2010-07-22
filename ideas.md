@@ -50,8 +50,8 @@ Individual pages
 * DONE - Have interaction with demo things
   * DONE - Execute whole demo
   * DONE - Execute highlighted part
-* BUSY - Have output done within the example
-  * NEEDS - an update from evaluate
+* DONE - Have output done within the example
+  * DONE - an update from evaluate
 * DONE - Use parser to count all the functions used by the demo.  For functions that are called most offline, add cross-links to the demo from their topic page
 
 ## Topic
@@ -63,8 +63,8 @@ Individual pages
 * DONE - view source - shows function source
 * WAIT - rate a function
   * Crantastic
-* BUSY - add comments - look at something like disqus
-  * add to every page
+* DONE - add comments - look at something like disqus
+  * DONE - add to every page
     * DONE - demo
     * NO - index.html
     * DONE - package
@@ -75,7 +75,8 @@ Individual pages
 * DONE - list of all fuctions that are under the topic
   * DONE - links to the source code of said function
 * BUSY - Execute example functionality
-  * See Code Execution
+  * click button to execute example
+  * DONE - See Code Execution
     
 
 Code Execution
@@ -85,8 +86,8 @@ Code Execution
 * DONE - Send selected/highlighted expression to R console
   * DONE - silently remove "bad" text
     * NEED - to remove the notification
-* BUSY/WAIT - Evaluate all example code and interleave results back in html
-  * using evaluate package
+* DONE - Evaluate all example code and interleave results back in html
+  * DONE - using evaluate package
 * DONE - Add jQuery to notify user
 * DONE - "Easy"(run) button
 * DONE - all executed code should appear in the console
@@ -98,7 +99,7 @@ Dynamic help
 ============
 
 Function weights
-  * overall CRAN
+  * ??? - overall CRAN
   * DONE - personal function use: parse .Rhistory and pull out functions
 
 Function mispelling
@@ -107,11 +108,13 @@ Function mispelling
 Search
 ======
 
-* BUSY
-* external solr search engine with separate fields for separate parts of RDoc.
-  * NEEDS - server
-* for use by insider and by html search
-* indexes all packages - not just those installed on the users machine.
+* DONE - external solr search engine with separate fields for separate parts of RDoc.
+  * NEEDS - external server
+* for use by 
+  * insider
+  * DONE - html search
+* WAIT - indexes all packages - not just those installed on the users machine.
+  * NEEDS - external server
 * lists of functions indexed by keyword
 
 
