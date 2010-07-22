@@ -32,6 +32,7 @@ Running the development version:
   * Add/replace the two files in solr-conf to solr's example/solr/conf folder
   * Execute the command below in the /example solr directory to start the server `java -jar start.jar`
   * To add/update files, execute one of the index commands from R
+  
     index_topic(package, topic)
     index_package(package)
     index_all()
