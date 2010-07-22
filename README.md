@@ -2,7 +2,7 @@
 
 To install `helpr`, you first need to install some packages:
 
-  * from CRAN: `install.packages("stringr", "digest",  "mutatr", "brew", "testthat")`
+  * from CRAN: `install.packages( c("stringr", "digest",  "mutatr", "brew", "testthat") )`
   * from github: `http://github.com/hadley/sinartra`
 
 To install `solr`, you first need to intall `brew`
