@@ -102,8 +102,8 @@ reconstruct <- function(rd) {
 #    "\\special" =      c("<em>","</em>"),    
     txt <- reconstruct(untag(rd))
     # replace '<' and '>' with html markings avoid browser misinterpretation
-    txt <- str_replace(txt, "<", "&lt;")
-    txt <- str_replace(txt, ">", "&gt;")
+    txt <- str_replace(txt, "<", "&#60;")
+    txt <- str_replace(txt, ">", "&#62;")
     txt <- str_replace(txt, "\\\\dots", "...")
 
     stupid <- unlist(str_match_all(txt, "\\\\[a-zA-Z]*"))
@@ -155,12 +155,12 @@ simple_tags <- list(
   "\\dfn" =          c("<dfn>", "</dfn>"),
   "\\donttest" =     c("", ""),
   "\\dots" =         c("...", ""),
-  "\\dquote" =       c("&ldquo;", "&rdquo;"),
-  "\\dQuote" =       c("&ldquo;", "&rdquo;"),
+  "\\dquote" =       c("&#147;", "&#148;"),
+  "\\dQuote" =       c("&#147;", "&#148;"),
   "\\emph" =         c("<em>", "</em>"),
   "\\enumerate" =    c("<ol>", "</ol>"),
   "\\env" =          c('<span class = "env">', '</span>'),
-  "\\file" =         c('&lsquo;<span class = "file">', '</span>&rsquo;'),
+  "\\file" =         c('&#145;<span class = "file">', '</span>&#146;'),
   "\\item" =         c("<li>", "</li>"),
   "\\itemize" =      c("<ul>", "</ul>"),
   "\\kbd" =          c("<kbd>", "</kbd>"),
@@ -171,9 +171,8 @@ simple_tags <- list(
   "\\R" =            c('<span style="R">R</span>', ""),
   "\\samp" =         c('<span class = "samp">',"</span>"),
 #  "\\special" =      c("<em>","</em>"),
-  "\\sQuote" =       c("&lsquo;","&rsquo;"),
+  "\\sQuote" =       c("&#145;","&#146;"),
   "\\strong" =       c("<strong>", "</strong>"),
-#  "\\tab" =          c("&nbsp;&nbsp;", ""),
   "\\text" =         c("<p>", "</p>"),
   "\\var" =          c("<var>", "</var>"),
 #  "\\verb" =         c("<pre>", "</pre>"),
