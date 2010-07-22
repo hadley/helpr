@@ -20,11 +20,12 @@
   <div id="doc2" class="yui-t6">
   <div id="hd">
     <a href="/index.html">R</a> 
+    <%= render_snippet("search_bar") %>
   </div>
 
-  <div id="bd">
-  <div id="yui-main"><div class="yui-b">
-    <h1>Results</h1>
+  <div id="search_bd">
+  <div id="yui-main">
+    <h1>Results for: "<%= query %>"</h1>
 
 
     <% if(length(urls) < 1){ -%>
@@ -53,7 +54,7 @@
       total_item_count = total_item_count
     )) %>
 
-  </div></div>
+  </div>
   <div class="yui-b"><div class = "sidebar"></div></div>
 
   </div><!-- end bd -->

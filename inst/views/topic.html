@@ -19,6 +19,7 @@
     <a href="/index.html">R</a> &#8594; <a href=".."><%= package %></a> &#8594; <%= name %> 
     <% if (length(aliases) > 0) { -%>
     (aka <%= str_join(aliases, collapse = ", ") %>)<% } %>
+    <%= render_snippet("search_bar") %>
   </div>
 
   <div id="bd">

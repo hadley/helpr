@@ -109,6 +109,7 @@ Search
 
 * BUSY
 * external solr search engine with separate fields for separate parts of RDoc.
+  * NEEDS - server
 * for use by insider and by html search
 * indexes all packages - not just those installed on the users machine.
 * lists of functions indexed by keyword

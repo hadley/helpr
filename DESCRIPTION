@@ -5,7 +5,7 @@ Version: 0.1
 Author: Hadley Wickham <h.wickham@gmail.com> and Barret Schloerke <schloerke@gmail.com>
 Maintainer: Hadley Wickham <h.wickham@gmail.com>
 Description: Better html documentation for R
-Depends: highlight, sinartra, digest, parser, rjson, tools, stringr, evaluate
+Depends: highlight, sinartra, digest, parser, rjson, tools, stringr, evaluate, RCurl
 Imports: brew
 License: GPL-2
 LazyData: true

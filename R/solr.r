@@ -3,6 +3,50 @@
 #load_html("/search/q=YaleToolkit;start=0")
 
 
+#solr_topic, index_topic, index_package, index_all
+#post_file
+#index_top <- function(x) post_topic(solr_topic(x)))
+#solr_topic should be a rewrite of reconstruct
+
+
+#' helpr topic into xml for solr
+#'
+#' @param package package to use
+#' @param topic topic to explore
+solr_topic <- function(package, topic){
+  
+  rd <- pkg_topic(package, topic)
+  tags <- sapply(rd, tag)
+
+  # Remove top-level text strings - just line breaks between sections
+  rd <- rd[tags != "TEXT"]
+
+  out <- list()
+  
+  # Join together aliases and keywords
+  out$Name <- strip_html(reconstruct(untag(rd$name)))
+  out$Aliases <- setdiff(
+    unname(sapply(rd[names(rd) == "alias"], "[[", 1)),
+    out$name
+  )
+  out$Keywords <- unname(sapply(rd[names(rd) == "keyword"], "[[", 1))
+
+  # Title, description, value and examples, need to be stitched into a 
+  # single string.
+  out$Title <- strip_html(reconstruct(untag(rd$title)))
+  out$Description <- gsub("$\n+|\n+^", "", strip_html(reconstruct(rd$description)))
+  out$Details <- strip_html(reconstruct(rd$details))
+  out$Value <- strip_html(reconstruct(rd$value))
+  out$Authors <- strip_html(reconstruct(rd$author))
+  out$Package <- str_join(package, " (", pkg_version(package), ")", collapse = "")
+
+  list_to_xml(
+    str_join("/package/", package, "/topic/", topic, collapse = ""),
+    out
+  )
+}
+
+
 #' Read URL
 #' Retrieve the text from a url
 #' 
@@ -68,7 +112,7 @@ make_add_xml <- function(obj){
 #' Save page info into xml for solr
 #'   
 #' @examples
-#'   save_xml("all_topics.xml", make_add_xml(helpr_topic_xml_all("y")))
+#'   save_xml("all_topics.xml", make_add_xml(index_all("y")))
 save_xml <- function(file_name, txt){
   txt <- str_replace(txt, "<doc>", "<doc>\n\t")
   txt <- str_replace(txt, "</field>", "</field>\n\t")
@@ -76,79 +120,52 @@ save_xml <- function(file_name, txt){
   cat(txt, file = file_name)
 }
 
+index_package <- function(package, verbose = TRUE){
+  
+  if(verbose)
+    cat("\n\n\n", package,"\n")
+  all_topics <- pkg_topics_index(package)
+  unique_topics <- all_topics[!duplicated(all_topics$file), "alias"]
 
-#' helpr topic into xml
-#'
-#' @param package package to use
-#' @param topic topic to explore
-helpr_topic_xml <- function(package, topic){
-  topic_html_args <- helpr_topic(package, topic)
-  
-  
-  # strip the html of the list objects
-  # do not bother: name, keywords, title, package
-  topic_html_args$aliases <- strip_html(topic_html_args$aliases)
-  topic_html_args$desc <- strip_html(topic_html_args$desc)
-  topic_html_args$details <- strip_html(topic_html_args$details)
-  topic_html_args$value <- strip_html(topic_html_args$value)
-  topic_html_args$examples <- NULL
-  topic_html_args$example_functions <- NULL
-  topic_html_args$example_functions_str <- NULL
-  topic_html_args$usage <- NULL
-  topic_html_args$authors <- strip_html(topic_html_args$authors)
-  topic_html_args$author_str <- NULL
-  topic_html_args$seealso <- NULL
-  topic_html_args$params <- NULL
-  
-  
-  list_to_xml(
-    str_join("/package/", package, "/topic/", topic, collapse = ""),
-    topic_html_args
-  )
+  pkg_output <- c()
+  for (i in seq_along(unique_topics)) {
+    if(verbose)
+      cat(i,": ", unique_topics[i],"... ")
+    start_time <- Sys.time()
+    pkg_output[i] <- solr_topic(package, unique_topics[i])
+    time <- Sys.time() - start_time
+    if(verbose)
+      cat("  ", str_sub(capture.output(time), 20), "\n")
+      
+  }
+  str_join(
+    "\n\n\n<!--         ", package, "         -->\n", 
+    str_join(pkg_output, collapse = "\n\n")
+    , collapse = "")
+
 }
 
-helpr_topic_xml_all <- function(start_letter = "a", verbose = TRUE){
+
+index_all <- function(start_letter = "a", verbose = TRUE){
   packages <- suppressWarnings(library()$results[,"Package"])
   packages <- packages[order(tolower(packages))]
   first_letter <- sapply(strsplit(packages, ""), function(x){tolower(x[1])})
   rows <- str_detect(first_letter, str_join("[", tolower(start_letter), "-z]"))
   packages <- packages[rows]
   
-  output <- c()
-  
-  for(j in seq_along(packages)){
-    if(verbose)
-      cat("\n\n\n", packages[j],"\n")
-    all_topics <- pkg_topics_index(packages[j])
-    unique_topics <- all_topics[!duplicated(all_topics$file), "alias"]
-
-    pkg_output <- c()
-    for (i in seq_along(unique_topics)) {
-      if(verbose)
-        cat(i,": ", unique_topics[i],"... ")
-      start_time <- Sys.time()
-      pkg_output[i] <- helpr_topic_xml(packages[j], unique_topics[i])
-      time <- Sys.time() - start_time
-      if(verbose)
-        cat("  ", str_sub(capture.output(time), 20), "\n")
-       
-    }
-    output[j] <- str_join(
-      "\n\n\n<!--         ", packages[j], "         -->\n", 
-      str_join(pkg_output, collapse = "\n\n")
-      , collapse = "")
-
-  }
-  str_join(output, collapse = "")
+  str_join(sapply(packages, index_package, verbose = verbose), collapse = "")
 }
 
 
-helpr_search_row_count <- 6
+helpr_search_row_count <- 20
+#helpr_search_row_count <- 5
 
 get_solr_query_result <- function(query_string){
   rows <- helpr_search_row_count
-  response <- urlJSON_to_list(str_join("http://0.0.0.0:8983/solr/select/?version=2.2&wt=json&rows=",rows,"&indent=on&", query_string))
-  docs <- response$response$docs
+  response <- urlJSON_to_list(str_join("http://0.0.0.0:8983/solr/select/?version=2.2&wt=json&rows=",rows,"&indent=on&", query_string, "&hl=on&hl.simple.pre=<strong>&hl.simple.post=</strong>&hl.fl=*"))
+#  &hl.fl=title_t&hl.fl=desc_t&hl.fl=details_t"))
+#  docs <- response$response$docs
+  docs <- response$highlighting
   query <- response$responseHeader$params$q
 
   start_pos <- as.numeric(response$responseHeader$params$start)
@@ -195,8 +212,8 @@ helpr_solr_search <- function(query_string){
   result <- get_solr_query_result(query_string)
   items <- result$response
   
-  urls <- sapply(items, function(x) x$id)
-  desc <- sapply(items, function(x) x$desc)
+  urls <- as.character(names(items))
+  desc <- sapply(items, parse_highlighted_desc)
   
   list(
     urls = urls,
@@ -212,6 +229,21 @@ helpr_solr_search <- function(query_string){
   
 }
 
+parse_highlighted_desc <- function(item){
+  item_category <- str_join("<strong>",str_replace(names(item), "_t", ""), ":</strong> ", sep="")
+  
+  content <- str_join("<td>",item_category, "</td><td>",as.character(item),"</td>", collapse = "</tr><tr>")
+  str_join("<table class=\"search_table\"><tr>", content, "</tr></table>", collapse = "")
+  
+}
 
 
 
+
+
+
+
+#solr_topic
+#solr_package
+#solr_all
+#generate the xml for one topic, all topics in a package, and all packages
