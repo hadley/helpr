@@ -29,10 +29,11 @@ Running the development version:
 # Running solr
 
   * Follow the (http://lucene.apache.org/solr/tutorial.html)[tutorial] to get a feel how it works.
-  * Clone the (http://github.com/bigbear/solr_for_helpr)[solr_for_helpr] git repo
+  * Add/replace the two files in solr-conf to solr's example/solr/conf folder
   * Execute the command below in the /example solr directory to start the server
     java -jar start.jar 
-  * To add/update files, move to /exampledocs and execute the command
-    java -jar post.jar filename.xml
-  * "*.xml" may be used for all files in the directory with ".xml" ending
+  * To add/update files, execute one of the index commands from R
+    index_topic(package, topic)
+    index_package(package)
+    index_all()
   
