@@ -89,6 +89,7 @@ parse_help <- function(rd, package) {
   out$author_str <- pluralize("Author", rd$author)
 
   out$seealso <- reconstruct(rd$seealso)
+  out$source <- reconstruct(untag(rd$source))
   
 
   # Pull apart arguments
