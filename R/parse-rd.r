@@ -114,6 +114,12 @@ reconstruct <- function(rd) {
 
   } else if(tag == "\\tabular"){
     parse_tabular(untag(rd))
+  } else if(tag %in% c("\\ifelse", "\\if")){
+    if("html" == rd[[1]][[1]]){
+      reconstruct(rd[[2]])
+    }else if(tag == "\\ifelse"){
+      reconstruct(rd[[3]])      
+    }
   }else {
     
     message("Unknown tag ", tag)
@@ -166,6 +172,7 @@ simple_tags <- list(
   "\\kbd" =          c("<kbd>", "</kbd>"),
   "\\ldots" =        c("...", ""),
   "\\option" =       c('<span class = "option">',"</span>"),
+  "\\out" =          c("", ""),
   "\\pkg" =          c('<span class = "pkg">',"</span>"),
   "\\preformatted" = c("<pre>","</pre>"),
   "\\R" =            c('<span style="R">R</span>', ""),
