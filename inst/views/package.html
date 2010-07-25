@@ -133,7 +133,7 @@
 , " ")[[1]][1] %></td></tr>
       <% } %>
       <% if(!is.null(description$url)){ -%>
-        <tr><td>URL:</td><td><%= str_join("<a href\"",description$url,"\">",description$url,"</a>") %></td></tr>
+        <tr><td>URL:</td><td><%= str_join("<a href=\"",description$url,"\">",description$url,"</a>", collapse = ", ") %></td></tr>
       <% } %>
       <% if(!is.null(description$license)){ -%>
         <tr><td>License:</td><td><%= description$license %></td></tr>

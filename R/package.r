@@ -23,6 +23,8 @@ helpr_package <- function(package){
   description$reverse <- tools:::dependsOnPkgs(package)
   description$author <- pkg_author_and_maintainers(description)
 #  description$maintainer <- NULL
+
+  description$url <- str_trim(str_split(description$url, ",")[[1]])
   
 
   list(

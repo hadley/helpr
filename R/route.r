@@ -1,72 +1,3 @@
-#' help files with topic for helpr
-#' route to the correct website
-#'
-#' function taken from utils
-#'
-#' @param x path to help
-#' @param ... other arguments ignored
-print.help_files_with_topic <- function (x, ...) 
-{
-    browser <- getOption("browser")
-    topic <- attr(x, "topic")
-    type <- attr(x, "type")
-    paths <- as.character(x)
-    if (!length(paths)) {
-        writeLines(c(gettextf("No documentation for '%s' in specified packages and libraries:", 
-            topic), gettextf("you could try '??%s'", topic)))
-        return(invisible(x))
-    }
-    if (attr(x, "tried_all_packages")) {
-        paths <- unique(dirname(dirname(paths)))
-        msg <- gettextf("Help for topic '%s' is not in any loaded package but can be found in the following packages:", 
-            topic)
-        if (type == "html" && tools:::httpdPort > 0L) {
-            path <- file.path(tempdir(), ".R/doc/html")
-            dir.create(path, recursive = TRUE, showWarnings = FALSE)
-            out <- paste("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n", 
-                "<html><head><title>R: help</title>\n", "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=\"UTF-8\">\n", 
-                "<link rel=\"stylesheet\" type=\"text/css\" href=\"/doc/html/R.css\">\n", 
-                "</head><body>\n\n<hr>\n", sep = "")
-            out <- c(out, "<p>", msg, "</p><br>")
-            out <- c(out, "<table width=\"100%\" summary=\"R Package list\">\n", 
-                "<tr align=\"left\" valign=\"top\">\n", "<td width=\"25%\">Package</td><td>Library</td></tr>\n")
-            pkgs <- basename(paths)
-            links <- paste("<a href=\"", base_html_path(), 
-                "/library/", pkgs, "/help/", topic, "\">", pkgs, 
-                "</a>", sep = "")
-            out <- c(out, paste("<tr align=\"left\" valign=\"top\">\n", 
-                "<td>", links, "</td><td>", dirname(paths), "</td></tr>\n", 
-                sep = ""))
-            out <- c(out, "</table>\n</p>\n<hr>\n</body></html>")
-            writeLines(out, file.path(path, "all.available.html"))
-            browseURL(paste(base_html_path(), 
-                "/doc/html/all.available.html", sep = ""), browser)
-        }
-        else {
-            writeLines(c(strwrap(msg), "", paste(" ", formatDL(c(gettext("Package"), 
-                basename(paths)), c(gettext("Library"), dirname(paths)), 
-                indent = 22))))
-        }
-    }
-    else {
-        if (tools:::httpdPort == 0L) 
-            tools::startDynamicHelp()
-        file <- paths
-        pkgname <- basename(dirname(dirname(file)))
-        topic <- basename(file)
-
-        if(length(pkgname) > 1){
-          browseURL(paste(base_html_path(), 
-          "/multiple_help_paths/", str_join(pkgname, topic, sep = "-", collapse = ";"), sep = ""), browser)
-        }else{
-          browseURL(paste(base_html_path(), 
-          "/library/", pkgname, "/html/", topic, 
-          ".html", sep = ""), browser)            
-        }
-    }
-    invisible(x)
-}
-
 load_html <- function(...){
   url_path <- str_join(as.character(substitute(...)), collapse = "/")
 
@@ -82,6 +13,13 @@ load_html <- function(...){
 
 base_html_path <- function(){
   str_join("http://127.0.0.1:", tools:::httpdPort, collapse = "")
+}
+
+check_for_package <- function(package){
+  if(!suppressWarnings(require(package, character.only = TRUE))){
+    install.packages(package, repos="http://cran.r-project.org/")
+    library(package, character.only=TRUE)
+  }
 }
 
 
@@ -130,31 +68,31 @@ helpr <- function(installed = TRUE) {
 
   # Package index page, list topics etc
   router$get("/package/:package/", function(package) {
-    require(package, character.only = TRUE)
+    check_for_package(package)
     render_brew("package", helpr_package(package), path = path)    
   })
   
   # Package Vignette
   router$get("/package/:package/vignette/:vignette", function(package, vignette) {
-    require(package, character.only = TRUE)
+    check_for_package(package)
     static_file(system.file("doc", str_join(vignette, ".pdf"), package = package))
   })
 
   # Package Demo
   router$get("/package/:package/demo/:demo", function(package, demo) {
-    require(package, character.only = TRUE)
+    check_for_package(package)
     render_brew("demo", helpr_demo(package, demo), path = path)
   })
   
   # Individual topic source
   router$get("/package/:package/topic/:topic/source/:func", function(package, topic, func) {
-    require(package, character.only = TRUE)
+    check_for_package(package)
     render_brew("source", helpr_function(package, func), path = path)
   })
 
   # Individual help topic
   router$get("/package/:package/topic/:topic", function(package, topic) {
-    require(package, character.only = TRUE)
+    check_for_package(package)
     render_brew("topic", helpr_topic(package, topic), path = path)
   })
   router$get("/library/:package/html/:topic.html", function(package, topic) {
@@ -203,12 +141,12 @@ helpr <- function(installed = TRUE) {
     render_json(string)
   })
   router$get("/package/:package/exec_demo/:demo", function(package, demo) {
-    require(package, character.only = TRUE)
+    check_for_package(package)
     exec_pkg_demo(package, demo)
     render_json(TRUE)
   })
   router$get("/package/:package/topic/:topic/exec_example", function(package, topic) {
-    require(package, character.only = TRUE)
+    check_for_package(package)
     exec_example(package, topic)
     render_json(TRUE)
   })
@@ -291,3 +229,73 @@ helpr_home <- function(){
     manuals = get_manuals()
   )
 }
+
+#' help files with topic for helpr
+#' route to the correct website
+#'
+#' function taken from utils
+#'
+#' @param x path to help
+#' @param ... other arguments ignored
+print.help_files_with_topic <- function (x, ...) 
+{
+    browser <- getOption("browser")
+    topic <- attr(x, "topic")
+    type <- attr(x, "type")
+    paths <- as.character(x)
+    if (!length(paths)) {
+        writeLines(c(gettextf("No documentation for '%s' in specified packages and libraries:", 
+            topic), gettextf("you could try '??%s'", topic)))
+        return(invisible(x))
+    }
+    if (attr(x, "tried_all_packages")) {
+        paths <- unique(dirname(dirname(paths)))
+        msg <- gettextf("Help for topic '%s' is not in any loaded package but can be found in the following packages:", 
+            topic)
+        if (type == "html" && tools:::httpdPort > 0L) {
+            path <- file.path(tempdir(), ".R/doc/html")
+            dir.create(path, recursive = TRUE, showWarnings = FALSE)
+            out <- paste("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">\n", 
+                "<html><head><title>R: help</title>\n", "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=\"UTF-8\">\n", 
+                "<link rel=\"stylesheet\" type=\"text/css\" href=\"/doc/html/R.css\">\n", 
+                "</head><body>\n\n<hr>\n", sep = "")
+            out <- c(out, "<p>", msg, "</p><br>")
+            out <- c(out, "<table width=\"100%\" summary=\"R Package list\">\n", 
+                "<tr align=\"left\" valign=\"top\">\n", "<td width=\"25%\">Package</td><td>Library</td></tr>\n")
+            pkgs <- basename(paths)
+            links <- paste("<a href=\"", base_html_path(), 
+                "/library/", pkgs, "/help/", topic, "\">", pkgs, 
+                "</a>", sep = "")
+            out <- c(out, paste("<tr align=\"left\" valign=\"top\">\n", 
+                "<td>", links, "</td><td>", dirname(paths), "</td></tr>\n", 
+                sep = ""))
+            out <- c(out, "</table>\n</p>\n<hr>\n</body></html>")
+            writeLines(out, file.path(path, "all.available.html"))
+            browseURL(paste(base_html_path(), 
+                "/doc/html/all.available.html", sep = ""), browser)
+        }
+        else {
+            writeLines(c(strwrap(msg), "", paste(" ", formatDL(c(gettext("Package"), 
+                basename(paths)), c(gettext("Library"), dirname(paths)), 
+                indent = 22))))
+        }
+    }
+    else {
+        if (tools:::httpdPort == 0L) 
+            tools::startDynamicHelp()
+        file <- paths
+        pkgname <- basename(dirname(dirname(file)))
+        topic <- basename(file)
+
+        if(length(pkgname) > 1){
+          browseURL(paste(base_html_path(), 
+          "/multiple_help_paths/", str_join(pkgname, topic, sep = "-", collapse = ";"), sep = ""), browser)
+        }else{
+          browseURL(paste(base_html_path(), 
+          "/library/", pkgname, "/html/", topic, 
+          ".html", sep = ""), browser)            
+        }
+    }
+    invisible(x)
+}
+
