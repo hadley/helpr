@@ -294,7 +294,17 @@ index_package_sep <- function(package, verbose=TRUE){
 }
 
 send_commit_command <- function(){
-  system("curl http://localhost:8983/solr/update --data-binary '<commit/>' -H 'Content-type:text/xml; charset=utf-8'")
+  send_system_command("curl http://localhost:8983/solr/update --data-binary '<commit/>' -H 'Content-type:text/xml; charset=utf-8'")
+}
+
+send_system_command <- function(system_string){
+  curled_text <- system(system_string, intern = TRUE, ignore.stderr = TRUE)
+  status <- str_sub(curled_text[3], start=47, end=47)
+  
+  if(status != "0"){
+    stop("Error uploading file to solr")
+  }
+  
 }
 
 put_string <- function(string){
@@ -303,8 +313,8 @@ put_string <- function(string){
 
 put_file <- function(file_name){
   cat("posting file: ", file_name,"\n")
-  system(str_join("curl http://localhost:8983/solr/update --data-binary @", file_name, " -H 'Content-type:text/xml; charset=utf-8'", collapse = ""))
-  send_commit_command()  
+  send_system_command(str_join("curl http://localhost:8983/solr/update --data-binary @", file_name, " -H 'Content-type:text/xml; charset=utf-8'", collapse = ""))
+  send_commit_command()
 }
 
 #solr_topic
