@@ -128,6 +128,13 @@ reconstruct <- function(rd) {
     item <- reconstruct(untag(rd))
     pkg <- attr(getClass(item)@className, "package")
     tag_link(item, pkg, str_join(item, "-class", collapse = ""))
+  } else if(tag == "\\Sexpr"){
+    expr <- eval(parse(text = rd), envir=globalenv())
+    con <- textConnection(expr)
+    value <- reconstruct(parse_Rd(con,fragment=T))
+    close(con)
+    value
+    
   }else {
     
     message("Unknown tag ", tag)
