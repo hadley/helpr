@@ -170,6 +170,12 @@ helpr <- function(installed = TRUE) {
 
     render_json(TRUE)
   })
+  router$get("/eval_demo/:package-:demo_name", function(package, demo_name){
+    list(payload = evaluate_text(demo_src(package, demo_name), pic_base_name = str_join(package, "_", pkg_version(package),"_demo_", demo_name)))
+  })
+#  router$get("/eval_demo/:pacakge-:demo_name", function(package, demo_name){
+#    evaluate_text(demo_src(package, demo_name), pic_base_name = str_join(package, "_", pkg_version(package),"_demo_", demo_name))
+#  }
   
 
   # Individual help topic 

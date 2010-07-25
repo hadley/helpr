@@ -3,7 +3,7 @@ function set_on_click(section){
     var offset = $(section).offset();
     window.status = e.pageX +', '+ e.pageY + "\tdiv position: " + offset.left + ", " + offset.top;
     
-      var code = get_output_selected_text(section);
+    var code = jQuery.trim(get_output_selected_text(section));
     if(code == ""){
       $("#run_highlight").hide();
       return;
@@ -34,8 +34,11 @@ function r_urlencode (str) {
 
 
 // hide/show the R output 
-var output_hidden = 0;
-function hide_show_output(){
+var has_shown_output = 0;
+var output_hidden = 1;
+function hide_show_output(demo_topic, package, text_name){
+  $("#run_highlight").hide();
+
   if(output_hidden == 0){
     window.console.log("Hide output!");
     $(".R_output").hide();    
@@ -43,8 +46,14 @@ function hide_show_output(){
 //    $(".R_output").hide('slow');    
   }else{
     window.console.log("Show output!");
-    $(".R_output").show('slow');    
-    $(".R_output_image").show('slow'); 
+
+    if(has_shown_output == 0){
+      evaluate_section(demo_topic, package, text_name)
+      has_shown_output = 1;
+    }else{
+      $(".R_output").show('slow');    
+      $(".R_output_image").show('slow'); 
+    }
   }
   output_hidden = (output_hidden+1) % 2;  
 }
@@ -110,6 +119,8 @@ function getSelText()
 
 // Block the screen while executing a package demo
 function execute_demo(package, demo){
+  $("#run_highlight").hide();
+
   $.blockUI({ message: '<h1><img src="/_images/busy.gif" /> Please view the R console to advance the demo</h1>' }); 
   
   setTimeout(function(){
@@ -199,6 +210,28 @@ function run_selected_code(section){
       }
     })
   }, 500);
+}
+
+function evaluate_section(demo_topic, package, demo_name){
+  
+  $.blockUI({ message: "<h1><img src=\"/_images/busy.gif\" /> Running "+demo_topic+". Please wait.</h1>" }); 
+  
+  setTimeout(function(){
+    jQuery.ajax({
+      url: "/eval_"+demo_topic+"/" + package + "-" + demo_name,
+      dataType: "html",
+      success: function(eval_code) {
+        $("#"+demo_topic+"_source_code").html(eval_code)
+        $.unblockUI();
+        
+      },
+      error:function (xhr, ajaxOptions, thrownError){
+        $.unblockUI();
+        error_notify("The "+demo_topic+" did not execute properly.");
+      }
+    })
+  }, 500);
+  
 }
 
 
