@@ -173,9 +173,10 @@ helpr <- function(installed = TRUE) {
   router$get("/eval_demo/:package-:demo_name", function(package, demo_name){
     list(payload = evaluate_text(demo_src(package, demo_name), pic_base_name = str_join(package, "_", pkg_version(package),"_demo_", demo_name)))
   })
-#  router$get("/eval_demo/:pacakge-:demo_name", function(package, demo_name){
-#    evaluate_text(demo_src(package, demo_name), pic_base_name = str_join(package, "_", pkg_version(package),"_demo_", demo_name))
-#  }
+
+  router$get("/eval_example/:package-:topic", function(package, topic){
+    list(payload = evaluate_text(reconstruct(untag(pkg_topic(package, topic)$examples)), pic_base_name = str_join(package, "_", pkg_version(package),"_topic_", topic)))
+  })
   
 
   # Individual help topic 

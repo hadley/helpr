@@ -12,7 +12,7 @@
   <title><%= name %> / <%= package %>. R help</title>
 </head>
 
-<body>
+<body onLoad="set_on_click('#example_source_code'); $('#run_highlight').hide();">
   <div id="watermark"><%= name %></div>
   <div id="doc" class="yui-t4">
   <div id="hd">
@@ -82,8 +82,7 @@
         <input id="run_example" type="button" value="Execute Whole Example" onclick="
           <%= str_join("execute_example('",package, "','", name,"')") %>" 
         />
-        <input id="run_highlight" type="button" value="Execute Highlighted" onclick="run_selected_code('#example_source_code')" />
-
+        <input id="hide_output" type="button" value="Show/Hide Output" onclick="hide_show_output('example', '<%= package %>', '<%= name %>' );" />
         <div id="example_source_code">
           <%= examples  %>
         </div>
@@ -105,5 +104,7 @@
   </div>
 </div>
 <%= render_snippet("disqus_end_body_script") %>
+<input id="run_highlight" type="button" value="Execute Highlighted" onclick="run_selected_code('#example_source_code')" />
+
 </body>
 </html>
