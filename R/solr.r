@@ -52,7 +52,7 @@ solr_topic <- function(package, topic){
 #' @param url_string url to explore
 #' @return plain text from that url
 read_url <- function(url_string){
-  url_connect <- url(url_string)
+  url_connect <- url(utils::URLencode(url_string))
   output <- suppressWarnings(str_join(readLines(url_connect), collapse = ""))
   close(url_connect)
   output
