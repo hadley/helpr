@@ -120,6 +120,14 @@ reconstruct <- function(rd) {
     }else if(tag == "\\ifelse"){
       reconstruct(rd[[3]])      
     }
+    
+  } else if(tag == "\\S4method"){
+    str_join("## S4 method for signature \'",reconstruct(rd[[2]]),"\':\n", reconstruct(rd[[1]]), sep ="")
+
+  } else if(tag == "\\linkS4class"){
+    item <- reconstruct(untag(rd))
+    pkg <- attr(getClass(item)@className, "package")
+    tag_link(item, pkg, str_join(item, "-class", collapse = ""))
   }else {
     
     message("Unknown tag ", tag)
@@ -137,11 +145,11 @@ tag_simple <- function(tag, text) {
   str_join(html[1], text, html[2])
 }
 
-tag_link <- function(fun, pkg = NULL) {
+tag_link <- function(fun, pkg = NULL, topic_page = fun) {
   if (!is.null(pkg)) {
-    str_join("<a href='/package/", pkg, "/topic/", fun, "'>", fun, "</a>")        
+    str_join("<a href=\"/package/", pkg, "/topic/", topic_page, "\">", fun, "</a>")        
   } else {
-    str_join("<a href='", function_help_path(fun), "'>", fun, "</a>")
+    str_join("<a href=\"", function_help_path(fun), "\">", fun, "</a>")
   }
 }
 

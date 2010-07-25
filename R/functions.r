@@ -36,16 +36,20 @@ function_and_link <- function(parser_output){
   funcs_and_paths[complete.cases(funcs_and_paths),]  
 }
 
+pkg_and_topic_from_help_url <- function(url_string){
+  rev(rev(str_split(url_string, .Platform$file.sep)[[1]])[1:3])[c(1,3)]
+}
+
 #' Return the help path of a function
 #'
 #' @param x item to find the help path
 function_help_path_mem <- memoise(function(x, source_link = FALSE){
-  tmp <- help(x)[1] 
-  if(is.na(tmp)){
+  url_string <- help(x)[1] 
+  if(is.na(url_string)){
     NA
   }else{
     # retrieve last three folders/file and keep the package and topic
-    pack_and_topic <- rev(rev(str_split(tmp, .Platform$file.sep)[[1]])[1:3])[c(1,3)]
+    pack_and_topic <- pkg_and_topic_from_help_url(url_string)
 
     ending <- str_join("/topic/", pack_and_topic[2])
     if(source_link)
