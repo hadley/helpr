@@ -21,7 +21,7 @@ helpr_package <- function(package){
   description$suggests <- parse_pkg_desc_item(description$suggests)
   description$extends <- parse_pkg_desc_item(description$extends)
   description$reverse <- tools:::dependsOnPkgs(package)
-  description$author <- pkg_author_and_maintainers(description)
+  description$author <- pkg_author_and_maintainers(description$author, description$maintainer)
 #  description$maintainer <- NULL
 
   if(has_text(description$url))
@@ -68,10 +68,9 @@ parse_pkg_desc_item <- function(obj){
 #'
 #' @param description list containing the \code{author} and \code{maintainer}
 #' @return string containing the authors with links properly displayed
-pkg_author_and_maintainers <- function(description){
+pkg_author_and_maintainers <- function(authors, maintainer=NULL){
 
   # retrieve the authors and email
-  authors <- description$author
   authors <- str_replace(authors, "\\n", " ")
   str_extract_all(authors, "[a-zA-z]* [a-zA-z]* <*>")
 
@@ -97,27 +96,29 @@ pkg_author_and_maintainers <- function(description){
   }
 
   # make the maintainer bold
-  maintainer_name <- str_extract_all(description$maintainer, name_pattern)[[1]][1]
-  maintainer_email <- str_extract_all(description$maintainer, email_pattern)[[1]][1]
-  maintainer_email <- str_replace(maintainer_email, "<", "")
-  maintainer_email <- str_replace(maintainer_email, ">", "")
-
-  maintainer_string <- str_join("<strong>", author_email(maintainer_name, maintainer_email), "</strong>", collapse = "")  
+  if(!is.null(maintainer)){
+    maintainer_name <- str_extract_all(maintainer, name_pattern)[[1]][1]
+    maintainer_email <- str_extract_all(maintainer, email_pattern)[[1]][1]
+    maintainer_email <- str_replace(maintainer_email, "<", "")
+    maintainer_email <- str_replace(maintainer_email, ">", "")
   
-  if(str_detect(authors, maintainer_name)){
-    authors <- str_replace(
-      authors, 
-      str_join("</?.*?>",maintainer_name,"</?.*?>", collapse = ""),
-      maintainer_name
-    )
-    
-    authors <- str_replace(
-      authors, 
-      maintainer_name,
-      maintainer_string
-    )
-  }else{
-    authors <- str_join(authors, "; ", maintainer_string, collapse = "")
+    maintainer_string <- str_join("<strong>", author_email(maintainer_name, maintainer_email), "</strong>", collapse = "")  
+  
+    if(str_detect(authors, maintainer_name)){
+      authors <- str_replace(
+        authors, 
+        str_join("</?.*?>",maintainer_name,"</?.*?>", collapse = ""),
+        maintainer_name
+      )
+      
+      authors <- str_replace(
+        authors, 
+        maintainer_name,
+        maintainer_string
+      )
+    }else{
+      authors <- str_join(authors, "; ", maintainer_string, collapse = "")
+    }
   }
   authors
 }
