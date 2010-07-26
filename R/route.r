@@ -104,7 +104,7 @@ helpr <- function(installed = TRUE) {
 
   # Individual help topic with multiple reponses
   router$get("/multiple_help_paths/:path_string", function(path_string) {
-    pkg_and_topic <- str_split(str_split(path_string, ";")[[1]], "-")
+    pkg_and_topic <- str_split(str_split(path_string, ";")[[1]], "~")
 
     pkg <- c()
     topic <- c()
@@ -170,11 +170,11 @@ helpr <- function(installed = TRUE) {
 
     render_json(TRUE)
   })
-  router$get("/eval_demo/:package-:demo_name", function(package, demo_name){
+  router$get("/eval_demo/:package~:demo_name", function(package, demo_name){
     list(payload = evaluate_text(demo_src(package, demo_name), pic_base_name = str_join(package, "_", pkg_version(package),"_demo_", demo_name)))
   })
 
-  router$get("/eval_example/:package-:topic", function(package, topic){
+  router$get("/eval_example/:package~:topic", function(package, topic){
     list(payload = evaluate_text(reconstruct(untag(pkg_topic(package, topic)$examples)), pic_base_name = str_join(package, "_", pkg_version(package),"_topic_", topic)))
   })
   
@@ -296,7 +296,7 @@ print.help_files_with_topic <- function (x, ...)
 
         if(length(pkgname) > 1){
           browseURL(paste(base_html_path(), 
-          "/multiple_help_paths/", str_join(pkgname, topic, sep = "-", collapse = ";"), sep = ""), browser)
+          "/multiple_help_paths/", str_join(pkgname, topic, sep = "~", collapse = ";"), sep = ""), browser)
         }else{
           browseURL(paste(base_html_path(), 
           "/library/", pkgname, "/html/", topic, 

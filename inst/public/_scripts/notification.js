@@ -218,7 +218,7 @@ function evaluate_section(demo_topic, package, demo_name){
   
   setTimeout(function(){
     jQuery.ajax({
-      url: "/eval_"+demo_topic+"/" + package + "-" + demo_name,
+      url: "/eval_"+demo_topic+"/" + package + "~" + demo_name,
       dataType: "html",
       success: function(eval_code) {
         $("#"+demo_topic+"_source_code").html(eval_code)

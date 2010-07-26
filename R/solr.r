@@ -128,14 +128,19 @@ index_topic <- function(package, topic){
   put_string(make_add_xml(solr_topic(package, topic)))
 }
 
-index_package <- function(package, verbose = TRUE){
-  
+index_package <- function(package, start_letter = "a", verbose = TRUE){
   if(verbose == TRUE)
     cat("\n\n\n")
   if(verbose == TRUE || verbose == "package")
     cat(package,"\n")
+  require(package, character.only=TRUE)
   all_topics <- pkg_topics_index(package)
   unique_topics <- all_topics[!duplicated(all_topics$file), "alias"]
+  if(length(unique_topics) > 0){
+    first_letter <- sapply(strsplit(unique_topics, ""), function(x){tolower(x[1])})
+    rows <- str_detect(first_letter, str_join("[", tolower(start_letter), "-z]"))
+    unique_topics <- unique_topics[rows]
+  }
 
   pkg_output <- c()
   for (i in seq_along(unique_topics)) {
@@ -165,8 +170,11 @@ index_all <- function(start_letter = "a", verbose = TRUE){
   rows <- str_detect(first_letter, str_join("[", tolower(start_letter), "-z]"))
   packages <- packages[rows]
   
-  str_join(sapply(packages, index_package, verbose = verbose), collapse = "")
-  "Finished"
+  sapply(packages, index_package, verbose = verbose)
+  if(verbose)
+    "Finished"
+  else
+    invisible("Finished")
 }
 
 
@@ -263,6 +271,7 @@ index_package_sep <- function(package, verbose=TRUE){
   
   suppressWarnings(dir.create("solr"))
   suppressWarnings(dir.create(str_join("solr/", package)))
+  require(package, character.only=TRUE)
   
   if(verbose == TRUE)
     cat("\n\n\n")
@@ -300,8 +309,11 @@ send_commit_command <- function(){
 send_system_command <- function(system_string){
   curled_text <- system(system_string, intern = TRUE, ignore.stderr = TRUE)
   status <- str_sub(curled_text[3], start=47, end=47)
+  if(length(status) < 1)
+    status <- "FAIL"
   
   if(status != "0"){
+    message(str_join(curled_text, collapse = "\n"))
     stop("Error uploading file to solr")
   }
   

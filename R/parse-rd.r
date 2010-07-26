@@ -122,12 +122,24 @@ reconstruct <- function(rd) {
     }
     
   } else if(tag == "\\S4method"){
-    str_join("## S4 method for signature \'",reconstruct(rd[[2]]),"\':\n", reconstruct(rd[[1]]), sep ="")
+    str_join("## S4 method for signature \"",reconstruct(rd[[2]]),"\":\n", reconstruct(rd[[1]]), sep ="")
 
   } else if(tag == "\\linkS4class"){
     item <- reconstruct(untag(rd))
-    pkg <- attr(getClass(item)@className, "package")
-    tag_link(item, pkg, str_join(item, "-class", collapse = ""))
+
+    pkg <- tryCatch(
+        attr(getClass(item)@className, "package"),
+        error = function(e){
+          message("can't find the package for s4class: ", item)
+          "no_package"
+        }
+      )
+    if(pkg == "no_package"){
+      item
+    }else{
+      pkg <- attr(getClass(item)@className, "package")
+      tag_link(item, pkg, str_join(item, "-class", collapse = ""))
+    }
   } else if(tag == "\\Sexpr"){
     expr <- eval(parse(text = rd), envir=globalenv())
     con <- textConnection(expr)

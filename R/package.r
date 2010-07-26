@@ -97,7 +97,7 @@ pkg_author_and_maintainers <- function(authors, maintainer=NULL){
 
   # make the maintainer bold
   if(!is.null(maintainer)){
-    maintainer_name <- str_extract_all(maintainer, name_pattern)[[1]][1]
+    maintainer_name <- str_trim(strip_html(maintainer))
     maintainer_email <- str_extract_all(maintainer, email_pattern)[[1]][1]
     maintainer_email <- str_replace(maintainer_email, "<", "")
     maintainer_email <- str_replace(maintainer_email, ">", "")

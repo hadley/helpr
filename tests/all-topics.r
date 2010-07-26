@@ -9,6 +9,7 @@ parse_all_topics <- function(start_letter = "a"){
   
   for(pkg in packages){
     cat("\n\n\n", pkg,"\n")
+    check_for_package(pkg)
     all_topics <- pkg_topics_index(pkg)
     unique_topics <- all_topics[!duplicated(all_topics$file), "alias"]
     
@@ -42,6 +43,7 @@ parse_all_packages <- function(start_letter = "a"){
   
   for(pkg in packages){
     if(NROW(pkg_topics_index(pkg)) > 0){      
+      check_for_package(pkg)
       cat(pkg,": ... ")
       start_time <- Sys.time()
       helpr_package(pkg)
@@ -70,6 +72,8 @@ parse_all_demos <- function(start_letter = "a"){
   cat("Demos: ", str_join(demos$Item, collapse = ", "), "\n")
   for(i in seq_along(demos$Item)){
     cat(demos[i,"Package"], " - ", demos[i,"Item"],": ... ")
+    check_for_package(demos[i,"Package"])
+
     start_time <- Sys.time()
     helpr_demo(demos[i,"Package"],demos[i,"Item"])
     time <- Sys.time() - start_time
