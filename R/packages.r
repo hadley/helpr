@@ -23,21 +23,22 @@ as.list.packages <- function(x) {
 #' Out of date packages.
 #' Local packages that need updating.
 old_package_names <- function() {
-  as.data.frame(old.packages(), stringsAsFactors = FALSE)$Package
+  as.list(as.data.frame(old.packages(), stringsAsFactors = FALSE)$Package)
 }
 
 #' Update old packages
-#' update all packages that are old and currently loaded
+#' update all packages that are old and currently loaded or installed
 #'
 #' @author Barret Schloerke \email{bigbear@@iastate.edu}
 #'
-update_loaded_packs <- function(all = FALSE) {
+update_packs <- function(all = FALSE) {
   if(all){
     packs <- installed_packages()[,"Package"]
   }else{
     packs <- (.packages())
   }
-  packs <- packs[packs %in% old.packages()[,"Package"]]
-  install.packages(packs)
-  packs
+  packs <- packs[packs %in% old_package_names()]
+  message(str_join("installing : ", packs, sep = "", collapse = "\n"))
+#  install.packages(packs)
+  as.list(packs)
 }

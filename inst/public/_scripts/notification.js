@@ -1,5 +1,5 @@
 function set_on_click(section){
-  $("body").mouseup(function(e){
+  $("body").select(function(e){
     var offset = $(section).offset();
     window.status = e.pageX +', '+ e.pageY + "\tdiv position: " + offset.left + ", " + offset.top;
     

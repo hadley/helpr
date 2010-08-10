@@ -56,10 +56,10 @@ Individual pages
 
 ## Topic
 
-* WAIT - "did you mean?" - include list of all topics with the same name in different packages
-  * requires solr
+* DONE? - "did you mean?" - include list of all topics with the same name in different packages
+  * handled when "?mutli_pkg_topic" is executed
 * DEB - use latent dirichlet topic models to provide see also links based on description and details.
-* WAIT/DEB - display hyperlinked keywords
+* DEB - display hyperlinked keywords
 * DONE - view source - shows function source
 * WAIT - rate a function
   * Crantastic
@@ -71,7 +71,7 @@ Individual pages
     * DONE - source
     * DONE - topic
 * DONE - links for "mailto"
-* WAIT/DEB - display keywords
+* DEB - display keywords
 * DONE - list of all fuctions that are under the topic
   * DONE - links to the source code of said function
 * BUSY - Execute example functionality

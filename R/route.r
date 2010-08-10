@@ -134,7 +134,7 @@ helpr <- function(installed = TRUE) {
     render_json(installed_packages())
   })
   router$get("/package/update.json/:all_packs", function(all_packs) {
-    render_json(update_loaded_packs(all_packs))
+    render_json(update_packs(all_packs))
   })
   router$get("/package/:package/rating.json", function(package) {
     string <- rating_text(package)

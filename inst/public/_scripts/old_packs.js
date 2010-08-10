@@ -16,21 +16,22 @@ function show_all_packages() {
 var has_highlighted = 0;
 function highlight_old_packages() {
   has_highlighted = 1;
-  button = $("#out_of_date_button");
-  button.attr("value", "Thinking...");
-  button.attr("disabled", true);
-  document.getElementById("thinking_wheel").style.display = "inline";
+
+  $.blockUI({ message: "<h1><img src=\"/_images/busy.gif\" /> Finding Old Packages</h1>" });   
 
   jQuery.ajax({
     url: "/package/old.json",
     dataType: "json",
     success: function(packages) {
+      window.console.log(packages);
       for(i = 0; i < packages.length; i++) {
         pkg = packages[i];
+        window.console.log(pkg + " is old");      
         $("#" + pkg).addClass("old");
       }
       
       set_update_button();
+      $.unblockUI();
     }
   })
   
@@ -46,23 +47,25 @@ function update_packs() {
   if(showing_all == 1)
     all = "TRUE";
     
-  $.blockUI({ message: "<h1><img src=\"/_images/busy.gif\" />Updating Packages</h1>" });   
+  $.blockUI({ message: "<h1><img src=\"/_images/busy.gif\" /> Updating Packages</h1>" });   
 
   jQuery.ajax({
     url: "/package/update.json/"+all,
     dataType: "json",
     success: function(packages) {
+      window.console.log(packages);
       for(i = 0; i < packages.length; i++) {
         pkg = packages[i];
+        window.console.log(pkg +" has now been installed");
         $("#" + pkg).removeClass("old").addClass("update");
       }
       set_update_button();
       
       $.unblockUI();
       
-      if(packages.length < 2)
-        notify(packages[1] + " has been updated");
-      else
+      if(packages.length == 1)
+        notify(packages[0] + " has been updated");
+      else if(packages.length > 1)
         notify(packages.length + " packages have been updated");
 
     }
@@ -94,7 +97,7 @@ function set_update_button(){
     var pkg = packs.childNodes[i];
 
     if(pkg.nodeType==1 && $(pkg).hasClass("old")  && ($(pkg).hasClass("loaded") || showing_all == 1)){
-      window.console.log( pkg + ": " + $(pkg).hasClass("old")  + "    :  "+ !$(pkg).hasClass("hide"));
+//      window.console.log( pkg.childNodes[1].childNodes[0].innerHTML + ": " + $(pkg).hasClass("old")  + "    :  "+ !$(pkg).hasClass("hide"));
       count++;
     }
   }
