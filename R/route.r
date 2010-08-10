@@ -16,10 +16,15 @@ base_html_path <- function(){
 }
 
 check_for_package <- function(package){
-  if(!suppressWarnings(require(package, character.only = TRUE))){
-    install.packages(package, repos="http://cran.r-project.org/")
-    library(package, character.only=TRUE)
-  }
+#  if(!suppressWarnings(require(package, character.only = TRUE))){
+#    message(str_c("installing: ", package, collapse = "\n"))
+#    Sys.sleep(10)
+##    install.packages(package, repos="http://cran.r-project.org/")
+##    library(package, character.only=TRUE)
+#  }
+
+#    render_brew("whistle", list(package = package), path = helpr_path)
+  suppressWarnings(require(package, character.only = TRUE))
 }
 
 
@@ -68,8 +73,11 @@ helpr <- function(installed = TRUE) {
 
   # Package index page, list topics etc
   router$get("/package/:package/", function(package) {
-    check_for_package(package)
-    render_brew("package", helpr_package(package), path = path)    
+    if(check_for_package(package)){
+      render_brew("package", helpr_package(package), path = path)    
+    } else {
+      render_brew("whistle", list(package = package, url = deparse(str_c("/package/", package, "/", collapse = ""))), path = path)      
+    }
   })
   
   # Package Vignette

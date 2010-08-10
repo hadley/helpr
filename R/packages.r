@@ -32,13 +32,13 @@ old_package_names <- function() {
 #' @author Barret Schloerke \email{bigbear@@iastate.edu}
 #'
 update_packs <- function(all = FALSE) {
-  if(all){
+  if(all) {
     packs <- installed_packages()[,"Package"]
-  }else{
-    packs <- (.packages())
+  } else {
+    packs <- .packages()
   }
   packs <- packs[packs %in% old_package_names()]
-  message(str_join("installing : ", packs, sep = "", collapse = "\n"))
+  message(str_c("installing: ", packs, collapse = "\n"))
 #  install.packages(packs)
   as.list(packs)
 }

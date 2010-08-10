@@ -212,6 +212,8 @@ function run_selected_code(section){
   }, 500);
 }
 
+
+
 function evaluate_section(demo_topic, package, demo_name){
   
   $.blockUI({ message: "<h1><img src=\"/_images/busy.gif\" /> Running "+demo_topic+". Please wait.</h1>" }); 

@@ -6,8 +6,8 @@ save_picture <- function(obj_name, obj_plot){
   # duplicates do not exist as naming should be done well
   if(!file.exists(file_path)){ 
     png(file_path)
-      print(obj_plot)
-    dev.off()
+    on.exit(dev.off())
+    print(obj_plot)
   }
   
   str_join("/picture/", obj_name, ".png", collapse = "")
