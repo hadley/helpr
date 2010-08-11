@@ -13,6 +13,7 @@
 #'
 #' @param package package to use
 #' @param topic topic to explore
+#' @keyword internal
 solr_topic <- function(package, topic){
   
   rd <- pkg_topic(package, topic)
@@ -51,21 +52,28 @@ solr_topic <- function(package, topic){
 #' 
 #' @param url_string url to explore
 #' @return plain text from that url
+#' @keyword internal
 read_url <- function(url_string){
   url_connect <- url(utils::URLencode(url_string))
+  on.exit(close(url_connect))
   output <- suppressWarnings(str_join(readLines(url_connect), collapse = ""))
-  close(url_connect)
   output
 }
 
 #' URL made of JSON to list
 #'
 #' @param url_string url that contains a JSON output to be turned into a list
+#' @keyword internal
 urlJSON_to_list <- function(url_string){
   rjson::fromJSON(read_url(url_string))
 }
 
+#' make a xml field
 #' make a field for a solr document
+#' 
+#' @param name name of the field
+#' @param value value of the field
+#' @keyword internal
 make_field <- function(name, value){
   if(length(value) < 1)
     value <- ""
@@ -81,6 +89,11 @@ make_field <- function(name, value){
 
 
 #' turn a list into a solr doc
+#' turn a list into a solr doc
+#' 
+#' @param id id tag to be used
+#' @param obj list to perform on
+#' @keyword internal
 list_to_xml <- function(id, obj){
   
   obj$id <- id
@@ -91,12 +104,14 @@ list_to_xml <- function(id, obj){
   })
   
   str_join("<doc>", str_join(fields, collapse=""), "</doc>", collapse = "")
-  
 }
 
 
 #' make a list into a nested list
 #' this is to be done to easily use sapply and keep the name of the item
+#'
+#' @param obj list to perform on
+#' @keyword internal
 list_to_double_list <- function(obj){
   new_obj <- list()
   for(item_name in names(obj)){
@@ -107,13 +122,21 @@ list_to_double_list <- function(obj){
 
 
 #' make it so the xml is an 'add'
+#' make it so the xml is an 'add' to be commited to solr
+#'
+#' @param obj list to perform on
+#' @keyword internal
 make_add_xml <- function(obj){
   str_join("<add>", obj, "</add>", collaspe = "")
 }
 
 
+#' Save page info
 #' Save page info into xml for solr
-#'   
+#'
+#' @param txt xml text string
+#' @param file_name location to save the file. Defaults to a temp file that is discarded when R shuts down.
+#' @keyword internal
 #' @examples
 #'   save_xml(make_add_xml(index_all("y")), "all_topics.xml")
 save_xml <- function(txt, file_name=tempfile()){
@@ -124,10 +147,21 @@ save_xml <- function(txt, file_name=tempfile()){
   file_name
 }
 
+#' Index topic
+#' Index a topic into solr
+#'
+#' @param package package in question
+#' @param topic topic in question
 index_topic <- function(package, topic){
   put_string(make_add_xml(solr_topic(package, topic)))
 }
 
+#' Index package
+#' Index a whole package into solr
+#'
+#' @param package package in question
+#' @param start_letter used when you want to start froma certain letter, such as 'q'
+#' @param verbose should output be shown?
 index_package <- function(package, start_letter = "a", verbose = TRUE){
   if(verbose == TRUE)
     cat("\n\n\n")
@@ -162,9 +196,13 @@ index_package <- function(package, start_letter = "a", verbose = TRUE){
 
 }
 
-
+#' Index all packages
+#' Index all packages into solr
+#'
+#' @param start_letter used when you want to start froma certain letter, such as 'q'
+#' @param verbose should output be shown?
 index_all <- function(start_letter = "a", verbose = TRUE){
-  packages <- suppressWarnings(library()$results[,"Package"])
+  packages <- installed_packages()$Package
   packages <- packages[order(tolower(packages))]
   first_letter <- sapply(strsplit(packages, ""), function(x){tolower(x[1])})
   rows <- str_detect(first_letter, str_join("[", tolower(start_letter), "-z]"))
@@ -177,15 +215,17 @@ index_all <- function(start_letter = "a", verbose = TRUE){
     invisible("Finished")
 }
 
-
 helpr_search_row_count <- 20
 #helpr_search_row_count <- 5
 
-get_solr_query_result <- function(query_string){
+#' Solr Query
+#' Retrieve a solr query 
+#'
+#' @param solr_param_string parameters that are to be passed onto solr
+#' @keyword internal
+get_solr_query_result <- function(solr_param_string){
   rows <- helpr_search_row_count
-  response <- urlJSON_to_list(str_join("http://0.0.0.0:8983/solr/select/?version=2.2&wt=json&rows=",rows,"&indent=on&", query_string, "&hl=on&hl.simple.pre=<strong>&hl.simple.post=</strong>&hl.fl=*"))
-#  &hl.fl=title_t&hl.fl=desc_t&hl.fl=details_t"))
-#  docs <- response$response$docs
+  response <- urlJSON_to_list(str_join("http://0.0.0.0:8983/solr/select/?version=2.2&wt=json&rows=", rows, "&indent=on&hl=on&hl.simple.pre=<strong>&hl.simple.post=</strong>&hl.fl=*&", solr_param_string))
   docs <- response$highlighting
   query <- response$responseHeader$params$q
 
@@ -202,6 +242,11 @@ get_solr_query_result <- function(query_string){
 }
 
 
+#' Pkg and topic from url
+#' Retrieve the pkg and topic from the url
+#'
+#' @param solr_param_string parameters that are to be passed onto solr
+#' @keyword internal
 package_and_topic_from_url <- function(url_txt){
   pkg <- ""
   topic <- ""
@@ -218,6 +263,10 @@ package_and_topic_from_url <- function(url_txt){
   list(pkg = pkg, topic = topic)
 }
 
+#' Package description
+#'
+#' @param pkg 
+#' @keyword internal
 package_description <- function(pkg, topic){
   gsub("$\n+|\n+^", "", reconstruct(pkg_topic(pkg, topic)$description))
 }
@@ -258,7 +307,7 @@ parse_highlighted_desc <- function(item){
 
 
 index_all_sep <- function(start_letter = "a", verbose = TRUE){
-  packages <- suppressWarnings(library()$results[,"Package"])
+  packages <- installed_packages()$Package
   packages <- packages[order(tolower(packages))]
   first_letter <- sapply(strsplit(packages, ""), function(x){tolower(x[1])})
   rows <- str_detect(first_letter, str_join("[", tolower(start_letter), "-z]"))
@@ -329,7 +378,3 @@ put_file <- function(file_name){
   send_commit_command()
 }
 
-#solr_topic
-#solr_package
-#solr_all
-#generate the xml for one topic, all topics in a package, and all packages
