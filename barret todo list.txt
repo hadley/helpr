@@ -24,9 +24,10 @@ New
 √  loading a package while you wait needs a screen to tell you that
   change log stuff
 √  allow install of single package
+  add to topic page what similar functions exist in sidebar
 
 Fix Pages
-  find out how to find out if a topic is a function or not without loading the package
+BUSY -  find out how to find out if a topic is a function or not without loading the package
   add in the footer, description, and readme that this is "funded by Revolution Analytics"
 
 Writing
