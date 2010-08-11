@@ -38,7 +38,11 @@ update_packs <- function(all = FALSE) {
     packs <- .packages()
   }
   packs <- packs[packs %in% old_package_names()]
-  message(str_c("installing: ", packs, collapse = "\n"))
-#  install.packages(packs)
+  install_packages(packs)
   as.list(packs)
+}
+
+install_packages <- function(pkg_vec){
+#  install.packages(pkg_vec, repos = "http://cran.r-project.org/")
+  message(str_c("installing: ", pkg_vec, collapse = "\n"))
 }

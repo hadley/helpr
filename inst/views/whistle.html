@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <%= render_snippet("html_header") %>
+
+  <%= render_snippet("growl") %>
+
+  <title>whistle while you work ...</title>
+</head>
+
+<body>
+  <div id="watermark"> ... waiting ... </div>
+  <script type="text/javascript">
+    $.blockUI({ message: "<h1><img src=\"/_images/busy.gif\" /> Installing <%= package %>. Please wait.</h1>" });    
+
+  setTimeout(function(){
+    jQuery.ajax({
+      url: "/package/install.json/" + <%= package %>,
+      dataType: "json",
+      success: function() {
+        $.unblockUI();
+        notify("<%= package %> was installed.");
+        $(location).delay(5000).attr('href',<%= url %>);
+      },
+      error:function (xhr, ajaxOptions, thrownError){
+        $.unblockUI();
+        error_notify("The package could not be installed properly.");
+        $(location).delay(5000).attr('href',"/");
+      }
+    })
+  }, 500);
+
+  </script>
+
+</body>
+</html>
+

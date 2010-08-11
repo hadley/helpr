@@ -30,6 +30,18 @@ function highlight_old_packages() {
         $("#" + pkg).addClass("old");
       }
       
+      $("tr.old").hover(
+        function () {
+          var pkg = $(this).find("td:first").text();
+          window.console.log(pkg);
+          $(this).find("td:last").prepend($(" <input type='button' value='Install' class='single_install_button' onclick='install_package(\""+pkg+"\")'></input>"));
+        }, 
+        function () {
+          $(this).find("input:last").remove();
+        }
+      );
+
+      
       set_update_button();
       $.unblockUI();
     }
@@ -56,9 +68,9 @@ function update_packs() {
       window.console.log(packages);
       for(i = 0; i < packages.length; i++) {
         pkg = packages[i];
-        window.console.log(pkg +" has now been installed");
         $("#" + pkg).removeClass("old").addClass("update");
       }
+      remove_single_install_button();
       set_update_button();
       
       $.unblockUI();
@@ -111,11 +123,43 @@ function set_update_button(){
   }
   else{
     out_of_date_butto.value = "All up to date";
-    out_of_date_butto.onClick = "";
+    out_of_date_butto.onclick = "";
     out_of_date_butto.disabled = true;
   }
   
   document.getElementById("thinking_wheel").style.display = "none";
 
 }
+
+function remove_single_install_button() {
+  $("tr.update").unbind('mouseenter mouseleave');
+}
+
+
+function install_package(pkg){
+
+  $.blockUI({ message: "<h1><img src=\"/_images/busy.gif\" /> Installing "+pkg+". Please wait.</h1>" }); 
+  
+  setTimeout(function(){
+    jQuery.ajax({
+      url: "/package/install.json/" + pkg,
+      dataType: "json",
+      success: function(txt) {
+        $("#" + pkg).removeClass("old").addClass("update");
+        $("#" + pkg).find("input:last").remove();
+        remove_single_install_button(); 
+  
+        set_update_button();
+        $.unblockUI();
+        notify(pkg + " has been updated");
+      },
+      error:function (xhr, ajaxOptions, thrownError){
+        $.unblockUI();
+        error_notify(pkg + " could not be installed properly.");
+      }
+    })
+  }, 500);
+
+}
+
 

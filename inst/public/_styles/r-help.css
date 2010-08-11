@@ -113,6 +113,8 @@ pre {
 .out_of_date { background-color: #FE8080;}
 .updated { background-color: rgba(238,238,238,.5);} 
 .old a:link, .old a:visited {color: red;}
+.old { position: relative;}
+.single_install_button { margin-bottom:0em  ! important; margin-right: 4px;}
 
 #thinking_wheel{
   margin: 0;

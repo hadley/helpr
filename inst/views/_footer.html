@@ -1,0 +1,9 @@
+  <div id="ft">
+    <% if(identical(disqus,TRUE)) { -%> 
+      <%= render_snippet("disqus_footer") %>
+    <% } %>
+    <p>R help.  Style created by <a href="http://had.co.nz/">Hadley Wickham</a></p>
+  </div>
+  <% if(identical(disqus,TRUE)) { -%> 
+    <%= render_snippet("disqus_end_body_script") %>
+  <% } %>
