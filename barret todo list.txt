@@ -23,7 +23,7 @@ Solr
 New
 √  loading a package while you wait needs a screen to tell you that
   change log stuff
-  allow install of single package
+√  allow install of single package
 
 Fix Pages
   find out how to find out if a topic is a function or not without loading the package
