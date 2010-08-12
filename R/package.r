@@ -1,3 +1,6 @@
+#' @include memoise.r
+
+
 #' Helpr Package
 #'
 #' @return all the information necessary to produce a package site ("/package/:package/")
@@ -125,7 +128,6 @@ pkg_author_and_maintainers <- function(authors, maintainer=NULL){
 
 
 
-#' @include memoise.r
 
 
 # Function to get information about a package.  List of :
@@ -231,14 +233,30 @@ get_datasets <- function(package){
   # make sure it gets the right package (base and datasets)
   items <- sets[sets[,"Package"] == package, "Item"]
   
+  if(length(items) < 1) return(list())
+  
   # extract names of datasets that belong to a group, 
-  #   i.e. beaver1 (beaver) becomes c("beaver1", "beaver")
-  data_set_names <- function(name){
-    str_extract_all(name, "[a-zA-Z_.][a-zA-Z_.0-9]*")[[1]]
+  #   i.e. beaver1 (beaver) becomes c(dataset = "beaver1", group = "beaver")
+  split_names <- str_extract_all(items, "[a-zA-Z_.][a-zA-Z_.0-9]*")
+  split_names_labeled <- lapply(split_names, function(x){
+    if(length(x) > 1) {
+      c(dataset = x[1], help_name = x[2])
+    } else {
+      c(dataset = x[1])      
+    }
+  })
+  
+  split_names_labeled <- unlist(split_names_labeled)
+  data_and_group <- split(split_names_labeled, names(split_names_labeled))
+  
+  if(!is.null(data_and_group$dataset)) {
+    data_and_group$dataset <- data_and_group$dataset[order(data_and_group$dataset)]
   }
-
-  data_sets <- as.character(unique(unlist(sapply(items, data_set_names))))
-  data_sets[order(data_sets)]
+  if(!is.null(data_and_group$help_name)) {
+    data_and_group$help_name <- data_and_group$help_name[order(data_and_group$help_name)]
+  }
+  
+  data_and_group
 }
 
 pkg_internal_function_files <- function(package){
@@ -269,6 +287,26 @@ pkg_topics_index_by_type <- function(package){
 #' @param items items supplied from pkg_topics
 #' @return boolean
 is_function <- function(package, items){
+  
+  index <- pkg_topics_index(package)
+  index <- subset(index, alias %in% items)
+  files <- unique(index[,"file"])
+  
+  rd_files <- pkg_topics_rd(package)
+  
+  aliases <- sapply(files, function(rd){
+   rd_file <- rd_files[[rd]]
+   unname(sapply(rd_file[names(rd_file) == "alias"], "[[", 1))
+  })
+  
+  
+  # get the file of every alias
+  # for every file
+    # pull the rd file
+    # find if all alias of the file exist in the usage of the rd file
+    # if they do, function, if not, NA
+  
+  
   sapply(items, function(x){
     if(exists(x, str_join("package:", package)))
       "function"
@@ -304,12 +342,16 @@ pkg_topic_index_type <- function(package){
   }
 
   # dataset
-  rows <- with(index,
-    file %in% get_datasets(package) |
-    alias %in% get_datasets(package)
-  )
+  pkg_datas <- get_datasets(package)  
+  if(!is.null(pkg_datas$dataset)) {
+    rows <- with(index, alias %in% pkg_datas$dataset )
+    index[rows,"type"] <- "dataset"    
+  }
+  if(!is.null(pkg_datas$help_name)) {
+    rows <- with(index, alias %in% pkg_datas$help_name )
+    index[rows,"type"] <- "help_name"    
+  }
   
-  index[rows,"type"] <- "dataset"
   
   # function
   rows <- with(index, type == "NA")
