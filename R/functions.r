@@ -1,3 +1,6 @@
+#' @include memoise.r
+
+
 #' Funcition Source
 #' Work out the source code of a function.
 #'

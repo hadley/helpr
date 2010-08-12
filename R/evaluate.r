@@ -15,7 +15,6 @@ helpr_replay.list <- function(x, pic_base_name) {
 }
 
 helpr_replay.character <- function(x, pic_base_name) {
-#  helpr_replay_cat(x)
   eval_tag_output(x)
 }
 
