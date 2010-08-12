@@ -197,26 +197,27 @@ parse_usage <- function(usage){
   
   text <- reconstruct(untag(usage))
   
-  pattern <- "[a-zA-Z_.][a-zA-Z_.0-9]*\\("  
-  func_text <- str_extract(text, pattern)
+  pattern <- "[a-zA-Z_.][a-zA-Z_.0-9]*[ ]*\\("  
   funcs_text <- unlist(str_extract_all(text, pattern))
   funcs <- str_replace(funcs_text, "\\(", "")
   funcs <- safely_order_funcs(funcs)
-
+  original_funcs <- funcs
+  funcs <- str_trim(funcs)
+  
   #' add links to each safely ordered function
   for(i in seq_along(funcs)){
+    path <- function_help_path(funcs[i], source_link = TRUE)
     func <- funcs[i]
+    ori_func <- original_funcs[i]
     
-    path <- function_help_path(func, source_link = TRUE)
+    if(is.na(path)) {
+      link <- str_join("<em>",ori_func, "</em>(")
+    } else {
+      spaces <- str_c(rep(" ", nchar(ori_func) - nchar(func)), collapse = "")
+      link <- str_join("<a href=\"", path, "\">", func, "</a>", spaces ,"(" )
+    }
     
-    if(is.na(path))
-      link <- str_join("<em>",func, "</em>(")
-    else
-      link <- str_join("<a href=\"", path, "\">", func, "</a>(" )
-    
-    text <- str_replace(text, str_join(func,"\\("), link)
-    
-    func_text <- str_extract(text, pattern)
+    text <- str_replace(text, str_join(ori_func,"\\("), link)
   }
   
   text
