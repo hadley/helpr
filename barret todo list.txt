@@ -22,13 +22,13 @@ Solr
 
 New
 √  loading a package while you wait needs a screen to tell you that
-  change log stuff
+BUSY  change log stuff
 √  allow install of single package
   add to topic page what similar functions exist in sidebar
 
 Fix Pages
 WAIT - find out how to find out if a topic is a function or not without loading the package
-BUSY -  add in the footer, description, and readme that this is "funded by Revolution Analytics"
+√ - add in the footer, description, and readme that this is "funded by Revolution Analytics"
 
 Writing
   two paragraph description of "why this is helpful" and "why you should use it"
