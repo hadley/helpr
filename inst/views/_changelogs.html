@@ -1,5 +1,11 @@
-  <%= str_join("<h2>",title,"</h2>","<span class=\"changelog_date\">",date,"</span>") %>
-  <% for(i in names(news)) { -%>
-    <%= if(!is.na(i)) str_join("<h3>",news[i],"</h3>") %>
-    <%= str_join("<ul><li>",str_join(i$text, collapse="</li><li>") ,"</li></ul>") %>
+<% if(dataframe_has_rows(news)) {-%>
+  <%= str_c("<span class=\"change_log_title\">",title,"</span>" ) %>
+  <%= if(!is.na(date)) {str_c(" <span class=\"change_log_date\">",date,"</span>") } %>
+  <% for(i in seq_along(names(news))) { -%>
+    <% if(has_text(news[[i]])) {-%>
+      <% news_name <- names(news)[i] %>
+      <%= if(!is.na(news_name)){ str_join("<h3>",news_name,"</h3>") } %>
+      <%= str_join("<ul><li>",str_join(news[[i]], collapse="</li><li>") ,"</li></ul>") %>
+    <% } %>
   <% } %>
+<% } %>

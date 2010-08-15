@@ -1,5 +1,8 @@
 pkg_news <- function(package){
-  package_news <- news(package = package)
+  package_news <- tryCatch(
+    news(package = package),
+    error = function(e) 
+      NULL)
   if(is.null(package_news)) return(NULL)
   
   # retain only the latest version infomation
@@ -12,7 +15,8 @@ pkg_news <- function(package){
     news = split(package_news$Text, addNA(package_news$Category))
   )
 
-  render_snippet("changelogs", change_log)
+#  render_snippet("changelogs", change_log)
+  change_log
 }
 
 function_news <- function(package, topic){

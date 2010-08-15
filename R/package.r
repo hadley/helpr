@@ -33,7 +33,6 @@ helpr_package_mem <- memoise(function(package, version) {
 
   if(has_text(description$url))
     description$url <- str_trim(str_split(description$url, ",")[[1]])
-  
 
   list(
     package = package, 
@@ -43,7 +42,8 @@ helpr_package_mem <- memoise(function(package, version) {
     demos_str = pluralize("Demo", demos),
     demos = demos,
     vigs_str = pluralize("Vignette", vigs),
-    vigs = vigs
+    vigs = vigs,
+    change_log = pkg_news(package)
   )
 })
 
@@ -384,6 +384,7 @@ is_function <- function(package, items){
   # since the above method doesn't work, the old one is still in place
   
 # OLD METHOD  
+  library(package, character.only = TRUE)
   sapply(items, function(x){
     if(exists(x, str_join("package:", package)))
       "function"
