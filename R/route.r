@@ -231,6 +231,8 @@ helpr <- function(installed = TRUE) {
   if (tools:::httpdPort == 0L) {
     help.start()
     options("help_type" = "html")
+  } else {
+    load_html()
   }
 
   return(invisible(router))
