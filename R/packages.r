@@ -43,6 +43,6 @@ update_packs <- function(all = FALSE) {
 }
 
 install_packages <- function(pkg_vec){
-#  install.packages(pkg_vec, repos = "http://cran.r-project.org/")
-  message(str_c("installing: ", pkg_vec, collapse = "\n"))
+#  message(str_c("installing: ", pkg_vec, collapse = "\n"))
+  suppressWarnings(install.packages(pkg_vec, repos = "http://cran.r-project.org/"))
 }

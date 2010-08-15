@@ -197,18 +197,29 @@ parse_usage <- function(usage){
   
   text <- reconstruct(untag(usage))
   
-  pattern <- "[a-zA-Z_.][a-zA-Z_.0-9]*[ ]*\\("  
+  text_lines <- str_split(text, "\n")[[1]]
+  text_lines <- text_lines[ nchar(text_lines) > 1]
+  text_lines <- text_lines[ str_sub(text_lines, end = 1) != " " ]
+  
+  
+  pattern <- "[a-zA-Z_.][a-zA-Z_.0-9]*[ ]*\\("
+    
+#  alias_funcs <- unlist(str_extract(text_lines, pattern))
+#  alias_funcs <- str_trim(str_replace(alias_funcs, "\\(", ""))
+  alias_funcs <- usage_functions(text)
+  
   funcs_text <- unlist(str_extract_all(text, pattern))
   funcs <- str_replace(funcs_text, "\\(", "")
   funcs <- safely_order_funcs(funcs)
   original_funcs <- funcs
   funcs <- str_trim(funcs)
   
-  #' add links to each safely ordered function
+  # add links to each "safely ordered" function
   for(i in seq_along(funcs)){
-    path <- function_help_path(funcs[i], source_link = TRUE)
     func <- funcs[i]
     ori_func <- original_funcs[i]
+    
+    path <- function_help_path(func, source_link = (func %in% alias_funcs))
     
     if(is.na(path)) {
       link <- str_join("<em>",ori_func, "</em>(")
@@ -219,6 +230,10 @@ parse_usage <- function(usage){
     
     text <- str_replace(text, str_join(ori_func,"\\("), link)
   }
+  
+  # add links to all the inner functions to their own help pages
+  
+  
   
   text
 }

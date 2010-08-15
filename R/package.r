@@ -4,7 +4,11 @@
 #' Helpr Package
 #'
 #' @return all the information necessary to produce a package site ("/package/:package/")
-helpr_package <- function(package){
+helpr_package <- function(package) {
+  helpr_package_mem(package, pkg_version(package))
+}
+
+helpr_package_mem <- memoise(function(package, version) {
   
   info <- .readRDS(system.file("Meta", "package.rds", package = package))
   description <- as.list(info$DESCRIPTION)
@@ -41,7 +45,7 @@ helpr_package <- function(package){
     vigs_str = pluralize("Vignette", vigs),
     vigs = vigs
   )
-}
+})
 
 pkg_version <- function(pkg){
   .readRDS(system.file("Meta", "package.rds", package = pkg))$DESCRIPTION[["Version"]]
@@ -282,31 +286,104 @@ pkg_topics_index_by_type <- function(package){
 }
 
 
+package_usage_functions <- function(usage){
+  
+  p_text <- attr(parser(text = reconstruct(untag(usage))), "data")
+  text_top_levels <- split(p_text, p_text[,"top_level"])
+
+  unname(sapply(text_top_levels, function(x){
+    rows <- with(x, token.desc == "SYMBOL_FUNCTION_CALL")
+    item_row <- x[rows, ]
+    if(nrow(item_row) < 1) {
+      NULL
+    } else {
+      item_row[1,"text"]
+    }
+      
+  }))
+}
+
+
 #' Determines if object is a function
 #'
 #' @param items items supplied from pkg_topics
 #' @return boolean
 is_function <- function(package, items){
   
+  # retrieve the files of all items in question
   index <- pkg_topics_index(package)
   index <- subset(index, alias %in% items)
   files <- unique(index[,"file"])
   
   rd_files <- pkg_topics_rd(package)
+
+  pattern <- "[a-zA-Z_.][a-zA-Z_.0-9]*[ ]*\\(" 
   
-  aliases <- sapply(files, function(rd){
-   rd_file <- rd_files[[rd]]
-   unname(sapply(rd_file[names(rd_file) == "alias"], "[[", 1))
+  # for every file... 
+  functions <- lapply(files, function(rd){
+    rd_file <- rd_files[[rd]]
+    
+    # get all the functions and methods in the usage
+    funcs <- retrieve_usage_functions_and_methods(rd_file[["usage"]])
+    
+    # get all the aliases of the file
+    aliases <- unname(sapply(rd_file[names(rd_file) == "alias"], "[[", 1))
+    aliases <- c(rd, aliases)
+#    print(rd)
+#    print(aliases)
+#    print(funcs)
+
+    # select the functions and aliases that have characters
+    funcs <- str_replace(funcs, "\\[", "\\\\[")
+    funcs <- funcs[!str_detect(funcs, " ")]
+
+    funcs <- funcs[str_detect(funcs, "[a-zA-Z]")]
+    funcs <- funcs[!str_detect(funcs, "\\[")]
+    funcs <- funcs[!str_detect(funcs, "\\$")]
+    funcs <- funcs[!is.na(funcs)]
+    
+    aliases <- aliases[str_detect(aliases, "[a-zA-Z]")]
+    aliases <- aliases[!str_detect(aliases, "\\[")]
+    aliases <- aliases[!str_detect(aliases, "\\$")]
+    aliases <- aliases[!is.na(aliases)]
+#    print(aliases)
+#    print(funcs)
+    if(length(aliases) < 1)
+      return(NULL)
+    
+    
+    # see which aliases are in the functions
+    contains_function <- sapply(funcs, function(x) str_detect(aliases, x))
+    if(length(contains_function) < 1) {
+      exists <- rep(FALSE, length(aliases))
+    } else if(is.null(ncol(contains_function))) {
+      exists <- contains_function
+    } else {
+      exists <- apply(contains_function, 1, any)
+    }    
+        
+    names(exists) <- aliases
+#    print(exists)
+
+    # return the name of the alias and whether or not it is a function
+    exists
+
   })
+
+  # pick only the 'FALSE' or non function items and get their names
+  functions_v <- unlist(functions)
+  names_of_groups <- names(functions_v[functions_v == FALSE])
   
+  # return the type of the aliases, in the same order they were given
+  type <- rep("function", length(items))
+  for(i in names_of_groups) {
+    type[items == i] <- "help_name"
+  }
+  type
   
-  # get the file of every alias
-  # for every file
-    # pull the rd file
-    # find if all alias of the file exist in the usage of the rd file
-    # if they do, function, if not, NA
+  # since the above method doesn't work, the old one is still in place
   
-  
+# OLD METHOD  
   sapply(items, function(x){
     if(exists(x, str_join("package:", package)))
       "function"
@@ -328,7 +405,7 @@ is_function <- function(package, items){
 #' @param package package to explore
 #' @return returns a type ("package", "dataset", "function", "internal", "help_name" or "NA")
 pkg_topic_index_type <- function(package){
-  suppressMessages(require(package, character.only = TRUE))
+#  suppressMessages(require(package, character.only = TRUE))
   
   index <- pkg_topics_index(package)
   
@@ -370,4 +447,83 @@ pkg_topic_index_type <- function(package){
   
   index  
 }
+
+
+
+
+
+retrieve_usage_functions_and_methods <- function(usage){
+  if(reconstruct(untag(usage)) == "")
+    return(NULL)
+    
+  c(usage_functions(usage), str_c(".", usage_methods(usage)) )
+}
+
+
+function_levels <- function(text){
+  split_text <- str_split(text, "")[[1]]
+  
+  value <- 0
+  text_value <- integer(length(split_text))
+  text_value[1] <- 0
+
+  for(i in 2:length(split_text)) {
+    if(split_text[i-1] == "(") {
+      value <- value + 1
+    } 
+    if(split_text[i] == ")") {
+      value <- value - 1
+    } else {
+      value <- value      
+    }
+    text_value[i] <- value
+  }
+
+  text_value  
+}
+
+usage_functions <- function(usage){
+  usage <- reconstruct(untag(usage))
+  if(str_trim(usage) == "")
+    return(NULL)
+  
+  split_usage <- str_split(usage, "")[[1]]
+  # find the function level of each function
+  usage_level <- function_levels(usage)
+  
+  # split each function by "\n", after it has been trimmed, and only using the top level
+  usage_functions <- split_usage[usage_level == 0]
+  usage_functions <- str_c(usage_functions, collapse ="")
+  usage_functions <- str_trim(usage_functions)
+  usage_functions <- str_split(usage_functions, "\n")[[1]]
+  
+  # remove unwanted characters
+  usage_functions <- str_replace(usage_functions, "\\(", "")
+  usage_functions <- str_replace(usage_functions, "\\)", "")
+  # remove commented lines
+  usage_functions <- usage_functions[ str_sub(usage_functions, end = 1) != "#" ]
+  #remove useless functions
+  usage_functions <- usage_functions[ usage_functions != "" ]
+
+  usage_functions
+}
+
+usage_methods <- function(usage) {
+  if(str_trim(reconstruct(untag(usage))) == "")
+    return(NULL)
+  
+  methos <- usage[list_tags(usage) == "\\method"]
+  methos <- sapply(methos, function(x) { reconstruct(x[[2]]) } )
+  unique(methos)
+  
+}
+
+
+
+
+
+
+
+
+
 

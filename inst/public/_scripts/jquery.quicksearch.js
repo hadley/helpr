@@ -332,7 +332,7 @@ $(document).ready(function(){
   $('#packages tr').quicksearch({
     position: 'before',
     attached: '#packages',
-    labelText: 'Search: ',
+    labelText: 'Subset: ',
     fixWidths: true
   });
 })

@@ -6,53 +6,53 @@ Individual pages
 * WAIT - Main page - display latest changes from CHANGELOG
   * a function page should show all change logs related to that function
   * Needs Change Log
-* DONE - Pull in RSS feeds?
-  * DONE - needs to be slower
-* DONE - Only display loaded packages
-* DONE - Display out of date packages
-  * DONE - button invoked and highlight
-  * DONE - needs spinning wheel of death (iphone style)
-  * BUSY - needs install individual button
-* DONE - Button to show all packages
-  * DONE - needs to 'talk' with old packages button
-* DONE - Rewrite alternative to installed.packages() that is much faster
-* DONE - Top ten functions and most recently used 10 functions
-* DONE - add links to the manuals
-  * DONE - Had coded: should be memoised or hard coded?
+* √ Pull in RSS feeds?
+  * √ needs to be slower
+* √ Only display loaded packages
+* √ Display out of date packages
+  * √ button invoked and highlight
+  * √ needs spinning wheel of death (iphone style)
+  * √ - needs install individual button
+* √ Button to show all packages
+  * √ needs to 'talk' with old packages button
+* √ Rewrite alternative to installed.packages() that is much faster
+* √ Top ten functions and most recently used 10 functions
+* √ add links to the manuals
+  * √ Had coded: should be memoised or hard coded?
 
 ## Package
 
-* DONE - link to CRAN page
+* √ link to CRAN page
 * PARTIAL - links to news & changelogs
   * needs to have a render brew template
-* DONE - Link to demos
-* DONE - vignettes
-* DONE - separate data and functions
+* √ Link to demos
+* √ vignettes
+* √ separate data and functions
   * VALIDATION - needs to be able to find functions that are in a namespace, such as the package tools
-* DONE - show internal functions separately
+* √ show internal functions separately
 * WAIT - integrate with crantastics
-  * DONE - ratings
+  * √ ratings
   * reviews
-* DONE - show package dependencies
-* DONE - show package suggests
-* DONE - show package imports
-* DONE - show package extends
-* DONE - reverse dependencies
+* √ show package dependencies
+* √ show package suggests
+* √ show package imports
+* √ show package extends
+* √ reverse dependencies
 
 * see CRAN page for more ideas
 
 ## Demo
 
-* DONE - Send to a new page
+* √ Send to a new page
 * See Code Execution
-  * DONE - blocks screen
-  * DONE - performs in Terminal
-* DONE - Have interaction with demo things
-  * DONE - Execute whole demo
-  * DONE - Execute highlighted part
-* DONE - Have output done within the example
-  * DONE - an update from evaluate
-* DONE - Use parser to count all the functions used by the demo.  For functions that are called most offline, add cross-links to the demo from their topic page
+  * √ blocks screen
+  * √ performs in Terminal
+* √ Have interaction with demo things
+  * √ Execute whole demo
+  * √ Execute highlighted part
+* √ Have output done within the example
+  * √ an update from evaluate
+* √ Use parser to count all the functions used by the demo.  For functions that are called most offline, add cross-links to the demo from their topic page
 
 ## Topic
 
@@ -60,39 +60,39 @@ Individual pages
   * handled when "?mutli_pkg_topic" is executed
 * DEB - use latent dirichlet topic models to provide see also links based on description and details.
 * DEB - display hyperlinked keywords
-* DONE - view source - shows function source
+* √ view source - shows function source
 * WAIT - rate a function
   * Crantastic
-* DONE - add comments - look at something like disqus
-  * DONE - add to every page
-    * DONE - demo
+* √ add comments - look at something like disqus
+  * √ add to every page
+    * √ demo
     * NO - index.html
-    * DONE - package
-    * DONE - source
-    * DONE - topic
-* DONE - links for "mailto"
+    * √ package
+    * √ source
+    * √ topic
+* √ links for "mailto"
 * DEB - display keywords
-* DONE - list of all fuctions that are under the topic
-  * DONE - links to the source code of said function
+* √ list of all fuctions that are under the topic
+  * √ links to the source code of said function
 * BUSY - Execute example functionality
   * click button to execute example
-  * DONE - See Code Execution
+  * √ See Code Execution
     
 
 Code Execution
 ==================
 
-* DONE - Parse examples and add links to functions that are used
-* DONE - Send selected/highlighted expression to R console
-  * DONE - silently remove "bad" text
+* √ Parse examples and add links to functions that are used
+* √ Send selected/highlighted expression to R console
+  * √ silently remove "bad" text
     * NEED - to remove the notification
-* DONE - Evaluate all example code and interleave results back in html
-  * DONE - using evaluate package
-* DONE - Add jQuery to notify user
-* DONE - "Easy"(run) button
-* DONE - all executed code should appear in the console
-* DONE - Rewrite the "replay" method for eval with details to produce html output.
-  * DONE - baller status achieved - be cool, make it S3
+* √ Evaluate all example code and interleave results back in html
+  * √ using evaluate package
+* √ Add jQuery to notify user
+* √ "Easy"(run) button
+* √ all executed code should appear in the console
+* √ Rewrite the "replay" method for eval with details to produce html output.
+  * √ baller status achieved - be cool, make it S3
 
 
 Dynamic help
@@ -100,7 +100,7 @@ Dynamic help
 
 Function weights
   * ??? - overall CRAN
-  * DONE - personal function use: parse .Rhistory and pull out functions
+  * √ personal function use: parse .Rhistory and pull out functions
 
 Function mispelling
 
@@ -108,11 +108,11 @@ Function mispelling
 Search
 ======
 
-* DONE - external solr search engine with separate fields for separate parts of RDoc.
+* √ external solr search engine with separate fields for separate parts of RDoc.
   * NEEDS - external server
 * for use by 
   * insider
-  * DONE - html search
+  * √ html search
 * WAIT - indexes all packages - not just those installed on the users machine.
   * NEEDS - external server
 * lists of functions indexed by keyword

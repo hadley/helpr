@@ -27,8 +27,8 @@ New
   add to topic page what similar functions exist in sidebar
 
 Fix Pages
-BUSY -  find out how to find out if a topic is a function or not without loading the package
-  add in the footer, description, and readme that this is "funded by Revolution Analytics"
+WAIT - find out how to find out if a topic is a function or not without loading the package
+BUSY -  add in the footer, description, and readme that this is "funded by Revolution Analytics"
 
 Writing
   two paragraph description of "why this is helpful" and "why you should use it"
