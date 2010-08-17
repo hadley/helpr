@@ -16,14 +16,14 @@ installed_packages <- function() {
   packages[order(packages$Package), ]
 }
 
-as.list.packages <- function(x) {
-  alply(x, 1, as.list)
-}
+#as.list.packages <- function(x) {
+#  alply(x, 1, as.list)
+#}
 
 #' Out of date packages.
 #' Local packages that need updating.
 old_package_names <- function() {
-  as.list(as.data.frame(old.packages(), stringsAsFactors = FALSE)$Package)
+  as.list(old.packages()[,"Package"])
 }
 
 #' Update old packages
