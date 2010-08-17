@@ -225,7 +225,7 @@ helpr_search_row_count <- 20
 #' @keyword internal
 get_solr_query_result <- function(solr_param_string){
   rows <- helpr_search_row_count
-  response <- urlJSON_to_list(str_join("http://0.0.0.0:8983/solr/select/?version=2.2&wt=json&rows=", rows, "&indent=on&hl=on&hl.simple.pre=<strong>&hl.simple.post=</strong>&hl.fl=*&", solr_param_string))
+  response <- urlJSON_to_list(str_join("http://0.0.0.0:8983/solr/select/?version=2.2&wt=json&rows=", rows, "&indent=on&hl=on&hl.simple.pre=<strong>&hl.simple.post=</strong>&hl.fl=*&hl.fragsize=70&hl.mergeContiguous=true&", solr_param_string))
   docs <- response$highlighting
   query <- response$responseHeader$params$q
 

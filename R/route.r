@@ -231,7 +231,8 @@ helpr <- function(installed = TRUE) {
   if (tools:::httpdPort == 0L) {
     help.start()
     options("help_type" = "html")
-  } else {
+  } else if(FALSE){
+    # load the home page
     load_html()
   }
 

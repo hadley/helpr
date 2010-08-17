@@ -11,10 +11,10 @@ MASS::lmwork  Extract Standardized Residuals from a Linear Model
 Solr
   index all internal functions of each function
     add list to source page
-  similar solr?
+ similar solr?
     find documents similar to the one looking at
-  return answers
-    more truncation
+BUSY -  return answers
+    √more truncation
       (smaller results)
     just give answer, not from where (no title necessary)
     highlight results on next page (javascript to inspect for referrer, extract q param and then match)
@@ -32,7 +32,7 @@ WAIT - find out how to find out if a topic is a function or not without loading 
 √ - add in the footer, description, and readme that this is "funded by Revolution Analytics"
 
 Writing
-BUSY - two paragraph description of "why this is helpful" and "why you should use it"
+REVIEW - two paragraph description of "why this is helpful" and "why you should use it"
 
 
 
