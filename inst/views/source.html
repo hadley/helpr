@@ -31,7 +31,7 @@
   </div></div>
   <div class="yui-b"><div class = "sidebar">
 
-  <% if(has_length(aliases$alias)) { -%>    
+  <% if(dataframe_has_rows(aliases$alias)) { -%>    
     <h2><%= aliases_str %></h2>
     <ul>
     <% for(alias in aliases$alias) { -%>

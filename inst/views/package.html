@@ -64,7 +64,7 @@
   </div></div>
   <div class="yui-b"><div class = "sidebar">
     
-    <% if(has_length(description$author)){ -%>
+    <% if(has_text(description$author)){ -%>
       <h2><%= author_str %></h2>
       <p><%= str_join(description$author, collapse = ", ") %></p>
     <% }%>

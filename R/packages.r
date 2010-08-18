@@ -2,6 +2,7 @@
 #'
 #' Runs about 10x faster than \code{\link{installed.packages}}
 #' @return a list of packages
+#' @keywords internal
 installed_packages <- function() {
   paths <- unlist(lapply(.libPaths(), dir, full.names = TRUE))
   desc <- file.path(paths, "DESCRIPTION")
@@ -16,12 +17,11 @@ installed_packages <- function() {
   packages[order(packages$Package), ]
 }
 
-#as.list.packages <- function(x) {
-#  alply(x, 1, as.list)
-#}
 
 #' Out of date packages.
 #' Local packages that need updating.
+#'
+#' @keywords internal
 old_package_names <- function() {
   as.list(old.packages()[,"Package"])
 }
@@ -29,8 +29,8 @@ old_package_names <- function() {
 #' Update old packages
 #' update all packages that are old and currently loaded or installed
 #'
-#' @author Barret Schloerke \email{bigbear@@iastate.edu}
-#'
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
 update_packs <- function(all = FALSE) {
   if(all) {
     packs <- installed_packages()[,"Package"]
@@ -42,7 +42,11 @@ update_packs <- function(all = FALSE) {
   as.list(packs)
 }
 
+#' install packages
+#' update a vector of packages
+#'
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
 install_packages <- function(pkg_vec){
-#  message(str_c("installing: ", pkg_vec, collapse = "\n"))
   suppressWarnings(install.packages(pkg_vec, repos = "http://cran.r-project.org/"))
 }

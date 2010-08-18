@@ -4,6 +4,7 @@
 #'
 #' Produce JSON from an R object
 #' @param object object to be turned into JSON
+#' @keywords internal 
 render_json <- function(object) {
   json <- rjson::toJSON(object)
   list(payload = json)
@@ -16,6 +17,7 @@ render_json <- function(object) {
 #' @param params list containing objects to be sent to the template
 #' @param path path to be used to find the "views" folder
 #' @return text rendered from the template
+#' @keywords internal 
 render_snippet <- function(template, params = list(), path = helpr_path){
   if (is.list(params)) {
       env <- new.env(TRUE)

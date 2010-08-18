@@ -1,6 +1,11 @@
 <h2>
   <a href=<%= str_join("/package/",pkg, collapse = "") %> ><%= pkg %></a>
-    &#8594; 
+    :: 
   <a href=<%= str_join("/package/",pkg, "/topic/", topic, collapse = "") %> ><%= topic %></a>
 </h2>
-<%= desc %>
+<% sapply(items, function(item){ -%>
+  <% item_category <- str_join("<strong>",str_replace(names(item), "_t", ""), ":</strong> ", sep="") %>
+    
+  <% content <- str_join("<td>",item_category, "</td><td>",as.character(item),"</td>", collapse = "</tr><tr>") %>
+  <%= str_join("<table class=\"search_table\"><tr>", content, "</tr></table>", collapse = "") %>
+<% }) %>

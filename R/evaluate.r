@@ -3,7 +3,8 @@
 #' terminal.
 #'
 #' @param x result from \code{\link{evaluate}}
-#'
+#' @param pic_base_name base picture name to be used
+#' @aliases helpr_replay.list helpr_replay.character helpr_replay.source helpr_replay.warning helpr_replay.message helpr_replay.error helpr_replay.value helpr_replay.recordedplot
 helpr_replay <- function(x, pic_base_name) UseMethod("helpr_replay", x)
 
 helpr_replay.list <- function(x, pic_base_name) {
@@ -48,6 +49,12 @@ helpr_replay.recordedplot <- function(x, pic_base_name) {
   str_join("<img class=\"R_output_image\" src=\"", file_loc, "\" alt=\"", pic_base_name, "\" />", collapse = "")
 }
 
+
+#' cat a 'replay'
+#' parse r code and print it
+#'
+#' @param x result from \code{\link{evaluate}}
+#' @keywords internal
 helpr_replay_cat <- function(x){
   if(str_trim(x) == "")
     return(x)
@@ -56,11 +63,22 @@ helpr_replay_cat <- function(x){
   highlight(parsed)
 }
 
+#' cat a 'replay'
+#' parse r code and print it
+#'
+#' @param x result from \code{\link{evaluate}}
+#' @keywords internal
 helpr_replay_message <- function(x){
   eval_tag_output(str_c("\n<strong>",x,"</strong>"))
 }
 
 
+#' evaluate text
+#' evaluate text and return the corresponding text output and source
+#'
+#' @param txt text to be evaluated
+#' @param pic_base_name base name for the picture files
+#' @keywords internal
 evaluate_text <- function(txt, pic_base_name){
   if(!has_text(txt))
     return("")
@@ -69,6 +87,11 @@ evaluate_text <- function(txt, pic_base_name){
   str_join(as.character(unlist(replayed)), collapse = "\n")
 }
 
+#' evaluate output tag
+#' tag the text to make sure it is considered output
+#'
+#' @param x text to be tagged as output
+#' @keywords internal
 eval_tag_output <- function(x){
   str_c("<pre class=\"R_output\">", x, "</pre>")
 }
@@ -81,14 +104,23 @@ eval_tag_output <- function(x){
 
 
 
-## should be replaced with something else
+#' evaluate demo
+#' evaluate demo in the R console
+#'
+#' @param package package in question
+#' @param dem demo in question
+#' @keywords internal
 exec_pkg_demo <- function(package, dem) {
-#  demo(dem, character = TRUE, package = package, ask = TRUE)
-  demo(dem, character = TRUE, package = package, ask = FALSE)
+  demo(dem, character = TRUE, package = package, ask = TRUE)
 }
 
 
-# stole from example.  It didn't have the option of character.only
+#' evaluate example
+#' stole from example.  It didn't have the option of character.only
+#'
+#' @param package package in question
+#' @param topic topic in question
+#' @keywords internal
 exec_example <- function(package, topic){
     lib.loc = NULL
     local = FALSE
@@ -175,32 +207,3 @@ exec_example <- function(package, topic){
         keep.source = TRUE)
 }
 
-
-OLD_execute_text <- function(text_string){
-  in_and_out <- OLD_evaluate_text(text_string)
-  for(i in seq_len(NROW(in_and_out))){
-    cat("\n> ",in_and_out[i, "input"])
-    output <- in_and_out[i, "output"] 
-    if(!identical(output, ""))
-      cat("\n", output)
-  }
-  cat("\n> ")
-}
-
-OLD_evaluate_text <- function(text_string){
-  output <- c()
-  input <- parse(text = text_string)
-  
-  for(i in seq_len(length(input))){
-    item <- capture.output(eval(input[i], envir = .GlobalEnv))
-    if(length(item) < 1)
-      item <- ""
-    output[i] <- str_join(item, collapse = "\n")
-  }
-  
-  data.frame(input = as.character(input), output = output, stringsAsFactors = FALSE)
-}
-
-OLD_evaluate_file <- function(file){
-  source(file)
-}

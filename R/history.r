@@ -1,6 +1,8 @@
 #' Session History
+#' return only functions that were executed
 #' 
 #' @return fuctions that are from a package
+#' @keywords internal
 get_function_history <- function(){
   rawhist <- NULL
   a <- NULL
@@ -21,8 +23,10 @@ get_function_history <- function(){
 
 
 #' Last Ten Functions
+#' return the last ten unique functions that were executed
 #' 
 #' @param fun_list function list
+#' @keywords internal
 #' @return fuctions that are from a package and their help paths
 last_ten_functions <- function(fun_list = get_function_history()){  
   unique_fun_list <- unique(rev(fun_list))
@@ -40,6 +44,7 @@ last_ten_functions <- function(fun_list = get_function_history()){
 }
 
 #' Top Ten Functions
+#' return the top ten unique functions that were executed
 #' 
 #' @param fun_list function list
 #' @return fuctions that are from a package and their help paths
@@ -66,6 +71,7 @@ top_ten_functions <- function(fun_list = get_function_history()){
 
 
 #' Top Ten and Last Ten Functions
+#' return a list that contains both the top ten functions and last ten functions
 #' 
 #' @return list containing the \code{\link{top_ten_functions}} and \code{\link{last_ten_functions}}
 ten_functions <- function(){

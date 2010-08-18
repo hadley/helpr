@@ -1,19 +1,9 @@
-#http://lucene.apache.org/solr/tutorial.html
-#http://localhost:8983/solr/select/?q=Samsung&version=2.2&start=0&rows=10&indent=on
-#load_html("/search/q=YaleToolkit;start=0")
-
-
-#solr_topic, index_topic, index_package, index_all
-#post_file
-#index_top <- function(x) post_topic(solr_topic(x)))
-#solr_topic should be a rewrite of reconstruct
-
 
 #' helpr topic into xml for solr
 #'
 #' @param package package to use
 #' @param topic topic to explore
-#' @keyword internal
+#' @keywords internal
 solr_topic <- function(package, topic){
   
   rd <- pkg_topic(package, topic)
@@ -52,7 +42,7 @@ solr_topic <- function(package, topic){
 #' 
 #' @param url_string url to explore
 #' @return plain text from that url
-#' @keyword internal
+#' @keywords internal
 read_url <- function(url_string){
   url_connect <- url(utils::URLencode(url_string))
   on.exit(close(url_connect))
@@ -63,7 +53,7 @@ read_url <- function(url_string){
 #' URL made of JSON to list
 #'
 #' @param url_string url that contains a JSON output to be turned into a list
-#' @keyword internal
+#' @keywords internal
 urlJSON_to_list <- function(url_string){
   rjson::fromJSON(read_url(url_string))
 }
@@ -73,7 +63,7 @@ urlJSON_to_list <- function(url_string){
 #' 
 #' @param name name of the field
 #' @param value value of the field
-#' @keyword internal
+#' @keywords internal
 make_field <- function(name, value){
   if(length(value) < 1)
     value <- ""
@@ -93,7 +83,7 @@ make_field <- function(name, value){
 #' 
 #' @param id id tag to be used
 #' @param obj list to perform on
-#' @keyword internal
+#' @keywords internal
 list_to_xml <- function(id, obj){
   
   obj$id <- id
@@ -111,7 +101,7 @@ list_to_xml <- function(id, obj){
 #' this is to be done to easily use sapply and keep the name of the item
 #'
 #' @param obj list to perform on
-#' @keyword internal
+#' @keywords internal
 list_to_double_list <- function(obj){
   new_obj <- list()
   for(item_name in names(obj)){
@@ -125,7 +115,7 @@ list_to_double_list <- function(obj){
 #' make it so the xml is an 'add' to be commited to solr
 #'
 #' @param obj list to perform on
-#' @keyword internal
+#' @keywords internal
 make_add_xml <- function(obj){
   str_join("<add>", obj, "</add>", collaspe = "")
 }
@@ -136,7 +126,7 @@ make_add_xml <- function(obj){
 #'
 #' @param txt xml text string
 #' @param file_name location to save the file. Defaults to a temp file that is discarded when R shuts down.
-#' @keyword internal
+#' @keywords internal
 #' @examples
 #'   save_xml(make_add_xml(index_all("y")), "all_topics.xml")
 save_xml <- function(txt, file_name=tempfile()){
@@ -216,13 +206,12 @@ index_all <- function(start_letter = "a", verbose = TRUE){
 }
 
 helpr_search_row_count <- 20
-#helpr_search_row_count <- 5
 
 #' Solr Query
 #' Retrieve a solr query 
 #'
 #' @param solr_param_string parameters that are to be passed onto solr
-#' @keyword internal
+#' @keywords internal
 get_solr_query_result <- function(solr_param_string){
   rows <- helpr_search_row_count
   response <- urlJSON_to_list(str_join("http://0.0.0.0:8983/solr/select/?version=2.2&wt=json&rows=", rows, "&indent=on&hl=on&hl.simple.pre=<strong>&hl.simple.post=</strong>&hl.fl=*&hl.fragsize=70&hl.mergeContiguous=true&", solr_param_string))
@@ -246,7 +235,7 @@ get_solr_query_result <- function(solr_param_string){
 #' Retrieve the pkg and topic from the url
 #'
 #' @param solr_param_string parameters that are to be passed onto solr
-#' @keyword internal
+#' @keywords internal
 package_and_topic_from_url <- function(url_txt){
   pkg <- ""
   topic <- ""
@@ -265,17 +254,28 @@ package_and_topic_from_url <- function(url_txt){
 
 #' Package description
 #'
-#' @param pkg 
-#' @keyword internal
+#' @param pkg package in question
+#' @param topic topic in question
+#' @keywords internal
 package_description <- function(pkg, topic){
   gsub("$\n+|\n+^", "", reconstruct(pkg_topic(pkg, topic)$description))
 }
 
+#' search query path
+#' return a html path for a search
+#'
+#' @param query query to be used
+#' @param start_pos postion to start at
+#' @keywords internal
 search_query_path <- function(query, start_pos){
   str_join(base_html_path(),"/search/start=",start_pos,";q=",query)  
 }
 
 
+#' Helpr Search
+#'
+#' @return returns all the necessary information from a search
+#' @keywords internal
 helpr_solr_search <- function(query_string){
   result <- get_solr_query_result(query_string)
   items <- result$response
@@ -285,7 +285,7 @@ helpr_solr_search <- function(query_string){
   
   list(
     urls = urls,
-    desc = desc,
+    items = items,
     items_before = result$items_before,
     items_after = result$items_after,
     query = result$query,
@@ -297,6 +297,8 @@ helpr_solr_search <- function(query_string){
   
 }
 
+#' Parse the Highlighted Description
+#' Parse the highlighted description into a table that can be used for the html output
 parse_highlighted_desc <- function(item){
   item_category <- str_join("<strong>",str_replace(names(item), "_t", ""), ":</strong> ", sep="")
   

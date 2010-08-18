@@ -3,7 +3,9 @@
 
 #' Helpr Package
 #'
+#' @aliases helpr_package helpr_package_mem
 #' @return all the information necessary to produce a package site ("/package/:package/")
+#' @keywords internal
 helpr_package <- function(package) {
   helpr_package_mem(package, pkg_version(package))
 }
@@ -29,7 +31,7 @@ helpr_package_mem <- memoise(function(package, version) {
   description$extends <- parse_pkg_desc_item(description$extends)
   description$reverse <- tools:::dependsOnPkgs(package)
   description$author <- pkg_author_and_maintainers(description$author, description$maintainer)
-#  description$maintainer <- NULL
+  description$maintainer <- NULL
 
   if(has_text(description$url))
     description$url <- str_trim(str_split(description$url, ",")[[1]])
@@ -47,10 +49,18 @@ helpr_package_mem <- memoise(function(package, version) {
   )
 })
 
+#' Package Version
+#' returns the package version from the rd file
+#'
+#' @keywords internal
 pkg_version <- function(pkg){
   .readRDS(system.file("Meta", "package.rds", package = pkg))$DESCRIPTION[["Version"]]
 }
 
+#' Parse a package description
+#' makes sure that a package version is properly displayed if it is not given in a nice format
+#'
+#' @keywords internal
 parse_pkg_desc_item <- function(obj){
   if(NROW(obj) < 1){
     return(NULL)
@@ -63,6 +73,8 @@ parse_pkg_desc_item <- function(obj){
   as.data.frame(
     sapply(obj, function(x){
       vers <- NULL
+      
+      # if the version is found, it will create one in the form of '(1.2.3)'
       if(!is.null(x$version))
         vers <- str_join("(", x$op, " ", str_join(unclass(x$version)[[1]], collapse = "."), ")", collapse = "")
       list(name = as.character(x$name), version = as.character(vers))
@@ -75,6 +87,7 @@ parse_pkg_desc_item <- function(obj){
 #'
 #' @param description list containing the \code{author} and \code{maintainer}
 #' @return string containing the authors with links properly displayed
+#' @keywords internal
 pkg_author_and_maintainers <- function(authors, maintainer=NULL){
 
   # retrieve the authors and email
@@ -102,16 +115,17 @@ pkg_author_and_maintainers <- function(authors, maintainer=NULL){
     authors <- str_replace(authors, auths_string[i], author_and_email[i])
   }
 
-  # make the maintainer bold
   if(!is.null(maintainer)){
     maintainer_name <- str_trim(strip_html(maintainer))
     maintainer_email <- str_extract_all(maintainer, email_pattern)[[1]][1]
     maintainer_email <- str_replace(maintainer_email, "<", "")
     maintainer_email <- str_replace(maintainer_email, ">", "")
   
+    # make the maintainer bold
     maintainer_string <- str_join("<strong>", author_email(maintainer_name, maintainer_email), "</strong>", collapse = "")  
   
     if(str_detect(authors, maintainer_name)){
+      # replace the current author text with the maintainer text
       authors <- str_replace(
         authors, 
         str_join("</?.*?>",maintainer_name,"</?.*?>", collapse = ""),
@@ -124,32 +138,18 @@ pkg_author_and_maintainers <- function(authors, maintainer=NULL){
         maintainer_string
       )
     }else{
+      # attach the maintainer to the end
       authors <- str_join(authors, "; ", maintainer_string, collapse = "")
     }
   }
   authors
 }
 
-
-
-
-
-# Function to get information about a package.  List of :
-#   * parsed description
-#   * help topics
-#   * data sets
-#   * vignettes
-
-# data_sets <- data(package = pkg)$results[, 3]
-# vignettes <- vignette(package=pkg)$results[, 3]
-# paths <- sapply(vignettes, function(v) vignette(v, package = pkg)$file)
-
-
 #' Documentation Database Path
 #'
 #' @param package package to explore
 #' @return \code{file.path} to the documentation database
-#'
+#' @keywords internal
 pkg_rddb_path <- function(package) {
   file.path(pkg_help_path(package), package)
 }
@@ -158,7 +158,7 @@ pkg_rddb_path <- function(package) {
 #'
 #' @param package package to explore
 #' @return \code{file.path} to the help folder
-#'
+#' @keywords internal
 pkg_help_path <- function(package) {
   system.file("help", package = package)
 }
@@ -168,7 +168,7 @@ pkg_help_path <- function(package) {
 #'
 #' @param package package to explore
 #' @return \code{\link{subset}} of the \code{\link{vignette()}$results} \code{\link{data.frame}} ("Package", "LibPath", "Item" and "Title")
-#' 
+#' @keywords internal
 pkg_vigs <- function(package) {
   vignettes <- vignette(package = package)$results
   
@@ -185,7 +185,7 @@ pkg_vigs <- function(package) {
 #'
 #' @param package package to explore
 #' @return \code{\link{data.frame}} containing \code{alias} (function name) and \code{file} that it is associated with
-#'
+#' @keywords internal
 pkg_topics_index <- memoise(function(package) {
   help_path <- pkg_help_path(package)
   
@@ -206,31 +206,18 @@ pkg_topics_index <- memoise(function(package) {
 #' Items can be accessed by \code{\emph{list()}$file_name}
 #' @param package package to explore
 #' @return \code{\link{list}} containing the documentation file of each file of a package
-#' 
+#' @keywords internal
 pkg_topics_rd <- memoise(function(package) {
   rd <- tools:::fetchRdDB(pkg_rddb_path(package))
   lapply(rd, name_rd)
 })
-
-# 
-# index <- compact(llply(plyr, function(rd) {
-#   keywords <- reconstruct(untag(rd$keyword))
-#   if (any(keywords != "internal")) return()
-#   
-#   list(
-#     name = reconstruct(untag(rd$name)),
-#     title = reconstruct(untag(rd$title)),
-#     aliases = unname(sapply(rd[names(rd) == "alias"], "[[", 1)),
-#     keywords = unname(sapply(rd[names(rd) == "keyword"], "[[", 1))
-#   )
-# }))
-# str(index)
 
 
 #' All Dataset Names
 #' 
 #' @return \code{\link{vector}} of names that can be a dataset
 #' @param package package to explore
+#' @keywords internal
 get_datasets <- function(package){
   sets <- suppressWarnings(data(package = package)$results)
   
@@ -262,14 +249,19 @@ get_datasets <- function(package){
   
   data_and_group
 }
-
+ 
+#' package internal functions
+#' retrieve all package internal functions
+#'
+#' @param package package in question
+#' @keywords internal
 pkg_internal_function_files <- function(package){
   rd_docs <- pkg_topics_rd(package)
   
   subset(
     names(rd_docs), 
     sapply(rd_docs, function(x){
-      identical(as.character(x$keyword[[1]]), "internal")
+      identical(reconstruct(untag(x$keyword)), "internal")
     })
   )
   
@@ -280,12 +272,17 @@ pkg_internal_function_files <- function(package){
 #' 
 #' @return \code{\link{list}} of the items in \code{\link{pkg_topics_index}} as \code{function}, \code{dataset}, \code{internal}, \code{package}, or \code{NA}.
 #' @param package package to explore
+#' @keywords internal
 pkg_topics_index_by_type <- function(package){
   types <- pkg_topic_index_type(package)
   split(types[,1:2], types[,"type"])
 }
 
 
+#' Find all top level package usage functions
+#'
+#' @param usage usage in question
+#' @keywords internal
 package_usage_functions <- function(usage){
   
   p_text <- attr(parser(text = reconstruct(untag(usage))), "data")
@@ -308,6 +305,7 @@ package_usage_functions <- function(usage){
 #'
 #' @param items items supplied from pkg_topics
 #' @return boolean
+#' @keywords internal
 is_function <- function(package, items){
   
   # retrieve the files of all items in question
@@ -405,8 +403,8 @@ is_function <- function(package, items){
 #' Requires the package to be loaded to accurately determine the type of the object
 #' @param package package to explore
 #' @return returns a type ("package", "dataset", "function", "internal", "help_name" or "NA")
+#' @keywords internal
 pkg_topic_index_type <- function(package){
-#  suppressMessages(require(package, character.only = TRUE))
   
   index <- pkg_topics_index(package)
   
@@ -453,6 +451,10 @@ pkg_topic_index_type <- function(package){
 
 
 
+#' Find all usage functions and methods
+#'
+#' @param usage usage in question
+#' @keywords internal
 retrieve_usage_functions_and_methods <- function(usage){
   if(reconstruct(untag(usage)) == "")
     return(NULL)
@@ -461,6 +463,11 @@ retrieve_usage_functions_and_methods <- function(usage){
 }
 
 
+#' function levels
+#' go through the function text to find the function level (depth) of each function
+#'
+#' @param text text to be evaluated
+#' @keywords internal
 function_levels <- function(text){
   split_text <- str_split(text, "")[[1]]
   
@@ -483,6 +490,10 @@ function_levels <- function(text){
   text_value  
 }
 
+#' Find all usage functions
+#'
+#' @param usage usage in question
+#' @keywords internal
 usage_functions <- function(usage){
   usage <- reconstruct(untag(usage))
   if(str_trim(usage) == "")
@@ -509,6 +520,11 @@ usage_functions <- function(usage){
   usage_functions
 }
 
+#' usage methods
+#' find all methods within a usage
+#' 
+#' @param usage usage in question
+#' @keywords internal
 usage_methods <- function(usage) {
   if(str_trim(reconstruct(untag(usage))) == "")
     return(NULL)

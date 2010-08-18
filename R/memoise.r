@@ -1,3 +1,7 @@
+#' Memoise Magic
+#' Creates a cache of returned objects matched to input
+#'
+#' @aliases new_cache memoise
 new_cache <- function() {
   
   cache <- NULL

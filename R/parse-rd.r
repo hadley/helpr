@@ -1,11 +1,13 @@
 #' Tag Something
 #'
 #' @param x item to be tagged
+#' @keywords internal
 tag <- function(x) attr(x, "Rd_tag")
 
 #' Untag Something
 #'
 #' @param x item to be untagged
+#' @keywords internal
 untag <- function(x) {
   if (is.null(x)) return()
   attr(x, "Rd_tag") <- ""
@@ -13,13 +15,11 @@ untag <- function(x) {
 }
 
 
-all_tags <- function(rd) {
-  if (is.null(rd)) return()
-  if (!is.list(rd)) return(tag(rd))
-  
-  sort(unique(c(tag(rd), unlist(lapply(rd, all_tags)))))
-}
-
+#' List tags
+#' list all the tags within a object
+#'
+#' @param rd rd in question
+#' @keywords internal
 list_tags <- function(rd){
   tags <- c()
   for(i in seq_along(rd)){
@@ -31,7 +31,11 @@ list_tags <- function(rd){
   tags
 }
 
-visited <- "no"
+#' Reconstruct R Documentation
+#' recursively reconstruct R documentation
+#'
+#' @param rd rd in question
+#' @keywords internal
 reconstruct <- function(rd) {
   
   if (is.null(rd)) return("")
@@ -53,7 +57,7 @@ reconstruct <- function(rd) {
     paras <- str_trim(str_split(text, "\\n\\n")[[1]])
     str_join("<p>", paras, "</p>", "\n\n", collapse = "")      
     
-  } else if (tag %in% names(simple_tags)) {
+  } else if (tag %in% names(simple_tags())) {
     # If we can process tag with just prefix & suffix, do so
     tag_simple(tag, reconstruct(untag(rd)))
 
@@ -148,22 +152,39 @@ reconstruct <- function(rd) {
     value
     
   }else {
-    
-    message("Unknown tag ", tag)
+    message("Unknown tag ", tag, ". Please contact the 'helpr' maintainer. Thank you.")
     reconstruct(untag(rd))
   }
 }
 
+#' Author Email Parsing
+#' parse the author email
+#'
+#' @param name name of the email
+#' @param address email address
+#' @keywords internal
 author_email <- function(name, address){
   str_join("<a href=\"mailto:",address,"?subject=(R-Help): \">",name,"</a>")
 }
 
+#' tag a simple item
+#' tag an item that is contained in the simple tags list
+#'
+#' @param tag tag looking for
+#' @param text text to go in the tag
+#' @keywords internal
 tag_simple <- function(tag, text) {
   stopifnot(length(text) == 1)
-  html <- simple_tags[[tag]]
+  html <- simple_tags()[[tag]]
   str_join(html[1], text, html[2])
 }
 
+#' link to another topic
+#'
+#' @param fun function to tag
+#' @param pkg package to look in
+#' @param topic_page topic page of the function
+#' @keywords internal
 tag_link <- function(fun, pkg = NULL, topic_page = fun) {
   if (!is.null(pkg)) {
     str_join("<a href=\"/package/", pkg, "/topic/", topic_page, "\">", fun, "</a>")        
@@ -173,11 +194,21 @@ tag_link <- function(fun, pkg = NULL, topic_page = fun) {
 }
 
 
+#' Is Section
+#' determines whether or not it is a section
+#'
+#' @param tag check to see if the tag is in a list of other tags
+#' @keywords internal
 is_section <- function(tag) {
   tag %in% c("\\details", "\\description", "\\value", "\\author", "\\seealso")
 }
 
-simple_tags <- list(
+#' simple tags
+#' list all the tags that can be parsed in a simple way
+#'
+#' @keywords internal
+simple_tags <- function(){ 
+list(
   "\\acronym" =      c('<acronym>','</acronym>'),
   "\\bold" =         c("<b>", "</b>"),
   "\\cite" =         c("<cite>", "</cite>"),
@@ -204,31 +235,41 @@ simple_tags <- list(
   "\\preformatted" = c("<pre>","</pre>"),
   "\\R" =            c('<span style="R">R</span>', ""),
   "\\samp" =         c('<span class = "samp">',"</span>"),
-#  "\\special" =      c("<em>","</em>"),
   "\\sQuote" =       c("&#145;","&#146;"),
   "\\strong" =       c("<strong>", "</strong>"),
   "\\text" =         c("<p>", "</p>"),
   "\\var" =          c("<var>", "</var>"),
-#  "\\verb" =         c("<pre>", "</pre>"),
   "\\verb" =         c("<code>", "</code>"),
 
   "RCODE" =          c("", ""),
   "VERB" =           c("", ""),
   "LIST" =          c("<ul>", "</ul>")
-)
+)}
 
-has_length <- function(x){
-    !is.null(x) && NROW(x) > 0 && x != ""
-}
-
+#' Has Text
+#' determines whether or not the item has text
+#'
+#' @param x item in question
+#' @keywords internal
 has_text <- function(x){
-  !is.null(x) && str_trim(x) != ""
+  trim <- str_trim(x)
+  !is.null(x) && trim != "" && length(trim) > 0
 }
 
+#' Dataframe has Rows
+#' determines whether or not the dataframe has rows
+#'
+#' @param x item in question
+#' @keywords internal
 dataframe_has_rows <- function(x){
   NROW(x) > 0
 }
 
+#' Parse Text
+#' wrapper to parser's \code{parser(text = text)}
+#'
+#' @param text text to be parsed
+#' @keywords internal
 parse_text <- function(text){
   output <- suppressWarnings(parser(text = text))
   if(!dataframe_has_rows(attr(output, "data")))
@@ -237,7 +278,15 @@ parse_text <- function(text){
     output
 }
 
-pluralize <- function(string, obj, plural = str_join(string, "s", sep = ""), bool_statement = has_length(obj)){
+#' Pluralize
+#' pluralize a string with either the default 's' according to the boolean statement
+#'
+#' @param string string to be pluralized
+#' @param obj object to look at
+#' @param plural plural string
+#' @param bool_statement boolean to use to determine which string to use
+#' @keywords internal 
+pluralize <- function(string, obj, plural = str_join(string, "s", sep = ""), bool_statement = NROW(obj)){
   if(bool_statement) {
     plural
   } else {
@@ -245,6 +294,11 @@ pluralize <- function(string, obj, plural = str_join(string, "s", sep = ""), boo
   }
 }
 
+#' Strip HTML
+#' strip the HTML from a text string
+#'
+#' @param x text string in question
+#' @keywords internal 
 strip_html <- function(x) {
   str_replace(x, "</?.*?>", "")
 }
@@ -254,6 +308,7 @@ strip_html <- function(x) {
 #' Parse a tabular section to include the text alignments
 #'
 #' @param tabular rd item to parsed
+#' @keywords internal 
 parse_tabular <- function(tabular){
   #' make all alignements into left, right or center
   alignments <- unlist(str_split(tabular[[1]][[1]], ""))
@@ -293,6 +348,7 @@ parse_tabular <- function(tabular){
 #'
 #' It will replace the items with plan, non-attributed text.  It needs to be a 'pre-parser' as it must be done before the whole list is reconstructed
 #' @param rd R documentation item to be altered and then returned
+#' @keywords internal 
 parse_items <- function(rd){
   tags <- list_tags(rd)
   is_items <- rep(TRUE, length(tags))
@@ -328,6 +384,7 @@ parse_items <- function(rd){
 
 #' Group Integer Array
 #' Group items into similar sections
+#' @keywords internal 
 group_int_arr <- function(arr){
   n <- length(arr)
   groups <- c(0, cumsum(arr[-n] != arr[-1] - 1))
@@ -338,6 +395,7 @@ group_int_arr <- function(arr){
 #' parse a group of "\\item" into a table with a bold item and reconstructed description
 #' @param rd item to be parsed
 #' return table text with no attributes
+#' @keywords internal 
 parse_item_list <- function(rd){
   tags <- list_tags(rd)
   items <- rd[tags == "\\item"]

@@ -44,7 +44,7 @@
 
     <% for(i in seq_along(urls)){ -%>
       <% pkg_and_topic = package_and_topic_from_url(urls[i]) %>
-      <%= render_snippet("package_topic_desc", list(pkg = pkg_and_topic$pkg, topic = pkg_and_topic$topic, desc = desc[i])) %>
+      <%= render_snippet("package_topic_desc", list(pkg = pkg_and_topic$pkg, topic = pkg_and_topic$topic, items = items[[i]])) %>
     <% } %>
 <br />
     <%= render_snippet("next_previous", list(

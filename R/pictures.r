@@ -1,4 +1,9 @@
 
+#' Save a picture
+#' save a picture into the temp directory 
+#'
+#' @return the path to the picture (using the website)
+#' @keywords internal 
 save_picture <- function(obj_name, obj_plot){
   file_path <- file.path(helpr_pic_path, str_join(obj_name, ".png", collapse = ""))
   
@@ -13,30 +18,3 @@ save_picture <- function(obj_name, obj_plot){
   str_join("/picture/", obj_name, ".png", collapse = "")
 }
 
-
-
-
-
-
-delete_folder_contents <- function(folder)
-{    
-#  setwd(paste(folder, "/", sep="", collapse=""))
-  
-  files_in_folder <- file.path(folder, dir(folder, recursive = TRUE))
-
-  if(length(files_in_folder) > 0){
-    cat("Deleting files\n"); print(files_in_folder)
-    file.remove(files_in_folder)
-  }
-  
-  folders <- file.path(folder, dir(folder))
-  for(j in seq_along(folders)){
-    successful <- file.remove(folders[j])
-    if(! successful){
-      delete_folder_contents(folders[j])
-      file.remove(folders[j])
-    }
-  }
-
-
-}

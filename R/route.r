@@ -2,6 +2,7 @@
 #' load an html page from the console
 #' 
 #' @param ... site to be loaded
+#' @keywords internal 
 load_html <- function(...) {
   url_path <- str_c(as.character(substitute(...)), collapse = "/")
 
@@ -20,7 +21,7 @@ load_html <- function(...) {
 #' returns the base html path needed to load a website
 #' 
 #' @param ... site to be loaded
-#' @keyword internal
+#' @keywords internal
 base_html_path <- function() {
   str_c("http://127.0.0.1:", tools:::httpdPort, collapse = "")
 }
@@ -29,7 +30,7 @@ base_html_path <- function() {
 #' check to see if a package exists
 #' 
 #' @param package package in question
-#' @keyword internal
+#' @keywords internal
 #' @examples
 #'   check_for_package("stats")
 #'   check_for_package("does_not_exist")
@@ -243,6 +244,7 @@ helpr <- function(installed = TRUE) {
 #' Helpr Home
 #'
 #' @return all the information necessary to produce the home site ("index.html")
+#' @keywords internal 
 helpr_home <- function(){
 
   ten_funcs <- ten_functions()
@@ -276,6 +278,7 @@ helpr_home <- function(){
 #'
 #' @param x path to help
 #' @param ... other arguments ignored
+#' @keywords internal 
 print.help_files_with_topic <- function (x, ...) 
 {
     browser <- getOption("browser")
