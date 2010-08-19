@@ -3,6 +3,8 @@
 #' @param package package name
 #' @param demo_name demo name
 #' @return "" if the demo is not found for that package, file.path if the demo folder is found
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
 demo_src_file <- function(package, demo_name){
   system.file("demo", str_join(demo_name, ".R"), package = package)
 }
@@ -12,7 +14,8 @@ demo_src_file <- function(package, demo_name){
 #' @param package package name
 #' @param demo_name demo name
 #' @return demo() information for the \code{demo_name} in \code{package}
-# '
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
 demo_info <- function(package, demo_name){
   subset(pkg_demos(package), Item == demo_name)
 }
@@ -21,6 +24,7 @@ demo_info <- function(package, demo_name){
 #'
 #' @param package package name
 #' @param demo_name demo name
+#' @keywords internal
 helpr_demo <- function(package, demo_name){
   info <- demo_info(package, demo_name)
   
@@ -48,6 +52,8 @@ helpr_demo <- function(package, demo_name){
 #' @param package package name
 #' @param demo_name demo name
 #' @return source for the demo
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
 demo_src <- function(package, demo_name){
   demo_lines <- readLines(demo_src_file(package, demo_name))
   rows <- str_detect(demo_lines, "example[[:space:]]*\\(")
@@ -61,6 +67,8 @@ demo_src <- function(package, demo_name){
 #' @param package package name
 #' @param demo_name demo name
 #' @return demo() information for the \code{demo_name} in \code{package}
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
 pkg_demos <- function(package) {
   as.data.frame(demo(package = package)$results, stringsAsFactors = FALSE)
 }

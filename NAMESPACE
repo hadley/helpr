@@ -1,0 +1,7 @@
+export(load_html)
+export(helpr)
+export(print.help_files_with_topic)
+export(index_topic)
+export(index_package)
+export(index_all)
+exportPattern("^[^\\.]")

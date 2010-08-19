@@ -2,12 +2,14 @@
 #'
 #' @param x item to be tagged
 #' @keywords internal
+#' @author Hadley Wickham
 tag <- function(x) attr(x, "Rd_tag")
 
 #' Untag Something
 #'
 #' @param x item to be untagged
 #' @keywords internal
+#' @author Hadley Wickham
 untag <- function(x) {
   if (is.null(x)) return()
   attr(x, "Rd_tag") <- ""
@@ -19,6 +21,7 @@ untag <- function(x) {
 #' list all the tags within a object
 #'
 #' @param rd rd in question
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 list_tags <- function(rd){
   tags <- c()
@@ -35,6 +38,7 @@ list_tags <- function(rd){
 #' recursively reconstruct R documentation
 #'
 #' @param rd rd in question
+#' @author Hadley Wickham and Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 reconstruct <- function(rd) {
   
@@ -162,6 +166,7 @@ reconstruct <- function(rd) {
 #'
 #' @param name name of the email
 #' @param address email address
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 author_email <- function(name, address){
   str_join("<a href=\"mailto:",address,"?subject=(R-Help): \">",name,"</a>")
@@ -172,6 +177,7 @@ author_email <- function(name, address){
 #'
 #' @param tag tag looking for
 #' @param text text to go in the tag
+#' @author Hadley Wickham
 #' @keywords internal
 tag_simple <- function(tag, text) {
   stopifnot(length(text) == 1)
@@ -184,6 +190,7 @@ tag_simple <- function(tag, text) {
 #' @param fun function to tag
 #' @param pkg package to look in
 #' @param topic_page topic page of the function
+#' @author Hadley Wickham and Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 tag_link <- function(fun, pkg = NULL, topic_page = fun) {
   if (!is.null(pkg)) {
@@ -198,6 +205,7 @@ tag_link <- function(fun, pkg = NULL, topic_page = fun) {
 #' determines whether or not it is a section
 #'
 #' @param tag check to see if the tag is in a list of other tags
+#' @author Hadley Wickham
 #' @keywords internal
 is_section <- function(tag) {
   tag %in% c("\\details", "\\description", "\\value", "\\author", "\\seealso")
@@ -206,6 +214,7 @@ is_section <- function(tag) {
 #' simple tags
 #' list all the tags that can be parsed in a simple way
 #'
+#' @author Hadley Wickham
 #' @keywords internal
 simple_tags <- function(){ 
 list(
@@ -250,6 +259,7 @@ list(
 #' determines whether or not the item has text
 #'
 #' @param x item in question
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 has_text <- function(x){
   trim <- str_trim(x)
@@ -260,6 +270,7 @@ has_text <- function(x){
 #' determines whether or not the dataframe has rows
 #'
 #' @param x item in question
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 dataframe_has_rows <- function(x){
   NROW(x) > 0
@@ -269,6 +280,7 @@ dataframe_has_rows <- function(x){
 #' wrapper to parser's \code{parser(text = text)}
 #'
 #' @param text text to be parsed
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 parse_text <- function(text){
   output <- suppressWarnings(parser(text = text))
@@ -285,6 +297,7 @@ parse_text <- function(text){
 #' @param obj object to look at
 #' @param plural plural string
 #' @param bool_statement boolean to use to determine which string to use
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal 
 pluralize <- function(string, obj, plural = str_join(string, "s", sep = ""), bool_statement = NROW(obj)){
   if(bool_statement) {
@@ -298,6 +311,7 @@ pluralize <- function(string, obj, plural = str_join(string, "s", sep = ""), boo
 #' strip the HTML from a text string
 #'
 #' @param x text string in question
+#' @author Hadley Wickham
 #' @keywords internal 
 strip_html <- function(x) {
   str_replace(x, "</?.*?>", "")
@@ -308,6 +322,7 @@ strip_html <- function(x) {
 #' Parse a tabular section to include the text alignments
 #'
 #' @param tabular rd item to parsed
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal 
 parse_tabular <- function(tabular){
   #' make all alignements into left, right or center
@@ -348,6 +363,7 @@ parse_tabular <- function(tabular){
 #'
 #' It will replace the items with plan, non-attributed text.  It needs to be a 'pre-parser' as it must be done before the whole list is reconstructed
 #' @param rd R documentation item to be altered and then returned
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal 
 parse_items <- function(rd){
   tags <- list_tags(rd)
@@ -384,6 +400,8 @@ parse_items <- function(rd){
 
 #' Group Integer Array
 #' Group items into similar sections
+#'
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal 
 group_int_arr <- function(arr){
   n <- length(arr)
@@ -393,8 +411,10 @@ group_int_arr <- function(arr){
 
 #' Parse Item List
 #' parse a group of "\\item" into a table with a bold item and reconstructed description
+#'
 #' @param rd item to be parsed
 #' return table text with no attributes
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal 
 parse_item_list <- function(rd){
   tags <- list_tags(rd)

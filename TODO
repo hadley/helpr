@@ -1,18 +1,39 @@
-Sinatra
-=======
+MASS::lmwork  Extract Standardized Residuals from a Linear Model
+  Description:	The standardized residuals. These are normalized to unitvariance, fitted including the current
+  Value:	The vector of appropriately transformed residuals.
+  
+  The standardized residuals. These are normalized to unitvariance, ...
+  ... vector of appropriately transformed residuals.
+  
+  
+  
 
- * when error occurs it should display proper error page including traceback
- 
- * sending file from disk doesn't work
- 
-Helpr
-=====
-
- - For pages with no author section, the author(s) title on the right hand block should probably be skipped.  There are also other examples of empty sections, e.g. looking at boot::sunspot.
-
- - Better display for aka information (e.g. the chron package dates page)
-
- - From the console, ?mean tries to open http://127.0.0.1:29210/library/base/html/mean.html
+Solr
+  index all internal functions of each function
+    add list to source page
+ similar solr?
+    find documents similar to the one looking at
+BUSY -  return answers
+    √more truncation
+      (smaller results)
+    just give answer, not from where (no title necessary)
+    highlight results on next page (javascript to inspect for referrer, extract q param and then match)
 
 
+New
+√  loading a package while you wait needs a screen to tell you that
+√  change log stuff
+√  allow install of single package
+  add to topic page what similar functions exist in sidebar
+    Solr
 
+Fix Pages
+WAIT - find out how to find out if a topic is a function or not without loading the package
+√ - add in the footer, description, and readme that this is "funded by Revolution Analytics"
+
+Writing
+REVIEW - two paragraph description of "why this is helpful" and "why you should use it"
+
+
+
+? fix topic space for internal function stuff

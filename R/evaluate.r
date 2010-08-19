@@ -4,7 +4,9 @@
 #'
 #' @param x result from \code{\link{evaluate}}
 #' @param pic_base_name base picture name to be used
-#' @aliases helpr_replay.list helpr_replay.character helpr_replay.source helpr_replay.warning helpr_replay.message helpr_replay.error helpr_replay.value helpr_replay.recordedplot
+#' @aliases helpr_replay helpr_replay.list helpr_replay.character helpr_replay.source helpr_replay.warning helpr_replay.message helpr_replay.error helpr_replay.value helpr_replay.recordedplot
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
 helpr_replay <- function(x, pic_base_name) UseMethod("helpr_replay", x)
 
 helpr_replay.list <- function(x, pic_base_name) {
@@ -54,6 +56,7 @@ helpr_replay.recordedplot <- function(x, pic_base_name) {
 #' parse r code and print it
 #'
 #' @param x result from \code{\link{evaluate}}
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 helpr_replay_cat <- function(x){
   if(str_trim(x) == "")
@@ -67,6 +70,7 @@ helpr_replay_cat <- function(x){
 #' parse r code and print it
 #'
 #' @param x result from \code{\link{evaluate}}
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 helpr_replay_message <- function(x){
   eval_tag_output(str_c("\n<strong>",x,"</strong>"))
@@ -78,6 +82,7 @@ helpr_replay_message <- function(x){
 #'
 #' @param txt text to be evaluated
 #' @param pic_base_name base name for the picture files
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 evaluate_text <- function(txt, pic_base_name){
   if(!has_text(txt))
@@ -91,24 +96,18 @@ evaluate_text <- function(txt, pic_base_name){
 #' tag the text to make sure it is considered output
 #'
 #' @param x text to be tagged as output
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 eval_tag_output <- function(x){
   str_c("<pre class=\"R_output\">", x, "</pre>")
 }
-
-
-
-
-
-
-
-
 
 #' evaluate demo
 #' evaluate demo in the R console
 #'
 #' @param package package in question
 #' @param dem demo in question
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 exec_pkg_demo <- function(package, dem) {
   demo(dem, character = TRUE, package = package, ask = TRUE)
@@ -120,6 +119,7 @@ exec_pkg_demo <- function(package, dem) {
 #'
 #' @param package package in question
 #' @param topic topic in question
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 exec_example <- function(package, topic){
     lib.loc = NULL

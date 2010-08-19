@@ -1,9 +1,7 @@
-#' @include memoise.r
-
-
 #' Package News
 #'
 #' @param package package name
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 pkg_news <- function(package){
   package_news <- tryCatch(
@@ -28,6 +26,7 @@ pkg_news <- function(package){
 
 #' Function News
 #'
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @param package package name
 #' @param topic demo name
 #' @keywords internal
@@ -56,6 +55,7 @@ function_news <- function(package, topic){
 #' Return the information necessary to find all of the R manuals on the local computer
 #'
 #' @keywords internal
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 get_manuals <- memoise(function(){
   # get files in the manual directory with full path
   manual_dir <- file.path(Sys.getenv("R_DOC_DIR"),"manual")

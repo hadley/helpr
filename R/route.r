@@ -1,8 +1,14 @@
+# Global path for render_snippets and pictures
+helpr_path <- NULL
+helpr_pic_path <- base::tempdir()
+
+
 #' load html pages
 #' load an html page from the console
 #' 
 #' @param ... site to be loaded
-#' @keywords internal 
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @export
 load_html <- function(...) {
   url_path <- str_c(as.character(substitute(...)), collapse = "/")
 
@@ -21,6 +27,7 @@ load_html <- function(...) {
 #' returns the base html path needed to load a website
 #' 
 #' @param ... site to be loaded
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 base_html_path <- function() {
   str_c("http://127.0.0.1:", tools:::httpdPort, collapse = "")
@@ -31,6 +38,7 @@ base_html_path <- function() {
 #' 
 #' @param package package in question
 #' @keywords internal
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @examples
 #'   check_for_package("stats")
 #'   check_for_package("does_not_exist")
@@ -39,15 +47,14 @@ check_for_package <- function(package){
 }
 
 
-# Global path for render_snippets and pictures
-helpr_path <- NULL
-helpr_pic_path <- base::tempdir()
    
 
 #' Helpr Documentation
-#'
 #' Execute to show documentation
+#' 
+#' @export
 #' @param installed use TRUE if the package is installed on from CRAN
+#' @author Hadley Wickham and Barret Schloerke \email{schloerke@@gmail.com}
 helpr <- function(installed = TRUE) {
   if (installed) {
     path <- system.file(package = "helpr")
@@ -244,6 +251,7 @@ helpr <- function(installed = TRUE) {
 #' Helpr Home
 #'
 #' @return all the information necessary to produce the home site ("index.html")
+#' @author Hadley Wickham and Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal 
 helpr_home <- function(){
 
@@ -276,8 +284,10 @@ helpr_home <- function(){
 #'
 #' function taken from utils
 #'
+#' @export
 #' @param x path to help
 #' @param ... other arguments ignored
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal 
 print.help_files_with_topic <- function (x, ...) 
 {

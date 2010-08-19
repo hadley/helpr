@@ -2,11 +2,15 @@ Package: helpr
 Type: Package
 Title: Better documentation.
 Version: 0.1
-Author: Hadley Wickham <h.wickham@gmail.com> and Barret Schloerke <schloerke@gmail.com>
+Author: Hadley Wickham <h.wickham@gmail.com> and Barret Schloerke
+    <schloerke@gmail.com>
 Maintainer: Hadley Wickham <h.wickham@gmail.com>
 Description: Better html documentation for R
-Depends: highlight, sinartra, digest, parser, rjson, tools, stringr, evaluate, RCurl
+Depends: highlight, sinartra, digest, parser, rjson, tools, stringr,
+    evaluate, RCurl
 Imports: brew
 License: GPL-2
 LazyData: true
-Collate: 'memoise.r' 'route.r' 'changelog.r' 'demo.r' 'evaluate.r' 'functions.r' 'history.r' 'package.r' 'packages.r' 'parse-rd.r' 'pictures.r' 'render.r' 'topic.r' 'solr.r'
+Collate: 'a_memoise.r' 'changelog.r' 'demo.r' 'evaluate.r'
+    'functions.r' 'history.r' 'package.r' 'packages.r' 'parse-rd.r'
+    'pictures.r' 'render.r' 'route.r' 'solr.r' 'topic.r'

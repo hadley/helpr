@@ -3,6 +3,7 @@
 #' Runs about 10x faster than \code{\link{installed.packages}}
 #' @return a list of packages
 #' @keywords internal
+#' @author Hadley Wickham
 installed_packages <- function() {
   paths <- unlist(lapply(.libPaths(), dir, full.names = TRUE))
   desc <- file.path(paths, "DESCRIPTION")
@@ -21,6 +22,7 @@ installed_packages <- function() {
 #' Out of date packages.
 #' Local packages that need updating.
 #'
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 old_package_names <- function() {
   unname(old.packages()[,"Package"])

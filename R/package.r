@@ -1,10 +1,8 @@
-#' @include memoise.r
-
-
 #' Helpr Package
 #'
 #' @aliases helpr_package helpr_package_mem
 #' @return all the information necessary to produce a package site ("/package/:package/")
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 helpr_package <- function(package) {
   helpr_package_mem(package, pkg_version(package))
@@ -53,6 +51,7 @@ helpr_package_mem <- memoise(function(package, version) {
 #' returns the package version from the rd file
 #'
 #' @keywords internal
+#' @author Hadley Wickham
 pkg_version <- function(pkg){
   .readRDS(system.file("Meta", "package.rds", package = pkg))$DESCRIPTION[["Version"]]
 }
@@ -60,6 +59,7 @@ pkg_version <- function(pkg){
 #' Parse a package description
 #' makes sure that a package version is properly displayed if it is not given in a nice format
 #'
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 parse_pkg_desc_item <- function(obj){
   if(NROW(obj) < 1){
@@ -87,6 +87,7 @@ parse_pkg_desc_item <- function(obj){
 #'
 #' @param description list containing the \code{author} and \code{maintainer}
 #' @return string containing the authors with links properly displayed
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 pkg_author_and_maintainers <- function(authors, maintainer=NULL){
 
@@ -150,6 +151,7 @@ pkg_author_and_maintainers <- function(authors, maintainer=NULL){
 #' @param package package to explore
 #' @return \code{file.path} to the documentation database
 #' @keywords internal
+#' @author Hadley Wickham
 pkg_rddb_path <- function(package) {
   file.path(pkg_help_path(package), package)
 }
@@ -159,6 +161,7 @@ pkg_rddb_path <- function(package) {
 #' @param package package to explore
 #' @return \code{file.path} to the help folder
 #' @keywords internal
+#' @author Hadley Wickham
 pkg_help_path <- function(package) {
   system.file("help", package = package)
 }
@@ -167,7 +170,8 @@ pkg_help_path <- function(package) {
 #' Package Vignettes
 #'
 #' @param package package to explore
-#' @return \code{\link{subset}} of the \code{\link{vignette()}$results} \code{\link{data.frame}} ("Package", "LibPath", "Item" and "Title")
+#' @return \code{subset} of the \code{vignette()$results} \code{data.frame} ("Package", "LibPath", "Item" and "Title")
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 pkg_vigs <- function(package) {
   vignettes <- vignette(package = package)$results
@@ -186,6 +190,7 @@ pkg_vigs <- function(package) {
 #' @param package package to explore
 #' @return \code{\link{data.frame}} containing \code{alias} (function name) and \code{file} that it is associated with
 #' @keywords internal
+#' @author Hadley Wickham
 pkg_topics_index <- memoise(function(package) {
   help_path <- pkg_help_path(package)
   
@@ -203,10 +208,11 @@ pkg_topics_index <- memoise(function(package) {
 
 #' Package Topics File Documentation
 #'
-#' Items can be accessed by \code{\emph{list()}$file_name}
+#' Items can be accessed by \emph{\code{list()}}\code{$file_name}
 #' @param package package to explore
 #' @return \code{\link{list}} containing the documentation file of each file of a package
 #' @keywords internal
+#' @author Hadley Wickham
 pkg_topics_rd <- memoise(function(package) {
   rd <- tools:::fetchRdDB(pkg_rddb_path(package))
   lapply(rd, name_rd)
@@ -217,6 +223,7 @@ pkg_topics_rd <- memoise(function(package) {
 #' 
 #' @return \code{\link{vector}} of names that can be a dataset
 #' @param package package to explore
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 get_datasets <- function(package){
   sets <- suppressWarnings(data(package = package)$results)
@@ -254,6 +261,7 @@ get_datasets <- function(package){
 #' retrieve all package internal functions
 #'
 #' @param package package in question
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 pkg_internal_function_files <- function(package){
   rd_docs <- pkg_topics_rd(package)
@@ -272,6 +280,7 @@ pkg_internal_function_files <- function(package){
 #' 
 #' @return \code{\link{list}} of the items in \code{\link{pkg_topics_index}} as \code{function}, \code{dataset}, \code{internal}, \code{package}, or \code{NA}.
 #' @param package package to explore
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 pkg_topics_index_by_type <- function(package){
   types <- pkg_topic_index_type(package)
@@ -282,6 +291,7 @@ pkg_topics_index_by_type <- function(package){
 #' Find all top level package usage functions
 #'
 #' @param usage usage in question
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 package_usage_functions <- function(usage){
   
@@ -305,81 +315,82 @@ package_usage_functions <- function(usage){
 #'
 #' @param items items supplied from pkg_topics
 #' @return boolean
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 is_function <- function(package, items){
-  
-  # retrieve the files of all items in question
-  index <- pkg_topics_index(package)
-  index <- subset(index, alias %in% items)
-  files <- unique(index[,"file"])
-  
-  rd_files <- pkg_topics_rd(package)
-
-  pattern <- "[a-zA-Z_.][a-zA-Z_.0-9]*[ ]*\\(" 
-  
-  # for every file... 
-  functions <- lapply(files, function(rd){
-    rd_file <- rd_files[[rd]]
-    
-    # get all the functions and methods in the usage
-    funcs <- retrieve_usage_functions_and_methods(rd_file[["usage"]])
-    
-    # get all the aliases of the file
-    aliases <- unname(sapply(rd_file[names(rd_file) == "alias"], "[[", 1))
-    aliases <- c(rd, aliases)
-#    print(rd)
-#    print(aliases)
-#    print(funcs)
-
-    # select the functions and aliases that have characters
-    funcs <- str_replace(funcs, "\\[", "\\\\[")
-    funcs <- funcs[!str_detect(funcs, " ")]
-
-    funcs <- funcs[str_detect(funcs, "[a-zA-Z]")]
-    funcs <- funcs[!str_detect(funcs, "\\[")]
-    funcs <- funcs[!str_detect(funcs, "\\$")]
-    funcs <- funcs[!is.na(funcs)]
-    
-    aliases <- aliases[str_detect(aliases, "[a-zA-Z]")]
-    aliases <- aliases[!str_detect(aliases, "\\[")]
-    aliases <- aliases[!str_detect(aliases, "\\$")]
-    aliases <- aliases[!is.na(aliases)]
-#    print(aliases)
-#    print(funcs)
-    if(length(aliases) < 1)
-      return(NULL)
-    
-    
-    # see which aliases are in the functions
-    contains_function <- sapply(funcs, function(x) str_detect(aliases, x))
-    if(length(contains_function) < 1) {
-      exists <- rep(FALSE, length(aliases))
-    } else if(is.null(ncol(contains_function))) {
-      exists <- contains_function
-    } else {
-      exists <- apply(contains_function, 1, any)
-    }    
-        
-    names(exists) <- aliases
-#    print(exists)
-
-    # return the name of the alias and whether or not it is a function
-    exists
-
-  })
-
-  # pick only the 'FALSE' or non function items and get their names
-  functions_v <- unlist(functions)
-  names_of_groups <- names(functions_v[functions_v == FALSE])
-  
-  # return the type of the aliases, in the same order they were given
-  type <- rep("function", length(items))
-  for(i in names_of_groups) {
-    type[items == i] <- "help_name"
-  }
-  type
-  
-  # since the above method doesn't work, the old one is still in place
+#  
+#  # retrieve the files of all items in question
+#  index <- pkg_topics_index(package)
+#  index <- subset(index, alias %in% items)
+#  files <- unique(index[,"file"])
+#  
+#  rd_files <- pkg_topics_rd(package)
+#
+#  pattern <- "[a-zA-Z_.][a-zA-Z_.0-9]*[ ]*\\(" 
+#  
+#  # for every file... 
+#  functions <- lapply(files, function(rd){
+#    rd_file <- rd_files[[rd]]
+#    
+#    # get all the functions and methods in the usage
+#    funcs <- retrieve_usage_functions_and_methods(rd_file[["usage"]])
+#    
+#    # get all the aliases of the file
+#    aliases <- unname(sapply(rd_file[names(rd_file) == "alias"], "[[", 1))
+#    aliases <- c(rd, aliases)
+##    print(rd)
+##    print(aliases)
+##    print(funcs)
+#
+#    # select the functions and aliases that have characters
+#    funcs <- str_replace(funcs, "\\[", "\\\\[")
+#    funcs <- funcs[!str_detect(funcs, " ")]
+#
+#    funcs <- funcs[str_detect(funcs, "[a-zA-Z]")]
+#    funcs <- funcs[!str_detect(funcs, "\\[")]
+#    funcs <- funcs[!str_detect(funcs, "\\$")]
+#    funcs <- funcs[!is.na(funcs)]
+#    
+#    aliases <- aliases[str_detect(aliases, "[a-zA-Z]")]
+#    aliases <- aliases[!str_detect(aliases, "\\[")]
+#    aliases <- aliases[!str_detect(aliases, "\\$")]
+#    aliases <- aliases[!is.na(aliases)]
+##    print(aliases)
+##    print(funcs)
+#    if(length(aliases) < 1)
+#      return(NULL)
+#    
+#    
+#    # see which aliases are in the functions
+#    contains_function <- sapply(funcs, function(x) str_detect(aliases, x))
+#    if(length(contains_function) < 1) {
+#      exists <- rep(FALSE, length(aliases))
+#    } else if(is.null(ncol(contains_function))) {
+#      exists <- contains_function
+#    } else {
+#      exists <- apply(contains_function, 1, any)
+#    }    
+#        
+#    names(exists) <- aliases
+##    print(exists)
+#
+#    # return the name of the alias and whether or not it is a function
+#    exists
+#
+#  })
+#
+#  # pick only the 'FALSE' or non function items and get their names
+#  functions_v <- unlist(functions)
+#  names_of_groups <- names(functions_v[functions_v == FALSE])
+#  
+#  # return the type of the aliases, in the same order they were given
+#  type <- rep("function", length(items))
+#  for(i in names_of_groups) {
+#    type[items == i] <- "help_name"
+#  }
+#  type
+#  
+#  # since the above method doesn't work, the old one is still in place
   
 # OLD METHOD  
   library(package, character.only = TRUE)
@@ -403,6 +414,7 @@ is_function <- function(package, items){
 #' Requires the package to be loaded to accurately determine the type of the object
 #' @param package package to explore
 #' @return returns a type ("package", "dataset", "function", "internal", "help_name" or "NA")
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 pkg_topic_index_type <- function(package){
   
@@ -454,6 +466,7 @@ pkg_topic_index_type <- function(package){
 #' Find all usage functions and methods
 #'
 #' @param usage usage in question
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 retrieve_usage_functions_and_methods <- function(usage){
   if(reconstruct(untag(usage)) == "")
@@ -467,6 +480,7 @@ retrieve_usage_functions_and_methods <- function(usage){
 #' go through the function text to find the function level (depth) of each function
 #'
 #' @param text text to be evaluated
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 function_levels <- function(text){
   split_text <- str_split(text, "")[[1]]
@@ -493,6 +507,7 @@ function_levels <- function(text){
 #' Find all usage functions
 #'
 #' @param usage usage in question
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 usage_functions <- function(usage){
   usage <- reconstruct(untag(usage))
@@ -524,6 +539,7 @@ usage_functions <- function(usage){
 #' find all methods within a usage
 #' 
 #' @param usage usage in question
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 usage_methods <- function(usage) {
   if(str_trim(reconstruct(untag(usage))) == "")

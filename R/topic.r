@@ -1,6 +1,8 @@
 #' Helpr Home
 #'
 #' @return all the information necessary to produce the home site ("index.html")
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
 helpr_topic <- function(package, topic) {
   topic_info <- parse_help(pkg_topic(package, topic), package = package)
   topic_info$package <- package
@@ -13,7 +15,8 @@ helpr_topic <- function(package, topic) {
 #' @param package package to explore
 #' @param topic topic of the package to retrieve
 #' @param file location of the rd database.  If it is \code{NULL}, it will be found.
-#'
+#' @author Haldey Wickham
+#' @keywords internal
 #' @return text of the .rd file
 pkg_topic <- function(package, topic, file = NULL) {
   if (is.null(file)) {
@@ -34,6 +37,8 @@ pkg_topic <- function(package, topic, file = NULL) {
 #'
 #' @param rd rd file to use
 #' @return rd file properly named according to the tags
+#' @author Hadley Wickham
+#' @keywords internal
 name_rd <- function(rd) {
   tags <- sapply(rd, tag)
   tags <- gsub("\\\\", "", tags)
@@ -44,8 +49,10 @@ name_rd <- function(rd) {
 
 #' Internal Topic Function
 #'
-#' @param help \code{\link{pkg_topic(\emph{topic})}}  is checked to see if a keyword is "internal"
+#' @param help \code{pkg_topic(}\emph{\code{topic}}\code{)}  is checked to see if a keyword is "internal"
 #' @return boolean
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
 topic_is_internal <- function(help) {
   "internal" %in% help$keywords
 }
@@ -55,6 +62,8 @@ topic_is_internal <- function(help) {
 #'
 #' @param rd item to be tagged recursively
 #' @return item reformatted to be used in HTML
+#' @author Hadley Wickham and Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
 parse_help <- function(rd, package) {
   tags <- sapply(rd, tag)
 
@@ -125,6 +134,8 @@ parse_help <- function(rd, package) {
 #' Highlights R text to include links to all functions and make it easier to read
 #' @param parser_output text to be parsed and highlighted
 #' @return highlighted text
+#' @author Hadley Wickham and Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
 highlight <- function(parser_output, source_link = FALSE) {
   if(is.null(parser_output))
     return("")
@@ -140,6 +151,8 @@ highlight <- function(parser_output, source_link = FALSE) {
 #'
 #' @param parser_output pre-parsed output
 #' @return parsed output with functions with html links around them
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
 add_function_links_into_parsed <- function(parser_output, source_link = FALSE){
   # pull out data
   d <- attr(parser_output, "data")
@@ -169,7 +182,8 @@ add_function_links_into_parsed <- function(parser_output, source_link = FALSE){
 #' Find the First Item Position
 #' @param arr arr of items to look at
 #' @return position of the first item to match "\\item" else 1
-# '
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
 first_item_pos <- function(arr){
   for(i in seq_along(arr))
     if(arr[i] == "\\item")
@@ -180,7 +194,8 @@ first_item_pos <- function(arr){
 #' Find the Last Item Position
 #' @param arr arr of items to look at
 #' @return position of the last item to match "\\item" else 0
-#'
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
 last_item_pos <- function(arr){
   for(i in rev(seq_along(arr)))
     if(arr[i] == "\\item")
@@ -193,6 +208,8 @@ last_item_pos <- function(arr){
 #' Parse the topic usage to add links to functions
 #'
 #' @param usage rd usage
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
 parse_usage <- function(usage){
   
   text <- reconstruct(untag(usage))
@@ -232,15 +249,14 @@ parse_usage <- function(usage){
   }
   
   # add links to all the inner functions to their own help pages
-  
-  
-  
   text
 }
 
 #' Order Functions Safely by Name
 #'
 #' @param vect string vector to be processed
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
 safely_order_funcs <- function(vect){
   
   # add a ending string to only allow for end of string comparisons
