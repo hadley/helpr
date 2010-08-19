@@ -1,11 +1,14 @@
 <span id="search_bar">
-  <label for="search_bar_input">Search: </label><input type="text" rel="search_bar_input" id="search_bar_input" >
-  <script  type="text/javascript">
-    $("#search_bar_input").keyup(function(event){
-      if(event.keyCode == 13){
-        var query = $("#search_bar_input").val();
-        $(window.location).attr('href', '/search/start=0;q='+query);
-      }
-    });  
-  </script>
 </span>
+  <script  type="text/javascript">
+    $(document).ready(function(){
+      $('#search_bar').html("<label for=\"search_bar_input\">Search: </label><input type=\"text\" rel=\"search_bar_input\" id=\"search_bar_input\" >");
+
+      $("#search_bar_input").keyup(function(event){
+        if(event.keyCode == 13){
+          var query = $("#search_bar_input").val();
+          $(window.location).attr('href', '/search/start=0;q='+query);
+        }
+      });  
+    })
+  </script>

@@ -6,7 +6,7 @@
 #' @param object object to be turned into JSON
 #' @keywords internal 
 render_json <- function(object) {
-  json <- rjson::toJSON(object)
+  json <- suppressWarnings(rjson::toJSON(object))
   list(payload = json)
 }
 

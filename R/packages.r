@@ -23,7 +23,7 @@ installed_packages <- function() {
 #'
 #' @keywords internal
 old_package_names <- function() {
-  as.list(old.packages()[,"Package"])
+  unname(old.packages()[,"Package"])
 }
 
 #' Update old packages
@@ -39,7 +39,7 @@ update_packs <- function(all = FALSE) {
   }
   packs <- packs[packs %in% old_package_names()]
   install_packages(packs)
-  as.list(packs)
+  as.array(packs)
 }
 
 #' install packages
@@ -48,5 +48,6 @@ update_packs <- function(all = FALSE) {
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 install_packages <- function(pkg_vec){
+#  message(str_c("installing: ", pkg_vec, collapse = "\n"))
   suppressWarnings(install.packages(pkg_vec, repos = "http://cran.r-project.org/"))
 }

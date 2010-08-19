@@ -23,9 +23,16 @@ function highlight_old_packages() {
     url: "/package/old.json",
     dataType: "json",
     success: function(packages) {
+      if(packages == null){
+        set_update_button();
+        $.unblockUI();
+        return;
+      }
       window.console.log(packages);
+//      window.console.log(packages.length);
       for(i = 0; i < packages.length; i++) {
         pkg = packages[i];
+        pkg = pkg.replace(".", "_");
         window.console.log(pkg + " is old");      
         $("#" + pkg).addClass("old");
       }
@@ -68,6 +75,7 @@ function update_packs() {
       window.console.log(packages);
       for(i = 0; i < packages.length; i++) {
         pkg = packages[i];
+        pkg = pkg.replace(".", "_");
         $("#" + pkg).removeClass("old").addClass("update");
       }
       remove_single_install_button();
@@ -127,8 +135,6 @@ function set_update_button(){
     out_of_date_butto.disabled = true;
   }
   
-  document.getElementById("thinking_wheel").style.display = "none";
-
 }
 
 function remove_single_install_button() {

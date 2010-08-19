@@ -12,14 +12,23 @@
   <script type="text/javascript" src="/_scripts/jquery.quicksearch.js"></script>
 
   <script type="text/javascript" src="/_scripts/old_packs.js"></script>
+  
+  <script type="text/javascript">
+
+    $(document).ready(function(){
+      $('#package_buttons').html("<input id=\"out_of_date_button\" type=button onClick=\"highlight_old_packages();\" value=\"Out of Date\"> <input id=\"show_all_packs_button\" type=button onClick=\"show_all_packages();\" value=\"Show All Packages\">");
+      
+    })
+
+  </script>
   <title>R help</title>
 </head>
 
 <body>
   <div id="watermark">packages</div>
   <div id="doc2" class="yui-t6">
+
   <div id="hd">
-    <!-- Removed for speed for working in bad internet -->
     <table style="width:100%;">
       <tr>
         <td style="width:52em;">
@@ -44,17 +53,13 @@
         <th>Description</th>
       </tr>
       <% for(i in seq_len(NROW(packages))) { -%>
-      <tr id="<%= packages[i,"Package"] %>" class="<%= packages[i,"status"] %>">
+      <tr id="<%= str_replace(packages[i,"Package"], "[.]", "_") %>" class="<%= packages[i,"status"] %>">
         <td><a href="/package/<%= packages[i,"Package"] %>"><%= packages[i,"Package"] %></a></td>
         <td><%= packages[i,"Title"] %></td>
       </tr>
       <% } %>
       <tr>
-        <td colspan=2>
-          <img id="thinking_wheel" src="http://www.ajax.su/images/ajax_activity_indicators_download_animated_indicator_mozilla_blu.gif" alt="spinning wheel of death"/> 
-
-          <input id="out_of_date_button" type=button onClick="highlight_old_packages();" value="Out of Date">
-          <input id="show_all_packs_button" type=button onClick="show_all_packages();" value="Show All Packages">
+        <td colspan=2 id="package_buttons">
         </td>
       </tr>
   </table>
