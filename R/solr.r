@@ -73,10 +73,10 @@ make_field <- function(name, value){
     value <- ""
   value <- str_trim(value)
   value <- gsub("&(?![#]{1})", "&#38;", value, perl=TRUE)
-  value <- str_replace(value, "<", "&#60;")
-  value <- str_replace(value, ">", "&#62;")
-  value <- str_replace(value, "\n", "")
-  value <- str_replace(value, "\t", "")
+  value <- str_replace_all(value, "<", "&#60;")
+  value <- str_replace_all(value, ">", "&#62;")
+  value <- str_replace_all(value, "\n", "")
+  value <- str_replace_all(value, "\t", "")
   if(!identical(name, "id")) name <- str_c(name, "_t")
   str_c("<field name=\"", name, "\">", str_c(value, collapse = "; "),"</field>", collapse = "")
 }
@@ -136,9 +136,9 @@ make_add_xml <- function(obj){
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 save_xml <- function(txt, file_name=tempfile()){
-  txt <- str_replace(txt, "<doc>", "<doc>\n\t")
-  txt <- str_replace(txt, "</field>", "</field>\n\t")
-  txt <- str_replace(txt, "\t</doc>", "</doc>")
+  txt <- str_replace_all(txt, "<doc>", "<doc>\n\t")
+  txt <- str_replace_all(txt, "</field>", "</field>\n\t")
+  txt <- str_replace_all(txt, "\t</doc>", "</doc>")
   cat(txt, file = file_name)
   file_name
 }
@@ -254,8 +254,8 @@ package_and_topic_from_url <- function(url_txt){
   topic <- ""
   if(str_detect(url_txt, "/package/")){
     pkg <- str_extract(url_txt, "/package/[a-zA-Z_0-9]*/")
-    pkg <- str_replace(pkg, "/package/", "")
-    pkg <- str_replace(pkg, "/", "")
+    pkg <- str_replace_all(pkg, "/package/", "")
+    pkg <- str_replace_all(pkg, "/", "")
     
     if(str_detect(url_txt, "/topic/")){
       topic <- str_split(url_txt, "/topic/")[[1]][2]

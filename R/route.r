@@ -158,7 +158,7 @@ helpr <- function(installed = TRUE) {
   
   # Search
   router$get("/search/:query_string", function(query_string) {
-    query_string <- str_replace(query_string, ";", "&")
+    query_string <- str_replace_all(query_string, ";", "&")
     render_brew("search", helpr_solr_search(query_string), path = path)  
   })
   

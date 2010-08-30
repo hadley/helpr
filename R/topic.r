@@ -222,11 +222,11 @@ parse_usage <- function(usage){
   pattern <- "[a-zA-Z_.][a-zA-Z_.0-9]*[ ]*\\("
     
 #  alias_funcs <- unlist(str_extract(text_lines, pattern))
-#  alias_funcs <- str_trim(str_replace(alias_funcs, "\\(", ""))
+#  alias_funcs <- str_trim(str_replace_all(alias_funcs, "\\(", ""))
   alias_funcs <- usage_functions(text)
   
   funcs_text <- unlist(str_extract_all(text, pattern))
-  funcs <- str_replace(funcs_text, "\\(", "")
+  funcs <- str_replace_all(funcs_text, "\\(", "")
   funcs <- safely_order_funcs(funcs)
   original_funcs <- funcs
   funcs <- str_trim(funcs)
@@ -245,7 +245,7 @@ parse_usage <- function(usage){
       link <- str_c("<a href=\"", path, "\">", func, "</a>", spaces ,"(" )
     }
     
-    text <- str_replace(text, str_c(ori_func,"\\("), link)
+    text <- str_replace_all(text, str_c(ori_func,"\\("), link)
   }
   
   # add links to all the inner functions to their own help pages
@@ -273,6 +273,6 @@ safely_order_funcs <- function(vect){
       }
     }
   }
-  str_replace(vect, "_helpr", "")
+  str_replace_all(vect, "_helpr", "")
 }
 

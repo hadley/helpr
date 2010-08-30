@@ -62,7 +62,7 @@ get_manuals <- memoise(function(){
   manuals <- dir(manual_dir)
   
   file_loc <- file.path(manual_dir, manuals)
-  file_name <- str_replace(manuals, ".html", "")
+  file_name <- str_replace_all(manuals, ".html", "")
   link <- str_c("manuals/",file_name, ".html")
   
   data.frame(

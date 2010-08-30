@@ -146,8 +146,8 @@ helpr_function <- function(package, func){
     
     input <- str_join("str(",func,")", collapse = "")
     src <- capture.output(eval(parser(text = input)[1]))
-    src <- str_replace(src, "<", "&lt;")
-    src <- str_replace(src, ">", "&gt;")
+    src <- str_replace_all(src, "<", "&lt;")
+    src <- str_replace_all(src, ">", "&gt;")
     src <- eval_tag_output(str_join(src, collapse = "\n"))
     src <- str_c("<pre>", input,"</pre>", src)
     src_functions <- NULL

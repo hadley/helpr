@@ -92,7 +92,7 @@ parse_pkg_desc_item <- function(obj){
 pkg_author_and_maintainers <- function(authors, maintainer=NULL){
 
   # retrieve the authors and email
-  authors <- str_replace(authors, "\\n", " ")
+  authors <- str_replace_all(authors, "\\n", " ")
   str_extract_all(authors, "[a-zA-z]* [a-zA-z]* <*>")
 
   # retrieve the author and email separately
@@ -105,35 +105,35 @@ pkg_author_and_maintainers <- function(authors, maintainer=NULL){
   if(length(emails) < 1){
     author_and_email <- auths
   }else{
-    emails <- str_replace(emails, "<", "")
-    emails <- str_replace(emails, ">", "")
+    emails <- str_replace_all(emails, "<", "")
+    emails <- str_replace_all(emails, ">", "")
     
     author_and_email <- author_email(auths, emails)
   }
   
   # replace the original authors with the linked authors
   for(i in seq_along(author_and_email)){
-    authors <- str_replace(authors, auths_string[i], author_and_email[i])
+    authors <- str_replace_all(authors, auths_string[i], author_and_email[i])
   }
 
   if(!is.null(maintainer)){
     maintainer_name <- str_trim(strip_html(maintainer))
     maintainer_email <- str_extract_all(maintainer, email_pattern)[[1]][1]
-    maintainer_email <- str_replace(maintainer_email, "<", "")
-    maintainer_email <- str_replace(maintainer_email, ">", "")
+    maintainer_email <- str_replace_all(maintainer_email, "<", "")
+    maintainer_email <- str_replace_all(maintainer_email, ">", "")
   
     # make the maintainer bold
     maintainer_string <- str_c("<strong>", author_email(maintainer_name, maintainer_email), "</strong>", collapse = "")  
   
     if(str_detect(authors, maintainer_name)){
       # replace the current author text with the maintainer text
-      authors <- str_replace(
+      authors <- str_replace_all(
         authors, 
         str_c("</?.*?>",maintainer_name,"</?.*?>", collapse = ""),
         maintainer_name
       )
       
-      authors <- str_replace(
+      authors <- str_replace_all(
         authors, 
         maintainer_name,
         maintainer_string
@@ -179,8 +179,8 @@ pkg_vigs <- function(package) {
   if(!NROW(vignettes))
     return(NULL)
 
-  titles <- str_replace(vignettes[,4], "source, pdf", "")
-  titles <- str_trim(str_replace(titles, "[()]", ""))
+  titles <- str_replace_all(vignettes[,4], "source, pdf", "")
+  titles <- str_trim(str_replace_all(titles, "[()]", ""))
   
   data.frame(item = vignettes[,"Item"], title = titles, stringsAsFactors = FALSE)
 }
@@ -343,7 +343,7 @@ is_function <- function(package, items){
 ##    print(funcs)
 #
 #    # select the functions and aliases that have characters
-#    funcs <- str_replace(funcs, "\\[", "\\\\[")
+#    funcs <- str_replace_all(funcs, "\\[", "\\\\[")
 #    funcs <- funcs[!str_detect(funcs, " ")]
 #
 #    funcs <- funcs[str_detect(funcs, "[a-zA-Z]")]
@@ -525,8 +525,8 @@ usage_functions <- function(usage){
   usage_functions <- str_split(usage_functions, "\n")[[1]]
   
   # remove unwanted characters
-  usage_functions <- str_replace(usage_functions, "\\(", "")
-  usage_functions <- str_replace(usage_functions, "\\)", "")
+  usage_functions <- str_replace_all(usage_functions, "\\(", "")
+  usage_functions <- str_replace_all(usage_functions, "\\)", "")
   # remove commented lines
   usage_functions <- usage_functions[ str_sub(usage_functions, end = 1) != "#" ]
   #remove useless functions

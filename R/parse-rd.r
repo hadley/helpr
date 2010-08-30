@@ -94,7 +94,7 @@ reconstruct <- function(rd) {
   } else if(tag == "COMMENT") {
     
     txt <- as.character(rd)
-    str_replace(txt, "%", "#")
+    str_replace_all(txt, "%", "#")
   } else if(tag == "\\enc"){
     
     reconstruct(rd[[1]])
@@ -104,15 +104,15 @@ reconstruct <- function(rd) {
   } else if(tag %in% c("\\dontshow", "\\testonly")){
     "" # don't show it to the user
   } else if(tag == "\\dontrun"){
-    str_c("## <strong>Not run</strong>:", str_replace(reconstruct(untag(rd)), "\n", "\n#"), "## <strong>End(Not run)</strong>")
+    str_c("## <strong>Not run</strong>:", str_replace_all(reconstruct(untag(rd)), "\n", "\n#"), "## <strong>End(Not run)</strong>")
 
   } else if(tag == "\\special"){
 #    "\\special" =      c("<em>","</em>"),    
     txt <- reconstruct(untag(rd))
     # replace '<' and '>' with html markings avoid browser misinterpretation
-    txt <- str_replace(txt, "<", "&#60;")
-    txt <- str_replace(txt, ">", "&#62;")
-    txt <- str_replace(txt, "\\\\dots", "...")
+    txt <- str_replace_all(txt, "<", "&#60;")
+    txt <- str_replace_all(txt, ">", "&#62;")
+    txt <- str_replace_all(txt, "\\\\dots", "...")
 
     stupid <- unlist(str_match_all(txt, "\\\\[a-zA-Z]*"))
     for(i in seq_len(length(stupid)))
@@ -314,7 +314,7 @@ pluralize <- function(string, obj, plural = str_c(string, "s", sep = ""), bool_s
 #' @author Hadley Wickham
 #' @keywords internal 
 strip_html <- function(x) {
-  str_replace(x, "</?.*?>", "")
+  str_replace_all(x, "</?.*?>", "")
 }
 
 

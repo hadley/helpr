@@ -4,7 +4,7 @@
   <a href=<%= str_c("/package/",pkg, "/topic/", topic, collapse = "") %> ><%= topic %></a>
 </h2>
 <% sapply(items, function(item){ -%>
-  <% item_category <- str_c("<strong>",str_replace(names(item), "_t", ""), ":</strong> ", sep="") %>
+  <% item_category <- str_c("<strong>",str_replace_all(names(item), "_t", ""), ":</strong> ", sep="") %>
     
   <% content <- str_c("<td>",item_category, "</td><td>",as.character(item),"</td>", collapse = "</tr><tr>") %>
   <%= str_c("<table class=\"search_table\"><tr>", content, "</tr></table>", collapse = "") %>

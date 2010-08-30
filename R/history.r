@@ -17,7 +17,7 @@ get_function_history <- function(){
   rawhist <- grep(pattern, rawhist, value = TRUE )
   funcs <- unlist(str_extract_all(rawhist, pattern))
   funcs <- funcs[ ! funcs %in% c("if(", "for(", "while(", "get_function_history(")]
-  funcs <- str_replace(funcs, "[(]", "")
+  funcs <- str_replace_all(funcs, "[(]", "")
 
   funcs
 }
