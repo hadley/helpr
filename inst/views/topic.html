@@ -7,7 +7,7 @@
 
   <%= render_snippet("growl") %>
 
-  <%= render_snippet("disqus_header", list(name = str_join(package, "_topic_",name))) %>
+  <%= render_snippet("disqus_header", list(name = str_c(package, "_topic_",name))) %>
 
   <title><%= name %> / <%= package %>. R help</title>
 </head>
@@ -18,7 +18,7 @@
   <div id="hd">
     <a href="/index.html">R</a> &#8594; <a href=".."><%= package %></a> &#8594; <%= name %> 
     <% if (length(aliases) > 0) { -%>
-    (aka <%= str_join(aliases, collapse = ", ") %>)<% } %>
+    (aka <%= str_c(aliases, collapse = ", ") %>)<% } %>
     <%= render_snippet("search_bar") %>
   </div>
 
@@ -80,7 +80,7 @@
       <% if(dataframe_has_rows(examples)){ -%>
         <h2>Examples</h2>
         <input id="run_example" type="button" value="Execute Whole Example" onclick="
-          <%= str_join("execute_example('",package, "','", name,"')") %>" 
+          <%= str_c("execute_example('",package, "','", name,"')") %>" 
         />
         <input id="hide_output" type="button" value="Show/Hide Output" onclick="hide_show_output('example', '<%= package %>', '<%= name %>' );" />
         <div id="example_source_code">

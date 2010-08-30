@@ -1,10 +1,10 @@
-<%= str_join("<h2>",title,"</h2>") %>
+<%= str_c("<h2>",title,"</h2>") %>
 <% for(i in names(news)) { -%>
   <% if(has_text(news[[i]])) {-%>
     <dl>
-      <%= if(!is.na(i)) str_join("<dt>",i,"</dt>") %>
+      <%= if(!is.na(i)) str_c("<dt>",i,"</dt>") %>
       <dd>
-        <%= str_join(news[[i]], collapse="</dd><dd>") %>
+        <%= str_c(news[[i]], collapse="</dd><dd>") %>
       </dd>
     </dl>
   <% } %> 

@@ -6,7 +6,7 @@
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 demo_src_file <- function(package, demo_name){
-  system.file("demo", str_join(demo_name, ".R"), package = package)
+  system.file("demo", str_c(demo_name, ".R"), package = package)
 }
 
 #' Demo Information
@@ -57,8 +57,8 @@ helpr_demo <- function(package, demo_name){
 demo_src <- function(package, demo_name){
   demo_lines <- readLines(demo_src_file(package, demo_name))
   rows <- str_detect(demo_lines, "example[[:space:]]*\\(")
-  demo_lines[rows] <- str_join("# ", demo_lines[rows])
-  str_join(demo_lines, collapse = "\n")
+  demo_lines[rows] <- str_c("# ", demo_lines[rows])
+  str_c(demo_lines, collapse = "\n")
 }
 
 

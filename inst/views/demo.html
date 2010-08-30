@@ -13,7 +13,7 @@
 
   <script type="text/javascript" src="/_scripts/package.js"></script>
 
-  <%= render_snippet("disqus_header", list(name = str_join(package, "_demo_", name))) %>
+  <%= render_snippet("disqus_header", list(name = str_c(package, "_demo_", name))) %>
   <title><%= package %> <%= name %>. R help</title>
 </head>
 
@@ -31,7 +31,7 @@
     <p><%= description %></p>
 
     <h2>Demo Source</h2>
-    <input id="run_demo" type="button" value="Execute Whole Demo" onclick="<%= str_join("execute_demo('",package, "','", name,"');") %>" />
+    <input id="run_demo" type="button" value="Execute Whole Demo" onclick="<%= str_c("execute_demo('",package, "','", name,"');") %>" />
     <input id="hide_output" type="button" value="Show/Hide Output" onclick="hide_show_output('demo', '<%= package %>', '<%= name %>' );" />
     <div id="demo_source_code" class="demo_source_code">
       <%= src %>
@@ -46,7 +46,7 @@
     <dl>
       <% for(i in seq_len(NROW(other_demos))) {-%>
       <dt>
-        <%= str_join( "<a href=\"/package/", package, "/demo/", other_demos[i, "Item"], "\" >", other_demos[i, "Item"], "</a>") %>
+        <%= str_c( "<a href=\"/package/", package, "/demo/", other_demos[i, "Item"], "\" >", other_demos[i, "Item"], "</a>") %>
       </dt>
       <dd>
         <%= other_demos[i, "Title"] %>

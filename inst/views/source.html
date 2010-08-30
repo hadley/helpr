@@ -5,7 +5,7 @@
 <head>
   <%= render_snippet("html_header") %>
 
-  <%= render_snippet("disqus_header", list(name = str_join(package, "_topic_",name,"_source"))) %>
+  <%= render_snippet("disqus_header", list(name = str_c(package, "_topic_",name,"_source"))) %>
 
   <title><%= package %> <%= name %>. R help</title>
 </head>
@@ -14,7 +14,7 @@
   <div id="watermark"><%= package %></div>
   <div id="doc2" class="yui-t6">
   <div id="hd">
-    <a href="/index.html">R</a> &#8594; <a href="../../../"><%= package %></a> &#8594; <a href=<%= str_join("\"../../", topic,"\"") %> ><%= topic %></a> &#8594; <%= name %> (source) 
+    <a href="/index.html">R</a> &#8594; <a href="../../../"><%= package %></a> &#8594; <a href=<%= str_c("\"../../", topic,"\"") %> ><%= topic %></a> &#8594; <%= name %> (source) 
   </div>
 
   <div id="bd">
@@ -36,7 +36,7 @@
     <ul>
     <% for(alias in aliases$alias) { -%>
       <li>
-        <%= str_join("<a href=\"/package/", package, "/topic/", topic, "/source/", alias, "\">", alias, "</a>" ) %>
+        <%= str_c("<a href=\"/package/", package, "/topic/", topic, "/source/", alias, "\">", alias, "</a>" ) %>
       </li>
     <% } %>
     </ul>

@@ -6,7 +6,7 @@
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal 
 save_picture <- function(obj_name, obj_plot){
-  file_path <- file.path(helpr_pic_path, str_join(obj_name, ".png", collapse = ""))
+  file_path <- file.path(helpr_pic_path, str_c(obj_name, ".png", collapse = ""))
   
   # only make the picture if you have to
   # duplicates do not exist as naming should be done well
@@ -16,6 +16,6 @@ save_picture <- function(obj_name, obj_plot){
     print(obj_plot)
   }
   
-  str_join("/picture/", obj_name, ".png", collapse = "")
+  str_c("/picture/", obj_name, ".png", collapse = "")
 }
 

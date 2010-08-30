@@ -76,7 +76,7 @@ parse_pkg_desc_item <- function(obj){
       
       # if the version is found, it will create one in the form of '(1.2.3)'
       if(!is.null(x$version))
-        vers <- str_join("(", x$op, " ", str_join(unclass(x$version)[[1]], collapse = "."), ")", collapse = "")
+        vers <- str_c("(", x$op, " ", str_c(unclass(x$version)[[1]], collapse = "."), ")", collapse = "")
       list(name = as.character(x$name), version = as.character(vers))
     })
     , stringsAsFactors = FALSE
@@ -123,13 +123,13 @@ pkg_author_and_maintainers <- function(authors, maintainer=NULL){
     maintainer_email <- str_replace(maintainer_email, ">", "")
   
     # make the maintainer bold
-    maintainer_string <- str_join("<strong>", author_email(maintainer_name, maintainer_email), "</strong>", collapse = "")  
+    maintainer_string <- str_c("<strong>", author_email(maintainer_name, maintainer_email), "</strong>", collapse = "")  
   
     if(str_detect(authors, maintainer_name)){
       # replace the current author text with the maintainer text
       authors <- str_replace(
         authors, 
-        str_join("</?.*?>",maintainer_name,"</?.*?>", collapse = ""),
+        str_c("</?.*?>",maintainer_name,"</?.*?>", collapse = ""),
         maintainer_name
       )
       
@@ -140,7 +140,7 @@ pkg_author_and_maintainers <- function(authors, maintainer=NULL){
       )
     }else{
       # attach the maintainer to the end
-      authors <- str_join(authors, "; ", maintainer_string, collapse = "")
+      authors <- str_c(authors, "; ", maintainer_string, collapse = "")
     }
   }
   authors
@@ -395,7 +395,7 @@ is_function <- function(package, items){
 # OLD METHOD  
   library(package, character.only = TRUE)
   sapply(items, function(x){
-    if(exists(x, str_join("package:", package)))
+    if(exists(x, str_c("package:", package)))
       "function"
     else if(package %in% loadedNamespaces()){
       if(exists(x, envir = asNamespace(package), mode="function")){

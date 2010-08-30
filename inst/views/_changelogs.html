@@ -4,8 +4,8 @@
   <% for(i in seq_along(names(news))) { -%>
     <% if(has_text(news[[i]])) {-%>
       <% news_name <- names(news)[i] %>
-      <%= if(!is.na(news_name)){ str_join("<h3>",news_name,"</h3>") } %>
-      <%= str_join("<ul><li>",str_join(news[[i]], collapse="</li><li>") ,"</li></ul>") %>
+      <%= if(!is.na(news_name)){ str_c("<h3>",news_name,"</h3>") } %>
+      <%= str_c("<ul><li>",str_c(news[[i]], collapse="</li><li>") ,"</li></ul>") %>
     <% } %>
   <% } %>
 <% } %>

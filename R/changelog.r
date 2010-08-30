@@ -39,10 +39,10 @@ function_news <- function(package, topic){
   
   if(!dataframe_has_rows(package_news)) return("")
     
-  package_news$title <- str_join(package_news$Version, " - ", package_news$Category)
+  package_news$title <- str_c(package_news$Version, " - ", package_news$Category)
   
   change_log <- list(
-    title = str_join("Change Log for '", topic, "'", collapse = ""),
+    title = str_c("Change Log for '", topic, "'", collapse = ""),
     news = split(package_news$Text, addNA(package_news$title))
   )
   
@@ -63,7 +63,7 @@ get_manuals <- memoise(function(){
   
   file_loc <- file.path(manual_dir, manuals)
   file_name <- str_replace(manuals, ".html", "")
-  link <- str_join("manuals/",file_name, ".html")
+  link <- str_c("manuals/",file_name, ".html")
   
   data.frame(
     title = sapply(file_loc, function(x){

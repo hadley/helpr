@@ -51,15 +51,15 @@ reconstruct <- function(rd) {
     reconstruct(parse_items(rd))
   }else if (length(tag) == 0 || tag == "TEXT" || tag == "") {
     # Collapse text strings
-#    str_trim(str_join(sapply(rd, reconstruct), collapse = ""))
+#    str_trim(str_c(sapply(rd, reconstruct), collapse = ""))
     
-    as.character(str_join(sapply(rd, reconstruct), collapse = ""))
+    as.character(str_c(sapply(rd, reconstruct), collapse = ""))
 
   } else if (is_section(tag)) {
     # Sections should be arranged into paragraphs    
     text <- reconstruct(untag(rd))
     paras <- str_trim(str_split(text, "\\n\\n")[[1]])
-    str_join("<p>", paras, "</p>", "\n\n", collapse = "")      
+    str_c("<p>", paras, "</p>", "\n\n", collapse = "")      
     
   } else if (tag %in% names(simple_tags())) {
     # If we can process tag with just prefix & suffix, do so
@@ -79,15 +79,15 @@ reconstruct <- function(rd) {
       tag_link(fun, pkg)
     }
   } else if (tag == "\\eqn") {
-    str_join("<code>", reconstruct(untag(rd[[1]])), "</code>")
+    str_c("<code>", reconstruct(untag(rd[[1]])), "</code>")
   } else if (tag == "\\deqn") {
     if(length(rd) < 2)
-      str_join("<code>", reconstruct(untag(rd[[1]])), "</code>")
+      str_c("<code>", reconstruct(untag(rd[[1]])), "</code>")
     else
-      str_join("<code>", reconstruct(untag(rd[[2]])), "</code>")
+      str_c("<code>", reconstruct(untag(rd[[2]])), "</code>")
   } else if (tag == "\\url") {
     stopifnot(length(rd) == 1)
-    str_join("<a href='", rd[[1]], "'>", rd[[1]], "</a>")
+    str_c("<a href='", rd[[1]], "'>", rd[[1]], "</a>")
 
   } else if(tag == "\\email"){
     author_email(reconstruct(untag(rd)), rd[[1]][1])      
@@ -100,11 +100,11 @@ reconstruct <- function(rd) {
     reconstruct(rd[[1]])
     
   } else if(tag == "\\method" || tag == "\\S3method") {
-    str_join(reconstruct(rd[[1]]),".",reconstruct(rd[[2]]))
+    str_c(reconstruct(rd[[1]]),".",reconstruct(rd[[2]]))
   } else if(tag %in% c("\\dontshow", "\\testonly")){
     "" # don't show it to the user
   } else if(tag == "\\dontrun"){
-    str_join("## <strong>Not run</strong>:", str_replace(reconstruct(untag(rd)), "\n", "\n#"), "## <strong>End(Not run)</strong>")
+    str_c("## <strong>Not run</strong>:", str_replace(reconstruct(untag(rd)), "\n", "\n#"), "## <strong>End(Not run)</strong>")
 
   } else if(tag == "\\special"){
 #    "\\special" =      c("<em>","</em>"),    
@@ -118,7 +118,7 @@ reconstruct <- function(rd) {
     for(i in seq_len(length(stupid)))
       message("Uknown tag (", stupid[i], ") found in 'special' tag")
     
-    str_join("<em>", txt, "</em>")
+    str_c("<em>", txt, "</em>")
 
   } else if(tag == "\\tabular"){
     parse_tabular(untag(rd))
@@ -130,7 +130,7 @@ reconstruct <- function(rd) {
     }
     
   } else if(tag == "\\S4method"){
-    str_join("## S4 method for signature \"",reconstruct(rd[[2]]),"\":\n", reconstruct(rd[[1]]), sep ="")
+    str_c("## S4 method for signature \"",reconstruct(rd[[2]]),"\":\n", reconstruct(rd[[1]]), sep ="")
 
   } else if(tag == "\\linkS4class"){
     item <- reconstruct(untag(rd))
@@ -146,7 +146,7 @@ reconstruct <- function(rd) {
       item
     }else{
       pkg <- attr(getClass(item)@className, "package")
-      tag_link(item, pkg, str_join(item, "-class", collapse = ""))
+      tag_link(item, pkg, str_c(item, "-class", collapse = ""))
     }
   } else if(tag == "\\Sexpr"){
     expr <- eval(parse(text = rd), envir=globalenv())
@@ -169,7 +169,7 @@ reconstruct <- function(rd) {
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 author_email <- function(name, address){
-  str_join("<a href=\"mailto:",address,"?subject=(R-Help): \">",name,"</a>")
+  str_c("<a href=\"mailto:",address,"?subject=(R-Help): \">",name,"</a>")
 }
 
 #' tag a simple item
@@ -182,7 +182,7 @@ author_email <- function(name, address){
 tag_simple <- function(tag, text) {
   stopifnot(length(text) == 1)
   html <- simple_tags()[[tag]]
-  str_join(html[1], text, html[2])
+  str_c(html[1], text, html[2])
 }
 
 #' link to another topic
@@ -194,9 +194,9 @@ tag_simple <- function(tag, text) {
 #' @keywords internal
 tag_link <- function(fun, pkg = NULL, topic_page = fun) {
   if (!is.null(pkg)) {
-    str_join("<a href=\"/package/", pkg, "/topic/", topic_page, "\">", fun, "</a>")        
+    str_c("<a href=\"/package/", pkg, "/topic/", topic_page, "\">", fun, "</a>")        
   } else {
-    str_join("<a href=\"", function_help_path(fun), "\">", fun, "</a>")
+    str_c("<a href=\"", function_help_path(fun), "\">", fun, "</a>")
   }
 }
 
@@ -299,7 +299,7 @@ parse_text <- function(text){
 #' @param bool_statement boolean to use to determine which string to use
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal 
-pluralize <- function(string, obj, plural = str_join(string, "s", sep = ""), bool_statement = NROW(obj)){
+pluralize <- function(string, obj, plural = str_c(string, "s", sep = ""), bool_statement = NROW(obj)){
   if(bool_statement) {
     plural
   } else {
@@ -342,19 +342,19 @@ parse_tabular <- function(tabular){
 
     if(row_tag == "\\tab"){
       column <- column + 1
-      output[i] <- str_join("</td><td align=\"", alignments[column], "\">")
+      output[i] <- str_c("</td><td align=\"", alignments[column], "\">")
     } else if(row_tag == "\\cr"){
-      output[i] <- str_join("</td></tr><tr><td align=\"", alignments[1], "\">")
+      output[i] <- str_c("</td></tr><tr><td align=\"", alignments[1], "\">")
       column <- 1
     } else {
       output[i] <- reconstruct(rows[[i]])
     }
   }
   
-  output[1] <- str_join("<table><tr><td align=\"", alignments[1], "\">", output[1])
-  output[length(rows)] <- str_join(output[length(rows)], "</td></tr></table>")
+  output[1] <- str_c("<table><tr><td align=\"", alignments[1], "\">", output[1])
+  output[length(rows)] <- str_c(output[length(rows)], "</td></tr></table>")
 
-  str_join(output, collapse = "")
+  str_c(output, collapse = "")
 }
 
 
@@ -425,11 +425,11 @@ parse_item_list <- function(rd){
       # small item in item list
       ""
     }else{
-      str_join("<tr><td><strong>",reconstruct(x[[1]]), "</strong></td><td>", reconstruct(x[[2]]), "</td></tr>", collapse = "")
+      str_c("<tr><td><strong>",reconstruct(x[[1]]), "</strong></td><td>", reconstruct(x[[2]]), "</td></tr>", collapse = "")
     }
   })
   
-  str_join("<table>", str_join(items_text, collapse = ""), "</table>", collapse = "")
+  str_c("<table>", str_c(items_text, collapse = ""), "</table>", collapse = "")
 }
 
 

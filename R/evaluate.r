@@ -12,7 +12,7 @@ helpr_replay <- function(x, pic_base_name) UseMethod("helpr_replay", x)
 helpr_replay.list <- function(x, pic_base_name) {
   lapply(seq_along(x), function(i, base_name = pic_base_name){
     item <- x[[i]]
-    item_name <- str_join(base_name, "_", i, collapse = "")
+    item_name <- str_c(base_name, "_", i, collapse = "")
     helpr_replay(item, item_name)
   })
 }
@@ -26,7 +26,7 @@ helpr_replay.source <- function(x, pic_base_name) {
 }
 
 helpr_replay.warning <- function(x, pic_base_name) {
-  helpr_replay_message(str_join("Warning message:\n", x$message, collapse = ""))
+  helpr_replay_message(str_c("Warning message:\n", x$message, collapse = ""))
 }
 
 helpr_replay.message <- function(x, pic_base_name) {
@@ -35,20 +35,20 @@ helpr_replay.message <- function(x, pic_base_name) {
 
 helpr_replay.error <- function(x, pic_base_name) {
   if (is.null(x$call)) {
-    helpr_replay_message(str_join("Error: ", x$message, collapse = "\n"))    
+    helpr_replay_message(str_c("Error: ", x$message, collapse = "\n"))    
   } else {
     call <- deparse(x$call)
-    helpr_replay_message(str_join("Error in ", call, ": ", x$message, collapse = "\n"))    
+    helpr_replay_message(str_c("Error in ", call, ": ", x$message, collapse = "\n"))    
   }
 }
 
 helpr_replay.value <- function(x, pic_base_name) {
-  if (x$visible) eval_tag_output(str_join(capture.output(print(x$value)), collapse = "\n"))
+  if (x$visible) eval_tag_output(str_c(capture.output(print(x$value)), collapse = "\n"))
 }
 
 helpr_replay.recordedplot <- function(x, pic_base_name) {  
   file_loc <- save_picture( pic_base_name, x)
-  str_join("<img class=\"R_output_image\" src=\"", file_loc, "\" alt=\"", pic_base_name, "\" />", collapse = "")
+  str_c("<img class=\"R_output_image\" src=\"", file_loc, "\" alt=\"", pic_base_name, "\" />", collapse = "")
 }
 
 
@@ -89,7 +89,7 @@ evaluate_text <- function(txt, pic_base_name){
     return("")
   evaluated <- evaluate:::evaluate(txt, globalenv())
   replayed <- helpr_replay(evaluated, pic_base_name)
-  str_join(as.character(unlist(replayed)), collapse = "\n")
+  str_c(as.character(unlist(replayed)), collapse = "\n")
 }
 
 #' evaluate output tag

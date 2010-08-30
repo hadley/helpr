@@ -143,7 +143,7 @@ highlight <- function(parser_output, source_link = FALSE) {
   # add links before being sent to be highlighted
   parser_output <- add_function_links_into_parsed(parser_output, source_link)  
   
-  str_join(capture.output(highlight::highlight( parser.output = parser_output, renderer = highlight::renderer_html(doc = F))), collapse = "\n")    
+  str_c(capture.output(highlight::highlight( parser.output = parser_output, renderer = highlight::renderer_html(doc = F))), collapse = "\n")    
 }
 
 #' Add Funciton Link
@@ -167,7 +167,7 @@ add_function_links_into_parsed <- function(parser_output, source_link = FALSE){
 
   # make links for functions and not for non-package functions
   paths <- function_help_path(funcs, source_link)  
-  text <- str_join("<a href='", paths, "'>", funcs,"</a>")
+  text <- str_c("<a href='", paths, "'>", funcs,"</a>")
   text[is.na(paths)] <- funcs[is.na(paths)]
   
   # return data
@@ -239,13 +239,13 @@ parse_usage <- function(usage){
     path <- function_help_path(func, source_link = (func %in% alias_funcs))
     
     if(is.na(path)) {
-      link <- str_join("<em>",ori_func, "</em>(")
+      link <- str_c("<em>",ori_func, "</em>(")
     } else {
       spaces <- str_c(rep(" ", nchar(ori_func) - nchar(func)), collapse = "")
-      link <- str_join("<a href=\"", path, "\">", func, "</a>", spaces ,"(" )
+      link <- str_c("<a href=\"", path, "\">", func, "</a>", spaces ,"(" )
     }
     
-    text <- str_replace(text, str_join(ori_func,"\\("), link)
+    text <- str_replace(text, str_c(ori_func,"\\("), link)
   }
   
   # add links to all the inner functions to their own help pages
@@ -260,7 +260,7 @@ parse_usage <- function(usage){
 safely_order_funcs <- function(vect){
   
   # add a ending string to only allow for end of string comparisons
-  vect <- str_join(vect, "_helpr")
+  vect <- str_c(vect, "_helpr")
   
   # search from i in 1:n; j in i+1:n
   len <- length(vect)

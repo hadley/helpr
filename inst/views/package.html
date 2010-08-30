@@ -7,7 +7,7 @@
 
   <%= render_snippet("rating") %>
 
-  <%= render_snippet("disqus_header", list(name = str_join(package, "_package"))) %>
+  <%= render_snippet("disqus_header", list(name = str_c(package, "_package"))) %>
 
   <title><%= package %>. R help</title>
 </head>
@@ -27,37 +27,37 @@
 
     <% if(dataframe_has_rows(items$package)){ -%>
       <h2>Package Info</h2>
-      <p><%= str_join("<a href='topic/", items$package$file, "'>", items$package$alias, "</a>", 
+      <p><%= str_c("<a href='topic/", items$package$file, "'>", items$package$alias, "</a>", 
         collapse = ", ") %></p>
     <% } %>
 
     <% if(dataframe_has_rows(items$help_name)){ -%>
       <h2>Groups</h2>
-      <p><%= str_join("<a href='topic/", items$help_name$file, "'>", items$help_name$alias, "</a>", 
+      <p><%= str_c("<a href='topic/", items$help_name$file, "'>", items$help_name$alias, "</a>", 
         collapse = ", ") %></p>
     <% } %>
 
     <% if(dataframe_has_rows(items$dataset)){ -%>
       <h2>Data Sets</h2>
-      <p><%= str_join("<a href='topic/", items$dataset$file, "'>", items$dataset$alias, "</a>", 
+      <p><%= str_c("<a href='topic/", items$dataset$file, "'>", items$dataset$alias, "</a>", 
         collapse = ", ") %></p>
     <% } %>
 
     <% if(dataframe_has_rows(items$func)){ -%>
       <h2>Functions</h2>
-      <p><%= str_join("<a href='topic/", items$func$file, "'>", items$func$alias, "</a>", 
+      <p><%= str_c("<a href='topic/", items$func$file, "'>", items$func$alias, "</a>", 
         collapse = ", ") %></p>
     <% } %>
 
     <% if(FALSE && dataframe_has_rows(items$internal)){ -%>
       <h2>Internal</h2>
-      <p><%= str_join("<a href='topic/", items$internal$file, "'>", items$internal$alias, "</a>", 
+      <p><%= str_c("<a href='topic/", items$internal$file, "'>", items$internal$alias, "</a>", 
         collapse = ", ") %></p>
     <% } %>
 
     <% if(dataframe_has_rows(items$idk)){ -%>
       <h2>Items Not Loaded</h2>
-      <p><%= str_join("<a href='topic/", items$idk$file, "'>", items$idk$alias, "</a>", 
+      <p><%= str_c("<a href='topic/", items$idk$file, "'>", items$idk$alias, "</a>", 
         collapse = ", ") %></p>
     <% } %>
 
@@ -66,7 +66,7 @@
     
     <% if(has_text(description$author)){ -%>
       <h2><%= author_str %></h2>
-      <p><%= str_join(description$author, collapse = ", ") %></p>
+      <p><%= str_c(description$author, collapse = ", ") %></p>
     <% }%>
     
 
@@ -75,7 +75,7 @@
       <dl>
       <% for(i in seq_len( nrow(demos))) { -%>
         <dt>
-          <%= str_join( "<a href=\"/package/", package, "/demo/", demos[i, "Item"], "\" >", demos[i, "Item"], "</a>") %>
+          <%= str_c( "<a href=\"/package/", package, "/demo/", demos[i, "Item"], "\" >", demos[i, "Item"], "</a>") %>
         </dt>
         <dd>
           <%= demos[i, "Title"] %>
@@ -87,36 +87,36 @@
 
     <% if(dataframe_has_rows(vigs)){ -%>    
       <h2><%= vigs_str %></h2>
-      <ul><%= str_join( "<li><a href=\"/package/", package, "/vignette/", vigs[, "item"], "\" >", vigs[, "title"], "</a></li>") %></ul>
+      <ul><%= str_c( "<li><a href=\"/package/", package, "/vignette/", vigs[, "item"], "\" >", vigs[, "title"], "</a></li>") %></ul>
     <% } %>
 
     <% if(!is.null(description$imports)){ -%>    
       <h2>Imports</h2>      
-      <p><%= str_join(sapply(description$imports, function(x){str_join("<a href=\"/package/", x$name, "/\">", x$name, str_join("</a>", x$version, sep = " "))}), collapse = ", ")  %></p>
+      <p><%= str_c(sapply(description$imports, function(x){str_c("<a href=\"/package/", x$name, "/\">", x$name, str_c("</a>", x$version, sep = " "))}), collapse = ", ")  %></p>
     <% }%>
     
     <% if(!is.null(description$suggests)){ -%>    
       <h2>Suggests</h2>
       
-      <p><%= str_join(sapply(description$suggests, function(x){str_join("<a href=\"/package/", x$name, "/\">", x$name, str_join("</a>", x$version, sep = " "))}), collapse = ", ")  %></p>
+      <p><%= str_c(sapply(description$suggests, function(x){str_c("<a href=\"/package/", x$name, "/\">", x$name, str_c("</a>", x$version, sep = " "))}), collapse = ", ")  %></p>
     <% }%>
 
     <% if(!is.null(description$extends)){ -%>    
       <h2>Extends</h2>
       
-      <p><%= str_join(sapply(description$extends, function(x){str_join("<a href=\"/package/", x$name, "/\">", x$name, str_join("</a>", x$version, sep = " "))}), collapse = ", ")  %></p>
+      <p><%= str_c(sapply(description$extends, function(x){str_c("<a href=\"/package/", x$name, "/\">", x$name, str_c("</a>", x$version, sep = " "))}), collapse = ", ")  %></p>
     <% }%>
 
     <% if(!is.null(description$depends)){ -%>    
       <h2>Depends</h2>
       
-      <p><%= str_join(sapply(description$depends, function(x){str_join("<a href=\"/package/", x$name, "/\">", x$name, str_join("</a>", x$version, sep = " "))}), collapse = ", ")  %></p>
+      <p><%= str_c(sapply(description$depends, function(x){str_c("<a href=\"/package/", x$name, "/\">", x$name, str_c("</a>", x$version, sep = " "))}), collapse = ", ")  %></p>
     <% }%>
 
     <% if(dataframe_has_rows(description$reverse)){ -%>    
       <h2>Reverse Dependencies</h2>
       
-      <p><%= str_join("<a href=\"/package/", description$reverse, "/\">", description$reverse,"</a>", collapse = ", ")  %></p>
+      <p><%= str_c("<a href=\"/package/", description$reverse, "/\">", description$reverse,"</a>", collapse = ", ")  %></p>
     <% }%>
     
     
@@ -133,13 +133,13 @@
 , " ")[[1]][1] %></td></tr>
       <% } %>
       <% if(!is.null(description$url)){ -%>
-        <tr><td>URL:</td><td><%= str_join("<a href=\"",description$url,"\">",description$url,"</a>", collapse = ", ") %></td></tr>
+        <tr><td>URL:</td><td><%= str_c("<a href=\"",description$url,"\">",description$url,"</a>", collapse = ", ") %></td></tr>
       <% } %>
       <% if(!is.null(description$license)){ -%>
         <tr><td>License:</td><td><%= description$license %></td></tr>
       <% } %>
-      <tr><td colspan=2><%= str_join("<a href=\"http://cran.r-project.org/web/packages/", package, "/index.html\" target=\"_blank\">CRAN</a>", collapse = "") %></td></tr>
-      <tr><td colspan=2><%= str_join("<a href=\"http://cran.r-project.org/web/checks/check_results_", package, ".html\" target=\"_blank\">CRAN Package Check</a>", collapse = "") %></td></tr>
+      <tr><td colspan=2><%= str_c("<a href=\"http://cran.r-project.org/web/packages/", package, "/index.html\" target=\"_blank\">CRAN</a>", collapse = "") %></td></tr>
+      <tr><td colspan=2><%= str_c("<a href=\"http://cran.r-project.org/web/checks/check_results_", package, ".html\" target=\"_blank\">CRAN Package Check</a>", collapse = "") %></td></tr>
     </table>
 
 
@@ -147,7 +147,7 @@
 <!--      <h2>Rating</h2>
       <div id="rating">
         <script language="javascript">
-          <%= str_join("get_rating('", package, "');", collapse = "") %>
+          <%= str_c("get_rating('", package, "');", collapse = "") %>
         </script>
       </div> -->
       

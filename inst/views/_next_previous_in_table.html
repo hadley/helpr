@@ -4,7 +4,7 @@
   
     <% if(start_pos != 0){ -%>
       <td class="helpr_prev_next">
-        <%= str_join("<a href = \"", search_query_path(query, start_pos-row_count), "\">") %>
+        <%= str_c("<a href = \"", search_query_path(query, start_pos-row_count), "\">") %>
           &lt; h<br />
           Previous
         </a>
@@ -18,7 +18,7 @@
       <td>
         <% cur <- i == floor(start_pos / helpr_search_row_count) %>
         <% if(!cur) { -%>
-        <%= str_join("<a href = \"", search_query_path(query, i*row_count), "\">") %>
+        <%= str_c("<a href = \"", search_query_path(query, i*row_count), "\">") %>
         <% } %>
                 
         <span class="helpr_prev_next">e</span><br />

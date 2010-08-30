@@ -28,10 +28,10 @@ render_snippet <- function(template, params = list(), path = helpr_path){
       }
       params <- env
   }
-  path <- file.path(path, "views", str_join("_",template, ".html"))
+  path <- file.path(path, "views", str_c("_",template, ".html"))
   if (!file.exists(path)) 
       stop("Can not find ", template, " template ", call. = FALSE)
       
-  str_join(capture.output(brew:::brew(path, envir = params)), 
+  str_c(capture.output(brew:::brew(path, envir = params)), 
         collapse = "\n")
 }

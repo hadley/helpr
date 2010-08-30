@@ -69,21 +69,21 @@
     <% if(dataframe_has_rows(top_ten_funcs)) { -%>
       <h2><%= top_ten_funcs_str %></h2>
       <ol>
-        <%= str_join("<li><a href='", top_ten_funcs[,"path"], "'>", top_ten_funcs[,"func"], "</a></li>") %>
+        <%= str_c("<li><a href='", top_ten_funcs[,"path"], "'>", top_ten_funcs[,"func"], "</a></li>") %>
       </ol>
     <% } %>
 
     <% if(dataframe_has_rows(last_ten_funcs)) { -%>
       <h2><%= last_ten_funcs_str %></h2>
       <ol>
-        <%= str_join("<li><a href='", last_ten_funcs[,"path"], "'>", last_ten_funcs[,"func"], "</a></li>") %>
+        <%= str_c("<li><a href='", last_ten_funcs[,"path"], "'>", last_ten_funcs[,"func"], "</a></li>") %>
       </ol>
     <% } %>
     
     <% if(dataframe_has_rows(manuals)) { %>
       <h2>Manuals</h2>
       <ol>
-        <%= str_join("<li><a href='", manuals[,"link"], "'>", manuals[,"title"], "</a></li>") %>
+        <%= str_c("<li><a href='", manuals[,"link"], "'>", manuals[,"title"], "</a></li>") %>
       </ol>
     <% } %>
         

@@ -29,10 +29,10 @@ solr_topic <- function(package, topic){
   out$Details <- strip_html(reconstruct(rd$details))
   out$Value <- strip_html(reconstruct(rd$value))
   out$Authors <- strip_html(reconstruct(rd$author))
-  out$Package <- str_join(package, " (", pkg_version(package), ")", collapse = "")
+  out$Package <- str_c(package, " (", pkg_version(package), ")", collapse = "")
 
   list_to_xml(
-    str_join("/package/", package, "/topic/", topic, collapse = ""),
+    str_c("/package/", package, "/topic/", topic, collapse = ""),
     out
   )
 }
@@ -48,7 +48,7 @@ solr_topic <- function(package, topic){
 read_url <- function(url_string){
   url_connect <- url(utils::URLencode(url_string))
   on.exit(close(url_connect))
-  output <- suppressWarnings(str_join(readLines(url_connect), collapse = ""))
+  output <- suppressWarnings(str_c(readLines(url_connect), collapse = ""))
   output
 }
 
@@ -77,8 +77,8 @@ make_field <- function(name, value){
   value <- str_replace(value, ">", "&#62;")
   value <- str_replace(value, "\n", "")
   value <- str_replace(value, "\t", "")
-  if(!identical(name, "id")) name <- str_join(name, "_t")
-  str_join("<field name=\"", name, "\">", str_join(value, collapse = "; "),"</field>", collapse = "")
+  if(!identical(name, "id")) name <- str_c(name, "_t")
+  str_c("<field name=\"", name, "\">", str_c(value, collapse = "; "),"</field>", collapse = "")
 }
 
 
@@ -98,7 +98,7 @@ list_to_xml <- function(id, obj){
     make_field(x$name, x$value)
   })
   
-  str_join("<doc>", str_join(fields, collapse=""), "</doc>", collapse = "")
+  str_c("<doc>", str_c(fields, collapse=""), "</doc>", collapse = "")
 }
 
 
@@ -124,7 +124,7 @@ list_to_double_list <- function(obj){
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 make_add_xml <- function(obj){
-  str_join("<add>", obj, "</add>", collaspe = "")
+  str_c("<add>", obj, "</add>", collaspe = "")
 }
 
 
@@ -172,7 +172,7 @@ index_package <- function(package, start_letter = "a", verbose = TRUE){
   unique_topics <- all_topics[!duplicated(all_topics$file), "alias"]
   if(length(unique_topics) > 0){
     first_letter <- sapply(strsplit(unique_topics, ""), function(x){tolower(x[1])})
-    rows <- str_detect(first_letter, str_join("[", tolower(start_letter), "-z]"))
+    rows <- str_detect(first_letter, str_c("[", tolower(start_letter), "-z]"))
     unique_topics <- unique_topics[rows]
   }
 
@@ -188,9 +188,9 @@ index_package <- function(package, start_letter = "a", verbose = TRUE){
       
   }
   put_string(make_add_xml(
-    str_join(
+    str_c(
       "\n\n\n<!--         ", package, "         -->\n", 
-      str_join(pkg_output, collapse = "\n\n")
+      str_c(pkg_output, collapse = "\n\n")
       , collapse = "")
   ))
 
@@ -207,7 +207,7 @@ index_all <- function(start_letter = "a", verbose = TRUE){
   packages <- installed_packages()$Package
   packages <- packages[order(tolower(packages))]
   first_letter <- sapply(strsplit(packages, ""), function(x){tolower(x[1])})
-  rows <- str_detect(first_letter, str_join("[", tolower(start_letter), "-z]"))
+  rows <- str_detect(first_letter, str_c("[", tolower(start_letter), "-z]"))
   packages <- packages[rows]
   
   sapply(packages, index_package, verbose = verbose)
@@ -226,7 +226,7 @@ index_all <- function(start_letter = "a", verbose = TRUE){
 #' @keywords internal
 get_solr_query_result <- function(solr_param_string){
   rows <- 20
-  response <- urlJSON_to_list(str_join("http://0.0.0.0:8983/solr/select/?version=2.2&wt=json&rows=", rows, "&indent=on&hl=on&hl.simple.pre=<strong>&hl.simple.post=</strong>&hl.fl=*&hl.fragsize=70&hl.mergeContiguous=true&", solr_param_string))
+  response <- urlJSON_to_list(str_c("http://0.0.0.0:8983/solr/select/?version=2.2&wt=json&rows=", rows, "&indent=on&hl=on&hl.simple.pre=<strong>&hl.simple.post=</strong>&hl.fl=*&hl.fragsize=70&hl.mergeContiguous=true&", solr_param_string))
   docs <- response$highlighting
   query <- response$responseHeader$params$q
 
@@ -283,7 +283,7 @@ package_description <- function(pkg, topic){
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 search_query_path <- function(query, start_pos){
-  str_join(base_html_path(),"/search/start=",start_pos,";q=",query)  
+  str_c(base_html_path(),"/search/start=",start_pos,";q=",query)  
 }
 
 
@@ -334,7 +334,7 @@ send_system_command <- function(system_string){
     status <- "FAIL"
   
   if(status != "0"){
-    message(str_join(curled_text, collapse = "\n"))
+    message(str_c(curled_text, collapse = "\n"))
     stop("Error uploading file to solr")
   }
   
@@ -357,7 +357,7 @@ put_string <- function(string){
 #' @keywords internal
 put_file <- function(file_name){
   cat("posting file: ", file_name,"\n")
-  send_system_command(str_join("curl http://localhost:8983/solr/update --data-binary @", file_name, " -H 'Content-type:text/xml; charset=utf-8'", collapse = ""))
+  send_system_command(str_c("curl http://localhost:8983/solr/update --data-binary @", file_name, " -H 'Content-type:text/xml; charset=utf-8'", collapse = ""))
   send_commit_command()
 }
 
