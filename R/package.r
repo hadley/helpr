@@ -13,7 +13,7 @@ helpr_package_mem <- memoise(function(package, version) {
   info <- .readRDS(system.file("Meta", "package.rds", package = package))
   description <- as.list(info$DESCRIPTION)
   info$DESCRIPTION <- NULL
-  description <- defaults(info, description)
+  description <- modifyList(info, description)
   names(description) <- tolower(names(description))
   
   author_str <- pluralize("Author", description$author)
