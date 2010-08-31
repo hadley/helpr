@@ -550,13 +550,3 @@ usage_methods <- function(usage) {
   unique(methos)
   
 }
-
-
-
-
-
-
-
-
-
-

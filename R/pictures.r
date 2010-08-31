@@ -18,4 +18,3 @@ save_picture <- function(obj_name, obj_plot){
   
   str_c("/picture/", obj_name, ".png", collapse = "")
 }
-

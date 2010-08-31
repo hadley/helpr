@@ -350,4 +350,3 @@ print.help_files_with_topic <- function (x, ...)
     }
     invisible(x)
 }
-

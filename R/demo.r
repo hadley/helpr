@@ -72,7 +72,3 @@ demo_src <- function(package, demo_name){
 pkg_demos <- function(package) {
   as.data.frame(demo(package = package)$results, stringsAsFactors = FALSE)
 }
-
-
-
-

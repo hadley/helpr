@@ -275,4 +275,3 @@ safely_order_funcs <- function(vect){
   }
   str_replace_all(vect, "_helpr", "")
 }
-

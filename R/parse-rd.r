@@ -431,6 +431,3 @@ parse_item_list <- function(rd){
   
   str_c("<table>", str_c(items_text, collapse = ""), "</table>", collapse = "")
 }
-
-
-
