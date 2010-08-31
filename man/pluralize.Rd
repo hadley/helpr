@@ -1,7 +1,7 @@
 \name{pluralize}
 \alias{pluralize}
 \title{Pluralize...}
-\usage{pluralize(string, obj, plural=str_join(string, "s", sep = ""),
+\usage{pluralize(string, obj, plural=str_c(string, "s", sep = ""),
     bool_statement=NROW(obj))}
 \description{Pluralize
 pluralize a string with either the default 's' according to the boolean statement}
