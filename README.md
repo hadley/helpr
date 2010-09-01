@@ -4,19 +4,21 @@ Helpr is an R package that betters friendly HTML documentation. With links to ot
 
 The heart of `helpr` is hosted locally. No internet is required to display all of the documentation, while functionality of the search bar, RSS feed, and comment system requires an internet connection. 
 
+The development of `helpr` was made possible with generous support from Revolution Analytics.
+
 # Main Features
 
 * Home Screen
   * List of all packages loaded / installed
   * Links to all R Manuals
-  * Able to install old packages
+  * Allows you to update out-of-date packages
 
 * Package Page
   * Every help page link is split into groups
   * Links to package vignettes and demos
   * List of general information: Authors, Suggests, Depends, Reverse
     Dependencies, and CRAN info
-  * Change Log of the latest version
+  * Change log of the latest version
   * Disqus comment system
 
 * Topic Page
