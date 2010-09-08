@@ -1,6 +1,6 @@
 Package: helpr
 Type: Package
-Title: Better documentation.
+Title: Help for R.
 Version: 0.1
 Author: Hadley Wickham <h.wickham@gmail.com> and Barret Schloerke
     <schloerke@gmail.com>
