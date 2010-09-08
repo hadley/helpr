@@ -166,7 +166,7 @@ helpr_function <- function(package, func){
     name = func,
     aliases = aliases,
     aliases_str = pluralize("Alias (Source)", aliases, plural="Aliases (Source)"),
-    desc = helpr_topic(package, topic)$desc,
+    desc = gsub("$\n+|\n+^", "", reconstruct(pkg_topic(package, topic)$description)),
     src = src,
     src_functions = src_functions,
     src_functions_str = src_functions_str
