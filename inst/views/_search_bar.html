@@ -8,7 +8,7 @@
       $("#search_bar_input").keyup(function(event){
         if(event.keyCode == 13){
           var query = $("#search_bar_input").val();
-          $(window.location).attr('href', '/search/start=0;q='+query);
+          $(window.location).attr('href', '/search?start=0&q='+query);
         }
       });  
     })

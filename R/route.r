@@ -141,15 +141,12 @@ helpr <- function(installed = TRUE) {
   })
 
   # Individual help topic with multiple reponses
-  router$get("/multiple_help_paths/:path_string", function(path_string, ...) {
-    pkg_and_topic <- str_split(str_split(path_string, ";")[[1]], "~")
+  router$get("/multiple_help_paths", function(query, ...) {
 
-    pkg <- c()
-    topic <- c()
+    pkg <- names(query)
+    topic <- unname(query)
     descriptions <- c()
-    for(i in seq_along(pkg_and_topic)){
-      pkg[i] <- pkg_and_topic[[i]][1]
-      topic[i] <- pkg_and_topic[[i]][2]
+    for(i in seq_along(pkg)){
       descriptions[i] <- package_description(pkg[i], topic[i])
     }
     
@@ -157,8 +154,8 @@ helpr <- function(installed = TRUE) {
   })
   
   # Search
-  router$get("/search/:query_string", function(query_string, ...) {
-    query_string <- str_replace_all(query_string, ";", "&")
+  router$get("/search", function(query, ...) {
+    query_string <- str_c(names(query), query, sep = "=", collapse = "&")
     render_brew("search", helpr_solr_search(query_string), path = path)  
   })
   
@@ -341,7 +338,7 @@ print.help_files_with_topic <- function (x, ...)
 
         if(length(pkgname) > 1){
           browseURL(paste(base_html_path(), 
-          "/multiple_help_paths/", str_c(pkgname, topic, sep = "~", collapse = ";"), sep = ""), browser)
+          "/multiple_help_paths?", str_c(pkgname, topic, sep = "=", collapse = "&"), sep = ""), browser)
         }else{
           browseURL(paste(base_html_path(), 
           "/library/", pkgname, "/html/", topic, 

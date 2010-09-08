@@ -28,7 +28,7 @@
     <h1>Multiple Topics</h1>
 
     <% for(i in seq_along(pkg)){ -%>
-      <%= render_snippet("package_topic_desc", list(pkg = pkg[i], topic = topic[i], desc = desc[i])) %>
+      <%= render_snippet("package_topic_desc", list(pkg = pkg[i], topic = topic[i], items = desc[i])) %>
     <% } %>
     
   </div></div>
