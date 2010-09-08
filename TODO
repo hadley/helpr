@@ -11,14 +11,14 @@ MASS::lmwork  Extract Standardized Residuals from a Linear Model
 Solr
   index all internal functions of each function
     add list to source page
- similar solr?
+  similar solr?
     find documents similar to the one looking at
-BUSY -  return answers
+  √return answers
     √more truncation
-      (smaller results)
-    just give answer, not from where (no title necessary)
-    highlight results on next page (javascript to inspect for referrer, extract q param and then match)
-BUSY -  Change Solr params into ?a=5&b=6
+      √ (smaller results) set to 70 chars
+    √just give answer, not from where (no title necessary)
+    √highlight results on next page (javascript to inspect for referrer, extract q param and then match)
+  √Change Solr params into ?a=5&b=6
   
 
 

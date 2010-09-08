@@ -126,11 +126,21 @@ helpr <- function(installed = TRUE) {
   })
 
   # Individual help topic
-  router$get("/package/:package/topic/:topic", function(package, topic, ...) {
+  router$get("/package/:package/topic/:topic", function(package, topic, query, ...) {
+    highlight <- ""
+    if (!missing(query)){
+      if ("h" %in% names(query)) {
+        highlight <- query[names(query) == "h"]
+      }
+    }
+    
     if(check_for_package(package)){
-      render_brew("topic", helpr_topic(package, topic), path = path)
+      render_brew("topic", helpr_topic(package, topic, highlight), path = path)
     } else {
-      render_brew("whistle", list(package = package, url = deparse(str_c("/package/", package, "/topic/", topic, collapse = ""))), path = path)      
+      query_string <- str_c("?", str_c(names(query), query, sep = "=", collapse = "&"))
+      if(identical(query_string, "?"))
+        query_string <- ""
+      render_brew("whistle", list(package = package, url = deparse(str_c("/package/", package, "/topic/", topic, query_string, collapse = ""))), path = path)      
     }
   })
   router$get("/library/:package/html/:topic.html", function(package, topic, ...) {

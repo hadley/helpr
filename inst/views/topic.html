@@ -9,16 +9,22 @@
 
   <%= render_snippet("disqus_header", list(name = str_c(package, "_topic_",name))) %>
 
+  <script type="text/javascript" src="/_scripts/jquery.highlight-3.yui.js"></script>
+
   <title><%= name %> / <%= package %>. R help</title>
 </head>
 
-<body onLoad="set_on_click('#example_source_code'); $('#run_highlight').hide();">
+<body onLoad="set_on_click('#example_source_code'); $('#run_highlight').hide(); highlight_text('<%= highlight %>');">
   <div id="watermark"><%= name %></div>
   <div id="doc2" class="yui-t4">
   <div id="hd">
     <a href="/index.html">R</a> &#8594; <a href=".."><%= package %></a> &#8594; <%= name %> 
-    <% if (length(aliases) > 0) { -%>
-    (aka <%= str_c(aliases, collapse = ", ") %>)<% } %>
+    <% if (length(aliases) > 0) { -%> (aka <%= str_c(aliases, collapse = ", ") %>)
+    <% } %>
+    <% if (nchar(highlight) > 0) { -%>
+      <input type="button" id="remove_highlight_button" onclick="remove_highlight()" value="Remove Highlighting" />
+    <% } %>
+    
     <%= render_snippet("search_bar") %>
   </div>
 

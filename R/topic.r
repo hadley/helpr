@@ -3,9 +3,10 @@
 #' @return all the information necessary to produce the home site ("index.html")
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-helpr_topic <- function(package, topic) {
+helpr_topic <- function(package, topic, highlight) {
   topic_info <- parse_help(pkg_topic(package, topic), package = package)
   topic_info$package <- package
+  topic_info$highlight <- highlight
 
   topic_info
 }

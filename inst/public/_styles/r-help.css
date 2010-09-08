@@ -1,3 +1,4 @@
+
 /* Colour scheme: http://kuler.adobe.com/#themeID/163847 */
 
 html {overflow: scroll;}
@@ -133,4 +134,5 @@ pre {
 #search_bar{
   float: right;
 }
-
+.highlight { background-color: yellow }
+#remove_highlight_button { float: right};
