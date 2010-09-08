@@ -299,7 +299,7 @@ parse_text <- function(text){
 #' @param bool_statement boolean to use to determine which string to use
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal 
-pluralize <- function(string, obj, plural = str_c(string, "s", sep = ""), bool_statement = NROW(obj)){
+pluralize <- function(string, obj, plural = str_c(string, "s"), bool_statement = NROW(obj)){
   if(bool_statement) {
     plural
   } else {
@@ -431,6 +431,3 @@ parse_item_list <- function(rd){
   
   str_c("<table>", str_c(items_text, collapse = ""), "</table>", collapse = "")
 }
-
-
-

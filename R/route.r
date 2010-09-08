@@ -66,31 +66,31 @@ helpr <- function(installed = TRUE) {
   router <- Router$clone()
 
   # Show list of all packages on home page
-  router$get("/index.html", function() {
+  router$get("/index.html", function(...) {
     render_brew("index", helpr_home(), path = path)
   })
 
   # Use file in public, if present
-  router$get("/*", function(splat) {
+  router$get("/*", function(splat, ...) {
     static_file(file.path(path, "public", splat))
   })
 
   # Redirect old home location to new
-  router$get("/doc/html/index.html", function() {
+  router$get("/doc/html/index.html", function(...) {
     redirect("/index.html")
   })
 
-  router$get("/", function() {
+  router$get("/", function(...) {
     redirect("/index.html")
   })
 
   # If package path, missing trailing /, redirect
-  router$get("/package/:package", function(package) {
+  router$get("/package/:package", function(package, ...) {
     redirect(str_c("/package/", package, "/"))
   })
 
   # Package index page, list topics etc
-  router$get("/package/:package/", function(package) {
+  router$get("/package/:package/", function(package, ...) {
     if(check_for_package(package)){
       render_brew("package", helpr_package(package), path = path)    
     } else {
@@ -99,7 +99,7 @@ helpr <- function(installed = TRUE) {
   })
   
   # Package Vignette
-  router$get("/package/:package/vignette/:vignette", function(package, vignette) {
+  router$get("/package/:package/vignette/:vignette", function(package, vignette, ...) {
     if(check_for_package(package)){
       static_file(system.file("doc", str_c(vignette, ".pdf"), package = package))
     } else {
@@ -108,7 +108,7 @@ helpr <- function(installed = TRUE) {
   })
 
   # Package Demo
-  router$get("/package/:package/demo/:demo", function(package, demo) {
+  router$get("/package/:package/demo/:demo", function(package, demo, ...) {
     if(check_for_package(package)){
       render_brew("demo", helpr_demo(package, demo), path = path)
     } else {
@@ -117,7 +117,7 @@ helpr <- function(installed = TRUE) {
   })
   
   # Individual topic source
-  router$get("/package/:package/topic/:topic/source/:func", function(package, topic, func) {
+  router$get("/package/:package/topic/:topic/source/:func", function(package, topic, func, ...) {
     if(check_for_package(package)){
       render_brew("source", helpr_function(package, func), path = path)
     } else {
@@ -126,14 +126,14 @@ helpr <- function(installed = TRUE) {
   })
 
   # Individual help topic
-  router$get("/package/:package/topic/:topic", function(package, topic) {
+  router$get("/package/:package/topic/:topic", function(package, topic, ...) {
     if(check_for_package(package)){
       render_brew("topic", helpr_topic(package, topic), path = path)
     } else {
       render_brew("whistle", list(package = package, url = deparse(str_c("/package/", package, "/topic/", topic, collapse = ""))), path = path)      
     }
   })
-  router$get("/library/:package/html/:topic.html", function(package, topic) {
+  router$get("/library/:package/html/:topic.html", function(package, topic, ...) {
     redirect(str_c("/package/", package, "/topic/", topic))
   })
   router$get("/library/:package/help/:topic", function(package, topic) {
@@ -141,7 +141,7 @@ helpr <- function(installed = TRUE) {
   })
 
   # Individual help topic with multiple reponses
-  router$get("/multiple_help_paths/:path_string", function(path_string) {
+  router$get("/multiple_help_paths/:path_string", function(path_string, ...) {
     pkg_and_topic <- str_split(str_split(path_string, ";")[[1]], "~")
 
     pkg <- c()
@@ -157,7 +157,7 @@ helpr <- function(installed = TRUE) {
   })
   
   # Search
-  router$get("/search/:query_string", function(query_string) {
+  router$get("/search/:query_string", function(query_string, ...) {
     query_string <- str_replace_all(query_string, ";", "&")
     render_brew("search", helpr_solr_search(query_string), path = path)  
   })
@@ -165,28 +165,28 @@ helpr <- function(installed = TRUE) {
   
   
   # AJAX
-  router$get("/package/old.json", function() {
+  router$get("/package/old.json", function(...) {
     render_json(old_package_names())
   })
-  router$get("/package/index.json", function() {
+  router$get("/package/index.json", function(...) {
     render_json(installed_packages())
   })
-  router$get("/package/update.json/:all_packs", function(all_packs) {
+  router$get("/package/update.json/:all_packs", function(all_packs, ...) {
     render_json(update_packs(all_packs))
   })
-  router$get("/package/install.json/:pkg", function(pkg) {
+  router$get("/package/install.json/:pkg", function(pkg, ...) {
     install_packages(pkg)
     render_json(TRUE)
   })
-  router$get("/package/:package/rating.json", function(package) {
+  router$get("/package/:package/rating.json", function(package, ...) {
     string <- rating_text(package)
     render_json(string)
   })
-  router$get("/package/:package/exec_demo/:demo", function(package, demo) {
+  router$get("/package/:package/exec_demo/:demo", function(package, demo, ...) {
     exec_pkg_demo(package, demo)
     render_json(TRUE)
   })
-  router$get("/package/:package/topic/:topic/exec_example", function(package, topic) {
+  router$get("/package/:package/topic/:topic/exec_example", function(package, topic, ...) {
     exec_example(package, topic)
     render_json(TRUE)
   })
@@ -194,7 +194,7 @@ helpr <- function(installed = TRUE) {
   
   
   # Manual HTML Files
-  router$get("/manuals/:name.html", function(name) {
+  router$get("/manuals/:name.html", function(name, ...) {
     file_loc <- as.character(subset(get_manuals(), file_name == name, select = "file_loc"))
     static_file(file_loc)
   })
@@ -202,7 +202,7 @@ helpr <- function(installed = TRUE) {
   
   
   #execute code  
-  router$get("/eval_text/*", function(splat){
+  router$get("/eval_text/*", function(splat, ...){
     decoded_text <- URLdecode(splat)
     cat("\n")
     evaluate:::replay.list(evaluate:::evaluate(decoded_text, envir = .GlobalEnv))
@@ -210,31 +210,31 @@ helpr <- function(installed = TRUE) {
 
     render_json(TRUE)
   })
-  router$get("/eval_demo/:package~:demo_name", function(package, demo_name){
+  router$get("/eval_demo/:package~:demo_name", function(package, demo_name, ...){
     list(payload = evaluate_text(demo_src(package, demo_name), pic_base_name = str_c(package, "_", pkg_version(package),"_demo_", demo_name)))
   })
 
-  router$get("/eval_example/:package~:topic", function(package, topic){
+  router$get("/eval_example/:package~:topic", function(package, topic, ...){
     list(payload = evaluate_text(reconstruct(untag(pkg_topic(package, topic)$examples)), pic_base_name = str_c(package, "_", pkg_version(package),"_topic_", topic)))
   })
   
 
   # Individual help topic 
-  router$get("/g", function() {
+  router$get("/g", function(...) {
     redirect("package/stats/demo/glm.vr")
   })
-  router$get("/n", function() {
+  router$get("/n", function(...) {
     redirect("package/stats/topic/nlm")
   })
   
 
   # pictures
-  router$get("/picture/:file_name", function(file_name) {
+  router$get("/picture/:file_name", function(file_name, ...) {
     file_path <- file.path(helpr_pic_path, file_name)
     static_file(file_path)
   })
 
-  render_path <- function(path, ...) router$route(path)
+  render_path <- function(path, query, ...) router$route(path, query)
   assignInNamespace("httpd", render_path, "tools")
   if (tools:::httpdPort == 0L) {
     help.start()
@@ -350,4 +350,3 @@ print.help_files_with_topic <- function (x, ...)
     }
     invisible(x)
 }
-

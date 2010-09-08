@@ -2,7 +2,7 @@ parse_all_topics <- function(start_letter = "a"){
   packages <- suppressWarnings(library()$results[,"Package"])
   packages <- packages[order(tolower(packages))]
   first_letter <- sapply(strsplit(packages, ""), function(x){tolower(x[1])})
-  rows <- str_detect(first_letter, str_join("[", tolower(start_letter), "-z]"))
+  rows <- str_detect(first_letter, str_c("[", tolower(start_letter), "-z]"))
   packages <- packages[rows]
   slow_pkgs <- data.frame(pkg="", topic = "", time="", stringsAsFactors = FALSE)
   slow_pos <- 1
@@ -36,7 +36,7 @@ parse_all_packages <- function(start_letter = "a"){
   packages <- suppressWarnings(library()$results[,"Package"])
   packages <- packages[order(tolower(packages))]
   first_letter <- sapply(strsplit(packages, ""), function(x){tolower(x[1])})
-  rows <- str_detect(first_letter, str_join("[", tolower(start_letter), "-z]"))
+  rows <- str_detect(first_letter, str_c("[", tolower(start_letter), "-z]"))
   packages <- packages[rows]
   slow_pkgs <- data.frame(pkg="", time="", stringsAsFactors = FALSE)
   slow_pos <- 1
@@ -64,12 +64,12 @@ parse_all_demos <- function(start_letter = "a"){
   demos <- as.data.frame(demo()$results, stringsAsFactors = FALSE)
   demos <- demos[order(tolower(demos$Item)), ]
   first_letter <- sapply(strsplit(demos$Item, ""), function(x){tolower(x[1])})
-  rows <- str_detect(first_letter, str_join("[", tolower(start_letter), "-z]"))
+  rows <- str_detect(first_letter, str_c("[", tolower(start_letter), "-z]"))
   demos <- demos[rows, ]
   slow_demos <- data.frame(demo="", time="", stringsAsFactors = FALSE)
   slow_pos <- 1
   
-  cat("Demos: ", str_join(demos$Item, collapse = ", "), "\n")
+  cat("Demos: ", str_c(demos$Item, collapse = ", "), "\n")
   for(i in seq_along(demos$Item)){
     cat(demos[i,"Package"], " - ", demos[i,"Item"],": ... ")
     check_for_package(demos[i,"Package"])

@@ -206,4 +206,3 @@ exec_example <- function(package, topic){
         max.deparse.length = Inf, encoding = encoding, skip.echo = skips, 
         keep.source = TRUE)
 }
-

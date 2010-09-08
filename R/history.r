@@ -88,5 +88,3 @@ ten_functions <- function(){
     top_ten = top_ten_functions(fun_hist)
   )
 }
-
-

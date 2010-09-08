@@ -65,10 +65,10 @@ function_help_path_mem <- memoise(function(x, source_link = FALSE){
     # retrieve last three folders/file and keep the package and topic
     pack_and_topic <- pkg_and_topic_from_help_url(url_string)
 
-    ending <- str_join("/topic/", pack_and_topic[2])
+    ending <- str_c("/topic/", pack_and_topic[2])
     if(source_link)
-      ending <- str_join(ending, "/source/", x)
-    str_join("/package/",pack_and_topic[1], ending)
+      ending <- str_c(ending, "/source/", x)
+    str_c("/package/",pack_and_topic[1], ending)
   }
 })
 
@@ -144,11 +144,11 @@ helpr_function <- function(package, func){
   
   if(identical(par_text, "bad_function")){
     
-    input <- str_join("str(",func,")", collapse = "")
+    input <- str_c("str(",func,")", collapse = "")
     src <- capture.output(eval(parser(text = input)[1]))
     src <- str_replace_all(src, "<", "&lt;")
     src <- str_replace_all(src, ">", "&gt;")
-    src <- eval_tag_output(str_join(src, collapse = "\n"))
+    src <- eval_tag_output(str_c(src, collapse = "\n"))
     src <- str_c("<pre>", input,"</pre>", src)
     src_functions <- NULL
     src_functions_str <- ""
@@ -172,4 +172,3 @@ helpr_function <- function(package, func){
     src_functions_str = src_functions_str
   )
 }
-
