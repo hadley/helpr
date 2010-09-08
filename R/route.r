@@ -173,29 +173,29 @@ helpr <- function(installed = TRUE) {
   
   # AJAX
   router$get("/package/old.json", function(...) {
-    render_json(old_package_names())
+    helpr_render_json(old_package_names())
   })
   router$get("/package/index.json", function(...) {
-    render_json(installed_packages())
+    helpr_render_json(installed_packages())
   })
   router$get("/package/update.json/:all_packs", function(all_packs, ...) {
-    render_json(update_packs(all_packs))
+    helpr_render_json(update_packs(all_packs))
   })
   router$get("/package/install.json/:pkg", function(pkg, ...) {
     install_packages(pkg)
-    render_json(TRUE)
+    helpr_render_json(TRUE)
   })
   router$get("/package/:package/rating.json", function(package, ...) {
     string <- rating_text(package)
-    render_json(string)
+    helpr_render_json(string)
   })
   router$get("/package/:package/exec_demo/:demo", function(package, demo, ...) {
     exec_pkg_demo(package, demo)
-    render_json(TRUE)
+    helpr_render_json(TRUE)
   })
   router$get("/package/:package/topic/:topic/exec_example", function(package, topic, ...) {
     exec_example(package, topic)
-    render_json(TRUE)
+    helpr_render_json(TRUE)
   })
 
   
@@ -215,7 +215,7 @@ helpr <- function(installed = TRUE) {
     evaluate:::replay.list(evaluate:::evaluate(decoded_text, envir = .GlobalEnv))
     cat(options("prompt")$prompt)
 
-    render_json(TRUE)
+    helpr_render_json(TRUE)
   })
   router$get("/eval_demo/:package~:demo_name", function(package, demo_name, ...){
     list(payload = evaluate_text(demo_src(package, demo_name), pic_base_name = str_c(package, "_", pkg_version(package),"_demo_", demo_name)))
@@ -252,6 +252,10 @@ helpr <- function(installed = TRUE) {
   }
 
   return(invisible(router))
+}
+
+helpr_render_json <- function(obj) {
+  suppressWarnings(sinartra:::render_json(obj))
 }
 
 
