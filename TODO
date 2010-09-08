@@ -18,13 +18,15 @@ BUSY -  return answers
       (smaller results)
     just give answer, not from where (no title necessary)
     highlight results on next page (javascript to inspect for referrer, extract q param and then match)
+BUSY -  Change Solr params into ?a=5&b=6
+  
 
 
 New
 √  loading a package while you wait needs a screen to tell you that
 √  change log stuff
 √  allow install of single package
-  make the search bar disappear if solr is not available
+√  make the search bar disappear if solr is not available
   add to topic page what similar functions exist in sidebar
     Solr
 

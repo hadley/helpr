@@ -1,3 +1,18 @@
+#' check to see if solr is running
+#'
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
+solr_exists <- memoise(function(){
+  result <- tryCatch(
+    send_commit_command(),
+    error = function(e){
+      FALSE
+    }
+  )
+    
+  !identical(result, FALSE)
+})
+
 
 #' helpr topic into xml for solr
 #'
@@ -282,7 +297,7 @@ package_description <- function(pkg, topic){
 #' @param start_pos postion to start at
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-search_query_path <- function(query, start_pos){
+search_query_path <- function(query="example", start_pos=0){
   str_c(base_html_path(),"/search/start=",start_pos,";q=",query)  
 }
 
@@ -330,13 +345,15 @@ send_commit_command <- function(){
 send_system_command <- function(system_string){
   curled_text <- system(system_string, intern = TRUE, ignore.stderr = TRUE)
   status <- str_sub(curled_text[3], start=47, end=47)
-  if(length(status) < 1)
-    status <- "FAIL"
-  
-  if(status != "0"){
+#  if(length(status) < 1 | status == NA)
+#    status <- "FAIL"
+
+  if(!identical(status, "0")){
     message(str_c(curled_text, collapse = "\n"))
     stop("Error uploading file to solr")
   }
+  
+  "success"
   
 }
 
