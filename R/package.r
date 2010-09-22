@@ -31,8 +31,9 @@ helpr_package_mem <- memoise(function(package, version) {
   description$author <- pkg_author_and_maintainers(description$author, description$maintainer)
   description$maintainer <- NULL
 
-  if(has_text(description$url))
+  if (has_text(description$url)) {
     description$url <- str_trim(str_split(description$url, ",")[[1]])
+  }
 
   list(
     package = package, 
@@ -52,7 +53,7 @@ helpr_package_mem <- memoise(function(package, version) {
 #'
 #' @keywords internal
 #' @author Hadley Wickham
-pkg_version <- function(pkg){
+pkg_version <- function(pkg) {
   .readRDS(system.file("Meta", "package.rds", package = pkg))$DESCRIPTION[["Version"]]
 }
 
@@ -61,22 +62,23 @@ pkg_version <- function(pkg){
 #'
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-parse_pkg_desc_item <- function(obj){
-  if(NROW(obj) < 1){
+parse_pkg_desc_item <- function(obj) {
+  if (NROW(obj) < 1) {
     return(NULL)
   }
   
-  if(!is.list(obj)){
+  if (!is.list(obj)) {
     obj <- list(obj = (list(name = obj, version = NULL)))
   }
 
   as.data.frame(
-    sapply(obj, function(x){
+    sapply(obj, function(x) {
       vers <- NULL
       
       # if the version is found, it will create one in the form of '(1.2.3)'
-      if(!is.null(x$version))
+      if (!is.null(x$version)) {
         vers <- str_c("(", x$op, " ", str_c(unclass(x$version)[[1]], collapse = "."), ")", collapse = "")
+      }
       list(name = as.character(x$name), version = as.character(vers))
     })
     , stringsAsFactors = FALSE
@@ -89,7 +91,7 @@ parse_pkg_desc_item <- function(obj){
 #' @return string containing the authors with links properly displayed
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-pkg_author_and_maintainers <- function(authors, maintainer=NULL){
+pkg_author_and_maintainers <- function(authors, maintainer=NULL) {
 
   # retrieve the authors and email
   authors <- str_replace_all(authors, "\\n", " ")
@@ -102,9 +104,9 @@ pkg_author_and_maintainers <- function(authors, maintainer=NULL){
   auths_string <- str_extract_all(authors, all_pattern)[[1]]
   auths <- sapply(str_extract_all(auths_string, name_pattern), "[[", 1)
   emails <- sapply(str_extract_all(auths_string, email_pattern), "[[", 1)
-  if(length(emails) < 1){
+  if (length(emails) < 1) {
     author_and_email <- auths
-  }else{
+  } else {
     emails <- str_replace_all(emails, "<", "")
     emails <- str_replace_all(emails, ">", "")
     
@@ -112,11 +114,11 @@ pkg_author_and_maintainers <- function(authors, maintainer=NULL){
   }
   
   # replace the original authors with the linked authors
-  for(i in seq_along(author_and_email)){
+  for (i in seq_along(author_and_email)) {
     authors <- str_replace_all(authors, auths_string[i], author_and_email[i])
   }
 
-  if(!is.null(maintainer)){
+  if (!is.null(maintainer)) {
     maintainer_name <- str_trim(strip_html(maintainer))
     maintainer_email <- str_extract_all(maintainer, email_pattern)[[1]][1]
     maintainer_email <- str_replace_all(maintainer_email, "<", "")
@@ -125,7 +127,7 @@ pkg_author_and_maintainers <- function(authors, maintainer=NULL){
     # make the maintainer bold
     maintainer_string <- str_c("<strong>", author_email(maintainer_name, maintainer_email), "</strong>", collapse = "")  
   
-    if(str_detect(authors, maintainer_name)){
+    if (str_detect(authors, maintainer_name)) {
       # replace the current author text with the maintainer text
       authors <- str_replace_all(
         authors, 
@@ -138,7 +140,7 @@ pkg_author_and_maintainers <- function(authors, maintainer=NULL){
         maintainer_name,
         maintainer_string
       )
-    }else{
+    } else {
       # attach the maintainer to the end
       authors <- str_c(authors, "; ", maintainer_string, collapse = "")
     }
@@ -176,8 +178,9 @@ pkg_help_path <- function(package) {
 pkg_vigs <- function(package) {
   vignettes <- vignette(package = package)$results
   
-  if(!NROW(vignettes))
+  if (!NROW(vignettes)) {
     return(NULL)
+  }
 
   titles <- str_replace_all(vignettes[,4], "source, pdf", "")
   titles <- str_trim(str_replace_all(titles, "[()]", ""))
@@ -196,11 +199,13 @@ pkg_topics_index <- memoise(function(package) {
   
   file_path <- file.path(help_path, "AnIndex")
   ### check to see if there is anything that exists, aka sinartra
-  if(length(readLines(file_path, n = 1)) < 1)
+  if (length(readLines(file_path, n = 1)) < 1) {
     return(NULL)
+  }
 
   topics <- read.table(file_path, sep = "\t", 
     stringsAsFactors = FALSE, comment.char = "", quote = "", header = FALSE)
+    
   names(topics) <- c("alias", "file") 
   topics[complete.cases(topics), ]
 })
@@ -219,21 +224,13 @@ pkg_topics_rd <- memoise(function(package) {
 })
 
 #' Topic Title and Aliases by Package
-#'
+#' return information on the package, datasets, internal, and datasets
 #'
 #' @param pkg package in question
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 pkg_topics_alias <- function(pkg) {
-  index <- pkg_topics_index(pkg)
-  files <- names(index)
-  
-  functions <- split(index$alias, index$file)
-  
-  ds <- get_datasets(pkg)$dataset
-  
-  ds2 <- sapply(functions, function(x) {if(any(x %in% ds)) x})
-  
+    
   rd1 <- pkg_topics_rd(pkg)
   rd <- lapply(rd1, function(x) {
     desc <- reconstruct(untag(x$description))
