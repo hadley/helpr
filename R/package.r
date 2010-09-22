@@ -18,7 +18,7 @@ helpr_package_mem <- memoise(function(package, version) {
   
   author_str <- pluralize("Author", description$author)
   
-  items <- pkg_topics_index_by_type(package)
+  items <- pkg_topics_alias(package)
   
   demos <- pkg_demos(package)
   vigs <- pkg_vigs(package)
@@ -43,8 +43,7 @@ helpr_package_mem <- memoise(function(package, version) {
     demos = demos,
     vigs_str = pluralize("Vignette", vigs),
     vigs = vigs,
-    change_log = pkg_news(package),
-    test = pkg_topics_alias(package)
+    change_log = pkg_news(package)
   )
 })
 
@@ -235,21 +234,17 @@ pkg_topics_alias <- function(pkg) {
   
   ds2 <- sapply(functions, function(x) {if(any(x %in% ds)) x})
   
-#  datasets <- list()
-#  pos <- names(ds2)
-#  for (i in seq_along(ds2)) {
-#    if (!is.null(ds2[[i]])) {
-#      datasets[[pos[i]]] <- ds2[[i]]
-#      functions[[pos[i]]] <- NULL
-#    }
-#  }
-  
   rd1 <- pkg_topics_rd(pkg)
   rd <- lapply(rd1, function(x) {
+    desc <- reconstruct(untag(x$description))
+    desc_naked <- strip_html(desc)
+    if(str_length(desc_naked) > 100) {
+      desc <- str_c(str_sub(desc_naked, end = 100), " ...")
+    }
     list(
       alias = unname(sapply(x[names(x) == "alias"], "[[", 1)),
       keywords = str_trim(reconstruct(untag(x$keyword))),
-      desc = reconstruct(untag(x$description)),
+      desc = desc,
       title = reconstruct(untag(x$title))
     )
   })

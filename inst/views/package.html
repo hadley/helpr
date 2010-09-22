@@ -35,86 +35,53 @@
     <% } %>
     
     <table id="files">
-    <% if(dataframe_has_rows(test$info)){ -%>
+    <% if(dataframe_has_rows(items$info)){ -%>
       <thead>
         <tr><th colspan=2><h2>Package Info</h2></th>
       </thead>
-      <% for(i in names(test$info)) { -%>
+      <% for(i in names(items$info)) { -%>
         <tr>
           <td>
-            <%= str_c("<a href='topic/", i, "'>", test$info[[i]]$alias, "</a>", collapse = ", ") %>
+            <%= str_c("<a href='topic/", i, "'>", items$info[[i]]$alias, "</a>", collapse = ", ") %>
           </td>
           <td>
-            <%= test$info[[i]]$desc %>
+            <%= items$info[[i]]$desc %>
           </td>
         </tr>
       <% } %>
     <% } %>
 
-    <% if(dataframe_has_rows(test$dataset)){ -%>
-      <thead>
-        <tr><th colspan=2><h2>Data Sets</h2></th></tr>
-      </thead>
-     <% for(i in names(test$dataset)) { -%>
-        <tr>
-          <td>
-            <%= str_c("<a href='topic/", i, "'>", test$dataset[[i]]$alias, "</a>", collapse = ", ") %>
-          </td>
-          <td>
-            <%= test$dataset[[i]]$desc %>
-          </td>
-        </tr>
-      <% } %>
-    <% } %>
-
-    <% if(dataframe_has_rows(test$func)){ -%>
+    <% if(dataframe_has_rows(items$func)){ -%>
       <thead>
         <tr><th colspan=2><h2>Functions</h2></th></tr>
       </thead>
-      <% for(i in names(test$func)) { -%>
+      <% for(i in names(items$func)) { -%>
         <tr>
           <td>
-            <%= str_c("<a href='topic/", i, "'>", test$func[[i]]$alias, "</a>", collapse = ", ") %>
+            <%= str_c("<a href='topic/", i, "'>", items$func[[i]]$alias, "</a>", collapse = ", ") %>
           </td>
           <td>
-            <%= test$func[[i]]$desc %>
+            <%= items$func[[i]]$desc %>
           </td>
         </tr>
       <% } %>
     <% } %>
     </table>
     
-    
-    
-    <!---------------------------->
-    <% if(FALSE && dataframe_has_rows(items$help_name)){ -%>
-      <h2>Groups</h2>
-      <p><%= str_c("<a href='topic/", items$help_name$file, "'>", items$help_name$alias, "</a>", 
-        collapse = ", ") %></p>
-    <% } %>
-
-    <% if(FALSE && dataframe_has_rows(items$dataset)){ -%>
-      <h2>Data Sets</h2>
-      <p><%= str_c("<a href='topic/", items$dataset$file, "'>", items$dataset$alias, "</a>", 
-        collapse = ", ") %></p>
-    <% } %>
-
-    <% if(FALSE && dataframe_has_rows(items$func)){ -%>
-      <h2>Functions</h2>
-      <p><%= str_c("<a href='topic/", items$func$file, "'>", items$func$alias, "</a>", 
-        collapse = ", ") %></p>
-    <% } %>
-
-    <% if(FALSE && dataframe_has_rows(items$internal)){ -%>
-      <h2>Internal</h2>
-      <p><%= str_c("<a href='topic/", items$internal$file, "'>", items$internal$alias, "</a>", 
-        collapse = ", ") %></p>
-    <% } %>
-
-    <% if(FALSE && dataframe_has_rows(items$idk)){ -%>
-      <h2>Items Not Loaded</h2>
-      <p><%= str_c("<a href='topic/", items$idk$file, "'>", items$idk$alias, "</a>", 
-        collapse = ", ") %></p>
+    <% if(dataframe_has_rows(items$dataset)){ -%>
+      <thead>
+        <tr><th colspan=2><h2>Data Sets</h2></th></tr>
+      </thead>
+     <% for(i in names(items$dataset)) { -%>
+        <tr>
+          <td>
+            <%= str_c("<a href='topic/", i, "'>", items$dataset[[i]]$alias, "</a>", collapse = ", ") %>
+          </td>
+          <td>
+            <%= items$dataset[[i]]$desc %>
+          </td>
+        </tr>
+      <% } %>
     <% } %>
 
   </div></div>

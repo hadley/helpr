@@ -333,7 +333,7 @@ $(document).ready(function(){
     $('#packages tr').quicksearch({
       position: 'before',
       attached: '#packages',
-      labelText: 'Subset: ',
+      labelText: 'Filter: ',
       fixWidths: true
     });
   }
@@ -342,7 +342,7 @@ $(document).ready(function(){
     $('#files tbody tr').quicksearch({
       position: 'before',
       attached: '#files',
-      labelText: 'Subset: ',
+      labelText: 'Filter: ',
       selector: 'th',
       fixWidths: true
     });
