@@ -42,7 +42,7 @@
       <% for(i in names(test$info)) { -%>
         <tr>
           <td>
-            <%= str_c("<a href='topic/", i, "'>", test$info[[i]]$alias, "</a>", collapse = "<br />") %>
+            <%= str_c("<a href='topic/", i, "'>", test$info[[i]]$alias, "</a>", collapse = ", ") %>
           </td>
           <td>
             <%= test$info[[i]]$desc %>
@@ -58,7 +58,7 @@
      <% for(i in names(test$dataset)) { -%>
         <tr>
           <td>
-            <%= str_c("<a href='topic/", i, "'>", test$dataset[[i]]$alias, "</a>", collapse = "<br />") %>
+            <%= str_c("<a href='topic/", i, "'>", test$dataset[[i]]$alias, "</a>", collapse = ", ") %>
           </td>
           <td>
             <%= test$dataset[[i]]$desc %>
@@ -74,7 +74,7 @@
       <% for(i in names(test$func)) { -%>
         <tr>
           <td>
-            <%= str_c("<a href='topic/", i, "'>", test$func[[i]]$alias, "</a>", collapse = "<br />") %>
+            <%= str_c("<a href='topic/", i, "'>", test$func[[i]]$alias, "</a>", collapse = ", ") %>
           </td>
           <td>
             <%= test$func[[i]]$desc %>
