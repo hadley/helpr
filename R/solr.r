@@ -1,6 +1,8 @@
 #http://localhost:8983/solr/select?q=plot&mlt=true&mlt.count=3&mlt.fl=Title_t
 
 solr_similar <- function(topic_title)  {
+  if(! solr_exists())
+    return(NULL)
   site <- str_c("http://localhost:8983/solr/select?wt=json&mlt=true&mlt.count=5&mlt.fl=Title_t,Description_t,Details_t,Value_t&q=", topic_title)
   output <- suppressWarnings(urlJSON_to_list(site))
   

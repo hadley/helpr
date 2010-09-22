@@ -7,6 +7,8 @@ helpr_topic <- function(package, topic, highlight) {
   topic_info <- parse_help(pkg_topic(package, topic), package = package)
   topic_info$package <- package
   topic_info$highlight <- highlight
+  
+  topic_info$similar <- solr_similar(topic_info$title)
 
   topic_info
 }

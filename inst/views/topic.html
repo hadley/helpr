@@ -77,6 +77,18 @@
       <h2><%= author_str %></h2>
       <%= authors %>
     <% }%>
+    
+    <% if(dataframe_has_rows(similar) ) { -%>
+      <h2>Similar</h2>
+      <ul>
+      <% for (i in seq_len(nrow(similar))) { -%>
+        <li>
+        <%= str_c("<a href=\"/package/", similar[i, "pkg"], "\" > ", similar[i, "pkg"], "</a>", " :: ", "<a href=\"/package/", similar[i, "pkg"], "/topic/", similar[i, "topic"],"\" > ", similar[i, "topic"], "</a><br />") %>
+        <%= similar[i, "title"] %>
+        </li>
+      <% } %>
+      </ul>
+    <% } %>
 
     
     
