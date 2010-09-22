@@ -6,7 +6,18 @@
 #' @return text rendered from the template
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal 
-render_snippet <- function(template, params = list(), path = helpr_path) {
+render_snippet <- function(template, params = list(), path = helpr_path()) {
   template <- str_c("_", template)
   render_brew(template, params, path)$payload
 }
+
+
+helpr_path <- memoise(function() {
+  if(all(c("DESCRIPTION", "inst", "man", "R") %in% dir() )) {
+    if("helpr" %in% dir("../")) {
+      return(normalizePath(file.path(getwd(), "inst")))
+    }
+  }
+  system.file(package = "helpr")
+})
+    
