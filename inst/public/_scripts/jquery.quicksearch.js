@@ -329,10 +329,22 @@ jQuery(function ($) {
 
 
 $(document).ready(function(){
-  $('#packages tr').quicksearch({
-    position: 'before',
-    attached: '#packages',
-    labelText: 'Subset: ',
-    fixWidths: true
-  });
+  if(document.getElementById("packages")) {
+    $('#packages tr').quicksearch({
+      position: 'before',
+      attached: '#packages',
+      labelText: 'Subset: ',
+      fixWidths: true
+    });
+  }
+  
+  if(document.getElementById("files")) {
+    $('#files tbody tr').quicksearch({
+      position: 'before',
+      attached: '#files',
+      labelText: 'Subset: ',
+      selector: 'th',
+      fixWidths: true
+    });
+  }
 })

@@ -7,6 +7,8 @@
 
   <%= render_snippet("rating") %>
 
+  <script type="text/javascript" src="/_scripts/jquery.quicksearch.js"></script>
+
   <%= render_snippet("disqus_header", list(name = str_c(package, "_package"))) %>
 
   <title><%= package %>. R help</title>
@@ -24,26 +26,80 @@
   <div id="yui-main"><div class="yui-b">
     <h1><%= package %></h1>
     <p><%= description$description %></p>
+    <br />
 
-    <% if(dataframe_has_rows(items$package)){ -%>
+    <% if(FALSE && dataframe_has_rows(items$package)){ -%>
       <h2>Package Info</h2>
       <p><%= str_c("<a href='topic/", items$package$file, "'>", items$package$alias, "</a>", 
         collapse = ", ") %></p>
     <% } %>
+    
+    <table id="files">
+    <% if(dataframe_has_rows(test$info)){ -%>
+      <thead>
+        <tr><th colspan=2><h2>Package Info</h2></th>
+      </thead>
+      <% for(i in names(test$info)) { -%>
+        <tr>
+          <td>
+            <%= str_c("<a href='topic/", i, "'>", test$info[[i]]$alias, "</a>", collapse = "<br />") %>
+          </td>
+          <td>
+            <%= test$info[[i]]$desc %>
+          </td>
+        </tr>
+      <% } %>
+    <% } %>
 
-    <% if(dataframe_has_rows(items$help_name)){ -%>
+    <% if(dataframe_has_rows(test$dataset)){ -%>
+      <thead>
+        <tr><th colspan=2><h2>Data Sets</h2></th></tr>
+      </thead>
+     <% for(i in names(test$dataset)) { -%>
+        <tr>
+          <td>
+            <%= str_c("<a href='topic/", i, "'>", test$dataset[[i]]$alias, "</a>", collapse = "<br />") %>
+          </td>
+          <td>
+            <%= test$dataset[[i]]$desc %>
+          </td>
+        </tr>
+      <% } %>
+    <% } %>
+
+    <% if(dataframe_has_rows(test$func)){ -%>
+      <thead>
+        <tr><th colspan=2><h2>Functions</h2></th></tr>
+      </thead>
+      <% for(i in names(test$func)) { -%>
+        <tr>
+          <td>
+            <%= str_c("<a href='topic/", i, "'>", test$func[[i]]$alias, "</a>", collapse = "<br />") %>
+          </td>
+          <td>
+            <%= test$func[[i]]$desc %>
+          </td>
+        </tr>
+      <% } %>
+    <% } %>
+    </table>
+    
+    
+    
+    <!---------------------------->
+    <% if(FALSE && dataframe_has_rows(items$help_name)){ -%>
       <h2>Groups</h2>
       <p><%= str_c("<a href='topic/", items$help_name$file, "'>", items$help_name$alias, "</a>", 
         collapse = ", ") %></p>
     <% } %>
 
-    <% if(dataframe_has_rows(items$dataset)){ -%>
+    <% if(FALSE && dataframe_has_rows(items$dataset)){ -%>
       <h2>Data Sets</h2>
       <p><%= str_c("<a href='topic/", items$dataset$file, "'>", items$dataset$alias, "</a>", 
         collapse = ", ") %></p>
     <% } %>
 
-    <% if(dataframe_has_rows(items$func)){ -%>
+    <% if(FALSE && dataframe_has_rows(items$func)){ -%>
       <h2>Functions</h2>
       <p><%= str_c("<a href='topic/", items$func$file, "'>", items$func$alias, "</a>", 
         collapse = ", ") %></p>
@@ -55,7 +111,7 @@
         collapse = ", ") %></p>
     <% } %>
 
-    <% if(dataframe_has_rows(items$idk)){ -%>
+    <% if(FALSE && dataframe_has_rows(items$idk)){ -%>
       <h2>Items Not Loaded</h2>
       <p><%= str_c("<a href='topic/", items$idk$file, "'>", items$idk$alias, "</a>", 
         collapse = ", ") %></p>

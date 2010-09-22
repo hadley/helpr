@@ -43,7 +43,8 @@ helpr_package_mem <- memoise(function(package, version) {
     demos = demos,
     vigs_str = pluralize("Vignette", vigs),
     vigs = vigs,
-    change_log = pkg_news(package)
+    change_log = pkg_news(package),
+    test = pkg_topics_alias(package)
   )
 })
 
@@ -217,6 +218,54 @@ pkg_topics_rd <- memoise(function(package) {
   rd <- tools:::fetchRdDB(pkg_rddb_path(package))
   lapply(rd, name_rd)
 })
+
+#' Topic Title and Aliases by Package
+#'
+#'
+#' @param pkg package in question
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
+pkg_topics_alias <- function(pkg) {
+  index <- pkg_topics_index(pkg)
+  files <- names(index)
+  
+  functions <- split(index$alias, index$file)
+  
+  ds <- get_datasets(pkg)$dataset
+  
+  ds2 <- sapply(functions, function(x) {if(any(x %in% ds)) x})
+  
+#  datasets <- list()
+#  pos <- names(ds2)
+#  for (i in seq_along(ds2)) {
+#    if (!is.null(ds2[[i]])) {
+#      datasets[[pos[i]]] <- ds2[[i]]
+#      functions[[pos[i]]] <- NULL
+#    }
+#  }
+  
+  rd1 <- pkg_topics_rd(pkg)
+  rd <- lapply(rd1, function(x) {
+    list(
+      alias = unname(sapply(x[names(x) == "alias"], "[[", 1)),
+      keywords = str_trim(reconstruct(untag(x$keyword))),
+      desc = reconstruct(untag(x$description)),
+      title = reconstruct(untag(x$title))
+    )
+  })
+  keywords <- sapply(rd, function(x){x$keywords })
+          
+  package_info <- rd[keywords == "package"]
+  internal <- rd[keywords == "internal"]
+  dataset <- rd[keywords == "datasets"]  
+  
+  rows <- keywords %in% c("package", "internal", "datasets")
+  if(sum(rows) > 0)
+    rd[rows] <- NULL 
+  
+  list(func = rd, dataset = dataset, internal = internal, info = package_info)
+}
+
 
 
 #' All Dataset Names
