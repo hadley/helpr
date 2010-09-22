@@ -10,7 +10,7 @@
 helpr_replay <- function(x, pic_base_name) UseMethod("helpr_replay", x)
 
 helpr_replay.list <- function(x, pic_base_name) {
-  lapply(seq_along(x), function(i, base_name = pic_base_name){
+  lapply(seq_along(x), function(i, base_name = pic_base_name) {
     item <- x[[i]]
     item_name <- str_c(base_name, "_", i, collapse = "")
     helpr_replay(item, item_name)
@@ -47,7 +47,7 @@ helpr_replay.value <- function(x, pic_base_name) {
 }
 
 helpr_replay.recordedplot <- function(x, pic_base_name) {  
-  file_loc <- save_picture( pic_base_name, x)
+  file_loc <- save_picture(pic_base_name, x)
   str_c("<img class=\"R_output_image\" src=\"", file_loc, "\" alt=\"", pic_base_name, "\" />", collapse = "")
 }
 
@@ -58,8 +58,8 @@ helpr_replay.recordedplot <- function(x, pic_base_name) {
 #' @param x result from \code{\link{evaluate}}
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-helpr_replay_cat <- function(x){
-  if(str_trim(x) == "")
+helpr_replay_cat <- function(x) {
+  if (str_trim(x) == "")
     return(x)
 
   parsed <- parser(text = x)
@@ -72,7 +72,7 @@ helpr_replay_cat <- function(x){
 #' @param x result from \code{\link{evaluate}}
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-helpr_replay_message <- function(x){
+helpr_replay_message <- function(x) {
   eval_tag_output(str_c("\n<strong>",x,"</strong>"))
 }
 
@@ -84,8 +84,8 @@ helpr_replay_message <- function(x){
 #' @param pic_base_name base name for the picture files
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-evaluate_text <- function(txt, pic_base_name){
-  if(!has_text(txt))
+evaluate_text <- function(txt, pic_base_name) {
+  if (!has_text(txt))
     return("")
   evaluated <- evaluate:::evaluate(txt, globalenv())
   replayed <- helpr_replay(evaluated, pic_base_name)
@@ -98,7 +98,7 @@ evaluate_text <- function(txt, pic_base_name){
 #' @param x text to be tagged as output
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-eval_tag_output <- function(x){
+eval_tag_output <- function(x) {
   str_c("<pre class=\"R_output\">", x, "</pre>")
 }
 

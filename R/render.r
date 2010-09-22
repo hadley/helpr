@@ -23,8 +23,8 @@ render_snippet <- function(template, params = list(), path = helpr_path()) {
 #'    "you have installed helpr"
 #'  }
 helpr_path <- memoise(function() {
-  if(all(c("DESCRIPTION", "inst", "man", "R") %in% dir() )) {
-    if("helpr" %in% dir("../")) {
+  if (all(c("DESCRIPTION", "inst", "man", "R") %in% dir() )) {
+    if ("helpr" %in% dir("../")) {
       return(normalizePath(file.path(getwd(), "inst")))
     }
   }

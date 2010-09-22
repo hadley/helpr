@@ -4,7 +4,7 @@
 #' @return fuctions that are from a package
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-get_function_history <- function(){
+get_function_history <- function() {
   rawhist <- NULL
   a <- NULL
   pattern <- "[a-zA-Z_.][a-zA-Z_.0-9]*\\("
@@ -30,7 +30,7 @@ get_function_history <- function(){
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 #' @return fuctions that are from a package and their help paths
-last_ten_functions <- function(fun_list = get_function_history()){  
+last_ten_functions <- function(fun_list = get_function_history()) {  
   unique_fun_list <- unique(rev(fun_list))
   if(NROW(unique_fun_list) < 1) return(NULL)
   
@@ -41,8 +41,8 @@ last_ten_functions <- function(fun_list = get_function_history()){
     )
   last_ten_funcs <- subset( last_ten_funcs, !is.na(path))
   last_ten <- min(10, NROW(last_ten_funcs))
-  last_ten_funcs[seq_len(last_ten), ]
 
+  last_ten_funcs[seq_len(last_ten), ]
 }
 
 #' Top Ten Functions
@@ -52,7 +52,7 @@ last_ten_functions <- function(fun_list = get_function_history()){
 #' @return fuctions that are from a package and their help paths
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-top_ten_functions <- function(fun_list = get_function_history()){  
+top_ten_functions <- function(fun_list = get_function_history()) {  
   if(NROW(fun_list) < 1) return(NULL)
   func_count <- table(fun_list)
   
@@ -80,7 +80,7 @@ top_ten_functions <- function(fun_list = get_function_history()){
 #' @return list containing the \code{\link{top_ten_functions}} and \code{\link{last_ten_functions}}
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-ten_functions <- function(){
+ten_functions <- function() {
   fun_hist <- get_function_history()
 
   list(

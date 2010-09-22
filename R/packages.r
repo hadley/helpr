@@ -12,8 +12,7 @@ installed_packages <- function() {
   dcf <- lapply(desc, read.dcf, fields = c("Package", "Title", "Version"))
   packages <- as.data.frame(do.call("rbind", dcf), stringsAsFactors = FALSE)
   
-  packages$status <- ifelse(packages$Package %in% .packages(), 
-    "loaded", "installed")
+  packages$status <- ifelse(packages$Package %in% .packages(), "loaded", "installed")
   class(packages) <- c("packages", class(packages))
   packages[order(packages$Package), ]
 }
@@ -25,7 +24,7 @@ installed_packages <- function() {
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 old_package_names <- function() {
-  unname(old.packages()[,"Package"])
+  unname(old.packages()[, "Package"])
 }
 
 #' Update old packages
@@ -49,7 +48,7 @@ update_packs <- function(all = FALSE) {
 #'
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-install_packages <- function(pkg_vec){
+install_packages <- function(pkg_vec) {
 #  message(str_c("installing: ", pkg_vec, collapse = "\n"))
   suppressWarnings(install.packages(pkg_vec, repos = "http://cran.r-project.org/"))
 }

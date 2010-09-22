@@ -23,12 +23,13 @@ untag <- function(x) {
 #' @param rd rd in question
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-list_tags <- function(rd){
+list_tags <- function(rd) {
   tags <- c()
-  for(i in seq_along(rd)){
+  for (i in seq_along(rd)) {
     tag_item <- tag(rd[[i]])
-    if(length(tag_item) < 1)
+    if (length(tag_item) < 1) {
       tag_item <- ""
+    }
     tags[i] <- tag_item
   }
   tags
@@ -47,9 +48,9 @@ reconstruct <- function(rd) {
   
   tag <- tag(rd)
     
-  if(is.list(rd) & length(rd) > 0 & "\\item" %in% list_tags(rd)){
+  if (is.list(rd) & length(rd) > 0 & "\\item" %in% list_tags(rd)) {
     reconstruct(parse_items(rd))
-  }else if (length(tag) == 0 || tag == "TEXT" || tag == "") {
+  } else if (length(tag) == 0 || tag == "TEXT" || tag == "") {
     # Collapse text strings
 #    str_trim(str_c(sapply(rd, reconstruct), collapse = ""))
     
@@ -66,48 +67,58 @@ reconstruct <- function(rd) {
     tag_simple(tag, reconstruct(untag(rd)))
 
   } else if (tag == "\\link") {
+    # Make sure it exists
     stopifnot(length(rd) == 1)
     fun <- rd[[1]]
     pkg <- attr(rd, "Rd_option")
     
-    if(!is.null(pkg)){
-      if(str_sub(pkg, end = 1) == "=")
+    if (!is.null(pkg)) {
+      if (str_sub(pkg, end = 1) == "=") {
         tag_link(str_sub(pkg, start = 2))
-      else
+      } else {
         tag_link(fun, pkg)
-    }else{
+      }
+    } else {
       tag_link(fun, pkg)
     }
+    
   } else if (tag == "\\eqn") {
     str_c("<code>", reconstruct(untag(rd[[1]])), "</code>")
+    
   } else if (tag == "\\deqn") {
-    if(length(rd) < 2)
+    if (length(rd) < 2) {
       str_c("<code>", reconstruct(untag(rd[[1]])), "</code>")
-    else
+    } else {
       str_c("<code>", reconstruct(untag(rd[[2]])), "</code>")
+    }
   } else if (tag == "\\url") {
     stopifnot(length(rd) == 1)
     str_c("<a href='", rd[[1]], "'>", rd[[1]], "</a>")
 
-  } else if(tag == "\\email"){
+  } else if (tag == "\\email") {
     author_email(reconstruct(untag(rd)), rd[[1]][1])      
-  } else if(tag == "COMMENT") {
     
+  } else if (tag == "COMMENT") {    
     txt <- as.character(rd)
     str_replace_all(txt, "%", "#")
-  } else if(tag == "\\enc"){
     
+  } else if (tag == "\\enc") {
     reconstruct(rd[[1]])
     
-  } else if(tag == "\\method" || tag == "\\S3method") {
+  } else if (tag == "\\method" || tag == "\\S3method") {
     str_c(reconstruct(rd[[1]]),".",reconstruct(rd[[2]]))
-  } else if(tag %in% c("\\dontshow", "\\testonly")){
+    
+  } else if (tag %in% c("\\dontshow", "\\testonly")) {
     "" # don't show it to the user
-  } else if(tag == "\\dontrun"){
-    str_c("## <strong>Not run</strong>:", str_replace_all(reconstruct(untag(rd)), "\n", "\n#"), "## <strong>End(Not run)</strong>")
+    
+  } else if (tag == "\\dontrun") {
+    str_c(
+      "## <strong>Not run</strong>:", 
+      str_replace_all(reconstruct(untag(rd)), "\n", "\n#"), 
+      "## <strong>End(Not run)</strong>"
+    )
 
-  } else if(tag == "\\special"){
-#    "\\special" =      c("<em>","</em>"),    
+  } else if (tag == "\\special") {
     txt <- reconstruct(untag(rd))
     # replace '<' and '>' with html markings avoid browser misinterpretation
     txt <- str_replace_all(txt, "<", "&#60;")
@@ -115,47 +126,51 @@ reconstruct <- function(rd) {
     txt <- str_replace_all(txt, "\\\\dots", "...")
 
     stupid <- unlist(str_match_all(txt, "\\\\[a-zA-Z]*"))
-    for(i in seq_len(length(stupid)))
+    for (i in seq_len(length(stupid))) {
       message("Uknown tag (", stupid[i], ") found in 'special' tag")
+    }
     
     str_c("<em>", txt, "</em>")
 
-  } else if(tag == "\\tabular"){
+  } else if (tag == "\\tabular") {
     parse_tabular(untag(rd))
-  } else if(tag %in% c("\\ifelse", "\\if")){
-    if("html" == rd[[1]][[1]]){
+    
+  } else if (tag %in% c("\\ifelse", "\\if")) {
+    if ("html" == rd[[1]][[1]]) {
       reconstruct(rd[[2]])
-    }else if(tag == "\\ifelse"){
+    } else if (tag == "\\ifelse") {
       reconstruct(rd[[3]])      
     }
     
-  } else if(tag == "\\S4method"){
+  } else if (tag == "\\S4method") {
     str_c("## S4 method for signature \"",reconstruct(rd[[2]]),"\":\n", reconstruct(rd[[1]]), sep ="")
 
-  } else if(tag == "\\linkS4class"){
+  } else if (tag == "\\linkS4class") {
     item <- reconstruct(untag(rd))
 
     pkg <- tryCatch(
-        attr(getClass(item)@className, "package"),
-        error = function(e){
-          message("can't find the package for s4class: ", item)
-          "no_package"
-        }
-      )
-    if(pkg == "no_package"){
+      attr(getClass(item)@className, "package"),
+      error = function(e) {
+        message("can't find the package for s4class: ", item)
+        "no_package"
+      }
+    )
+      
+    if (pkg == "no_package") {
       item
     }else{
       pkg <- attr(getClass(item)@className, "package")
       tag_link(item, pkg, str_c(item, "-class", collapse = ""))
     }
-  } else if(tag == "\\Sexpr"){
+
+  } else if (tag == "\\Sexpr") {
     expr <- eval(parse(text = rd), envir=globalenv())
     con <- textConnection(expr)
     value <- reconstruct(parse_Rd(con,fragment=T))
     close(con)
     value
     
-  }else {
+  } else {
     message("Unknown tag ", tag, ". Please contact the 'helpr' maintainer. Thank you.")
     reconstruct(untag(rd))
   }
@@ -168,8 +183,8 @@ reconstruct <- function(rd) {
 #' @param address email address
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-author_email <- function(name, address){
-  str_c("<a href=\"mailto:",address,"?subject=(R-Help): \">",name,"</a>")
+author_email <- function(name, address) {
+  str_c("<a href=\"mailto:", address, "?subject=(R-Help): \">", name, "</a>")
 }
 
 #' tag a simple item
@@ -216,7 +231,7 @@ is_section <- function(tag) {
 #'
 #' @author Hadley Wickham
 #' @keywords internal
-simple_tags <- function(){ 
+simple_tags <- function() { 
 list(
   "\\acronym" =      c('<acronym>','</acronym>'),
   "\\bold" =         c("<b>", "</b>"),
@@ -261,7 +276,7 @@ list(
 #' @param x item in question
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-has_text <- function(x){
+has_text <- function(x) {
   trim <- str_trim(x)
   !is.null(x) && trim != "" && length(trim) > 0
 }
@@ -272,7 +287,7 @@ has_text <- function(x){
 #' @param x item in question
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-dataframe_has_rows <- function(x){
+dataframe_has_rows <- function(x) {
   NROW(x) > 0
 }
 
@@ -282,12 +297,13 @@ dataframe_has_rows <- function(x){
 #' @param text text to be parsed
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-parse_text <- function(text){
+parse_text <- function(text) {
   output <- suppressWarnings(parser(text = text))
-  if(!dataframe_has_rows(attr(output, "data")))
+  if (!dataframe_has_rows(attr(output, "data"))) {
     NULL
-  else
+  } else {
     output
+  }
 }
 
 #' Pluralize
@@ -299,8 +315,8 @@ parse_text <- function(text){
 #' @param bool_statement boolean to use to determine which string to use
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal 
-pluralize <- function(string, obj, plural = str_c(string, "s"), bool_statement = NROW(obj)){
-  if(bool_statement) {
+pluralize <- function(string, obj, plural = str_c(string, "s"), bool_statement = NROW(obj)) {
+  if (bool_statement) {
     plural
   } else {
     string
@@ -324,7 +340,7 @@ strip_html <- function(x) {
 #' @param tabular rd item to parsed
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal 
-parse_tabular <- function(tabular){
+parse_tabular <- function(tabular) {
   #' make all alignements into left, right or center
   alignments <- unlist(str_split(tabular[[1]][[1]], ""))
   alignments <- alignments[nchar(alignments) > 0]
@@ -337,13 +353,13 @@ parse_tabular <- function(tabular){
   output <- character(length(rows))
   
   #' Go through each item and reconstruct it if it is not a tab or carriage return
-  for(i in seq_along(rows)){
+  for (i in seq_along(rows)) {
     row_tag <- tag(rows[[i]])
 
-    if(row_tag == "\\tab"){
+    if (row_tag == "\\tab") {
       column <- column + 1
       output[i] <- str_c("</td><td align=\"", alignments[column], "\">")
-    } else if(row_tag == "\\cr"){
+    } else if (row_tag == "\\cr") {
       output[i] <- str_c("</td></tr><tr><td align=\"", alignments[1], "\">")
       column <- 1
     } else {
@@ -365,19 +381,19 @@ parse_tabular <- function(tabular){
 #' @param rd R documentation item to be altered and then returned
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal 
-parse_items <- function(rd){
+parse_items <- function(rd) {
   tags <- list_tags(rd)
   is_items <- rep(TRUE, length(tags))
 
-  for(i in rev(seq_along(tags))){
-    if(tags[i] != "\\item"){
+  for (i in rev(seq_along(tags))) {
+    if (tags[i] != "\\item") {
       rd_i <- reconstruct(rd[[i]])
-      if(str_trim(rd_i) != ""){
+      if (str_trim(rd_i) != "") {
         is_items[i] <- FALSE
-      }else if(str_trim(rd_i) == ""){
-        if(i == length(tags)){
+      } else if (str_trim(rd_i) == "") {
+        if (i == length(tags)) {
           is_items[i] <- FALSE
-        }else{
+        } else{
           is_items[i] <- is_items[i+1]
         }
       }
@@ -388,7 +404,7 @@ parse_items <- function(rd){
   item_groups <- group_int_arr(subset(seq_along(tags), is_items))
 #  non_item_groups <- group_int_arr(subset(seq_along(tags), !is_items))
  
-  for(i in item_groups){
+  for (i in item_groups) {
     item_text <- parse_item_list(rd[i])
     rd[i] <- ""
     rd[i[1]] <- item_text
@@ -403,7 +419,7 @@ parse_items <- function(rd){
 #'
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal 
-group_int_arr <- function(arr){
+group_int_arr <- function(arr) {
   n <- length(arr)
   groups <- c(0, cumsum(arr[-n] != arr[-1] - 1))
   split(arr, groups)
@@ -416,15 +432,15 @@ group_int_arr <- function(arr){
 #' return table text with no attributes
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal 
-parse_item_list <- function(rd){
+parse_item_list <- function(rd) {
   tags <- list_tags(rd)
   items <- rd[tags == "\\item"]
   
-  items_text <- sapply(items, function(x){
-    if(length(x) < 1){
+  items_text <- sapply(items, function(x) {
+    if (length(x) < 1) {
       # small item in item list
       ""
-    }else{
+    } else{
       str_c("<tr><td><strong>",reconstruct(x[[1]]), "</strong></td><td>", reconstruct(x[[2]]), "</td></tr>", collapse = "")
     }
   })

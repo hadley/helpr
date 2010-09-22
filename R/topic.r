@@ -26,8 +26,9 @@ pkg_topic <- function(package, topic, file = NULL) {
     topics <- pkg_topics_index(package)
     file <- unique(topics$file[topics$alias == topic | topics$file == topic])
     
-    if(length(file) > 1)
+    if (length(file) > 1) {
       file <- unique(topics$file[topics$alias == topic])
+    }
     
     stopifnot(length(file) == 1)    
   }
@@ -94,7 +95,6 @@ parse_help <- function(rd, package) {
   out$examples <- highlight(par_text)
   out$example_functions <- code_info(par_text)
   out$example_functions_str <- pluralize("Top Function", out$example_functions)
-#  out$usage <- reconstruct(untag(rd$usage))
   out$usage <- parse_usage(rd$usage)
   out$authors <- pkg_author_and_maintainers(reconstruct(rd$author))
   out$author_str <- pluralize("Author", rd$author)
@@ -140,13 +140,20 @@ parse_help <- function(rd, package) {
 #' @author Hadley Wickham and Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 highlight <- function(parser_output, source_link = FALSE) {
-  if(is.null(parser_output))
-    return("")
+  if (is.null(parser_output)) return("")
   
   # add links before being sent to be highlighted
   parser_output <- add_function_links_into_parsed(parser_output, source_link)  
   
-  str_c(capture.output(highlight::highlight( parser.output = parser_output, renderer = highlight::renderer_html(doc = F))), collapse = "\n")    
+  str_c(
+    capture.output(
+      highlight::highlight( 
+        parser.output = parser_output, 
+        renderer = highlight::renderer_html(doc = F)
+      )
+    ), 
+    collapse = "\n"
+  )
 }
 
 #' Add Funciton Link
@@ -156,14 +163,14 @@ highlight <- function(parser_output, source_link = FALSE) {
 #' @return parsed output with functions with html links around them
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-add_function_links_into_parsed <- function(parser_output, source_link = FALSE){
+add_function_links_into_parsed <- function(parser_output, source_link = FALSE) {
   # pull out data
   d <- attr(parser_output, "data")
   
 #  funcs <- d[d[,"token.desc"] == "SYMBOL_FUNCTION_CALL" ,"text"]
   rows <- with(d, (token.desc == "SYMBOL_FUNCTION_CALL" & ! text %in% c("", "(",")") ) | text %in% c("UseMethod"))
 
-  if(!TRUE %in% rows)
+  if (!TRUE %in% rows)
     return(parser_output)
     
   funcs <- d[rows,"text"]
@@ -178,8 +185,8 @@ add_function_links_into_parsed <- function(parser_output, source_link = FALSE){
 
 #  d[d[,"token.desc"] == "SYMBOL_FUNCTION_CALL","text"] <- text
   attr(parser_output, "data") <- d
-  parser_output
-  
+
+  parser_output  
 }
 
 #' Find the First Item Position
@@ -187,9 +194,9 @@ add_function_links_into_parsed <- function(parser_output, source_link = FALSE){
 #' @return position of the first item to match "\\item" else 1
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-first_item_pos <- function(arr){
-  for(i in seq_along(arr))
-    if(arr[i] == "\\item")
+first_item_pos <- function(arr) {
+  for (i in seq_along(arr))
+    if (arr[i] == "\\item")
       return(i)
   1
 }
@@ -199,9 +206,9 @@ first_item_pos <- function(arr){
 #' @return position of the last item to match "\\item" else 0
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-last_item_pos <- function(arr){
-  for(i in rev(seq_along(arr)))
-    if(arr[i] == "\\item")
+last_item_pos <- function(arr) {
+  for (i in rev(seq_along(arr)))
+    if (arr[i] == "\\item")
       return(i)
   0  
 }
@@ -213,7 +220,7 @@ last_item_pos <- function(arr){
 #' @param usage rd usage
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-parse_usage <- function(usage){
+parse_usage <- function(usage) {
   
   text <- reconstruct(untag(usage))
   
@@ -224,8 +231,6 @@ parse_usage <- function(usage){
   
   pattern <- "[a-zA-Z_.][a-zA-Z_.0-9]*[ ]*\\("
     
-#  alias_funcs <- unlist(str_extract(text_lines, pattern))
-#  alias_funcs <- str_trim(str_replace_all(alias_funcs, "\\(", ""))
   alias_funcs <- usage_functions(text)
   
   funcs_text <- unlist(str_extract_all(text, pattern))
@@ -235,13 +240,13 @@ parse_usage <- function(usage){
   funcs <- str_trim(funcs)
   
   # add links to each "safely ordered" function
-  for(i in seq_along(funcs)){
+  for (i in seq_along(funcs)) {
     func <- funcs[i]
     ori_func <- original_funcs[i]
     
     path <- function_help_path(func, source_link = (func %in% alias_funcs))
     
-    if(is.na(path)) {
+    if (is.na(path)) {
       link <- str_c("<em>",ori_func, "</em>(")
     } else {
       spaces <- str_c(rep(" ", nchar(ori_func) - nchar(func)), collapse = "")
@@ -260,22 +265,23 @@ parse_usage <- function(usage){
 #' @param vect string vector to be processed
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-safely_order_funcs <- function(vect){
+safely_order_funcs <- function(vect) {
   
   # add a ending string to only allow for end of string comparisons
   vect <- str_c(vect, "_helpr")
   
   # search from i in 1:n; j in i+1:n
   len <- length(vect)
-  for(i in seq_len(len)){
-    for(j in (seq_len(len - i) + i)){
-      if(str_detect(vect[j], vect[i])){
+  for (i in seq_len(len)) {
+    for (j in (seq_len(len - i) + i)) {
+      if (str_detect(vect[j], vect[i])) {
         tmp <- vect[j]
         vect[j] <- vect[i]
         vect[i] <- tmp
       }
     }
   }
+  
   str_replace_all(vect, "_helpr", "")
 }
 
@@ -286,18 +292,18 @@ safely_order_funcs <- function(vect){
 #' @param text text to be evaluated
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-function_levels <- function(text){
+function_levels <- function(text) {
   split_text <- str_split(text, "")[[1]]
   
   value <- 0
   text_value <- integer(length(split_text))
   text_value[1] <- 0
 
-  for(i in 2:length(split_text)) {
-    if(split_text[i-1] == "(") {
+  for (i in 2:length(split_text)) {
+    if (split_text[i-1] == "(") {
       value <- value + 1
     } 
-    if(split_text[i] == ")") {
+    if (split_text[i] == ")") {
       value <- value - 1
     } else {
       value <- value      
@@ -313,10 +319,9 @@ function_levels <- function(text){
 #' @param usage usage in question
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-usage_functions <- function(usage){
+usage_functions <- function(usage) {
   usage <- reconstruct(untag(usage))
-  if(str_trim(usage) == "")
-    return(NULL)
+  if (str_trim(usage) == "") return(NULL)
   
   split_usage <- str_split(usage, "")[[1]]
   # find the function level of each function
@@ -346,13 +351,10 @@ usage_functions <- function(usage){
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 usage_methods <- function(usage) {
-  if(str_trim(reconstruct(untag(usage))) == "")
-    return(NULL)
+  if (str_trim(reconstruct(untag(usage))) == "") return(NULL)
   
   methos <- usage[list_tags(usage) == "\\method"]
   methos <- sapply(methos, function(x) { reconstruct(x[[2]]) } )
-  unique(methos)
-  
+
+  unique(methos)  
 }
-
-

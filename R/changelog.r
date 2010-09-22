@@ -14,13 +14,11 @@ pkg_news <- function(package) {
   latest <- package_news$Version[1]
   package_news <- package_news[package_news$Version %in% latest, ]
   
-  change_log <- list(
+  list(
     title = "Change Log",
     date = unique(package_news$Version),
     news = split(package_news$Text, addNA(package_news$Category))
   )
-
-  change_log
 }
 
 #' Function News
@@ -53,17 +51,17 @@ function_news <- function(package, topic) {
 #'
 #' @keywords internal
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
-get_manuals <- memoise(function(){
+get_manuals <- memoise(function() {
   # get files in the manual directory with full path
-  manual_dir <- file.path(Sys.getenv("R_DOC_DIR"),"manual")
+  manual_dir <- file.path(Sys.getenv("R_DOC_DIR"), "manual")
   manuals <- dir(manual_dir)
   
   file_loc <- file.path(manual_dir, manuals)
   file_name <- str_replace_all(manuals, ".html", "")
-  link <- str_c("manuals/",file_name, ".html")
+  link <- str_c("manuals/", file_name, ".html")
   
   data.frame(
-    title = sapply(file_loc, function(x){
+    title = sapply(file_loc, function(x) {
       strip_html(readLines(x, 3)[3])
     }),
     file_loc = file_loc,

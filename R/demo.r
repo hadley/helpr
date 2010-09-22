@@ -5,7 +5,7 @@
 #' @return "" if the demo is not found for that package, file.path if the demo folder is found
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-demo_src_file <- function(package, demo_name){
+demo_src_file <- function(package, demo_name) {
   system.file("demo", str_c(demo_name, ".R"), package = package)
 }
 
@@ -16,7 +16,7 @@ demo_src_file <- function(package, demo_name){
 #' @return demo() information for the \code{demo_name} in \code{package}
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-demo_info <- function(package, demo_name){
+demo_info <- function(package, demo_name) {
   subset(pkg_demos(package), Item == demo_name)
 }
 
@@ -25,7 +25,7 @@ demo_info <- function(package, demo_name){
 #' @param package package name
 #' @param demo_name demo name
 #' @keywords internal
-helpr_demo <- function(package, demo_name){
+helpr_demo <- function(package, demo_name) {
   info <- demo_info(package, demo_name)
   
   parsed_src <- parser(file = demo_src_file(package, demo_name))
@@ -38,7 +38,7 @@ helpr_demo <- function(package, demo_name){
   list(
     package = package, 
     name = demo_name,
-    description = info[1,"Title"],
+    description = info[1, "Title"],
     src = highlight(parsed_src),
     other_demos = other_demos,
     other_demos_str = pluralize("Demo", other_demos),
