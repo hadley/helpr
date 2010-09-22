@@ -57,10 +57,10 @@
       </thead>
       <% for(i in names(items$func)) { -%>
         <tr>
-          <td>
+          <td width ="33%">
             <%= str_c("<a href='topic/", i, "'>", items$func[[i]]$alias, "</a>", collapse = ", ") %>
           </td>
-          <td>
+          <td width = "67%">
             <%= items$func[[i]]$desc %>
           </td>
         </tr>
