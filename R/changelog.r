@@ -3,12 +3,12 @@
 #' @param package package name
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-pkg_news <- function(package){
+pkg_news <- function(package) {
   package_news <- tryCatch(
     news(package = package),
     error = function(e) 
       NULL)
-  if(is.null(package_news)) return(NULL)
+  if (is.null(package_news)) return(NULL)
   
   # retain only the latest version infomation
   latest <- package_news$Version[1]
@@ -20,7 +20,6 @@ pkg_news <- function(package){
     news = split(package_news$Text, addNA(package_news$Category))
   )
 
-#  render_snippet("changelogs", change_log)
   change_log
 }
 
@@ -30,23 +29,21 @@ pkg_news <- function(package){
 #' @param package package name
 #' @param topic demo name
 #' @keywords internal
-function_news <- function(package, topic){
+function_news <- function(package, topic) {
   package_news <- news(package = package)
-  if(is.null(package_news)) return(NULL)
+  if (is.null(package_news)) return(NULL)
   
   # retain only the infomation that contains the topic name
   package_news <- package_news[str_detect(package_news$Text, topic), ]
   
-  if(!dataframe_has_rows(package_news)) return("")
+  if (!dataframe_has_rows(package_news)) return("")
     
   package_news$title <- str_c(package_news$Version, " - ", package_news$Category)
   
-  change_log <- list(
+  list(
     title = str_c("Change Log for '", topic, "'", collapse = ""),
     news = split(package_news$Text, addNA(package_news$title))
   )
-  
-  render_snippet("changelogs_topic_source", change_log)  
 }
 
 

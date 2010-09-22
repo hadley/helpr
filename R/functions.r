@@ -169,7 +169,8 @@ helpr_function <- function(package, func){
     desc = gsub("$\n+|\n+^", "", reconstruct(pkg_topic(package, topic)$description)),
     src = src,
     src_functions = src_functions,
-    src_functions_str = src_functions_str
+    src_functions_str = src_functions_str,
+    change_log = function_news(package, topic)
   )
 }
 
