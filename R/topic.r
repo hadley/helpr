@@ -278,3 +278,81 @@ safely_order_funcs <- function(vect){
   }
   str_replace_all(vect, "_helpr", "")
 }
+
+
+#' function levels
+#' go through the function text to find the function level (depth) of each function
+#'
+#' @param text text to be evaluated
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
+function_levels <- function(text){
+  split_text <- str_split(text, "")[[1]]
+  
+  value <- 0
+  text_value <- integer(length(split_text))
+  text_value[1] <- 0
+
+  for(i in 2:length(split_text)) {
+    if(split_text[i-1] == "(") {
+      value <- value + 1
+    } 
+    if(split_text[i] == ")") {
+      value <- value - 1
+    } else {
+      value <- value      
+    }
+    text_value[i] <- value
+  }
+
+  text_value  
+}
+
+#' Find all usage functions
+#'
+#' @param usage usage in question
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
+usage_functions <- function(usage){
+  usage <- reconstruct(untag(usage))
+  if(str_trim(usage) == "")
+    return(NULL)
+  
+  split_usage <- str_split(usage, "")[[1]]
+  # find the function level of each function
+  usage_level <- function_levels(usage)
+  
+  # split each function by "\n", after it has been trimmed, and only using the top level
+  usage_functions <- split_usage[usage_level == 0]
+  usage_functions <- str_c(usage_functions, collapse ="")
+  usage_functions <- str_trim(usage_functions)
+  usage_functions <- str_split(usage_functions, "\n")[[1]]
+  
+  # remove unwanted characters
+  usage_functions <- str_replace_all(usage_functions, "\\(", "")
+  usage_functions <- str_replace_all(usage_functions, "\\)", "")
+  # remove commented lines
+  usage_functions <- usage_functions[ str_sub(usage_functions, end = 1) != "#" ]
+  #remove useless functions
+  usage_functions <- usage_functions[ usage_functions != "" ]
+
+  usage_functions
+}
+
+#' usage methods
+#' find all methods within a usage
+#' 
+#' @param usage usage in question
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
+usage_methods <- function(usage) {
+  if(str_trim(reconstruct(untag(usage))) == "")
+    return(NULL)
+  
+  methos <- usage[list_tags(usage) == "\\method"]
+  methos <- sapply(methos, function(x) { reconstruct(x[[2]]) } )
+  unique(methos)
+  
+}
+
+
