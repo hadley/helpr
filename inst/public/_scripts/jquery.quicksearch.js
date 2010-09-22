@@ -330,7 +330,7 @@ jQuery(function ($) {
 
 $(document).ready(function(){
   if(document.getElementById("packages")) {
-    $('#packages tr').quicksearch({
+    $('#packages tbody tr').quicksearch({
       position: 'before',
       attached: '#packages',
       labelText: 'Filter: ',

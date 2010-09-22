@@ -48,10 +48,10 @@
     <h1>Installed packages</h1>
     
     <table id="packages" class="loaded">
-      <tr>
+      <thead><tr>
         <th>Name</th>
         <th>Description</th>
-      </tr>
+      </tr></thead>
       <% for(i in seq_len(NROW(packages))) { -%>
       <tr id="<%= str_replace_all(packages[i,"Package"], "[.]", "_") %>" class="<%= packages[i,"status"] %>">
         <td><a href="/package/<%= packages[i,"Package"] %>"><%= packages[i,"Package"] %></a></td>
