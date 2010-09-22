@@ -1,8 +1,3 @@
-# Global path for render_snippets and pictures
-helpr_path <- NULL
-helpr_pic_path <- base::tempdir()
-
-
 #' load html pages
 #' load an html page from the console
 #' 
@@ -55,13 +50,8 @@ check_for_package <- function(package){
 #' @export
 #' @param installed use TRUE if the package is installed on from CRAN
 #' @author Hadley Wickham and Barret Schloerke \email{schloerke@@gmail.com}
-helpr <- function(installed = TRUE) {
-  if (installed) {
-    path <- system.file(package = "helpr")
-  } else {    
-    path <- normalizePath(file.path(getwd(), "inst"))
-  }
-  helpr_path <<- path
+helpr <- function() {
+  path <- helpr_path()
 
   router <- Router$clone()
 
@@ -237,7 +227,7 @@ helpr <- function(installed = TRUE) {
 
   # pictures
   router$get("/picture/:file_name", function(file_name, ...) {
-    file_path <- file.path(helpr_pic_path, file_name)
+    file_path <- file.path(base::tempdir(), file_name)
     static_file(file_path)
   })
 
