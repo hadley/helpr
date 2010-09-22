@@ -1,18 +1,9 @@
-MASS::lmwork  Extract Standardized Residuals from a Linear Model
-  Description:	The standardized residuals. These are normalized to unitvariance, fitted including the current
-  Value:	The vector of appropriately transformed residuals.
-  
-  The standardized residuals. These are normalized to unitvariance, ...
-  ... vector of appropriately transformed residuals.
-  
-  
-  
 
 Solr
   index all internal functions of each function
     add list to source page
-  similar solr?
-    find documents similar to the one looking at
+  √similar solr?
+    √find documents similar to the one looking at
   √return answers
     √more truncation
       √ (smaller results) set to 70 chars
@@ -27,11 +18,12 @@ New
 √  change log stuff
 √  allow install of single package
 √  make the search bar disappear if solr is not available
-  add to topic page what similar functions exist in sidebar
+√  add to topic page what similar functions exist in sidebar
     Solr
 
 Fix Pages
-WAIT - find out how to find out if a topic is a function or not without loading the package
+FAIL - find out how to find out if a topic is a function or not without loading the package
+  REWORK - reorganized the package page to make it independent.  Also used keywords for grouping.
 √ - add in the footer, description, and readme that this is "funded by Revolution Analytics"
 
 Writing

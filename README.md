@@ -49,7 +49,7 @@ To install `helpr`, you first need to install some packages:
   * from CRAN: `install.packages( c("stringr", "digest",  "mutatr", "brew", "testthat") )`
   * from github: `http://github.com/hadley/sinartra`
 
-To install `solr`, you first need to intall `brew`
+(Developers) To install `solr`, you first need to intall `brew`
   * install brew: `ruby -e "$(curl -fsS http://gist.github.com/raw/323731/install_homebrew.rb)"`
   * install solr with brew: `brew install solr`
   
@@ -65,7 +65,7 @@ Running the development version:
     # With working directory set to the helpr package directory
     library(devtools)
     load_all("helpr")
-    helpr(FALSE)
+    helpr()
     
 # Running solr
 
