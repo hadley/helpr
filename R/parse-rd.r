@@ -148,24 +148,8 @@ reconstruct <- function(rd, package = NULL) {
     require(package, character.only=TRUE)
     item <- reconstruct(untag(rd), package)
     
-    browser()
     tag_link(item, package, str_c(item, "-class", collapse = ""))
 
-#    pkg <- tryCatch(
-#      attr(getClass(item)@className, "package"),
-#      error = function(e) {
-#        message("can't find the package for s4class: ", item)
-#        "no_package"
-#      }
-#    )
-#      
-#    if (pkg == "no_package") {
-#      item
-#    }else{
-#      pkg <- attr(getClass(item)@className, "package")
-#      tag_link(item, pkg, str_c(item, "-class", collapse = ""))
-#    }
-#
   } else if (tag == "\\Sexpr") {
     expr <- eval(parse(text = rd), envir=globalenv())
     con <- textConnection(expr)
