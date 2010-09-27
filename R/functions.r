@@ -138,7 +138,7 @@ helpr_function <- function(package, func) {
   aliases <- subset(index, (file == topic) & (alias != func), "alias")
   
   par_text <- tryCatch(
-    parse_text(reconstruct(body_text(package, func))),
+    parse_text(reconstruct(body_text(package, func), package)),
     error = function(e){
       "bad_function"
     }
@@ -167,7 +167,7 @@ helpr_function <- function(package, func) {
     name = func,
     aliases = aliases,
     aliases_str = pluralize("Topic (Source)", aliases, plural="Topics (Source)"),
-    desc = gsub("$\n+|\n+^", "", reconstruct(pkg_topic(package, topic)$description)),
+    desc = gsub("$\n+|\n+^", "", reconstruct(pkg_topic(package, topic)$description, package)),
     src = src,
     src_functions = src_functions,
     src_functions_str = src_functions_str,

@@ -41,7 +41,7 @@ list_tags <- function(rd) {
 #' @param rd rd in question
 #' @author Hadley Wickham and Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-reconstruct <- function(rd) {
+reconstruct <- function(rd, package = NULL) {
   
   if (is.null(rd)) return("")
   if (!is.list(rd) && is.null(attr(rd, "Rd_tag"))) return(as.character(rd))
@@ -49,29 +49,28 @@ reconstruct <- function(rd) {
   tag <- tag(rd)
     
   if (is.list(rd) & length(rd) > 0 & "\\item" %in% list_tags(rd)) {
-    reconstruct(parse_items(rd))
+    reconstruct(parse_items(rd, package), package)
   } else if (length(tag) == 0 || tag == "TEXT" || tag == "") {
     # Collapse text strings
 #    str_trim(str_c(sapply(rd, reconstruct), collapse = ""))
     
-    as.character(str_c(sapply(rd, reconstruct), collapse = ""))
+    as.character(str_c(sapply(rd, reconstruct, package = package), collapse = ""))
 
   } else if (is_section(tag)) {
     # Sections should be arranged into paragraphs    
-    text <- reconstruct(untag(rd))
+    text <- reconstruct(untag(rd), package)
     paras <- str_trim(str_split(text, "\\n\\n")[[1]])
     str_c("<p>", paras, "</p>", "\n\n", collapse = "")      
     
   } else if (tag %in% names(simple_tags())) {
     # If we can process tag with just prefix & suffix, do so
-    tag_simple(tag, reconstruct(untag(rd)))
+    tag_simple(tag, reconstruct(untag(rd), package))
 
   } else if (tag == "\\link") {
     # Make sure it exists
     stopifnot(length(rd) == 1)
     fun <- rd[[1]]
     pkg <- attr(rd, "Rd_option")
-    
     if (!is.null(pkg)) {
       if (str_sub(pkg, end = 1) == "=") {
         tag_link(str_sub(pkg, start = 2))
@@ -79,34 +78,34 @@ reconstruct <- function(rd) {
         tag_link(fun, pkg)
       }
     } else {
-      tag_link(fun, pkg)
+      tag_link(fun)
     }
     
   } else if (tag == "\\eqn") {
-    str_c("<code>", reconstruct(untag(rd[[1]])), "</code>")
+    str_c("<code>", reconstruct(untag(rd[[1]]), package), "</code>")
     
   } else if (tag == "\\deqn") {
     if (length(rd) < 2) {
-      str_c("<code>", reconstruct(untag(rd[[1]])), "</code>")
+      str_c("<code>", reconstruct(untag(rd[[1]]), package), "</code>")
     } else {
-      str_c("<code>", reconstruct(untag(rd[[2]])), "</code>")
+      str_c("<code>", reconstruct(untag(rd[[2]]), package), "</code>")
     }
   } else if (tag == "\\url") {
     stopifnot(length(rd) == 1)
     str_c("<a href='", rd[[1]], "'>", rd[[1]], "</a>")
 
   } else if (tag == "\\email") {
-    author_email(reconstruct(untag(rd)), rd[[1]][1])      
+    author_email(reconstruct(untag(rd), package), rd[[1]][1])      
     
   } else if (tag == "COMMENT") {    
     txt <- as.character(rd)
     str_replace_all(txt, "%", "#")
     
   } else if (tag == "\\enc") {
-    reconstruct(rd[[1]])
+    reconstruct(rd[[1]], package)
     
   } else if (tag == "\\method" || tag == "\\S3method") {
-    str_c(reconstruct(rd[[1]]),".",reconstruct(rd[[2]]))
+    str_c(reconstruct(rd[[1]], package),".",reconstruct(rd[[2]], package))
     
   } else if (tag %in% c("\\dontshow", "\\testonly")) {
     "" # don't show it to the user
@@ -114,12 +113,12 @@ reconstruct <- function(rd) {
   } else if (tag == "\\dontrun") {
     str_c(
       "## <strong>Not run</strong>:", 
-      str_replace_all(reconstruct(untag(rd)), "\n", "\n#"), 
+      str_replace_all(reconstruct(untag(rd), package), "\n", "\n#"), 
       "## <strong>End(Not run)</strong>"
     )
 
   } else if (tag == "\\special") {
-    txt <- reconstruct(untag(rd))
+    txt <- reconstruct(untag(rd), package)
     # replace '<' and '>' with html markings avoid browser misinterpretation
     txt <- str_replace_all(txt, "<", "&#60;")
     txt <- str_replace_all(txt, ">", "&#62;")
@@ -137,42 +136,46 @@ reconstruct <- function(rd) {
     
   } else if (tag %in% c("\\ifelse", "\\if")) {
     if ("html" == rd[[1]][[1]]) {
-      reconstruct(rd[[2]])
+      reconstruct(rd[[2]], package)
     } else if (tag == "\\ifelse") {
-      reconstruct(rd[[3]])      
+      reconstruct(rd[[3]], package)      
     }
     
   } else if (tag == "\\S4method") {
-    str_c("## S4 method for signature \"",reconstruct(rd[[2]]),"\":\n", reconstruct(rd[[1]]), sep ="")
+    str_c("## S4 method for signature \"",reconstruct(rd[[2]], package),"\":\n", reconstruct(rd[[1]], package), sep ="")
 
   } else if (tag == "\\linkS4class") {
-    item <- reconstruct(untag(rd))
+    require(package, character.only=TRUE)
+    item <- reconstruct(untag(rd), package)
+    
+    browser()
+    tag_link(item, package, str_c(item, "-class", collapse = ""))
 
-    pkg <- tryCatch(
-      attr(getClass(item)@className, "package"),
-      error = function(e) {
-        message("can't find the package for s4class: ", item)
-        "no_package"
-      }
-    )
-      
-    if (pkg == "no_package") {
-      item
-    }else{
-      pkg <- attr(getClass(item)@className, "package")
-      tag_link(item, pkg, str_c(item, "-class", collapse = ""))
-    }
-
+#    pkg <- tryCatch(
+#      attr(getClass(item)@className, "package"),
+#      error = function(e) {
+#        message("can't find the package for s4class: ", item)
+#        "no_package"
+#      }
+#    )
+#      
+#    if (pkg == "no_package") {
+#      item
+#    }else{
+#      pkg <- attr(getClass(item)@className, "package")
+#      tag_link(item, pkg, str_c(item, "-class", collapse = ""))
+#    }
+#
   } else if (tag == "\\Sexpr") {
     expr <- eval(parse(text = rd), envir=globalenv())
     con <- textConnection(expr)
-    value <- reconstruct(parse_Rd(con,fragment=T))
+    value <- reconstruct(parse_Rd(con,fragment=T), package)
     close(con)
     value
     
   } else {
     message("Unknown tag ", tag, ". Please contact the 'helpr' maintainer. Thank you.")
-    reconstruct(untag(rd))
+    reconstruct(untag(rd), package)
   }
 }
 
@@ -363,7 +366,7 @@ parse_tabular <- function(tabular) {
       output[i] <- str_c("</td></tr><tr><td align=\"", alignments[1], "\">")
       column <- 1
     } else {
-      output[i] <- reconstruct(rows[[i]])
+      output[i] <- reconstruct(rows[[i]], package)
     }
   }
   
@@ -379,15 +382,16 @@ parse_tabular <- function(tabular) {
 #'
 #' It will replace the items with plan, non-attributed text.  It needs to be a 'pre-parser' as it must be done before the whole list is reconstructed
 #' @param rd R documentation item to be altered and then returned
+#' @param package package looking at
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal 
-parse_items <- function(rd) {
+parse_items <- function(rd, package) {
   tags <- list_tags(rd)
   is_items <- rep(TRUE, length(tags))
 
   for (i in rev(seq_along(tags))) {
     if (tags[i] != "\\item") {
-      rd_i <- reconstruct(rd[[i]])
+      rd_i <- reconstruct(rd[[i]], package)
       if (str_trim(rd_i) != "") {
         is_items[i] <- FALSE
       } else if (str_trim(rd_i) == "") {
@@ -405,7 +409,7 @@ parse_items <- function(rd) {
 #  non_item_groups <- group_int_arr(subset(seq_along(tags), !is_items))
  
   for (i in item_groups) {
-    item_text <- parse_item_list(rd[i])
+    item_text <- parse_item_list(rd[i], package)
     rd[i] <- ""
     rd[i[1]] <- item_text
   }
@@ -427,12 +431,13 @@ group_int_arr <- function(arr) {
 
 #' Parse Item List
 #' parse a group of "\\item" into a table with a bold item and reconstructed description
-#'
+#' 
 #' @param rd item to be parsed
-#' return table text with no attributes
+#' @param package package looking at
+#' @return table text with no attributes
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal 
-parse_item_list <- function(rd) {
+parse_item_list <- function(rd, package) {
   tags <- list_tags(rd)
   items <- rd[tags == "\\item"]
   
@@ -441,9 +446,30 @@ parse_item_list <- function(rd) {
       # small item in item list
       ""
     } else{
-      str_c("<tr><td><strong>",reconstruct(x[[1]]), "</strong></td><td>", reconstruct(x[[2]]), "</td></tr>", collapse = "")
+      str_c("<tr><td><strong>",reconstruct(x[[1]], package), "</strong></td><td>", reconstruct(x[[2]], package), "</td></tr>", collapse = "")
     }
   })
   
   str_c("<table>", str_c(items_text, collapse = ""), "</table>", collapse = "")
 }
+
+#' Functions Used
+#' Functions used in the string of functions
+#'
+#' @param txt text in question.  should be full of functions
+functions_used <- function(txt) {
+  if (txt == "") return("")
+
+  par_text <- parse_text(txt)
+  d <- attr(par_text, "data")
+  if (is.null(d)) return("");
+    
+  funcs <- subset(d, token.desc == "SYMBOL_FUNCTION_CALL", select = "text")
+  
+  funcs_u <- unique(funcs$text)
+  
+  funcs_u[order(funcs_u)]
+
+}
+
+

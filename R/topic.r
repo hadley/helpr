@@ -18,19 +18,26 @@ helpr_topic <- function(package, topic, highlight) {
 #' @param package package to explore
 #' @param topic topic of the package to retrieve
 #' @param file location of the rd database.  If it is \code{NULL}, it will be found.
-#' @author Haldey Wickham
+#' @author Haldey Wickham and Barret Schloerke
 #' @keywords internal
 #' @return text of the .rd file
 pkg_topic <- function(package, topic, file = NULL) {
   if (is.null(file)) {
+#    topics <- pkg_topics_index(package)
+#    file <- unique(topics$file[topics$alias == topic | topics$file == topic])
+#    
+#    if (length(file) > 1) {
+#      file <- unique(topics$file[topics$alias == topic])
+#    }
+
     topics <- pkg_topics_index(package)
-    file <- unique(topics$file[topics$alias == topic | topics$file == topic])
+    topic_page <- subset(topics, alias == topic, select = file)$file
     
-    if (length(file) > 1) {
-      file <- unique(topics$file[topics$alias == topic])
-    }
+    if(length(topic_page) < 1)
+      topic_page <- subset(topics, file == topic, select = file)$file
     
-    stopifnot(length(file) == 1)    
+    stopifnot(length(topic_page) >= 1)
+    file <- topic_page[1]    
   }
   
   name_rd(tools:::fetchRdDB(pkg_rddb_path(package), file))
@@ -77,7 +84,7 @@ parse_help <- function(rd, package) {
   out <- list()
   
   # Join together aliases and keywords
-  out$name <- reconstruct(untag(rd$name))
+  out$name <- reconstruct(untag(rd$name), package)
   out$aliases <- setdiff(
     unname(sapply(rd[names(rd) == "alias"], "[[", 1)),
     out$name
@@ -86,21 +93,21 @@ parse_help <- function(rd, package) {
 
   # Title, description, value and examples, need to be stitched into a 
   # single string.
-  out$title <- reconstruct(untag(rd$title))
-  out$desc <- gsub("$\n+|\n+^", "", reconstruct(rd$description))
-  out$details <- reconstruct(rd$details)
-  out$value <- reconstruct(rd$value)
-  reconstructed_examples <- reconstruct(untag(rd$examples))
+  out$title <- reconstruct(untag(rd$title), package)
+  out$desc <- gsub("$\n+|\n+^", "", reconstruct(rd$description, package))
+  out$details <- reconstruct(rd$details, package)
+  out$value <- reconstruct(rd$value, package)
+  reconstructed_examples <- reconstruct(untag(rd$examples), package)
   par_text <- parse_text(reconstructed_examples)
   out$examples <- highlight(par_text)
   out$example_functions <- code_info(par_text)
   out$example_functions_str <- pluralize("Top Function", out$example_functions)
-  out$usage <- parse_usage(rd$usage)
-  out$authors <- pkg_author_and_maintainers(reconstruct(rd$author))
+  out$usage <- parse_usage(rd$usage, package)
+  out$authors <- pkg_author_and_maintainers(reconstruct(rd$author, package))
   out$author_str <- pluralize("Author", rd$author)
 
-  out$seealso <- reconstruct(rd$seealso)
-  out$source <- reconstruct(untag(rd$source))
+  out$seealso <- reconstruct(rd$seealso, package)
+  out$source <- reconstruct(untag(rd$source), package)
   
 
   # Pull apart arguments
@@ -109,18 +116,19 @@ parse_help <- function(rd, package) {
   argument_tags <- sapply(arguments, tag)
   args <- lapply(arguments[argument_tags == "\\item"], function(argument) {
     list(
-      param = reconstruct(untag(argument[[1]])), 
-      desc = reconstruct(untag(argument[[2]]))
+      param = reconstruct(untag(argument[[1]]), package), 
+      desc = reconstruct(untag(argument[[2]]), package)
     )
   })
   
-  pre_text <- reconstruct(arguments[ seq_len( first_item_pos( argument_tags) - 1)])
+  pre_text <- reconstruct(arguments[ seq_len( first_item_pos( argument_tags) - 1)], package)
   
   post_text <- reconstruct(
     arguments[seq(
       from = last_item_pos(argument_tags)+1, 
       length.out = length(arguments) - last_item_pos(argument_tags)
-    )]
+    )],
+  package
   )
 
   out$params <- list(
@@ -220,9 +228,9 @@ last_item_pos <- function(arr) {
 #' @param usage rd usage
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-parse_usage <- function(usage) {
+parse_usage <- function(usage, package) {
   
-  text <- reconstruct(untag(usage))
+  text <- reconstruct(untag(usage), package)
   
   text_lines <- str_split(text, "\n")[[1]]
   text_lines <- text_lines[ nchar(text_lines) > 1]
@@ -320,7 +328,7 @@ function_levels <- function(text) {
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 usage_functions <- function(usage) {
-  usage <- reconstruct(untag(usage))
+  usage <- reconstruct(untag(usage), package)
   if (str_trim(usage) == "") return(NULL)
   
   split_usage <- str_split(usage, "")[[1]]
@@ -351,10 +359,10 @@ usage_functions <- function(usage) {
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 usage_methods <- function(usage) {
-  if (str_trim(reconstruct(untag(usage))) == "") return(NULL)
+  if (str_trim(reconstruct(untag(usage), package)) == "") return(NULL)
   
   methos <- usage[list_tags(usage) == "\\method"]
-  methos <- sapply(methos, function(x) { reconstruct(x[[2]]) } )
+  methos <- sapply(methos, function(x) { reconstruct(x[[2]], package) } )
 
   unique(methos)  
 }

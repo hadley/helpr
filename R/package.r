@@ -233,7 +233,7 @@ pkg_topics_alias <- function(pkg) {
     
   rd1 <- pkg_topics_rd(pkg)
   rd <- lapply(rd1, function(x) {
-    desc <- reconstruct(untag(x$description))
+    desc <- reconstruct(untag(x$description), pkg)
     desc_naked <- strip_html(desc)
     if (str_length(desc_naked) > 100) {
       desc <- str_c(str_sub(desc_naked, end = 100), " ...")
@@ -241,9 +241,9 @@ pkg_topics_alias <- function(pkg) {
     
     list(
       alias = unname(sapply(x[names(x) == "alias"], "[[", 1)),
-      keywords = str_trim(reconstruct(untag(x$keyword))),
+      keywords = str_trim(reconstruct(untag(x$keyword), pkg)),
       desc = desc,
-      title = reconstruct(untag(x$title))
+      title = reconstruct(untag(x$title), pkg)
     )
   })
 

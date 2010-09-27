@@ -1,5 +1,23 @@
 #http://localhost:8983/solr/select?q=plot&mlt=true&mlt.count=3&mlt.fl=Title_t
 
+
+
+#' check to see if solr is running
+#'
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
+solr_exists <- memoise(function() {
+  result <- tryCatch(
+    send_commit_command(),
+    error = function(e) {
+      FALSE
+    }
+  )
+    
+  identical(result, "success")
+})
+
+
 #' Delete a Package on Solr
 #' Deletes everything that belongs to a package
 #'
@@ -49,23 +67,6 @@ solr_similar <- function(topic_title) {
 }
 
 
-
-#' check to see if solr is running
-#'
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @keywords internal
-solr_exists <- memoise(function() {
-  result <- tryCatch(
-    send_commit_command(),
-    error = function(e) {
-      FALSE
-    }
-  )
-    
-  identical(result, "success")
-})
-
-
 #' helpr topic into xml for solr
 #'
 #' @param package package to use
@@ -85,18 +86,19 @@ solr_topic <- function(package, topic) {
   # Join together aliases and keywords
   out$Aliases <- setdiff(
     unname(sapply(rd[names(rd) == "alias"], "[[", 1)),
-    strip_html(reconstruct(untag(rd$name)))
+    strip_html(reconstruct(untag(rd$name), package))
   )
   out$Keywords <- unname(sapply(rd[names(rd) == "keyword"], "[[", 1))
 
   # Title, description, value and examples, need to be stitched into a 
   # single string.
-  out$Title <- strip_html(reconstruct(untag(rd$title)))
-  out$Description <- gsub("$\n+|\n+^", "", strip_html(reconstruct(rd$description)))
-  out$Details <- strip_html(reconstruct(rd$details))
-  out$Value <- strip_html(reconstruct(rd$value))
-  out$Authors <- strip_html(reconstruct(rd$author))
+  out$Title <- strip_html(reconstruct(untag(rd$title), package))
+  out$Description <- gsub("$\n+|\n+^", "", strip_html(reconstruct(rd$description), package))
+  out$Details <- strip_html(reconstruct(rd$details, package))
+  out$Value <- strip_html(reconstruct(rd$value, package))
+  out$Authors <- strip_html(reconstruct(rd$author, package))
   out$Package <- str_c(package, " (", pkg_version(package), ")", collapse = "")
+  out$Examples <- functions_used(reconstruct(untag(rd$examples), package))
 
   list_to_xml(
     str_c("/package/", package, "/topic/", topic, collapse = ""),
@@ -236,7 +238,7 @@ index_package <- function(package, start_letter = "a", verbose = TRUE) {
   if (verbose == TRUE) cat("\n\n\n")
   if (verbose == TRUE || verbose == "package") cat(package,"\n")
   
-  require(package, character.only=TRUE)
+#  require(package, character.only=TRUE)
   
   all_topics <- pkg_topics_index(package)
   unique_topics <- all_topics[!duplicated(all_topics$file), "alias"]
@@ -301,7 +303,19 @@ index_all <- function(start_letter = "a", verbose = TRUE) {
 #' @keywords internal
 get_solr_query_result <- function(solr_param_string) {
   rows <- 20
-  response <- urlJSON_to_list(str_c("http://0.0.0.0:8983/solr/select/?version=2.2&wt=json&rows=", rows, "&indent=on&hl=on&hl.simple.pre=<strong>&hl.simple.post=</strong>&hl.fl=*&hl.fragsize=70&hl.mergeContiguous=true&", solr_param_string))
+  response <- urlJSON_to_list(str_c("http://0.0.0.0:8983/solr/select/?",
+    "version=2.2",
+    "&wt=json",
+    "&rows=", rows, 
+    "&indent=on",
+    "&hl=on",
+      "&hl.simple.pre=<strong>",
+      "&hl.simple.post=</strong>",
+      "&hl.fl=*&hl.fragsize=70",
+      "&hl.mergeContiguous=true",
+    "&fl=Title_t,Description_t,Details_t,Value_t,Authors_t", 
+    solr_param_string
+  ))
 
   docs <- response$highlighting
   query <- response$responseHeader$params$q
@@ -349,7 +363,7 @@ package_and_topic_from_url <- function(url_txt) {
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 package_description <- function(pkg, topic) {
-  gsub("$\n+|\n+^", "", reconstruct(pkg_topic(pkg, topic)$description))
+  gsub("$\n+|\n+^", "", reconstruct(pkg_topic(pkg, topic)$description, package))
 }
 
 #' search query path

@@ -212,7 +212,7 @@ helpr <- function() {
   })
 
   router$get("/eval_example/:package~:topic", function(package, topic, ...) {
-    list(payload = evaluate_text(reconstruct(untag(pkg_topic(package, topic)$examples)), pic_base_name = str_c(package, "_", pkg_version(package),"_topic_", topic)))
+    list(payload = evaluate_text(reconstruct(untag(pkg_topic(package, topic)$examples), package), pic_base_name = str_c(package, "_", pkg_version(package),"_topic_", topic)))
   })
   
 
