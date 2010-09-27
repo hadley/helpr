@@ -1,7 +1,41 @@
 #http://localhost:8983/solr/select?q=plot&mlt=true&mlt.count=3&mlt.fl=Title_t
 
+#' Delete a Package on Solr
+#' Deletes everything that belongs to a package
+#'
+#' @param package package to be deleted
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @export
+solr_FAIL <- function() {
+  message("Solr is not running.  You are out of luck.  Sorry :-(")
+  NULL
+}
+
+
+#' Delete a Package on Solr
+#' Deletes everything that belongs to a package
+#'
+#' @param package package to be deleted
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @export
+solr_delete_package <- function(package) {
+  if (! solr_exists()) return(solr_FAIL())
+  
+  site <- str_c("<delete><query>id:/package/",package,"/*</query></delete>")
+  
+  put_string(site)
+}
+
+
+#' Similar Pages
+#' Find related pages and return info in a data.frame
+#'
+#' @param topic_title title to be used to find similar results
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
 solr_similar <- function(topic_title) {
-  if (! solr_exists()) return(NULL)
+  if (! solr_exists()) return(solr_FAIL())
+  
   site <- str_c("http://localhost:8983/solr/select?wt=json&mlt=true&mlt.count=5&mlt.fl=Title_t,Description_t,Details_t,Value_t&q=", topic_title)
   output <- suppressWarnings(urlJSON_to_list(site))
   
@@ -28,7 +62,7 @@ solr_exists <- memoise(function() {
     }
   )
     
-  !identical(result, FALSE)
+  identical(result, "success")
 })
 
 
@@ -183,6 +217,8 @@ save_xml <- function(txt, file_name=tempfile()) {
 #' @param package package in question
 #' @param topic topic in question
 index_topic <- function(package, topic) {
+  if (! solr_exists()) return(solr_FAIL())
+
   put_string(make_add_xml(solr_topic(package, topic)))
 }
 
@@ -195,10 +231,13 @@ index_topic <- function(package, topic) {
 #' @param start_letter used when you want to start froma certain letter, such as 'q'
 #' @param verbose should output be shown?
 index_package <- function(package, start_letter = "a", verbose = TRUE) {
+  if (! solr_exists()) return(solr_FAIL());
+  
   if (verbose == TRUE) cat("\n\n\n")
   if (verbose == TRUE || verbose == "package") cat(package,"\n")
   
   require(package, character.only=TRUE)
+  
   all_topics <- pkg_topics_index(package)
   unique_topics <- all_topics[!duplicated(all_topics$file), "alias"]
   
@@ -217,6 +256,10 @@ index_package <- function(package, start_letter = "a", verbose = TRUE) {
     if (verbose==TRUE) cat("  ", str_sub(capture.output(time), 20), "\n")
   }
   
+  # delete all previous information
+  solr_delete_package(package)
+  
+  # add new information
   put_string(
     make_add_xml(
       str_c(
@@ -236,6 +279,8 @@ index_package <- function(package, start_letter = "a", verbose = TRUE) {
 #' @param start_letter used when you want to start froma certain letter, such as 'q'
 #' @param verbose should output be shown?
 index_all <- function(start_letter = "a", verbose = TRUE) {
+  if (! solr_exists()) return(solr_FAIL())
+
   packages <- installed_packages()$Package
   packages <- packages[order(tolower(packages))]
   first_letter <- sapply(strsplit(packages, ""), function(x) { tolower(x[1]) })
@@ -325,6 +370,8 @@ search_query_path <- function(query="example", start_pos=0) {
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 helpr_solr_search <- function(query_string) {
+  if (! solr_exists()) return(solr_FAIL())
+
   result <- get_solr_query_result(query_string)
   items <- result$response
   
