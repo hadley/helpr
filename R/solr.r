@@ -23,7 +23,6 @@ solr_exists <- memoise(function() {
 #'
 #' @param package package to be deleted
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @export
 solr_FAIL <- function() {
   message("Solr is not running.  You are out of luck.  Sorry :-(")
   NULL
@@ -35,7 +34,6 @@ solr_FAIL <- function() {
 #'
 #' @param package package to be deleted
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @export
 solr_delete_package <- function(package) {
   if (! solr_exists()) return(solr_FAIL())
   

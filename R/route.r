@@ -285,7 +285,7 @@ helpr_home <- function() {
 #'
 #' function taken from utils
 #'
-#' @export
+#' @S3method print help_files_with_topic
 #' @param x path to help
 #' @param ... other arguments ignored
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
