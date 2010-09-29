@@ -7,10 +7,10 @@ Author: Hadley Wickham <h.wickham@gmail.com> and Barret Schloerke
 Maintainer: Hadley Wickham <h.wickham@gmail.com>
 Description: Better html documentation for R
 Depends: highlight, sinartra, digest, parser, rjson, tools, stringr (>=
-    0.4), evaluate, RCurl
+    0.4), evaluate, RCurl, memoise
 Imports: brew
 License: GPL-2
 LazyData: true
-Collate: 'a_memoise.r' 'changelog.r' 'demo.r' 'evaluate.r'
-    'functions.r' 'history.r' 'package.r' 'packages.r' 'parse-rd.r'
-    'pictures.r' 'render.r' 'route.r' 'solr.r' 'topic.r'
+Collate: 'changelog.r' 'demo.r' 'evaluate.r' 'functions.r' 'history.r'
+    'package.r' 'packages.r' 'parse-rd.r' 'pictures.r' 'render.r'
+    'route.r' 'solr.r' 'topic.r'
