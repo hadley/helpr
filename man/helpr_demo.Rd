@@ -2,7 +2,12 @@
 \alias{helpr_demo}
 \title{Helpr Demo Information...}
 \usage{helpr_demo(package, demo_name)}
-\description{Helpr Demo Information}
+
+\description{
+  Helpr Demo Information
+}
 \keyword{internal}
-\arguments{\item{package}{package name}
-\item{demo_name}{demo name}}
+\arguments{
+  \item{package}{package name}
+  \item{demo_name}{demo name}
+}
