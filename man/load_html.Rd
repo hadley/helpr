@@ -1,10 +1,10 @@
 \name{load_html}
 \alias{load_html}
-\title{load html pages...}
+\title{Load an html page from the console.}
 \usage{load_html(...)}
 
 \description{
-  load html pages load an html page from the console
+  Load an html page from the console.
 }
 \author{Barret Schloerke \email{schloerke@gmail.com}}
 \arguments{

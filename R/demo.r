@@ -1,4 +1,4 @@
-#' Demo Source File
+#' Demo source file.
 #'
 #' @param package package name
 #' @param demo_name demo name
@@ -9,7 +9,7 @@ demo_src_file <- function(package, demo_name) {
   system.file("demo", str_c(demo_name, ".R"), package = package)
 }
 
-#' Demo Information
+#' Demo information.
 #'
 #' @param package package name
 #' @param demo_name demo name
@@ -20,7 +20,7 @@ demo_info <- function(package, demo_name) {
   subset(pkg_demos(package), Item == demo_name)
 }
 
-#' Helpr Demo Information
+#' helpr demo information.
 #'
 #' @param package package name
 #' @param demo_name demo name
@@ -47,7 +47,7 @@ helpr_demo <- function(package, demo_name) {
   )
 }
 
-#' Demo Source
+#' Demo source.
 #'
 #' @param package package name
 #' @param demo_name demo name
@@ -62,10 +62,9 @@ demo_src <- function(package, demo_name){
 }
 
 
-#' Package Demos
+#' List all demos in a package.
 #'
 #' @param package package name
-#' @param demo_name demo name
 #' @return demo() information for the \code{demo_name} in \code{package}
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal

@@ -1,10 +1,10 @@
 \name{is_section}
 \alias{is_section}
-\title{Is Section...}
+\title{Determines whether or not tag is a section...}
 \usage{is_section(tag)}
 
 \description{
-  Is Section determines whether or not it is a section
+  Determines whether or not tag is a section
 }
 \author{Hadley Wickham}
 \keyword{internal}

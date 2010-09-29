@@ -1,4 +1,4 @@
-#' Package News
+#' Package news.
 #'
 #' @param package package name
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
@@ -21,7 +21,7 @@ pkg_news <- function(package) {
   )
 }
 
-#' Function News
+#' Function news.
 #'
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @param package package name
@@ -46,8 +46,7 @@ function_news <- function(package, topic) {
 
 
 
-#' R Manuals
-#' Return the information necessary to find all of the R manuals on the local computer
+#' Locate all R manuals on the local computer.
 #'
 #' @keywords internal
 #' @author Barret Schloerke \email{schloerke@@gmail.com}

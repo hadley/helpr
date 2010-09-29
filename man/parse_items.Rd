@@ -1,10 +1,10 @@
 \name{parse_items}
 \alias{parse_items}
-\title{Parse List with Items...}
+\title{Parse a list containing "\\item" tags.}
 \usage{parse_items(rd, package)}
 
 \description{
-  Parse List with Items parse a list containing "\\item" tags.
+  Parse a list containing "\\item" tags.
 }
 
 \details{

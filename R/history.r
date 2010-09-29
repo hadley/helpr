@@ -1,5 +1,4 @@
-#' Session History
-#' return only functions that were executed
+#' List all recently called functions.
 #' 
 #' @return fuctions that are from a package
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
@@ -23,8 +22,7 @@ get_function_history <- function() {
 }
 
 
-#' Last Ten Functions
-#' return the last ten unique functions that were executed
+#' List last ten unique functions called from the command line.
 #' 
 #' @param fun_list function list
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
@@ -45,8 +43,7 @@ last_ten_functions <- function(fun_list = get_function_history()) {
   last_ten_funcs[seq_len(last_ten), ]
 }
 
-#' Top Ten Functions
-#' return the top ten unique functions that were executed
+#' List top 10 most frequently called functions.
 #' 
 #' @param fun_list function list
 #' @return fuctions that are from a package and their help paths
@@ -74,8 +71,7 @@ top_ten_functions <- function(fun_list = get_function_history()) {
 }
 
 
-#' Top Ten and Last Ten Functions
-#' return a list that contains both the top ten functions and last ten functions
+#' Both the top ten most called and last ten functions.
 #' 
 #' @return list containing the \code{\link{top_ten_functions}} and \code{\link{last_ten_functions}}
 #' @author Barret Schloerke \email{schloerke@@gmail.com}

@@ -1,10 +1,10 @@
 \name{demo_src_file}
 \alias{demo_src_file}
-\title{Demo Source File...}
+\title{Demo source file.}
 \usage{demo_src_file(package, demo_name)}
 
 \description{
-  Demo Source File
+  Demo source file.
 }
 \value{"" if the demo is not found for that package, file.path if the demo folder is found}
 \author{Barret Schloerke \email{schloerke@gmail.com}}

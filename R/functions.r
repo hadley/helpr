@@ -1,7 +1,6 @@
-#' Function Source
-#' Work out the source code of a function.
+#' Extract source code of a function.
 #'
-#' @param fun function to get the source code from
+#' @param fun name of function to get the source code from
 #' @return NULL or source code of of the function
 #' @author Barret Schloerke \email{schloerke@@gmail.con} and Hadley Wickham
 #' @keywords internal
@@ -25,7 +24,7 @@ body_text <- function(package, fun) {
 }
 
 
-#' Return the package functions and links of a given text
+#' Return the package functions and links of a given text.
 #'
 #' @param parser_output text that has been parsed
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
@@ -41,8 +40,7 @@ function_and_link <- function(parser_output) {
   funcs_and_paths[complete.cases(funcs_and_paths), ]  
 }
 
-#' package and topic from url
-#' retrieve the package and the topic from a url that contains both
+#' Retrieve the package and the topic from a url that contains both.
 #'
 #' @param url_string url in question
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
@@ -51,7 +49,7 @@ pkg_and_topic_from_help_url <- function(url_string) {
   rev(rev(str_split(url_string, .Platform$file.sep)[[1]])[1:3])[c(1, 3)]
 }
 
-#' Return the help path of a function
+#' Return the help path of a function.
 #'
 #' @param x item to find the help path
 #' @param source_link boolean to determine whether or not it is linking to the source or topic page
@@ -78,12 +76,11 @@ function_help_path <- function(func, source_link = FALSE) {
 }
 
 
-
-
-#' Find functions, counts, and links of given R text
+#' Find functions, counts, and links of given R text.
 #'
 #' @param parser_output text that has been parsed
-#' @return data.frame containing the name, count and link of each function within the text
+#' @return data.frame containing the name, count and link of each function
+#'   within the text
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 code_info <- function(parser_output) {
@@ -124,8 +121,7 @@ code_info <- function(parser_output) {
 }
 
 
-#' Helpr Function
-#' Render all the information to display a topic source page
+#' Render all the information to display a topic source page.
 #'
 #' @param package package in question
 #' @param func function in question

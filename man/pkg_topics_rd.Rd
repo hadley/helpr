@@ -1,9 +1,9 @@
 \name{pkg_topics_rd}
 \alias{pkg_topics_rd}
-\title{Package Topics File Documentation...}
+\title{Package topics file documentation.}
 
 \description{
-  Package Topics File Documentation
+  Package topics file documentation.
 }
 
 \details{

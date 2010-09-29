@@ -1,21 +1,9 @@
-#' Tag Something
-#'
-#' @param x item to be tagged
-#' @keywords internal
-#' @author Hadley Wickham
 tag <- function(x) attr(x, "Rd_tag")
-
-#' Untag Something
-#'
-#' @param x item to be untagged
-#' @keywords internal
-#' @author Hadley Wickham
 untag <- function(x) {
   if (is.null(x)) return()
   attr(x, "Rd_tag") <- ""
   x
 }
-
 
 #' List tags
 #' list all the tags within a object
@@ -35,8 +23,7 @@ list_tags <- function(rd) {
   tags
 }
 
-#' Reconstruct R Documentation
-#' recursively reconstruct R documentation
+#' Recursively reconstruct R documentation.
 #'
 #' @param rd rd in question
 #' @author Hadley Wickham and Barret Schloerke \email{schloerke@@gmail.com}
@@ -203,8 +190,7 @@ tag_link <- function(fun, pkg = NULL, topic_page = fun) {
 }
 
 
-#' Is Section
-#' determines whether or not it is a section
+#' Determines whether or not tag is a section
 #'
 #' @param tag check to see if the tag is in a list of other tags
 #' @author Hadley Wickham
@@ -213,8 +199,7 @@ is_section <- function(tag) {
   tag %in% c("\\details", "\\description", "\\value", "\\author", "\\seealso")
 }
 
-#' simple tags
-#' list all the tags that can be parsed in a simple way
+#' All tags that can be parsed in a simple way.
 #'
 #' @author Hadley Wickham
 #' @keywords internal
@@ -257,8 +242,7 @@ list(
   "LIST" =          c("<ul>", "</ul>")
 )}
 
-#' Has Text
-#' determines whether or not the item has text
+#' Determines whether or not the item has text.
 #'
 #' @param x item in question
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
@@ -268,8 +252,7 @@ has_text <- function(x) {
   !is.null(x) && trim != "" && length(trim) > 0
 }
 
-#' Dataframe has Rows
-#' determines whether or not the dataframe has rows
+#' Determines whether or not the dataframe has rows.
 #'
 #' @param x item in question
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
@@ -361,8 +344,7 @@ parse_tabular <- function(tabular) {
 }
 
 
-#' Parse List with Items
-#' parse a list containing "\\item" tags.
+#' Parse a list containing "\\item" tags.
 #'
 #' It will replace the items with plan, non-attributed text.  It needs to be a 'pre-parser' as it must be done before the whole list is reconstructed
 #' @param rd R documentation item to be altered and then returned
@@ -402,8 +384,7 @@ parse_items <- function(rd, package) {
 }
 
 
-#' Group Integer Array
-#' Group items into similar sections
+#' Group items into similar sections.
 #'
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal 
@@ -413,8 +394,8 @@ group_int_arr <- function(arr) {
   split(arr, groups)
 }
 
-#' Parse Item List
-#' parse a group of "\\item" into a table with a bold item and reconstructed description
+#' Parse a group of "\\item" into a table with a bold item and reconstructed
+#' description.
 #' 
 #' @param rd item to be parsed
 #' @param package package looking at
@@ -437,8 +418,7 @@ parse_item_list <- function(rd, package) {
   str_c("<table>", str_c(items_text, collapse = ""), "</table>", collapse = "")
 }
 
-#' Functions Used
-#' Functions used in the string of functions
+#' Functions used in the string of functions.
 #'
 #' @param txt text in question.  should be full of functions
 functions_used <- function(txt) {

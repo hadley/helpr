@@ -19,7 +19,6 @@ installed_packages <- function() {
 
 
 #' Out of date packages.
-#' Local packages that need updating.
 #'
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
@@ -27,8 +26,7 @@ old_package_names <- function() {
   unname(old.packages()[, "Package"])
 }
 
-#' Update old packages
-#' update all packages that are old and currently loaded or installed
+#' Update all packages that are old and currently loaded or installed.
 #'
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
@@ -43,7 +41,7 @@ update_packs <- function(all = FALSE) {
   as.array(packs)
 }
 
-#' install packages
+#' Install packages.
 #' update a vector of packages
 #'
 #' @author Barret Schloerke \email{schloerke@@gmail.com}

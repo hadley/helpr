@@ -1,11 +1,11 @@
 \name{parse_item_list}
 \alias{parse_item_list}
-\title{Parse Item List...}
+\title{Parse a group of "\\item" into a table with a bold item and reconstructed...}
 \usage{parse_item_list(rd, package)}
 
 \description{
-  Parse Item List parse a group of "\\item" into a table with a bold
-  item and reconstructed description
+  Parse a group of "\\item" into a table with a bold item and
+  reconstructed description.
 }
 \value{table text with no attributes}
 \author{Barret Schloerke \email{schloerke@gmail.com}}

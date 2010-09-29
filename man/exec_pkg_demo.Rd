@@ -1,10 +1,10 @@
 \name{exec_pkg_demo}
 \alias{exec_pkg_demo}
-\title{evaluate demo...}
+\title{Evaluate demo in the R console.}
 \usage{exec_pkg_demo(package, dem)}
 
 \description{
-  evaluate demo evaluate demo in the R console
+  Evaluate demo in the R console.
 }
 \author{Barret Schloerke \email{schloerke@gmail.com}}
 \keyword{internal}

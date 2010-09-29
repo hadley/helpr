@@ -1,9 +1,9 @@
 \name{helpr_package}
-\title{Helpr Package...}
+\title{Package information.}
 \usage{helpr_package(package)}
 
 \description{
-  Helpr Package
+  Package information.
 }
 \alias{helpr_package}
 \alias{helpr_package_mem}

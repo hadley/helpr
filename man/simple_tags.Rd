@@ -1,9 +1,9 @@
 \name{simple_tags}
 \alias{simple_tags}
-\title{simple tags...}
+\title{All tags that can be parsed in a simple way.}
 
 \description{
-  simple tags list all the tags that can be parsed in a simple way
+  All tags that can be parsed in a simple way.
 }
 \author{Hadley Wickham}
 \keyword{internal}

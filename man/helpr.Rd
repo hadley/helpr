@@ -1,9 +1,9 @@
 \name{helpr}
 \alias{helpr}
-\title{Helpr Documentation...}
+\title{Start helpr.}
 
 \description{
-  Helpr Documentation Execute to show documentation
+  Start helpr.
 }
 \author{Hadley Wickham and Barret Schloerke \email{schloerke@gmail.com}}
 \arguments{

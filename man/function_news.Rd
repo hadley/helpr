@@ -1,10 +1,10 @@
 \name{function_news}
 \alias{function_news}
-\title{Function News...}
+\title{Function news.}
 \usage{function_news(package, topic)}
 
 \description{
-  Function News
+  Function news.
 }
 \author{Barret Schloerke \email{schloerke@gmail.com}}
 \keyword{internal}

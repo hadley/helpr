@@ -1,6 +1,4 @@
-
-#' Save a picture
-#' save a picture into the temp directory 
+#' Save a picture into the temp directory.
 #'
 #' @return the path to the picture (using the website)
 #' @author Barret Schloerke \email{schloerke@@gmail.com}

@@ -3,7 +3,7 @@
 \title{Out of date packages.}
 
 \description{
-  Out of date packages. Local packages that need updating.
+  Out of date packages.
 }
 \author{Barret Schloerke \email{schloerke@gmail.com}}
 \keyword{internal}

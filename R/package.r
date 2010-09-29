@@ -1,4 +1,4 @@
-#' Helpr Package
+#' Package information.
 #'
 #' @aliases helpr_package helpr_package_mem
 #' @return all the information necessary to produce a package site ("/package/:package/")
@@ -48,17 +48,17 @@ helpr_package_mem <- memoise(function(package, version) {
   )
 })
 
-#' Package Version
-#' returns the package version from the rd file
+#' Package version from the rd file
 #'
 #' @keywords internal
 #' @author Hadley Wickham
 pkg_version <- function(pkg) {
-  .readRDS(system.file("Meta", "package.rds", package = pkg))$DESCRIPTION[["Version"]]
+  rds <- .readRDS(system.file("Meta", "package.rds", package = pkg))
+  rds$DESCRIPTION[["Version"]]
 }
 
-#' Parse a package description
-#' makes sure that a package version is properly displayed if it is not given in a nice format
+#' Ensure package version is properly displayed (if not already in a nice
+#' format).
 #'
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
@@ -85,7 +85,7 @@ parse_pkg_desc_item <- function(obj) {
   )
 }
 
-#' Parse Authors and Maintainer
+#' Parse authors and maintainer.
 #'
 #' @param description list containing the \code{author} and \code{maintainer}
 #' @return string containing the authors with links properly displayed
@@ -148,7 +148,7 @@ pkg_author_and_maintainers <- function(authors, maintainer=NULL) {
   authors
 }
 
-#' Documentation Database Path
+#' Documentation database path.
 #'
 #' @param package package to explore
 #' @return \code{file.path} to the documentation database
@@ -158,7 +158,7 @@ pkg_rddb_path <- function(package) {
   file.path(pkg_help_path(package), package)
 }
 
-#' Package Help Path
+#' Package help path.
 #'
 #' @param package package to explore
 #' @return \code{file.path} to the help folder
@@ -169,7 +169,7 @@ pkg_help_path <- function(package) {
 }
 
 
-#' Package Vignettes
+#' List all package vignettes.
 #'
 #' @param package package to explore
 #' @return \code{subset} of the \code{vignette()$results} \code{data.frame} ("Package", "LibPath", "Item" and "Title")
@@ -188,7 +188,7 @@ pkg_vigs <- function(package) {
   data.frame(item = vignettes[,"Item"], title = titles, stringsAsFactors = FALSE)
 }
 
-#' Package Topics Alias to File Index
+#' Package topics alias to file index.
 #'
 #' @param package package to explore
 #' @return \code{\link{data.frame}} containing \code{alias} (function name) and \code{file} that it is associated with
@@ -211,7 +211,7 @@ pkg_topics_index <- memoise(function(package) {
 })
 
 
-#' Package Topics File Documentation
+#' Package topics file documentation.
 #'
 #' Items can be accessed by \emph{\code{list()}}\code{$file_name}
 #' @param package package to explore
@@ -223,7 +223,7 @@ pkg_topics_rd <- memoise(function(package) {
   lapply(rd, name_rd)
 })
 
-#' Topic Title and Aliases by Package
+#' Topic title and aliases by package.
 #' return information on the package, datasets, internal, and datasets
 #'
 #' @param pkg package in question

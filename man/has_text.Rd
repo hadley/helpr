@@ -1,10 +1,10 @@
 \name{has_text}
 \alias{has_text}
-\title{Has Text...}
+\title{Determines whether or not the item has text.}
 \usage{has_text(x)}
 
 \description{
-  Has Text determines whether or not the item has text
+  Determines whether or not the item has text.
 }
 \author{Barret Schloerke \email{schloerke@gmail.com}}
 \keyword{internal}

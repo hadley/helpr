@@ -1,10 +1,10 @@
 \name{helpr_demo}
 \alias{helpr_demo}
-\title{Helpr Demo Information...}
+\title{helpr demo information.}
 \usage{helpr_demo(package, demo_name)}
 
 \description{
-  Helpr Demo Information
+  helpr demo information.
 }
 \keyword{internal}
 \arguments{

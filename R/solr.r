@@ -2,7 +2,7 @@
 
 
 
-#' check to see if solr is running
+#' Check to see if solr is running.
 #'
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
@@ -17,20 +17,12 @@ solr_exists <- memoise(function() {
   identical(result, "success")
 })
 
-
-#' Delete a Package on Solr
-#' Deletes everything that belongs to a package
-#'
-#' @param package package to be deleted
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
 solr_FAIL <- function() {
-  message("Solr is not running.  You are out of luck.  Sorry :-(")
+  message("Solr is not running. You are out of luck. Sorry :-(")
   NULL
 }
 
-
-#' Delete a Package on Solr
-#' Deletes everything that belongs to a package
+#' Deletes everything that belongs to a package in solr.
 #'
 #' @param package package to be deleted
 #' @author Barret Schloerke \email{schloerke@@gmail.com}

@@ -1,10 +1,10 @@
 \name{demo_src}
 \alias{demo_src}
-\title{Demo Source...}
+\title{Demo source.}
 \usage{demo_src(package, demo_name)}
 
 \description{
-  Demo Source
+  Demo source.
 }
 \value{source for the demo}
 \author{Barret Schloerke \email{schloerke@gmail.com}}

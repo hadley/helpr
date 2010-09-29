@@ -1,4 +1,4 @@
-#' Render HTML Snippet
+#' Render HTML Snippet.
 #'
 #' @param template name of file to use in the folder "views"
 #' @param params list containing objects to be sent to the template
@@ -12,16 +12,15 @@ render_snippet <- function(template, params = list(), path = helpr_path()) {
 }
 
 
-#' Helpr Path
-#' Where's my help at?
+#' Helpr Path: Where's my help at?
 #'
 #' @return returns the path the to the helpr dir.  This could be local or the system (installed) path
 #' @examples
-#'  if(identical(helpr_path(), getwd())) {
-#'    "you are a developer"
-#'  } else {
-#'    "you have installed helpr"
-#'  }
+#' if(identical(helpr_path(), getwd())) {
+#'   "you are a developer"
+#' } else {
+#'   "you have installed helpr"
+#' }
 helpr_path <- memoise(function() {
   if (all(c("DESCRIPTION", "inst", "man", "R") %in% dir() )) {
     if ("helpr" %in% dir("../")) {

@@ -1,5 +1,4 @@
-#' load html pages
-#' load an html page from the console
+#' Load an html page from the console.
 #' 
 #' @param ... site to be loaded
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
@@ -18,8 +17,7 @@ load_html <- function(...) {
   browseURL(paste(base_html_path(), url_path, sep = ""), getOption("browser"))
 }
 
-#' base html path
-#' returns the base html path needed to load a website
+#' Base html path needed to load a website.
 #' 
 #' @param ... site to be loaded
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
@@ -28,8 +26,7 @@ base_html_path <- function() {
   str_c("http://127.0.0.1:", tools:::httpdPort, collapse = "")
 }
 
-#' check for a package
-#' check to see if a package exists
+#' Check to see if a package exists.
 #' 
 #' @param package package in question
 #' @keywords internal
@@ -44,8 +41,7 @@ check_for_package <- function(package) {
 
    
 
-#' Helpr Documentation
-#' Execute to show documentation
+#' Start helpr.
 #' 
 #' @export
 #' @param installed use TRUE if the package is installed on from CRAN
@@ -249,7 +245,7 @@ helpr_render_json <- function(obj) {
 }
 
 
-#' Helpr Home
+#' Helpr Home.
 #'
 #' @return all the information necessary to produce the home site ("index.html")
 #' @author Hadley Wickham and Barret Schloerke \email{schloerke@@gmail.com}
@@ -280,10 +276,9 @@ helpr_home <- function() {
   )
 }
 
-#' help files with topic for helpr
-#' route to the correct website
+#' Route to the topics with multiple files to correct page.
 #'
-#' function taken from utils
+#' Modified from \code{utils:::print.help_files_with_topic}
 #'
 #' @S3method print help_files_with_topic
 #' @param x path to help

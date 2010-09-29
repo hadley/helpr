@@ -1,10 +1,10 @@
 \name{pkg_help_path}
 \alias{pkg_help_path}
-\title{Package Help Path...}
+\title{Package help path.}
 \usage{pkg_help_path(package)}
 
 \description{
-  Package Help Path
+  Package help path.
 }
 \value{\code{file.path} to the help folder}
 \keyword{internal}

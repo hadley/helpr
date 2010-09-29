@@ -1,14 +1,14 @@
 \name{print.help_files_with_topic}
 \alias{print.help_files_with_topic}
-\title{help files with topic for helpr...}
+\title{Route to the topics with multiple files to correct page.}
 \usage{print.help_files_with_topic(x, ...)}
 
 \description{
-  help files with topic for helpr route to the correct website
+  Route to the topics with multiple files to correct page.
 }
 
 \details{
-  function taken from utils
+  Modified from \code{utils:::print.help_files_with_topic}
 }
 \author{Barret Schloerke \email{schloerke@gmail.com}}
 \keyword{internal}

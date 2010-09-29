@@ -1,11 +1,10 @@
 \name{evaluate_text}
 \alias{evaluate_text}
-\title{evaluate text...}
+\title{Evaluate text and return the corresponding text output and source.}
 \usage{evaluate_text(txt, pic_base_name)}
 
 \description{
-  evaluate text evaluate text and return the corresponding text output
-  and source
+  Evaluate text and return the corresponding text output and source.
 }
 \author{Barret Schloerke \email{schloerke@gmail.com}}
 \keyword{internal}

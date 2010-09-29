@@ -1,10 +1,8 @@
-#' Replay a list of evaluated results.
 #' Replay a list of evaluated results, just like you'd run them in a R
 #' terminal.
 #'
 #' @param x result from \code{\link{evaluate}}
 #' @param pic_base_name base picture name to be used
-#' @aliases helpr_replay helpr_replay.list helpr_replay.character helpr_replay.source helpr_replay.warning helpr_replay.message helpr_replay.error helpr_replay.value helpr_replay.recordedplot
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 helpr_replay <- function(x, pic_base_name) UseMethod("helpr_replay", x)
@@ -22,23 +20,26 @@ helpr_replay.character <- function(x, pic_base_name) {
 }
 
 helpr_replay.source <- function(x, pic_base_name) {
-  helpr_replay_cat(x$src)
+  if (str_trim(x$src) == "") return(x$src)
+
+  parsed <- parser(text = x$src)
+  highlight(parsed)
 }
 
 helpr_replay.warning <- function(x, pic_base_name) {
-  helpr_replay_message(str_c("Warning message:\n", x$message, collapse = ""))
+  strong(str_c("Warning message:\n", x$message, collapse = ""))
 }
 
 helpr_replay.message <- function(x, pic_base_name) {
-  helpr_replay_message(gsub("\n$", "", x$message))
+  strong(gsub("\n$", "", x$message))
 }
 
 helpr_replay.error <- function(x, pic_base_name) {
   if (is.null(x$call)) {
-    helpr_replay_message(str_c("Error: ", x$message, collapse = "\n"))    
+    strong(str_c("Error: ", x$message, collapse = "\n"))    
   } else {
     call <- deparse(x$call)
-    helpr_replay_message(str_c("Error in ", call, ": ", x$message, collapse = "\n"))    
+    strong(str_c("Error in ", call, ": ", x$message, collapse = "\n"))    
   }
 }
 
@@ -51,59 +52,30 @@ helpr_replay.recordedplot <- function(x, pic_base_name) {
   str_c("<img class=\"R_output_image\" src=\"", file_loc, "\" alt=\"", pic_base_name, "\" />", collapse = "")
 }
 
-
-#' cat a 'replay'
-#' parse r code and print it
-#'
-#' @param x result from \code{\link{evaluate}}
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @keywords internal
-helpr_replay_cat <- function(x) {
-  if (str_trim(x) == "")
-    return(x)
-
-  parsed <- parser(text = x)
-  highlight(parsed)
-}
-
-#' cat a 'replay'
-#' parse r code and print it
-#'
-#' @param x result from \code{\link{evaluate}}
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @keywords internal
-helpr_replay_message <- function(x) {
+strong <- function(x) {
   eval_tag_output(str_c("\n<strong>",x,"</strong>"))
 }
 
-
-#' evaluate text
-#' evaluate text and return the corresponding text output and source
+#' Evaluate text and return the corresponding text output and source.
 #'
 #' @param txt text to be evaluated
 #' @param pic_base_name base name for the picture files
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 evaluate_text <- function(txt, pic_base_name) {
-  if (!has_text(txt))
-    return("")
-  evaluated <- evaluate:::evaluate(txt, globalenv())
+  if (!has_text(txt)) return("")
+
+  evaluated <- evaluate::evaluate(txt, globalenv())
   replayed <- helpr_replay(evaluated, pic_base_name)
   str_c(as.character(unlist(replayed)), collapse = "\n")
 }
 
-#' evaluate output tag
-#' tag the text to make sure it is considered output
-#'
-#' @param x text to be tagged as output
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @keywords internal
+# Tag the output text with correct css class
 eval_tag_output <- function(x) {
   str_c("<pre class=\"R_output\">", x, "</pre>")
 }
 
-#' evaluate demo
-#' evaluate demo in the R console
+#' Evaluate demo in the R console.
 #'
 #' @param package package in question
 #' @param dem demo in question
@@ -114,7 +86,7 @@ exec_pkg_demo <- function(package, dem) {
 }
 
 
-#' evaluate example
+#' Evaluate example.
 #' stole from example.  It didn't have the option of character.only
 #'
 #' @param package package in question

@@ -1,8 +1,8 @@
 \name{function_help_path_mem}
-\title{Return the help path of a function...}
+\title{Return the help path of a function.}
 
 \description{
-  Return the help path of a function
+  Return the help path of a function.
 }
 \author{Barret Schloerke \email{schloerke@gmail.com}}
 \keyword{internal}

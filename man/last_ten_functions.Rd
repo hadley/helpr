@@ -1,11 +1,10 @@
 \name{last_ten_functions}
 \alias{last_ten_functions}
-\title{Last Ten Functions...}
+\title{List last ten unique functions called from the command line.}
 \usage{last_ten_functions(fun_list=get_function_history())}
 
 \description{
-  Last Ten Functions return the last ten unique functions that were
-  executed
+  List last ten unique functions called from the command line.
 }
 \author{Barret Schloerke \email{schloerke@gmail.com}}
 \keyword{internal}
