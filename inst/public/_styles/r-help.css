@@ -41,7 +41,7 @@ h1, h2, h3, .change_log_title {font-family: "Helvetica Neue", Helvetica, Arial, 
 h2, .change_log_title {font-size: 1em; margin-top: 1.5em; color: #264D66; font-weight: bold;}
 .sidebar h2, .sidebar .change_log_title {margin-top: 1em; font-size: 1.2em;}
 .firstline, h2.firstline, .change_log_title.firstline {margin-top: 0;}
-.change_log_date {color: rgb(177,177,177);}
+.change_log_date, .load_html {color: rgb(177,177,177);}
 h3 {font-weight: bold;}
 
 em {font-style: italic;}

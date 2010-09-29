@@ -53,7 +53,9 @@ helpr <- function() {
 
   # Show list of all packages on home page
   router$get("/index.html", function(...) {
-    render_brew("index", helpr_home(), path = path)
+    page_info <- helpr_home()
+    page_info$html <- "/index.html"
+    render_brew("index", page_info, path = path)
   })
 
   # Use file in public, if present
@@ -77,37 +79,47 @@ helpr <- function() {
 
   # Package index page, list topics etc
   router$get("/package/:package/", function(package, ...) {
+    html <- str_c("/package/", package, "/", collapse = "")
     if (check_for_package(package)) {
-      render_brew("package", helpr_package(package), path = path)    
+      page_info <- helpr_package(package)
+      page_info$html <- html
+      render_brew("package", page_info, path = path)    
     } else {
-      render_brew("whistle", list(package = package, url = deparse(str_c("/package/", package, "/", collapse = ""))), path = path)      
+      render_brew("whistle", list(package = package, url = deparse(html)), path = path)      
     }
   })
   
   # Package Vignette
   router$get("/package/:package/vignette/:vignette", function(package, vignette, ...) {
+    html <- str_c("/package/", package, "/vignette/", vignette, collapse = "")
     if (check_for_package(package)) {
       static_file(system.file("doc", str_c(vignette, ".pdf"), package = package))
     } else {
-      render_brew("whistle", list(package = package, url = deparse(str_c("/package/", package, "/vignette/", vignette, collapse = ""))), path = path)      
+      render_brew("whistle", list(package = package, url = deparse(html)), path = path)      
     }
   })
 
   # Package Demo
   router$get("/package/:package/demo/:demo", function(package, demo, ...) {
+    html <- str_c("/package/", package, "/demo/", demo, collapse = "")
+    page_info <- helpr_demo(package, demo)
+    page_info$html <- html
     if (check_for_package(package)) {
-      render_brew("demo", helpr_demo(package, demo), path = path)
+      render_brew("demo", page_info, path = path)
     } else {
-      render_brew("whistle", list(package = package, url = deparse(str_c("/package/", package, "/demo/", demo, collapse = ""))), path = path)      
+      render_brew("whistle", list(package = package, url = deparse(html)), path = path)      
     }
   })
   
   # Individual topic source
   router$get("/package/:package/topic/:topic/source/:func", function(package, topic, func, ...) {
+    html <- str_c("/package/", package, "/topic/", topic, "/source/", func, collapse = "")
+    page_info <- helpr_function(package, func)
+    page_info$html <- html
     if (check_for_package(package)) {
-      render_brew("source", helpr_function(package, func), path = path)
+      render_brew("source", page_info, path = path)
     } else {
-      render_brew("whistle", list(package = package, url = deparse(str_c("/package/", package, "/topic/", topic, "/source/", func, collapse = ""))), path = path)      
+      render_brew("whistle", list(package = package, url = deparse(html)), path = path)      
     }
   })
 
@@ -118,15 +130,22 @@ helpr <- function() {
       if ("h" %in% names(query)) {
         highlight <- query[names(query) == "h"]
       }
+    } else {
+      query <- NULL
     }
+
+    query_string <- str_c("?", str_c(names(query), query, sep = "=", collapse = "&"))
+    if (identical(query_string, "?"))
+      query_string <- ""
+    
+    html <- str_c("/package/", package, "/topic/", topic, query_string, collapse = "")
+    page_info <- helpr_topic(package, topic, highlight)
+    page_info$html <- html
     
     if (check_for_package(package)) {
-      render_brew("topic", helpr_topic(package, topic, highlight), path = path)
+      render_brew("topic", page_info, path = path)
     } else {
-      query_string <- str_c("?", str_c(names(query), query, sep = "=", collapse = "&"))
-      if (identical(query_string, "?"))
-        query_string <- ""
-      render_brew("whistle", list(package = package, url = deparse(str_c("/package/", package, "/topic/", topic, query_string, collapse = ""))), path = path)      
+      render_brew("whistle", list(package = package, url = deparse(html)), path = path)      
     }
   })
   router$get("/library/:package/html/:topic.html", function(package, topic, ...) {
@@ -146,13 +165,20 @@ helpr <- function() {
       descriptions[i] <- package_description(pkg[i], topic[i])
     }
     
-    render_brew("help", list(pkg = pkg, topic = topic, desc = descriptions), path = path)
+    html <- str_c("/multiple_help_paths?", str_c(pkg, topic, sep = "=", collapse = "&"))
+    
+    render_brew("help", list(pkg = pkg, topic = topic, desc = descriptions, html = html), path = path)
   })
   
   # Search
   router$get("/search", function(query, ...) {
     query_string <- str_c(names(query), query, sep = "=", collapse = "&")
-    render_brew("search", helpr_solr_search(query_string), path = path)  
+    
+    html <- str_c("/search?", query_string)
+    page_info <- helpr_solr_search(query_string)
+    page_info$html <- html
+    
+    render_brew("search", page_info, path = path)  
   })
   
   
