@@ -87,6 +87,7 @@ reconstruct <- function(rd, package = NULL) {
   } else if (tag == "COMMENT") {    
     txt <- as.character(rd)
     str_replace_all(txt, "%", "#")
+    ""
     
   } else if (tag == "\\enc") {
     reconstruct(rd[[1]], package)
