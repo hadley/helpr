@@ -117,45 +117,6 @@ function getSelText()
 }
 
 
-// Block the screen while executing a package demo
-function execute_demo(package, demo){
-  $("#run_highlight").hide();
-
-  $.blockUI({ message: '<h1><img src="/_images/busy.gif" /> Please view the R console to advance the demo</h1>' }); 
-  
-  setTimeout(function(){
-    jQuery.ajax({
-      url: "/package/"+package+"/exec_demo/"+demo,
-      success: function() {
-        $.unblockUI();
-        notify("The demo:" +demo+" has finished executing in the R console.");
-      },
-      error:function (xhr, ajaxOptions, thrownError){
-        $.unblockUI();
-        error_notify("The demo did not run execute properly.");
-      }
-    })
-  }, 500);
-}
-
-function execute_example(package, topic){
-   $.blockUI({ message: '<h1><img src="/_images/busy.gif" /> Please view the R console to advance the example</h1>' }); 
-  
-  setTimeout(function(){
-    jQuery.ajax({
-      url: "/package/"+package+"/topic/"+topic + "/exec_example",
-      success: function() {
-        $.unblockUI();
-        notify("The example for " +topic+" has finished executing in the R console.");
-      },
-      error:function (xhr, ajaxOptions, thrownError){
-        $.unblockUI();
-        error_notify("The example did not run execute properly.");
-      }
-    })
-  }, 500); 
-}
-
 
 function get_output_selected_text(section){
   var code = getSelText();

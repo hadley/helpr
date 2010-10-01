@@ -31,7 +31,6 @@
     <p><%= description %></p>
 
     <h2>Demo Source</h2>
-    <input id="run_demo" type="button" value="Execute Whole Demo" onclick="<%= str_c("execute_demo('",package, "','", name,"');") %>" />
     <input id="hide_output" type="button" value="Show/Hide Output" onclick="hide_show_output('demo', '<%= package %>', '<%= name %>' );" />
     <div id="demo_source_code" class="demo_source_code">
       <%= src %>

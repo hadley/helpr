@@ -98,9 +98,6 @@
   <div id="yui-main"><div id="Example" class="yui-b">
       <% if(dataframe_has_rows(examples)){ -%>
         <h2>Examples</h2>
-        <input id="run_example" type="button" value="Execute Whole Example" onclick="
-          <%= str_c("execute_example('",package, "','", name,"')") %>" 
-        />
         <input id="hide_output" type="button" value="Show/Hide Output" onclick="hide_show_output('example', '<%= package %>', '<%= name %>' );" />
         <div id="example_source_code">
           <%= examples  %>
