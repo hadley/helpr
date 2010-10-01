@@ -32,7 +32,6 @@ read_url <- function(url_string) {
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 urlJSON_to_list <- function(url_string) {
-  print(url_string)
   rjson::fromJSON(read_url(url_string))
 }
 

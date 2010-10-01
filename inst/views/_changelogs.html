@@ -1,4 +1,5 @@
 <% if(dataframe_has_rows(news)) {-%>
+  <hr>
   <%= str_c("<span class=\"change_log_title\">",title,"</span>" ) %>
   <%= if(!is.na(date)) {str_c(" <span class=\"change_log_date\">",date,"</span>") } %>
   <% for(i in seq_along(names(news))) { -%>

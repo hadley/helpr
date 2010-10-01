@@ -29,11 +29,10 @@ pkg_news <- function(package) {
 #' @keywords internal
 function_news <- function(package, topic) {
   package_news <- news(package = package)
-  if (is.null(package_news)) return(NULL)
+  if (is.null(package_news)) return("")
   
   # retain only the infomation that contains the topic name
   package_news <- package_news[str_detect(package_news$Text, topic), ]
-  
   if (!dataframe_has_rows(package_news)) return("")
     
   package_news$title <- str_c(package_news$Version, " - ", package_news$Category)

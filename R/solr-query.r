@@ -23,7 +23,9 @@ solr_has_topic_in_example <- function(topics) {
   query_list <- list(query = topics)
   
   result <- get_solr_query_result(query_list, TRUE)
-    
+  if(result$total_item_count == 0)
+    return(data.frame())
+
   t(sapply(result$response, function(x) { 
     path <- package_and_topic_from_url(x$id)
     c(title = x$Title_t, pkg = path$pkg, topic = path$topic) 

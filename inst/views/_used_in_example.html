@@ -1,0 +1,12 @@
+    <% if(dataframe_has_rows(d) ) { -%>
+      <h2>Used in Example</h2>
+      <ul>
+      <% for (i in seq_len(nrow(d))) { -%>
+        <li>
+        <%= str_c("<a href=\"/package/", d[i, "pkg"], "\" > ", d[i, "pkg"], "</a>", " :: ", "<a href=\"/package/", d[i, "pkg"], "/topic/", d[i, "topic"],"#Example\" > ", d[i, "topic"], "</a><br />") %>
+        <%= d[i, "title"] %>
+        </li>
+      <% } %>
+      </ul>
+    <% } %>
+    

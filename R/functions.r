@@ -167,7 +167,8 @@ helpr_function <- function(package, func) {
     src = src,
     src_functions = src_functions,
     src_functions_str = src_functions_str,
-    change_log = function_news(package, topic)
+    change_log = function_news(package, topic),
+    topic_in_example = solr_has_topic_in_example(topic)
   )
 }
 
