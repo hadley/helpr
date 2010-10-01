@@ -9,6 +9,8 @@ helpr_topic <- function(package, topic, highlight) {
   topic_info$highlight <- highlight
   
   topic_info$similar <- solr_similar(topic_info$title)
+  topic_and_alias <- unique(c(topic, topic_info$aliases))
+  topic_info$topic_in_example <- solr_has_topic_in_example(topic_and_alias)
 
   topic_info
 }

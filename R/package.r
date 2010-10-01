@@ -260,4 +260,14 @@ pkg_topics_alias <- function(pkg) {
   list(func = rd, dataset = dataset, internal = internal, info = package_info)
 }
 
+#' Package description
+#'
+#' @param pkg package in question
+#' @param topic topic in question
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
+package_description <- function(pkg, topic) {
+  gsub("$\n+|\n+^", "", reconstruct(pkg_topic(pkg, topic)$description, package))
+}
+
 

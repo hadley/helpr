@@ -134,7 +134,7 @@ helpr <- function() {
       query <- NULL
     }
 
-    query_string <- str_c("?", str_c(names(query), query, sep = "=", collapse = "&"))
+    query_string <- str_c("?", solr_combine_param(query))
     if (identical(query_string, "?"))
       query_string <- ""
     
@@ -165,17 +165,25 @@ helpr <- function() {
       descriptions[i] <- package_description(pkg[i], topic[i])
     }
     
-    html <- str_c("/multiple_help_paths?", str_c(pkg, topic, sep = "=", collapse = "&"))
+    html <- str_c("/multiple_help_paths?", solr_combine_param(topic, pkg))
     
     render_brew("help", list(pkg = pkg, topic = topic, desc = descriptions, html = html), path = path)
   })
   
   # Search
   router$get("/search", function(query, ...) {
-    query_string <- str_c(names(query), query, sep = "=", collapse = "&")
+    query_string <- solr_combine_param(query)
+
+    other <- query[! names(query) %in% c("start", "q")]
+    query_list <- list(
+      start = query[names(query) == "start"],
+      query = query[names(query) == "q"],
+      other = solr_combine_param(other)
+    )
+      
     
     html <- str_c("/search?", query_string)
-    page_info <- helpr_solr_search(query_string)
+    page_info <- helpr_solr_search(query_list)
     page_info$html <- html
     
     render_brew("search", page_info, path = path)  
@@ -365,7 +373,7 @@ print.help_files_with_topic <- function (x, ...)
 
         if (length(pkgname) > 1) {
           browseURL(paste(base_html_path(), 
-          "/multiple_help_paths?", str_c(pkgname, topic, sep = "=", collapse = "&"), sep = ""), browser)
+          "/multiple_help_paths?", solr_combine_param(topic, pkgname), sep = ""), browser)
         } else {
           browseURL(paste(base_html_path(), 
           "/library/", pkgname, "/html/", topic, 

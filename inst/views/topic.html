@@ -90,11 +90,22 @@
       </ul>
     <% } %>
 
+    <% if(dataframe_has_rows(topic_in_example) ) { -%>
+      <h2>Used in Example</h2>
+      <ul>
+      <% for (i in seq_len(nrow(topic_in_example))) { -%>
+        <li>
+        <%= str_c("<a href=\"/package/", topic_in_example[i, "pkg"], "\" > ", topic_in_example[i, "pkg"], "</a>", " :: ", "<a href=\"/package/", topic_in_example[i, "pkg"], "/topic/", topic_in_example[i, "topic"],"#Example\" > ", topic_in_example[i, "topic"], "</a><br />") %>
+        <%= topic_in_example[i, "title"] %>
+        </li>
+      <% } %>
+      </ul>
+    <% } %>
     
     
   </div></div>
   <br clear="all" />
-  <div id="yui-main"><div class="yui-b">
+  <div id="yui-main"><div id="Example" class="yui-b">
       <% if(dataframe_has_rows(examples)){ -%>
         <h2>Examples</h2>
         <input id="run_example" type="button" value="Execute Whole Example" onclick="

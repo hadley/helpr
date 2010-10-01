@@ -1,5 +1,12 @@
 #http://localhost:8983/solr/select?q=plot&mlt=true&mlt.count=3&mlt.fl=Title_t
 
+#' Solr base URL.
+#'
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
+solr_base_url <- function() {
+  "http://localhost:8983"
+}
 
 
 #' Check to see if solr is running.
@@ -17,45 +24,16 @@ solr_exists <- memoise(function() {
   identical(result, "success")
 })
 
+
+#' Produce a message that states Solr is not running.
+#'
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
 solr_FAIL <- function() {
   message("Solr is not running. You are out of luck. Sorry :-(")
   NULL
 }
 
-#' Deletes everything that belongs to a package in solr.
-#'
-#' @param package package to be deleted
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
-# '
-solr_delete_package <- function(package) {
-  if (! solr_exists()) return(NULL)
-  
-  site <- str_c("<delete><query>id:/package/",package,"/*</query></delete>")
-  
-  put_string(site)
-}
-
-
-#' Similar Pages
-#' Find related pages and return info in a data.frame
-#'
-#' @param topic title to be used to find similar results
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @keywords internal
-solr_similar <- function(topic) {
-  if (! solr_exists()) return(NULL)
-  
-  site <- str_c("http://localhost:8983/solr/select?wt=json&mlt=true&mlt.count=5&mlt.fl=Title_t,Description_t,Details_t,Value_t&q=", topic)
-  output <- suppressWarnings(urlJSON_to_list(site))
-  
-  docs <- output$moreLikeThis[[1]]$docs
-
-  t(sapply(docs, function(x) { 
-    path <- package_and_topic_from_url(x$id)
-    c(title = x$Title_t, desc = x$Description_t, pkg = path$pkg, topic = path$topic) 
-  }))
-  
-}
 
 
 #' helpr topic into xml for solr
@@ -98,109 +76,6 @@ solr_topic <- function(package, topic) {
 }
 
 
-#' Read URL
-#' Retrieve the text from a url
-#' 
-#' @param url_string url to explore
-#' @return plain text from that url
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @keywords internal
-read_url <- function(url_string) {
-  url_connect <- url(utils::URLencode(url_string))
-  on.exit(close(url_connect))
-  output <- suppressWarnings(str_c(readLines(url_connect), collapse = ""))
-  output
-}
-
-#' URL made of JSON to list
-#'
-#' @param url_string url that contains a JSON output to be turned into a list
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @keywords internal
-urlJSON_to_list <- function(url_string) {
-  rjson::fromJSON(read_url(url_string))
-}
-
-#' make a xml field
-#' make a field for a solr document
-#' 
-#' @param name name of the field
-#' @param value value of the field
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @keywords internal
-make_field <- function(name, value) {
-  if (length(value) < 1) value <- ""
-  value <- str_trim(value)
-  value <- gsub("&(?![#]{1})", "&#38;", value, perl=TRUE)
-  value <- str_replace_all(value, "<", "&#60;")
-  value <- str_replace_all(value, ">", "&#62;")
-  value <- str_replace_all(value, "\n", "")
-  value <- str_replace_all(value, "\t", "")
-  if (!identical(name, "id")) name <- str_c(name, "_t")
-  
-  str_c("<field name=\"", name, "\">", str_c(value, collapse = "; "),"</field>", collapse = "")
-}
-
-
-#' turn a list into a solr doc
-#' turn a list into a solr doc
-#' 
-#' @param id id tag to be used
-#' @param obj list to perform on
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @keywords internal
-list_to_xml <- function(id, obj) {
-  obj$id <- id
-  new_obj <- list_to_double_list(obj)
-
-  fields <- sapply(new_obj, function(x) {
-    make_field(x$name, x$value)
-  })
-  
-  str_c("<doc>", str_c(fields, collapse=""), "</doc>", collapse = "")
-}
-
-
-#' make a list into a nested list
-#' this is to be done to easily use sapply and keep the name of the item
-#'
-#' @param obj list to perform on
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @keywords internal
-list_to_double_list <- function(obj) {
-  new_obj <- list()
-  for(item_name in names(obj)) {
-    new_obj[[item_name]] <- list(name = item_name, value = obj[[item_name]])
-  }
-  new_obj
-}
-
-
-#' make it so the xml is an 'add'
-#' make it so the xml is an 'add' to be commited to solr
-#'
-#' @param obj list to perform on
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @keywords internal
-make_add_xml <- function(obj) {
-  str_c("<add>", obj, "</add>", collaspe = "")
-}
-
-
-#' Save page info
-#' Save page info into xml for solr
-#'
-#' @param txt xml text string
-#' @param file_name location to save the file. Defaults to a temp file that is discarded when R shuts down.
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @keywords internal
-save_xml <- function(txt, file_name=tempfile()) {
-  txt <- str_replace_all(txt, "<doc>", "<doc>\n\t")
-  txt <- str_replace_all(txt, "</field>", "</field>\n\t")
-  txt <- str_replace_all(txt, "\t</doc>", "</doc>")
-  cat(txt, file = file_name)
-  file_name
-}
 
 #' Index topic
 #' Index a topic into solr
@@ -286,56 +161,10 @@ index_all <- function(start_letter = "a", verbose = TRUE) {
 }
 
 
-#' Solr Query
-#' Retrieve a solr query 
-#'
-#' @param solr_param_string parameters that are to be passed onto solr
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @keywords internal
-get_solr_query_result <- function(solr_param_string, function_field = FALSE) {
-  rows <- 20
-  response <- urlJSON_to_list(str_c("http://0.0.0.0:8983/solr/select/?",
-    "version=2.2",
-    "&wt=json",
-    "&rows=", rows, 
-    "&indent=on",
-    if (identical(function_field, FALSE)) {
-      str_c("&hl=on",
-        "&hl.simple.pre=<strong>",
-        "&hl.simple.post=</strong>",
-        "&hl.fragsize=70",
-        "&hl.mergeContiguous=true",
-        "&fl=*",
-        "&hl.fl=Title_t,Description_t,Details_t,Value_t,Authors_t")
-    } else {
-      "&fl=Example_t"
-    }
-    ,"&",solr_param_string
-  ))
-
-  print(response)
-
-  docs <- response$highlighting
-  query <- response$responseHeader$params$q
-
-  start_pos <- as.numeric(response$responseHeader$params$start)
-
-  total_item_count <- as.numeric(response$response$numFound)
-
-  list(
-    response = docs, 
-    items_before = start_pos, 
-    items_after = max(0, total_item_count - start_pos - rows),
-    total_item_count = total_item_count, 
-    query = query
-  )
-}
-
-
 #' Pkg and topic from url
 #' Retrieve the pkg and topic from the url
 #'
-#' @param solr_param_string parameters that are to be passed onto solr
+#' @param url_txt url to be parsed
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 package_and_topic_from_url <- function(url_txt) {
@@ -354,37 +183,19 @@ package_and_topic_from_url <- function(url_txt) {
   list(pkg = pkg, topic = topic)
 }
 
-#' Package description
-#'
-#' @param pkg package in question
-#' @param topic topic in question
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @keywords internal
-package_description <- function(pkg, topic) {
-  gsub("$\n+|\n+^", "", reconstruct(pkg_topic(pkg, topic)$description, package))
-}
 
-#' search query path
-#' return a html path for a search
-#'
-#' @param query query to be used
-#' @param start_pos postion to start at
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @keywords internal
-search_query_path <- function(query="example", start_pos=0) {
-  str_c(base_html_path(), "/search/start=", start_pos, ";q=", query)  
-}
 
 
 #' Helpr Search
 #'
+#' @param query_list list that contains the start position, query, and other parameters
 #' @return returns all the necessary information from a search
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-helpr_solr_search <- function(query_string) {
+helpr_solr_search <- function(query_list) {
   if (! solr_exists()) return(NULL)
 
-  result <- get_solr_query_result(query_string)
+  result <- get_solr_query_result(query_list)
   items <- result$response
   
   urls <- as.character(names(items))
@@ -404,53 +215,4 @@ helpr_solr_search <- function(query_string) {
 }
 
 
-#' Send commit command to Solr
-#' Send a commit command to Solr to finalized any submissions
-#'
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @keywords internal
-send_commit_command <- function() {
-  send_system_command("curl http://localhost:8983/solr/update --data-binary '<commit/>' -H 'Content-type:text/xml; charset=utf-8'")
-}
-
-#' Send system command to Solr
-#' Send a system command to Solr to add / update files to Solr
-#'
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @keywords internal
-send_system_command <- function(system_string) {
-  curled_text <- system(system_string, intern = TRUE, ignore.stderr = TRUE)
-  status <- str_sub(curled_text[3], start=47, end=47)
-#  if (length(status) < 1 | status == NA)
-#    status <- "FAIL"
-
-  if (!identical(status, "0")) {
-    message(str_c(curled_text, collapse = "\n"))
-    stop("Error uploading file to solr")
-  }
-  
-  "success"
-  
-}
-
-#' PUT a string to the Solr server
-#' PUT a string to the Solr server
-#'
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @keywords internal
-put_string <- function(string) {
-  file_name <- save_xml(string)
-  put_file(file_name)
-}
-
-#' PUT a file to the Solr server
-#' PUT a file to the Solr server
-#'
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @keywords internal
-put_file <- function(file_name) {
-  cat("posting file: ", file_name,"\n")
-  send_system_command(str_c("curl http://localhost:8983/solr/update --data-binary @", file_name, " -H 'Content-type:text/xml; charset=utf-8'", collapse = ""))
-  send_commit_command()
-}
 

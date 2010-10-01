@@ -13,4 +13,4 @@ License: GPL-2
 LazyData: true
 Collate: 'changelog.r' 'demo.r' 'evaluate.r' 'functions.r' 'history.r'
     'package.r' 'packages.r' 'parse-rd.r' 'pictures.r' 'render.r'
-    'route.r' 'solr.r' 'topic.r'
+    'route.r' 'solr.r' 'solr-com.r' 'solr-query.r' 'solr-save.r' 'topic.r'
