@@ -26,8 +26,9 @@ solr_FAIL <- function() {
 #'
 #' @param package package to be deleted
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
+# '
 solr_delete_package <- function(package) {
-  if (! solr_exists()) return(solr_FAIL())
+  if (! solr_exists()) return(NULL)
   
   site <- str_c("<delete><query>id:/package/",package,"/*</query></delete>")
   
@@ -38,13 +39,13 @@ solr_delete_package <- function(package) {
 #' Similar Pages
 #' Find related pages and return info in a data.frame
 #'
-#' @param topic_title title to be used to find similar results
+#' @param topic title to be used to find similar results
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-solr_similar <- function(topic_title) {
-  if (! solr_exists()) return(solr_FAIL())
+solr_similar <- function(topic) {
+  if (! solr_exists()) return(NULL)
   
-  site <- str_c("http://localhost:8983/solr/select?wt=json&mlt=true&mlt.count=5&mlt.fl=Title_t,Description_t,Details_t,Value_t&q=", topic_title)
+  site <- str_c("http://localhost:8983/solr/select?wt=json&mlt=true&mlt.count=5&mlt.fl=Title_t,Description_t,Details_t,Value_t&q=", topic)
   output <- suppressWarnings(urlJSON_to_list(site))
   
   docs <- output$moreLikeThis[[1]]$docs
@@ -83,7 +84,7 @@ solr_topic <- function(package, topic) {
   # Title, description, value and examples, need to be stitched into a 
   # single string.
   out$Title <- strip_html(reconstruct(untag(rd$title), package))
-  out$Description <- gsub("$\n+|\n+^", "", strip_html(reconstruct(rd$description), package))
+  out$Description <- gsub("$\n+|\n+^", "", strip_html(reconstruct(rd$description, package)))
   out$Details <- strip_html(reconstruct(rd$details, package))
   out$Value <- strip_html(reconstruct(rd$value, package))
   out$Authors <- strip_html(reconstruct(rd$author, package))
@@ -209,7 +210,7 @@ save_xml <- function(txt, file_name=tempfile()) {
 #' @param package package in question
 #' @param topic topic in question
 index_topic <- function(package, topic) {
-  if (! solr_exists()) return(solr_FAIL())
+  if (! solr_exists()) return(NULL)
 
   put_string(make_add_xml(solr_topic(package, topic)))
 }
@@ -223,7 +224,7 @@ index_topic <- function(package, topic) {
 #' @param start_letter used when you want to start froma certain letter, such as 'q'
 #' @param verbose should output be shown?
 index_package <- function(package, start_letter = "a", verbose = TRUE) {
-  if (! solr_exists()) return(solr_FAIL());
+  if (! solr_exists()) return(NULL);
   
   if (verbose == TRUE) cat("\n\n\n")
   if (verbose == TRUE || verbose == "package") cat(package,"\n")
@@ -271,7 +272,7 @@ index_package <- function(package, start_letter = "a", verbose = TRUE) {
 #' @param start_letter used when you want to start froma certain letter, such as 'q'
 #' @param verbose should output be shown?
 index_all <- function(start_letter = "a", verbose = TRUE) {
-  if (! solr_exists()) return(solr_FAIL())
+  if (! solr_exists()) return(NULL)
 
   packages <- installed_packages()$Package
   packages <- packages[order(tolower(packages))]
@@ -291,21 +292,28 @@ index_all <- function(start_letter = "a", verbose = TRUE) {
 #' @param solr_param_string parameters that are to be passed onto solr
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-get_solr_query_result <- function(solr_param_string) {
+get_solr_query_result <- function(solr_param_string, function_field = FALSE) {
   rows <- 20
   response <- urlJSON_to_list(str_c("http://0.0.0.0:8983/solr/select/?",
     "version=2.2",
     "&wt=json",
     "&rows=", rows, 
     "&indent=on",
-    "&hl=on",
-      "&hl.simple.pre=<strong>",
-      "&hl.simple.post=</strong>",
-      "&hl.fl=*&hl.fragsize=70",
-      "&hl.mergeContiguous=true",
-    "&fl=Title_t,Description_t,Details_t,Value_t,Authors_t", 
-    solr_param_string
+    if (identical(function_field, FALSE)) {
+      str_c("&hl=on",
+        "&hl.simple.pre=<strong>",
+        "&hl.simple.post=</strong>",
+        "&hl.fragsize=70",
+        "&hl.mergeContiguous=true",
+        "&fl=*",
+        "&hl.fl=Title_t,Description_t,Details_t,Value_t,Authors_t")
+    } else {
+      "&fl=Example_t"
+    }
+    ,"&",solr_param_string
   ))
+
+  print(response)
 
   docs <- response$highlighting
   query <- response$responseHeader$params$q
@@ -374,7 +382,7 @@ search_query_path <- function(query="example", start_pos=0) {
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 helpr_solr_search <- function(query_string) {
-  if (! solr_exists()) return(solr_FAIL())
+  if (! solr_exists()) return(NULL)
 
   result <- get_solr_query_result(query_string)
   items <- result$response
