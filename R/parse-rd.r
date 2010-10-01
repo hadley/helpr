@@ -85,8 +85,8 @@ reconstruct <- function(rd, package = NULL) {
     author_email(reconstruct(untag(rd), package), rd[[1]][1])      
     
   } else if (tag == "COMMENT") {    
-    txt <- as.character(rd)
-    str_replace_all(txt, "%", "#")
+#    txt <- as.character(rd)
+#    str_replace_all(txt, "%", "#")
     ""
     
   } else if (tag == "\\enc") {
@@ -429,11 +429,12 @@ functions_used <- function(txt) {
   d <- attr(par_text, "data")
   if (is.null(d)) return("");
     
-  funcs <- subset(d, token.desc == "SYMBOL_FUNCTION_CALL", select = "text")
+  funcs <- subset(d, token.desc == "SYMBOL_FUNCTION_CALL", select = "text")$text
   
-  funcs_u <- unique(funcs$text)
-  
-  funcs_u[order(funcs_u)]
+#  funcs_u <- unique(funcs$text)
+#  
+#  funcs_u[order(funcs_u)]
+  funcs
 
 }
 
