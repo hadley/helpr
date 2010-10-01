@@ -12,8 +12,8 @@ solr_delete_package <- function(package) {
 }
 
 
-#' Read URL
-#' Retrieve the text from a url
+#' Read URL.
+#' Retrieve the text from a URL
 #' 
 #' @param url_string url to explore
 #' @return plain text from that url
@@ -26,7 +26,7 @@ read_url <- function(url_string) {
   output
 }
 
-#' URL made of JSON to list
+#' URL with JSON result to list.
 #'
 #' @param url_string url that contains a JSON output to be turned into a list
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
@@ -44,7 +44,7 @@ send_commit_command <- function() {
   send_system_command(str_c("curl ", solr_base_url(), "/solr/update --data-binary '<commit/>' -H 'Content-type:text/xml; charset=utf-8'"))
 }
 
-#' Send system command to Solr
+#' Send system command to Solr.
 #' Send a system command to Solr to add / update files to Solr
 #'
 #' @author Barret Schloerke \email{schloerke@@gmail.com}

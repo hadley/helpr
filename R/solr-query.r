@@ -1,19 +1,43 @@
+#' Topic fields.
+#'
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
 solr_topic_fields <- function(){
   c("Title_t", "Description_t", "Details_t", "Value_t", "Authors_t")
 }
 
+
+#' Topic query. 
+#'
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
 solr_query_topic_fields <- function(query, collapse = " OR ") {
   str_c(solr_topic_fields(), ":", query, collapse = collapse)
 }
 
-solr_query_example_field <- function(query, collapse = " OR ") {
-  str_c(solr_example_field(),":", query, collapse = collapse)    
-}
 
+#' Example query field.
+#'
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
 solr_example_field <- function() {
   "Examples_t"
 }
 
+
+#' Example query.
+#'
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
+solr_query_example_field <- function(query, collapse = " OR ") {
+  str_c(solr_example_field(),":", query, collapse = collapse)    
+}
+
+
+#' Combine Solr parameters.
+#'
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
 solr_combine_param <- function(value, param = names(value)) {
   str_c(param, value, sep = "=", collapse = "&")
 }
@@ -35,7 +59,7 @@ solr_has_topic_in_example <- function(topics) {
 }
 
 
-#' search query path
+#' Search query path.
 #' return a html path for a search
 #'
 #' @param query query to be used
@@ -48,7 +72,7 @@ search_query_path <- function(query="example", start_pos=0) {
 
 
 
-#' Similar Pages
+#' Similar pages.
 #' Find related pages and return info in a data.frame
 #'
 #' @param topic title to be used to find similar results
@@ -70,7 +94,7 @@ solr_similar <- function(topic) {
 }
 
 
-#' Solr Query
+#' Solr query.
 #' Retrieve a solr query 
 #'
 #' @param query_list list that contains the start position, query, and other parameters that are ready to be pasted

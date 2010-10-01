@@ -1,5 +1,3 @@
-#http://localhost:8983/solr/select?q=plot&mlt=true&mlt.count=3&mlt.fl=Title_t
-
 #' Solr base URL.
 #'
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
@@ -36,7 +34,7 @@ solr_FAIL <- function() {
 
 
 
-#' helpr topic into xml for solr
+#' Make Helpr topic into xml for solr.
 #'
 #' @param package package to use
 #' @param topic topic to explore
@@ -77,7 +75,7 @@ solr_topic <- function(package, topic) {
 
 
 
-#' Index topic
+#' Index topic.
 #' Index a topic into solr
 #'
 #' @export
@@ -90,7 +88,7 @@ index_topic <- function(package, topic) {
   put_string(make_add_xml(solr_topic(package, topic)))
 }
 
-#' Index package
+#' Index package.
 #' Index a whole package into solr
 #'
 #' @export
@@ -139,7 +137,7 @@ index_package <- function(package, start_letter = "a", verbose = TRUE) {
 
 }
 
-#' Index all packages
+#' Index all packages.
 #' Index all packages into solr
 #'
 #' @export
@@ -161,8 +159,8 @@ index_all <- function(start_letter = "a", verbose = TRUE) {
 }
 
 
-#' Pkg and topic from url
-#' Retrieve the pkg and topic from the url
+#' Pkg and topic from URL.
+#' Retrieve the pkg and topic from the URL
 #'
 #' @param url_txt url to be parsed
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
@@ -186,7 +184,7 @@ package_and_topic_from_url <- function(url_txt) {
 
 
 
-#' Helpr Search
+#' Helpr Search.
 #'
 #' @param query_list list that contains the start position, query, and other parameters
 #' @return returns all the necessary information from a search

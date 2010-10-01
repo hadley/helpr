@@ -1,4 +1,4 @@
-#' Helpr Home
+#' Helpr home.
 #'
 #' @return all the information necessary to produce the home site ("index.html")
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
@@ -15,7 +15,7 @@ helpr_topic <- function(package, topic, highlight) {
   topic_info
 }
 
-#' Package Topic R Documentation
+#' Package topic R documentation.
 #'
 #' @param package package to explore
 #' @param topic topic of the package to retrieve
@@ -25,13 +25,6 @@ helpr_topic <- function(package, topic, highlight) {
 #' @return text of the .rd file
 pkg_topic <- function(package, topic, file = NULL) {
   if (is.null(file)) {
-#    topics <- pkg_topics_index(package)
-#    file <- unique(topics$file[topics$alias == topic | topics$file == topic])
-#    
-#    if (length(file) > 1) {
-#      file <- unique(topics$file[topics$alias == topic])
-#    }
-
     topics <- pkg_topics_index(package)
     topic_page <- subset(topics, alias == topic, select = file)$file
     
@@ -46,7 +39,7 @@ pkg_topic <- function(package, topic, file = NULL) {
 }
 
 
-#' Name R Documentation
+#' Name R documentation.
 #'
 #' @param rd rd file to use
 #' @return rd file properly named according to the tags
@@ -60,7 +53,7 @@ name_rd <- function(rd) {
   rd
 } 
 
-#' Internal Topic Function
+#' Internal topic function.
 #'
 #' @param help \code{pkg_topic(}\emph{\code{topic}}\code{)}  is checked to see if a keyword is "internal"
 #' @return boolean
@@ -70,7 +63,7 @@ topic_is_internal <- function(help) {
   "internal" %in% help$keywords
 }
 
-#' Parse Help File
+#' Parse help file.
 #' Function to turn a help topic into a convenient format.
 #'
 #' @param rd item to be tagged recursively
@@ -143,7 +136,7 @@ parse_help <- function(rd, package) {
 }
 
 
-#' Highlight R Text
+#' Highlight R text.
 #' Highlights R text to include links to all functions and make it easier to read
 #' @param parser_output text to be parsed and highlighted
 #' @return highlighted text
@@ -166,7 +159,7 @@ highlight <- function(parser_output, source_link = FALSE) {
   )
 }
 
-#' Add Funciton Link
+#' Add funciton link.
 #' Add the function link to the preparsed R code
 #'
 #' @param parser_output pre-parsed output
@@ -199,7 +192,7 @@ add_function_links_into_parsed <- function(parser_output, source_link = FALSE) {
   parser_output  
 }
 
-#' Find the First Item Position
+#' Find the first item position.
 #' @param arr arr of items to look at
 #' @return position of the first item to match "\\item" else 1
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
@@ -211,7 +204,7 @@ first_item_pos <- function(arr) {
   1
 }
 
-#' Find the Last Item Position
+#' Find the last Item position.
 #' @param arr arr of items to look at
 #' @return position of the last item to match "\\item" else 0
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
@@ -224,7 +217,7 @@ last_item_pos <- function(arr) {
 }
 
 
-#' Parse Usage
+#' Parse usage.
 #' Parse the topic usage to add links to functions
 #'
 #' @param usage rd usage
@@ -270,7 +263,7 @@ parse_usage <- function(usage, package) {
   text
 }
 
-#' Order Functions Safely by Name
+#' Order functions safely by name.
 #'
 #' @param vect string vector to be processed
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
@@ -296,7 +289,7 @@ safely_order_funcs <- function(vect) {
 }
 
 
-#' function levels
+#' Function levels.
 #' go through the function text to find the function level (depth) of each function
 #'
 #' @param text text to be evaluated
@@ -324,7 +317,7 @@ function_levels <- function(text) {
   text_value  
 }
 
-#' Find all usage functions
+#' Find all usage functions.
 #'
 #' @param usage usage in question
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
@@ -354,7 +347,7 @@ usage_functions <- function(usage) {
   usage_functions
 }
 
-#' usage methods
+#' Usage methods.
 #' find all methods within a usage
 #' 
 #' @param usage usage in question

@@ -1,5 +1,5 @@
 
-#' make a xml field
+#' Make a xml field.
 #' make a field for a solr document
 #' 
 #' @param name name of the field
@@ -20,7 +20,7 @@ make_field <- function(name, value) {
 }
 
 
-#' turn a list into a solr doc
+#' Turn a list into a solr doc.
 #' turn a list into a solr doc
 #' 
 #' @param id id tag to be used
@@ -39,7 +39,7 @@ list_to_xml <- function(id, obj) {
 }
 
 
-#' make a list into a nested list
+#' Make a list into a nested list.
 #' this is to be done to easily use sapply and keep the name of the item
 #'
 #' @param obj list to perform on
@@ -54,7 +54,7 @@ list_to_double_list <- function(obj) {
 }
 
 
-#' make it so the xml is an 'add'
+#' Make it so the xml is an 'add'.
 #' make it so the xml is an 'add' to be commited to solr
 #'
 #' @param obj list to perform on
@@ -65,7 +65,7 @@ make_add_xml <- function(obj) {
 }
 
 
-#' Save page info
+#' Save page info.
 #' Save page info into xml for solr
 #'
 #' @param txt xml text string
@@ -81,8 +81,7 @@ save_xml <- function(txt, file_name=tempfile()) {
 }
 
 
-#' PUT a string to the Solr server
-#' PUT a string to the Solr server
+#' PUT a string to the Solr server.
 #'
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
@@ -91,8 +90,7 @@ put_string <- function(string) {
   put_file(file_name)
 }
 
-#' PUT a file to the Solr server
-#' PUT a file to the Solr server
+#' PUT a file to the Solr server.
 #'
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
