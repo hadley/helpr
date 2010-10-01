@@ -32,8 +32,8 @@ base_html_path <- function() {
 #' @keywords internal
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @examples
-#'   check_for_package("stats")
-#'   check_for_package("does_not_exist")
+#'   #check_for_package("stats")
+#'   #check_for_package("does_not_exist")
 check_for_package <- function(package) {
   package %in% installed_packages()$Package
 }
@@ -316,7 +316,7 @@ helpr_home <- function() {
 #'
 #' Modified from \code{utils:::print.help_files_with_topic}
 #'
-#' @S3method print help_files_with_topic
+#' @method print help_files_with_topic
 #' @param x path to help
 #' @param ... other arguments ignored
 #' @author Barret Schloerke \email{schloerke@@gmail.com}

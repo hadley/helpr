@@ -1,13 +1,9 @@
 \name{get_solr_query_result}
 \alias{get_solr_query_result}
-\title{Solr Query...}
-\usage{get_solr_query_result(solr_param_string)}
-
-\description{
-  Solr Query Retrieve a solr query
-}
+\title{Solr query.}
+\usage{get_solr_query_result(query_list, function_field=FALSE)}
+\description{Solr query.
+Retrieve a solr query}
 \author{Barret Schloerke \email{schloerke@gmail.com}}
 \keyword{internal}
-\arguments{
-  \item{solr_param_string}{parameters that are to be passed onto solr}
-}
+\arguments{\item{query_list}{list that contains the start position, query, and other parameters that are ready to be pasted}}

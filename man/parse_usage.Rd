@@ -1,13 +1,9 @@
 \name{parse_usage}
 \alias{parse_usage}
-\title{Parse Usage...}
+\title{Parse usage.}
 \usage{parse_usage(usage, package)}
-
-\description{
-  Parse Usage Parse the topic usage to add links to functions
-}
+\description{Parse usage.
+Parse the topic usage to add links to functions}
 \author{Barret Schloerke \email{schloerke@gmail.com}}
 \keyword{internal}
-\arguments{
-  \item{usage}{rd usage}
-}
+\arguments{\item{usage}{rd usage}}

@@ -2,11 +2,6 @@
 \alias{load_html}
 \title{Load an html page from the console.}
 \usage{load_html(...)}
-
-\description{
-  Load an html page from the console.
-}
+\description{Load an html page from the console.}
 \author{Barret Schloerke \email{schloerke@gmail.com}}
-\arguments{
-  \item{...}{site to be loaded}
-}
+\arguments{\item{...}{site to be loaded}}
