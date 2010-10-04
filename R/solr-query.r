@@ -44,6 +44,8 @@ solr_combine_param <- function(value, param = names(value)) {
 
 
 solr_has_topic_in_example <- function(topics) {
+	if (! solr_exists()) return(data.frame())
+  
   query_list <- list(query = topics)
   
   result <- get_solr_query_result(query_list, TRUE)
@@ -79,7 +81,7 @@ search_query_path <- function(query="example", start_pos=0) {
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 solr_similar <- function(topic) {
-  if (! solr_exists()) return(NULL)
+  if (! solr_exists()) return(data.frame())
   
   site <- str_c(solr_base_url(), "/solr/select?wt=json&mlt=true&mlt.count=5&mlt.fl=Title_t,Description_t&q=", solr_query_topic_fields(topic))
   output <- suppressWarnings(urlJSON_to_list(site))
