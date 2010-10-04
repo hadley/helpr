@@ -112,9 +112,9 @@ helpr <- function() {
   })
   
   # Individual topic source
-  router$get("/package/:package/topic/:topic/source/:func", function(package, topic, func, ...) {
-    html <- str_c("/package/", package, "/topic/", topic, "/source/", func, collapse = "")
-    page_info <- helpr_function(package, func)
+  router$get("/package/:package/topic/:topic/source", function(package, topic, ...) {
+    html <- str_c("/package/", package, "/topic/", topic, "/source", collapse = "")
+    page_info <- helpr_function(package, topic)
     page_info$html <- html
     if (check_for_package(package)) {
       render_brew("source", page_info, path = path)

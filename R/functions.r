@@ -64,9 +64,9 @@ function_help_path_mem <- memoise(function(x, source_link = FALSE) {
     # retrieve last three folders/file and keep the package and topic
     pack_and_topic <- pkg_and_topic_from_help_url(url_string)
 
-    ending <- str_c("/topic/", pack_and_topic[2])
+    ending <- str_c("/topic/", x)
     if (source_link)
-      ending <- str_c(ending, "/source/", x)
+      ending <- str_c(ending, "/source")
     str_c("/package/", pack_and_topic[1], ending)
   }
 })
