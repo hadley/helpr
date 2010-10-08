@@ -237,11 +237,14 @@ helpr <- function() {
 
     helpr_render_json(TRUE)
   })
+
   router$get("/eval_demo/:package~:demo_name", function(package, demo_name, ...) {
+		require(package, character.only = TRUE)
     list(payload = evaluate_text(demo_src(package, demo_name), pic_base_name = str_c(package, "_", pkg_version(package),"_demo_", demo_name)))
   })
 
   router$get("/eval_example/:package~:topic", function(package, topic, ...) {
+		require(package, character.only = TRUE)
     list(payload = evaluate_text(reconstruct(untag(pkg_topic(package, topic)$examples), package), pic_base_name = str_c(package, "_", pkg_version(package),"_topic_", topic)))
   })
   
