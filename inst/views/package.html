@@ -115,31 +115,34 @@
 
     <% if(!is.null(description$imports)){ -%>    
       <h2>Imports</h2>      
-      <p><%= str_c(sapply(description$imports, function(x){str_c("<a href=\"/package/", x$name, "/\">", x$name, str_c("</a>", x$version, sep = " "))}), collapse = ", ")  %></p>
+      <%= add_package_link_to_string(description$imports) %>
+      <!-- <p><%#= str_c(sapply(description$imports, function(x){str_c("<a href=\"/package/", x$name, "/\">", x$name, str_c("</a>", x$version, sep = " "))}), collapse = ", ")  %></p> -->
     <% }%>
     
     <% if(!is.null(description$suggests)){ -%>    
       <h2>Suggests</h2>
-      
-      <p><%= str_c(sapply(description$suggests, function(x){str_c("<a href=\"/package/", x$name, "/\">", x$name, str_c("</a>", x$version, sep = " "))}), collapse = ", ")  %></p>
+      <%= add_package_link_to_string(description$suggests) %>
+      <!-- <p><%#= str_c(sapply(description$suggests, function(x){str_c("<a href=\"/package/", x$name, "/\">", x$name, str_c("</a>", x$version, sep = " "))}), collapse = ", ")  %></p> -->
+            <%#= print(description[["suggests"]]) %>
     <% }%>
 
     <% if(!is.null(description$extends)){ -%>    
       <h2>Extends</h2>
-      
-      <p><%= str_c(sapply(description$extends, function(x){str_c("<a href=\"/package/", x$name, "/\">", x$name, str_c("</a>", x$version, sep = " "))}), collapse = ", ")  %></p>
+      <%= add_package_link_to_string(description$extends) %>
+      <!-- <p><%#= str_c(sapply(description$extends, function(x){str_c("<a href=\"/package/", x$name, "/\">", x$name, str_c("</a>", x$version, sep = " "))}), collapse = ", ")  %></p> -->      
     <% }%>
 
     <% if(!is.null(description$depends)){ -%>    
       <h2>Depends</h2>
-      
-      <p><%= str_c(sapply(description$depends, function(x){str_c("<a href=\"/package/", x$name, "/\">", x$name, str_c("</a>", x$version, sep = " "))}), collapse = ", ")  %></p>
+      <%= add_package_link_to_string(description$depends) %>      
+      <!-- <p><%#= str_c(sapply(description$depends, function(x){str_c("<a href=\"/package/", x$name, "/\">", x$name, str_c("</a>", x$version, sep = " "))}), collapse = ", ")  %></p> -->
     <% }%>
 
     <% if(dataframe_has_rows(description$reverse)){ -%>    
       <h2>Reverse Dependencies</h2>
       
       <p><%= str_c("<a href=\"/package/", description$reverse, "/\">", description$reverse,"</a>", collapse = ", ")  %></p>
+      
     <% }%>
     
     
