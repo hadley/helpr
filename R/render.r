@@ -5,7 +5,7 @@
 #' @param path path to be used to find the "views" folder
 #' @return text rendered from the template
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @keywords internal 
+#' @export
 render_snippet <- function(template, params = list(), path = helpr_path()) {
   template <- str_c("_", template)
   render_brew(template, params, path)$payload
