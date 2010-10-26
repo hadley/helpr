@@ -52,6 +52,10 @@ helpr_replay.recordedplot <- function(x, pic_base_name) {
   str_c("<img class=\"R_output_image\" src=\"", file_loc, "\" alt=\"", pic_base_name, "\" />", collapse = "")
 }
 
+#' Strong HTML
+#'
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
 strong <- function(x) {
   eval_tag_output(str_c("\n<strong>",x,"</strong>"))
 }
@@ -70,7 +74,10 @@ evaluate_text <- function(txt, pic_base_name) {
   str_c(as.character(unlist(replayed)), collapse = "\n")
 }
 
-# Tag the output text with correct css class
+#' Tag the output text with correct css class
+#' 
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
 eval_tag_output <- function(x) {
   str_c("<pre class=\"R_output\">", x, "</pre>")
 }

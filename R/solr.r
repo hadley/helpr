@@ -8,9 +8,10 @@ solr_base_url <- function() {
 
 
 #' Check to see if solr is running.
+#' A check to see if solr is running called and memoised at the start of \code{helpr()}
 #'
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @keywords internal
+#' @export
 solr_exists <- memoise(function() {
   result <- tryCatch(
     send_commit_command(),

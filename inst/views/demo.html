@@ -40,7 +40,7 @@
   </div></div>
   <div class="yui-b"><div class = "sidebar">
 
-    <% if(dataframe_has_rows(other_demos)) { -%>    
+    <% if(helpr:::dataframe_has_rows(other_demos)) { -%>    
     <h2><%= other_demos_str %></h2>
     <dl>
       <% for(i in seq_len(NROW(other_demos))) {-%>

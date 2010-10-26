@@ -1,4 +1,13 @@
+#' Tag an item
+#'
+#' @author Hadley Wickham
+#' @keywords internal
 tag <- function(x) attr(x, "Rd_tag")
+
+#' Untag an item
+#'
+#' @author Hadley Wickham
+#' @keywords internal
 untag <- function(x) {
   if (is.null(x)) return()
   attr(x, "Rd_tag") <- ""
@@ -247,7 +256,7 @@ list(
 #'
 #' @param x item in question
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @keywords internal
+#' @export
 has_text <- function(x) {
   trim <- str_trim(x)
   !is.null(x) && trim != "" && length(trim) > 0
@@ -257,7 +266,7 @@ has_text <- function(x) {
 #'
 #' @param x item in question
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @keywords internal
+#' @export
 dataframe_has_rows <- function(x) {
   NROW(x) > 0
 }

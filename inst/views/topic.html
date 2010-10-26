@@ -33,13 +33,13 @@
     <h1><%= title%></h1>
     <%= desc %>
 
-    <% if(has_text(usage)){ -%>
+    <% if(helpr:::has_text(usage)){ -%>
       <h2>Usage</h2>
       <p>Click the functions to view their source</p>
       <pre><%= usage %></pre>
     <% } %>
 
-    <% if(dataframe_has_rows(params$args) || has_text(params$pre_text) || has_text(params$post_text)){ -%>
+    <% if(helpr:::dataframe_has_rows(params$args) || helpr:::has_text(params$pre_text) || helpr:::has_text(params$post_text)){ -%>
       <h2>Arguments</h2>
       <%= params$pre_text %>
       <table>
@@ -53,32 +53,32 @@
       <%= params$post_text %>
     <% } %>
 
-    <% if(has_text(details)){ -%>
+    <% if(helpr:::has_text(details)){ -%>
       <h2>Details</h2><%= details %>
     <% }%>
 
-    <% if(has_text(value)){ -%>
+    <% if(helpr:::has_text(value)){ -%>
       <h2>Value</h2><%= value %>
     <% }%>
 
-    <% if(has_text(source)){ -%>
+    <% if(helpr:::has_text(source)){ -%>
       <h2>Source</h2><%= source %>
     <% }%>
 
     
   </div></div>
   <div class="yui-b"><div class = "sidebar">
-    <% if(has_text(seealso)){ -%>
+    <% if(helpr:::has_text(seealso)){ -%>
       <h2>See also</h2>
       <%= seealso %>
     <% }%>
     
-    <% if(has_text(authors)){ -%>
+    <% if(helpr:::has_text(authors)){ -%>
       <h2><%= author_str %></h2>
       <%= authors %>
     <% }%>
     
-    <% if(dataframe_has_rows(similar) ) { -%>
+    <% if(helpr:::dataframe_has_rows(similar) ) { -%>
       <h2>Similar</h2>
       <ul>
       <% for (i in seq_len(nrow(similar))) { -%>
@@ -96,7 +96,7 @@
   </div></div>
   <br clear="all" />
   <div id="yui-main"><div id="Example" class="yui-b">
-      <% if(dataframe_has_rows(examples)){ -%>
+      <% if(helpr:::dataframe_has_rows(examples)){ -%>
         <h2>Examples</h2>
         <input id="hide_output" type="button" value="Show/Hide Output" onclick="hide_show_output('example', '<%= package %>', '<%= name %>' );" />
         <div id="example_source_code">

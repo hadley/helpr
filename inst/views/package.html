@@ -28,14 +28,14 @@
     <p><%= description$description %></p>
     <br />
 
-    <% if(FALSE && dataframe_has_rows(items$package)){ -%>
+    <% if(FALSE && helpr:::dataframe_has_rows(items$package)){ -%>
       <h2>Package Info</h2>
       <p><%= str_c("<a href='topic/", items$package$file, "'>", items$package$alias, "</a>", 
         collapse = ", ") %></p>
     <% } %>
     
     <table id="files">
-    <% if(dataframe_has_rows(items$info)){ -%>
+    <% if(helpr:::dataframe_has_rows(items$info)){ -%>
       <thead>
         <tr><th colspan=2><h2>Package Info</h2></th>
       </thead>
@@ -51,7 +51,7 @@
       <% } %>
     <% } %>
 
-    <% if(dataframe_has_rows(items$func)){ -%>
+    <% if(helpr:::dataframe_has_rows(items$func)){ -%>
       <thead>
         <tr><th colspan=2><h2>Functions</h2></th></tr>
       </thead>
@@ -68,7 +68,7 @@
     <% } %>
     </table>
     
-    <% if(dataframe_has_rows(items$dataset)){ -%>
+    <% if(helpr:::dataframe_has_rows(items$dataset)){ -%>
       <thead>
         <tr><th colspan=2><h2>Data Sets</h2></th></tr>
       </thead>
@@ -87,13 +87,13 @@
   </div></div>
   <div class="yui-b"><div class = "sidebar">
     
-    <% if(has_text(description$author)){ -%>
+    <% if(helpr:::has_text(description$author)){ -%>
       <h2><%= author_str %></h2>
       <p><%= str_c(description$author, collapse = ", ") %></p>
     <% }%>
     
 
-    <% if(dataframe_has_rows(demos)) { -%>    
+    <% if(helpr:::dataframe_has_rows(demos)) { -%>    
       <h2><%= demos_str %></h2>
       <dl>
       <% for(i in seq_len( nrow(demos))) { -%>
@@ -108,7 +108,7 @@
     <% } %>
       
 
-    <% if(dataframe_has_rows(vigs)){ -%>    
+    <% if(helpr:::dataframe_has_rows(vigs)){ -%>    
       <h2><%= vigs_str %></h2>
       <ul><%= str_c( "<li><a href=\"/package/", package, "/vignette/", vigs[, "item"], "\" >", vigs[, "title"], "</a></li>") %></ul>
     <% } %>
@@ -138,7 +138,7 @@
       <!-- <p><%#= str_c(sapply(description$depends, function(x){str_c("<a href=\"/package/", x$name, "/\">", x$name, str_c("</a>", x$version, sep = " "))}), collapse = ", ")  %></p> -->
     <% }%>
 
-    <% if(dataframe_has_rows(description$reverse)){ -%>    
+    <% if(helpr:::dataframe_has_rows(description$reverse)){ -%>    
       <h2>Reverse Dependencies</h2>
       
       <p><%= str_c("<a href=\"/package/", description$reverse, "/\">", description$reverse,"</a>", collapse = ", ")  %></p>
@@ -178,7 +178,7 @@
       </div> -->
       
     
-    <% if(dataframe_has_rows(change_log$news)) { -%>
+    <% if(helpr:::dataframe_has_rows(change_log$news)) { -%>
       <%= render_snippet("changelogs", change_log) %>
     <% } %>
 

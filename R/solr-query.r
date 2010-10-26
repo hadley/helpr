@@ -43,6 +43,10 @@ solr_combine_param <- function(value, param = names(value)) {
 }
 
 
+#' Solr Topics in Example
+#'
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
 solr_has_topic_in_example <- function(topics) {
 	if (! solr_exists()) return(data.frame())
   
@@ -56,8 +60,6 @@ solr_has_topic_in_example <- function(topics) {
     path <- package_and_topic_from_url(x$id)
     c(title = x$Title_t, pkg = path$pkg, topic = path$topic) 
   }))
-
-  
 }
 
 
@@ -140,8 +142,6 @@ get_solr_query_result <- function(query_list, function_field = FALSE) {
     }
     ,other
   ))
-
-#  print(response)
 
   if (identical(function_field, FALSE)) {
     docs <- response$highlighting
