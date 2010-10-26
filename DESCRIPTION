@@ -1,7 +1,7 @@
 Package: helpr
 Type: Package
 Title: Help for R.
-Version: 0.1.1
+Version: 0.1.2
 Author: Hadley Wickham <h.wickham@gmail.com> and Barret Schloerke
     <schloerke@gmail.com>
 Maintainer: Hadley Wickham <h.wickham@gmail.com>
