@@ -3,11 +3,11 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <%= render_snippet("html_header") %>
+  <%= helpr:::render_snippet("html_header") %>
 
-  <%= render_snippet("growl") %>
+  <%= helpr:::render_snippet("growl") %>
 
-  <%= render_snippet("disqus_header", list(name = str_c(package, "_topic_",name))) %>
+  <%= helpr:::render_snippet("disqus_header", list(name = str_c(package, "_topic_",name))) %>
 
   <script type="text/javascript" src="/_scripts/jquery.highlight-3.yui.js"></script>
 
@@ -25,7 +25,7 @@
       <input type="button" id="remove_highlight_button" onclick="remove_highlight()" value="Remove Highlighting" />
     <% } %>
     
-    <%= render_snippet("search_bar") %>
+    <%= helpr:::render_snippet("search_bar") %>
   </div>
 
   <div id="bd">
@@ -90,7 +90,7 @@
       </ul>
     <% } %>
 
-    <%= render_snippet("used_in_example", list(d = topic_in_example)) %>
+    <%= helpr:::render_snippet("used_in_example", list(d = topic_in_example)) %>
     
     
   </div></div>
@@ -106,7 +106,7 @@
   </div></div>
   <div class="yui-b"><div class = "sidebar">
 
-    <%= render_snippet("top_functions", list(functions = example_functions, title = example_functions_str)) %>
+    <%= helpr:::render_snippet("top_functions", list(functions = example_functions, title = example_functions_str)) %>
 
 
   </div></div>
@@ -114,7 +114,7 @@
   
   </div><!-- end bd -->
 
-  <%= render_snippet("footer", list(disqus = TRUE, html = html)) %>
+  <%= helpr:::render_snippet("footer", list(disqus = TRUE, html = html)) %>
 
   <input id="run_highlight" type="button" value="Execute Highlighted" onclick="run_selected_code('#example_source_code')" />
 

@@ -3,11 +3,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 
-  <%= render_snippet("html_header") %>
+  <%= helpr:::render_snippet("html_header") %>
 
-  <%= render_snippet("growl") %>
+  <%= helpr:::render_snippet("growl") %>
 
-  <%= render_snippet("google_dynamic_feed") %>
+  <%= helpr:::render_snippet("google_dynamic_feed") %>
 
   <script type="text/javascript" src="/_scripts/jquery.quicksearch.js"></script>
 
@@ -37,7 +37,7 @@
           </div><!-- -->
         </td>
         <td>
-          <%= render_snippet("search_bar") %>
+          <%= helpr:::render_snippet("search_bar") %>
         </td>
       </tr>
     </table>
@@ -93,6 +93,6 @@
   
   </div><!-- end bd -->
 
-  <%= render_snippet("footer", list(disqus = FALSE, html = html)) %>
+  <%= helpr:::render_snippet("footer", list(disqus = FALSE, html = html)) %>
 </div></body>
 </html>

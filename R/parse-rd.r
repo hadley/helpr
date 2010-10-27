@@ -256,7 +256,7 @@ list(
 #'
 #' @param x item in question
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @export
+#' @keywords internal
 has_text <- function(x) {
   trim <- str_trim(x)
   !is.null(x) && trim != "" && length(trim) > 0
@@ -266,9 +266,9 @@ has_text <- function(x) {
 #'
 #' @param x item in question
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @export
+#' @keywords internal
 dataframe_has_rows <- function(x) {
-  NROW(x) > 0
+  NROW(x) > 0 && x != ""
 }
 
 #' Parse Text

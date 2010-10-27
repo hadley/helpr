@@ -20,7 +20,7 @@
   <div id="doc2" class="yui-t6">
   <div id="hd">
     <a href="/index.html">R</a> 
-    <%= render_snippet("search_bar") %>
+    <%= helpr:::render_snippet("search_bar") %>
   </div>
 
   <div id="bd">
@@ -28,7 +28,7 @@
     <h1>Multiple Topics</h1>
 
     <% for(i in seq_along(pkg)){ -%>
-      <%= render_snippet("package_topic_desc", list(pkg = pkg[i], topic = topic[i], items = desc[i])) %>
+      <%= helpr:::render_snippet("package_topic_desc", list(pkg = pkg[i], topic = topic[i], items = desc[i])) %>
     <% } %>
     
   </div></div>
@@ -36,7 +36,7 @@
 
   </div><!-- end bd -->
 
-  <%= render_snippet("footer", list(disqus = FALSE, html = html)) %>
+  <%= helpr:::render_snippet("footer", list(disqus = FALSE, html = html)) %>
   
 </div></body>
 </html>

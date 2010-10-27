@@ -9,11 +9,11 @@
   <link rel="stylesheet" type="text/css" href="/_styles/r-help.css" />
   <link rel="stylesheet" type="text/css" href="/_styles/jquery.rating.css" />
   
-  <%= render_snippet("growl") %>
+  <%= helpr:::render_snippet("growl") %>
 
   <script type="text/javascript" src="/_scripts/package.js"></script>
 
-  <%= render_snippet("disqus_header", list(name = str_c(package, "_demo_", name))) %>
+  <%= helpr:::render_snippet("disqus_header", list(name = str_c(package, "_demo_", name))) %>
   <title><%= package %> <%= name %>. R help</title>
 </head>
 
@@ -22,7 +22,7 @@
   <div id="doc2" class="yui-t6">
   <div id="hd">
     <a href="/index.html">R</a> &#8594; <a href=".."><%= package %></a> &#8594; <%= name %> (demo) 
-    <%= render_snippet("search_bar") %>
+    <%= helpr:::render_snippet("search_bar") %>
   </div>
 
   <div id="bd">
@@ -54,14 +54,14 @@
     </dl>
   <% } %>
 
-  <%= render_snippet("top_functions", list(functions = src_functions, title = src_functions_str)) %>
+  <%= helpr:::render_snippet("top_functions", list(functions = src_functions, title = src_functions_str)) %>
     
   </div></div>
   
 
   </div><!-- end bd -->
 
-  <%= render_snippet("footer", list(disqus = TRUE, html = html)) %>
+  <%= helpr:::render_snippet("footer", list(disqus = TRUE, html = html)) %>
 </div>
 
     <input id="run_highlight" type="button" value="Execute Highlighted" onclick="run_selected_code('#demo_source_code');" style="position:absolute;" />

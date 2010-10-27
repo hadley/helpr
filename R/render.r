@@ -5,7 +5,7 @@
 #' @param path path to be used to find the "views" folder
 #' @return text rendered from the template
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @export
+#' @keywords internal
 render_snippet <- function(template, params = list(), path = helpr_path()) {
   template <- str_c("_", template)
   render_brew(template, params, path)$payload
@@ -15,6 +15,7 @@ render_snippet <- function(template, params = list(), path = helpr_path()) {
 #' Helpr Path: Where's my help at?
 #'
 #' @return returns the path the to the helpr dir.  This could be local or the system (installed) path
+#' @keywords internal
 #' @examples
 #' #if(identical(helpr_path(), getwd())) {
 #' #  "you are a developer"

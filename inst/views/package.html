@@ -3,13 +3,13 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <%= render_snippet("html_header") %>
+  <%= helpr:::render_snippet("html_header") %>
 
-  <%= render_snippet("rating") %>
+  <%= helpr:::render_snippet("rating") %>
 
   <script type="text/javascript" src="/_scripts/jquery.quicksearch.js"></script>
 
-  <%= render_snippet("disqus_header", list(name = str_c(package, "_package"))) %>
+  <%= helpr:::render_snippet("disqus_header", list(name = str_c(package, "_package"))) %>
 
   <title><%= package %>. R help</title>
 </head>
@@ -19,7 +19,7 @@
   <div id="doc2" class="yui-t6">
   <div id="hd">
     <a href="/index.html">R</a> &#8594; <%= package %>
-    <%= render_snippet("search_bar") %>
+    <%= helpr:::render_snippet("search_bar") %>
   </div>
 
   <div id="bd">
@@ -115,26 +115,26 @@
 
     <% if(!is.null(description$imports)){ -%>    
       <h2>Imports</h2>      
-      <%= add_package_link_to_string(description$imports) %>
+      <%= helpr:::add_package_link_to_string(description$imports) %>
       <!-- <p><%#= str_c(sapply(description$imports, function(x){str_c("<a href=\"/package/", x$name, "/\">", x$name, str_c("</a>", x$version, sep = " "))}), collapse = ", ")  %></p> -->
     <% }%>
     
     <% if(!is.null(description$suggests)){ -%>    
       <h2>Suggests</h2>
-      <%= add_package_link_to_string(description$suggests) %>
+      <%= helpr:::add_package_link_to_string(description$suggests) %>
       <!-- <p><%#= str_c(sapply(description$suggests, function(x){str_c("<a href=\"/package/", x$name, "/\">", x$name, str_c("</a>", x$version, sep = " "))}), collapse = ", ")  %></p> -->
             <%#= print(description[["suggests"]]) %>
     <% }%>
 
     <% if(!is.null(description$extends)){ -%>    
       <h2>Extends</h2>
-      <%= add_package_link_to_string(description$extends) %>
+      <%= helpr:::add_package_link_to_string(description$extends) %>
       <!-- <p><%#= str_c(sapply(description$extends, function(x){str_c("<a href=\"/package/", x$name, "/\">", x$name, str_c("</a>", x$version, sep = " "))}), collapse = ", ")  %></p> -->      
     <% }%>
 
     <% if(!is.null(description$depends)){ -%>    
       <h2>Depends</h2>
-      <%= add_package_link_to_string(description$depends) %>      
+      <%= helpr:::add_package_link_to_string(description$depends) %>      
       <!-- <p><%#= str_c(sapply(description$depends, function(x){str_c("<a href=\"/package/", x$name, "/\">", x$name, str_c("</a>", x$version, sep = " "))}), collapse = ", ")  %></p> -->
     <% }%>
 
@@ -173,13 +173,13 @@
 <!--      <h2>Rating</h2>
       <div id="rating">
         <script language="javascript">
-          <%= str_c("get_rating('", package, "');", collapse = "") %>
+          <%#= str_c("get_rating('", package, "');", collapse = "") %>
         </script>
       </div> -->
       
     
     <% if(helpr:::dataframe_has_rows(change_log$news)) { -%>
-      <%= render_snippet("changelogs", change_log) %>
+      <%= helpr:::render_snippet("changelogs", change_log) %>
     <% } %>
 
           
@@ -187,7 +187,7 @@
   
   </div><!-- end bd -->
 
-  <%= render_snippet("footer", list(disqus = TRUE, html = html)) %>
+  <%= helpr:::render_snippet("footer", list(disqus = TRUE, html = html)) %>
 </div>
 
 </body>

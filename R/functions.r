@@ -56,6 +56,10 @@ pkg_and_topic_from_help_url <- function(url_string) {
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 #' @aliases function_help_path function_help_path_mem
+function_help_path <- function(func, source_link = FALSE) {
+  sapply(func, function_help_path_mem, source_link = source_link)
+}
+
 function_help_path_mem <- memoise(function(x, source_link = FALSE) {
   url_string <- help(x)[1] 
   if (is.na(url_string)) {
@@ -71,9 +75,6 @@ function_help_path_mem <- memoise(function(x, source_link = FALSE) {
   }
 })
 
-function_help_path <- function(func, source_link = FALSE) {
-  sapply(func, function_help_path_mem, source_link = source_link)
-}
 
 
 #' Find functions, counts, and links of given R text.

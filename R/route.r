@@ -279,6 +279,13 @@ helpr <- function() {
   return(invisible(router))
 }
 
+#' Render JSON
+#'
+#' Remove the warnings from the rendering of the JSON
+#'
+#' @param obj object to be rendered
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal 
 helpr_render_json <- function(obj) {
   suppressWarnings(sinartra:::render_json(obj))
 }

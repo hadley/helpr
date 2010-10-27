@@ -1,10 +1,10 @@
   <div id="ft">
     <% if(identical(disqus,TRUE)) { -%> 
-      <%= render_snippet("disqus_footer") %>
+      <%= helpr:::render_snippet("disqus_footer") %>
     <% } %>
     <p>Helpr - R help. Funded by <a href="http://www.revolutionanalytics.com/" target="_blank" ><img src="/_images/Revolution_Analytics.png" alt="Revolution_Analytics" /></a>. Style created by <a href="http://had.co.nz/" target="_blank">Hadley Wickham</a>. Synthesis by <a href="http://bigbear.public.iastate.edu" target="_blank">Barret Schloerke</a></p>
     <p class="load_html">load_html("<%= html %>")</p>
   </div>
   <% if(identical(disqus,TRUE)) { -%> 
-    <%= render_snippet("disqus_end_body_script") %>
+    <%= helpr:::render_snippet("disqus_end_body_script") %>
   <% } %>

@@ -1,5 +1,6 @@
-\name{function_help_path_mem}
+\name{function_help_path}
 \title{Return the help path of a function.}
+\usage{function_help_path(func, source_link=FALSE)}
 \description{Return the help path of a function.}
 \author{Barret Schloerke \email{schloerke@gmail.com}}
 \keyword{internal}

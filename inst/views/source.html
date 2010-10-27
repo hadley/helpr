@@ -3,9 +3,9 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <%= render_snippet("html_header") %>
+  <%= helpr:::render_snippet("html_header") %>
 
-  <%= render_snippet("disqus_header", list(name = str_c(package, "_topic_",name,"_source"))) %>
+  <%= helpr:::render_snippet("disqus_header", list(name = str_c(package, "_topic_",name,"_source"))) %>
 
   <title><%= package %> <%= name %>. R help</title>
 </head>
@@ -24,7 +24,7 @@
     
     <h2><%= name %> Source</h2>
     <%= src %>
-    <%= render_snippet("changelogs_topic_source", change_log)   %>
+    <%= helpr:::render_snippet("changelogs_topic_source", change_log)   %>
 
 
   </div></div>
@@ -41,15 +41,15 @@
     </ul>
   <% } %>
 
-  <%= render_snippet("top_functions", list(functions = src_functions, title = src_functions_str)) %>
+  <%= helpr:::render_snippet("top_functions", list(functions = src_functions, title = src_functions_str)) %>
   
-  <%= render_snippet("used_in_example", list(d = topic_in_example)) %>
+  <%= helpr:::render_snippet("used_in_example", list(d = topic_in_example)) %>
     
   </div></div>
 
   </div><!-- end bd -->
 
-  <%= render_snippet("footer", list(disqus = TRUE, html = html)) %>
+  <%= helpr:::render_snippet("footer", list(disqus = TRUE, html = html)) %>
 </div>
 </body>
 </html>
