@@ -58,11 +58,6 @@ helpr <- function() {
     render_brew("index", page_info, path = path)
   })
 
-  # Use file in public, if present
-  router$get("/*", function(splat, ...) {
-    static_file(file.path(path, "public", splat))
-  })
-
   # Redirect old home location to new
   router$get("/doc/html/index.html", function(...) {
     redirect("/index.html")
@@ -262,6 +257,11 @@ helpr <- function() {
   router$get("/picture/:file_name", function(file_name, ...) {
     file_path <- file.path(base::tempdir(), file_name)
     static_file(file_path)
+  })
+
+  # Use file in public, if present
+  router$get("/*", function(splat, ...) {
+    static_file(file.path(path, "public", splat))
   })
 
   render_path <- function(path, query, ...) router$route(path, query)

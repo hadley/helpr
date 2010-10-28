@@ -57,7 +57,10 @@ get_manuals <- memoise(function() {
   file_loc <- file.path(manual_dir, manuals)
   file_name <- str_replace_all(manuals, ".html", "")
   link <- str_c("manuals/", file_name, ".html")
-  
+
+	if(link == "manuals/.html")
+		link <- character(0)
+
   data.frame(
     title = sapply(file_loc, function(x) {
       strip_html(readLines(x, 3)[3])

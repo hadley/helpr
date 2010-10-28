@@ -14,7 +14,7 @@ solr_base_url <- function() {
 #' @export
 solr_exists <- memoise(function() {
   result <- tryCatch(
-    send_commit_command(),
+    suppressWarnings(send_commit_command()),
     error = function(e) {
       FALSE
     }
