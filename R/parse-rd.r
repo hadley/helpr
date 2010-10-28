@@ -431,6 +431,8 @@ parse_item_list <- function(rd, package) {
 #' Functions used in the string of functions.
 #'
 #' @param txt text in question.  should be full of functions
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
 functions_used <- function(txt) {
   if (txt == "") return("")
 
