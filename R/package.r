@@ -229,7 +229,7 @@ pkg_topics_index <- memoise(function(package) {
     stringsAsFactors = FALSE, comment.char = "", quote = "", header = FALSE)
     
   names(topics) <- c("alias", "file") 
-  topics[complete.cases(topics), ]
+  topics[stats:::complete.cases(topics), ]
 })
 
 

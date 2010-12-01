@@ -103,6 +103,11 @@ parse_help <- function(rd, package) {
 
   out$seealso <- reconstruct(rd$seealso, package)
   out$source <- reconstruct(untag(rd$source), package)
+
+	sectionPos <- names(tags) %in% "section"
+	out$sections <- str_c(sapply(rd[sectionPos], function(x){
+		reconstruct(x, package = package)
+	}), collapse = "<br />")
   
 
   # Pull apart arguments

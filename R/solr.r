@@ -29,7 +29,7 @@ solr_exists <- memoise(function() {
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 solr_FAIL <- function() {
-  message("Solr is not running: full text search is not available. Sorry.")
+  message("Full text search is not available, yet.  Please wait for future versions.")
   NULL
 }
 
