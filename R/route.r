@@ -44,9 +44,10 @@ check_for_package <- function(package) {
 #' Start helpr.
 #' 
 #' @export
-#' @param installed use TRUE if the package is installed on from CRAN
+#' @param launch_browser should this function launch a browser for immediate
+#'        viewing of help pages?
 #' @author Hadley Wickham and Barret Schloerke \email{schloerke@@gmail.com}
-helpr <- function() {
+helpr <- function(launch_browser = TRUE) {
   path <- helpr_path()
 
   router <- Router$clone()
@@ -267,7 +268,7 @@ helpr <- function() {
   render_path <- function(path, query, ...) router$route(path, query)
   assignInNamespace("httpd", render_path, "tools")
   if (tools:::httpdPort == 0L) {
-    help.start()
+    if(launch_browser) help.start()
     options("help_type" = "html")
     if(!solr_exists()) solr_FAIL()
     
