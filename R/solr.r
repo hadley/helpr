@@ -170,7 +170,7 @@ package_and_topic_from_url <- function(url_txt) {
   pkg <- ""
   topic <- ""
   if (str_detect(url_txt, "/package/")) {
-    pkg <- str_extract(url_txt, "/package/[a-zA-Z_0-9]*/")
+    pkg <- str_extract(url_txt, "/package/[a-zA-Z_.0-9]*/")
     pkg <- str_replace_all(pkg, "/package/", "")
     pkg <- str_replace_all(pkg, "/", "")
     
