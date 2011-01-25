@@ -3,7 +3,36 @@
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 solr_base_url <- function() {
-  "http://localhost:8983"
+	# "http://localhost:8983"
+	"http://helpr.metamx.com:8080"
+}
+
+
+#' Solr base URL.
+#'
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
+solr_daily_grind <- function() {
+	
+	firstPass <- nrow(library()) < 100
+	
+	# update packages
+	message("\n\n\nupdating old\n\n\n")
+	old <- old.packages()[,"Package"]
+	install.packages(old, type = "source")
+	sapply(old, index_package)
+	
+	# install new packages
+	message("\n\n\ninstalling new\n\n\n")
+	new <- new.packages()
+	install.packages(new, type = "source")
+
+	if(firstPass){
+		index_all()
+	} else {
+		sapply(new, index_package)
+	}
+	
 }
 
 
