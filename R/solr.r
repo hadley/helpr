@@ -42,14 +42,14 @@ solr_daily_grind <- function() {
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @export
 i_can_has_internets <- memoise(function() {
-  tryCatch(
+	ans <- "meh"
+  ans <- tryCatch(
     suppressMessages(suppressWarnings(send_system_command("curl  www.google.com"))),
     error = function(e) {
       FALSE
     }
   )
-    
-  TRUE
+	!identical(ans, FALSE)
 })
 
 
