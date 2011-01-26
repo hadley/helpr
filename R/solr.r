@@ -44,11 +44,12 @@ solr_daily_grind <- function() {
 i_can_has_internets <- memoise(function() {
 	ans <- "meh"
   ans <- tryCatch(
-    suppressMessages(suppressWarnings(send_system_command("curl  www.google.com"))),
+    suppressMessages(suppressWarnings(system("curl  www.google.com", intern = TRUE, ignore.stderr = TRUE))),
     error = function(e) {
       FALSE
     }
   )
+# print(ans)
 	!identical(ans, FALSE)
 })
 
