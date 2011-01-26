@@ -53,10 +53,10 @@ i_can_has_internets <- memoise(function() {
 })
 
 
-# #' Produce a message that states Solr is not running.
-# #'
-# #' @author Barret Schloerke \email{schloerke@@gmail.com}
-# #' @keywords internal
+# # Produce a message that states Solr is not running.
+# #
+# # @author Barret Schloerke \email{schloerke@@gmail.com}
+# # @keywords internal
 # solr_FAIL <- function() {
 #   message("Full text search is not available, yet.  Please wait for future versions.")
 #   NULL
