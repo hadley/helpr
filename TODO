@@ -1,3 +1,8 @@
+indexing packages...
+  These don't work
+    BoolNet, cwhmisc, epitools, multxpert, networksis, openair, pequod, pgirmess, qtl, simone, TeachingSampling 
+
+
 
 Solr
   √index all internal functions of each function
