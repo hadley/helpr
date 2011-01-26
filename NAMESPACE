@@ -1,6 +1,3 @@
 export(load_html)
 export(helpr)
-export(solr_exists)
-export(index_topic)
-export(index_package)
-export(index_all)
+export(i_can_has_internets)
