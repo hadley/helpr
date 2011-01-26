@@ -270,7 +270,6 @@ helpr <- function(launch_browser = TRUE) {
   if (tools:::httpdPort == 0L) {
     if(launch_browser) help.start()
     options("help_type" = "html")
-    if(!solr_exists()) solr_FAIL()
     
   } else if (FALSE) {
     # load the home page

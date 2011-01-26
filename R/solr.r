@@ -41,26 +41,26 @@ solr_daily_grind <- function() {
 #'
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @export
-solr_exists <- memoise(function() {
-  result <- tryCatch(
-    suppressWarnings(send_commit_command()),
+i_can_has_internets <- memoise(function() {
+  tryCatch(
+    suppressMessages(suppressWarnings(send_system_command("curl  www.google.com"))),
     error = function(e) {
       FALSE
     }
   )
     
-  identical(result, "success")
+  TRUE
 })
 
 
-#' Produce a message that states Solr is not running.
-#'
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @keywords internal
-solr_FAIL <- function() {
-  message("Full text search is not available, yet.  Please wait for future versions.")
-  NULL
-}
+# #' Produce a message that states Solr is not running.
+# #'
+# #' @author Barret Schloerke \email{schloerke@@gmail.com}
+# #' @keywords internal
+# solr_FAIL <- function() {
+#   message("Full text search is not available, yet.  Please wait for future versions.")
+#   NULL
+# }
 
 
 
@@ -108,12 +108,11 @@ solr_topic <- function(package, topic) {
 #' Index topic.
 #' Index a topic into solr
 #'
-#' @export
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @param package package in question
 #' @param topic topic in question
 index_topic <- function(package, topic) {
-  if (! solr_exists()) return(NULL)
+  if (! i_can_has_internets()) return(NULL)
 
   put_string(make_add_xml(solr_topic(package, topic)))
 }
@@ -121,13 +120,12 @@ index_topic <- function(package, topic) {
 #' Index package.
 #' Index a whole package into solr
 #'
-#' @export
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @param package package in question
 #' @param start_letter used when you want to start froma certain letter, such as 'q'
 #' @param verbose should output be shown?
 index_package <- function(package, start_letter = "a", verbose = TRUE) {
-  if (! solr_exists()) return(NULL);
+  if (! i_can_has_internets()) return(NULL);
   
   if (verbose == TRUE) cat("\n\n\n")
   if (verbose == TRUE || verbose == "package") cat(package,"\n")
@@ -167,26 +165,39 @@ index_package <- function(package, start_letter = "a", verbose = TRUE) {
 
 }
 
+
 #' Index all packages.
 #' Index all packages into solr
 #'
-#' @export
+#' @aliases index_all index_packages
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @param start_letter used when you want to start froma certain letter, such as 'q'
 #' @param verbose should output be shown?
 index_all <- function(start_letter = "a", verbose = TRUE) {
-  if (! solr_exists()) return(NULL)
+  if (! i_can_has_internets()) return(NULL)
 
-  packages <- installed_packages()$Package
+  packages <- helpr:::installed_packages()$Package
   packages <- packages[order(tolower(packages))]
   first_letter <- sapply(strsplit(packages, ""), function(x) { tolower(x[1]) })
   rows <- str_detect(first_letter, str_c("[", tolower(start_letter), "-z]"))
   packages <- packages[rows]
   
-  sapply(packages, index_package, verbose = verbose)
+	result <- index_packages(packages)
 
-  if (verbose) "Finished" else invisible("Finished")
+  if (verbose) cat("Finished\n")
+	result
 }
+index_packages <- function(arr) {
+	sapply(arr, function(x) {
+		tryCatch(
+			index_package(x, verbose = verbose),
+			error = function(e) {
+				"failure"
+			}
+		)
+	})
+}
+
 
 
 #' Pkg and topic from URL.
@@ -221,7 +232,7 @@ package_and_topic_from_url <- function(url_txt) {
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 helpr_solr_search <- function(query_list) {
-  if (! solr_exists()) return(NULL)
+  if (! i_can_has_internets()) return(NULL)
 
   result <- get_solr_query_result(query_list)
   items <- result$response

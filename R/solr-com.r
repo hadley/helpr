@@ -4,7 +4,7 @@
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 # '
 solr_delete_package <- function(package) {
-  if (! solr_exists()) return(NULL)
+  if (! i_can_has_internets()) return(NULL)
   
   site <- str_c("<delete><query>id:/package/",package,"/*</query></delete>")
   
