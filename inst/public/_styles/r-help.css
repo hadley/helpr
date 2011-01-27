@@ -134,5 +134,5 @@ pre {
 #search_bar{
   float: right;
 }
-.highlight { background-color: yellow }
+.highlight { background-color: rgb(255,255,102) }
 #remove_highlight_button { float: right};
