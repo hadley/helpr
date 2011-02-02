@@ -40,7 +40,6 @@ solr_daily_grind <- function() {
 #' A check to see if solr is running called and memoised at the start of \code{helpr()}
 #'
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @export
 i_can_has_internets <- memoise(function() {
 	ans <- "meh"
   ans <- tryCatch(
