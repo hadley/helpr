@@ -77,7 +77,10 @@ top_ten_functions <- function(fun_list = get_function_history()) {
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 ten_functions <- function() {
-  fun_hist <- get_function_history()
+  fun_hist <- tryCatch(
+		get_function_history(),
+		error = function(e) data.frame()
+	)
 
   list(
     last_ten = last_ten_functions(fun_hist),
