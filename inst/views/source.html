@@ -3,9 +3,9 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <%= helpr:::render_snippet("html_header") %>
+  <%= render_snippet("html_header") %>
 
-  <%= helpr:::render_snippet("disqus_header", list(name = str_c(package, "_topic_",name,"_source"))) %>
+  <%= render_snippet("disqus_header", list(name = str_c(package, "_topic_",name,"_source"))) %>
 
   <title><%= package %> <%= name %>. R help</title>
 </head>
@@ -24,13 +24,13 @@
     
     <h2><%= name %> Source</h2>
     <%= src %>
-    <%= helpr:::render_snippet("changelogs_topic_source", change_log)   %>
+    <%= render_snippet("changelogs_topic_source", change_log)   %>
 
 
   </div></div>
   <div class="yui-b"><div class = "sidebar">
 
-  <% if(helpr:::dataframe_has_rows(aliases$alias)) { -%>    
+  <% if(dataframe_has_rows(aliases$alias)) { -%>    
     <h2><%= aliases_str %></h2>
     <ul>
     <% for(alias in aliases$alias) { -%>
@@ -41,15 +41,15 @@
     </ul>
   <% } %>
 
-  <%= helpr:::render_snippet("top_functions", list(functions = src_functions, title = src_functions_str)) %>
+  <%= render_snippet("top_functions", list(functions = src_functions, title = src_functions_str)) %>
   
-  <%= helpr:::render_snippet("used_in_example", list(d = topic_in_example)) %>
+  <%= render_snippet("used_in_example", list(d = topic_in_example)) %>
     
   </div></div>
 
   </div><!-- end bd -->
 
-  <%= helpr:::render_snippet("footer", list(disqus = TRUE, html = html)) %>
+  <%= render_snippet("footer", list(disqus = TRUE, html = html)) %>
 </div>
 </body>
 </html>

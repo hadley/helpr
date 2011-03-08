@@ -3,11 +3,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 
-  <%= helpr:::render_snippet("html_header") %>
+  <%= render_snippet("html_header") %>
 
-  <%= helpr:::render_snippet("growl") %>
+  <%= render_snippet("growl") %>
 
-  <%= helpr:::render_snippet("google_dynamic_feed") %>
+  <%= render_snippet("google_dynamic_feed") %>
 
   <script type="text/javascript" src="/_scripts/jquery.quicksearch.js"></script>
 
@@ -37,7 +37,7 @@
           </div><!-- -->
         </td>
         <td>
-          <%= helpr:::render_snippet("search_bar") %>
+          <%= render_snippet("search_bar") %>
         </td>
       </tr>
     </table>
@@ -66,21 +66,21 @@
   </div></div>
   <div class="yui-b"><div class = "sidebar">
     
-    <% if(helpr:::dataframe_has_rows(top_ten_funcs)) { -%>
+    <% if(dataframe_has_rows(top_ten_funcs)) { -%>
       <h2><%= top_ten_funcs_str %></h2>
       <ol>
         <%= str_c("<li><a href='", top_ten_funcs[,"path"], "'>", top_ten_funcs[,"func"], "</a></li>") %>
       </ol>
     <% } %>
 
-    <% if(helpr:::dataframe_has_rows(last_ten_funcs)) { -%>
+    <% if(dataframe_has_rows(last_ten_funcs)) { -%>
       <h2><%= last_ten_funcs_str %></h2>
       <ol>
         <%= str_c("<li><a href='", last_ten_funcs[,"path"], "'>", last_ten_funcs[,"func"], "</a></li>") %>
       </ol>
     <% } %>
     
-    <% if(helpr:::dataframe_has_rows(manuals)) { %>
+    <% if(dataframe_has_rows(manuals)) { %>
       <h2>Manuals</h2>
       <ol>
         <%= str_c("<li><a href='", manuals[,"link"], "'>", manuals[,"title"], "</a></li>") %>
@@ -93,6 +93,6 @@
   
   </div><!-- end bd -->
 
-  <%= helpr:::render_snippet("footer", list(disqus = FALSE, html = html)) %>
+  <%= render_snippet("footer", list(disqus = FALSE, html = html)) %>
 </div></body>
 </html>

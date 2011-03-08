@@ -9,11 +9,11 @@
   <link rel="stylesheet" type="text/css" href="/_styles/r-help.css" />
   <link rel="stylesheet" type="text/css" href="/_styles/jquery.rating.css" />
   
-  <%= helpr:::render_snippet("growl") %>
+  <%= render_snippet("growl") %>
 
   <script type="text/javascript" src="/_scripts/package.js"></script>
 
-  <%= helpr:::render_snippet("disqus_header", list(name = str_c(package, "_demo_", name))) %>
+  <%= render_snippet("disqus_header", list(name = str_c(package, "_demo_", name))) %>
   <title><%= package %> <%= name %>. R help</title>
 </head>
 
@@ -22,7 +22,7 @@
   <div id="doc2" class="yui-t6">
   <div id="hd">
     <a href="/index.html">R</a> &#8594; <a href=".."><%= package %></a> &#8594; <%= name %> (demo) 
-    <%= helpr:::render_snippet("search_bar") %>
+    <%= render_snippet("search_bar") %>
   </div>
 
   <div id="bd">
@@ -40,7 +40,7 @@
   </div></div>
   <div class="yui-b"><div class = "sidebar">
 
-    <% if(helpr:::dataframe_has_rows(other_demos)) { -%>    
+    <% if(dataframe_has_rows(other_demos)) { -%>    
     <h2><%= other_demos_str %></h2>
     <dl>
       <% for(i in seq_len(NROW(other_demos))) {-%>
@@ -54,14 +54,14 @@
     </dl>
   <% } %>
 
-  <%= helpr:::render_snippet("top_functions", list(functions = src_functions, title = src_functions_str)) %>
+  <%= render_snippet("top_functions", list(functions = src_functions, title = src_functions_str)) %>
     
   </div></div>
   
 
   </div><!-- end bd -->
 
-  <%= helpr:::render_snippet("footer", list(disqus = TRUE, html = html)) %>
+  <%= render_snippet("footer", list(disqus = TRUE, html = html)) %>
 </div>
 
     <input id="run_highlight" type="button" value="Execute Highlighted" onclick="run_selected_code('#demo_source_code');" style="position:absolute;" />

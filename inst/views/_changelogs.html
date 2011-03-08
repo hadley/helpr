@@ -1,9 +1,9 @@
-<% if(helpr:::dataframe_has_rows(news)) {-%>
+<% if(dataframe_has_rows(news)) {-%>
   <hr>
   <%= str_c("<span class=\"change_log_title\">",title,"</span>" ) %>
   <%= if(!is.na(date)) {str_c(" <span class=\"change_log_date\">",date,"</span>") } %>
   <% for(i in seq_along(names(news))) { -%>
-    <% if(helpr:::has_text(news[[i]])) {-%>
+    <% if(has_text(news[[i]])) {-%>
       <% news_name <- names(news)[i] %>
       <%= if(!is.na(news_name)){ str_c("<h3>",news_name,"</h3>") } %>
       <%= str_c("<ul><li>",str_c(news[[i]], collapse="</li><li>") ,"</li></ul>") %>
