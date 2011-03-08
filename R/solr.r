@@ -41,15 +41,11 @@ solr_daily_grind <- function() {
 #'
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 i_can_has_internets <- memoise(function() {
-	ans <- "meh"
-  ans <- tryCatch(
-    suppressMessages(suppressWarnings(system("curl  www.google.com", intern = TRUE, ignore.stderr = TRUE))),
-    error = function(e) {
-      FALSE
-    }
-  )
-# print(ans)
-	!identical(ans, FALSE)
+	if (local_active()) return(FALSE)
+
+   google <- url("http://google.com")
+   res <- try({open(google); internet <- TRUE; close(google)}, quiet = TRUE)
+   !inherits(res, "try-error")
 })
 
 
