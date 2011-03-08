@@ -176,7 +176,7 @@ index_package <- function(package, start_letter = "a", verbose = TRUE) {
 index_all <- function(start_letter = "a", verbose = TRUE) {
   if (! i_can_has_internets()) return(NULL)
 
-  packages <- helpr:::installed_packages()$Package
+  packages <- installed_packages()$Package
   packages <- packages[order(tolower(packages))]
   first_letter <- sapply(strsplit(packages, ""), function(x) { tolower(x[1]) })
   rows <- str_detect(first_letter, str_c("[", tolower(start_letter), "-z]"))

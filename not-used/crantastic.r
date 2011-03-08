@@ -1,5 +1,6 @@
 crantastic_rating <- function(pkg_name){
-  txt <- RCurl::getURL(str_c("http://crantastic.org/packages/",pkg_name,"/"))
+	require(RCurl)
+  txt <- getURL(str_c("http://crantastic.org/packages/",pkg_name,"/"))
   rating_location <- str_locate(txt, "overall-rating")[,"start"]
 
   # retrieve the characters of overall-rating (and some extra)

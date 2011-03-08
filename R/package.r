@@ -27,7 +27,7 @@ helpr_package_mem <- memoise(function(package, version) {
   description$imports <- parse_pkg_desc_item(description$imports)
   description$suggests <- parse_pkg_desc_item(description$suggests)
   description$extends <- parse_pkg_desc_item(description$extends)
-  description$reverse <- tools:::dependsOnPkgs(package)
+  description$reverse <- dependsOnPkgs(package)
   description$author <- pkg_author_and_maintainers(description$author, description$maintainer)
   description$maintainer <- NULL
 
@@ -229,7 +229,7 @@ pkg_topics_index <- memoise(function(package) {
     stringsAsFactors = FALSE, comment.char = "", quote = "", header = FALSE)
     
   names(topics) <- c("alias", "file") 
-  topics[stats:::complete.cases(topics), ]
+  topics[complete.cases(topics), ]
 })
 
 

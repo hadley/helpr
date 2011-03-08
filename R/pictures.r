@@ -4,7 +4,7 @@
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal 
 save_picture <- function(obj_name, obj_plot) {
-  file_path <- file.path(base::tempdir(), str_c(obj_name, ".png", collapse = ""))
+  file_path <- file.path(tempdir(), str_c(obj_name, ".png", collapse = ""))
   
   # only make the picture if you have to
   # duplicates do not exist as naming should be done well

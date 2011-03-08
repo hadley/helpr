@@ -47,6 +47,17 @@ check_for_package <- function(package) {
 #' @param launch_browser should this function launch a browser for immediate
 #'        viewing of help pages?
 #' @author Hadley Wickham and Barret Schloerke \email{schloerke@@gmail.com}
+#' @imports brew
+#' @imports highlight
+#' @imports sinartra
+#' @imports memoise
+#' @imports evaluate
+#' @imports stringr
+#' @imports tools
+#' @imports parser
+#' @imports digest
+#' @imports stats
+#' @imports utils
 helpr <- function(launch_browser = TRUE) {
   path <- helpr_path()
 
@@ -228,7 +239,7 @@ helpr <- function(launch_browser = TRUE) {
   router$get("/eval_text/*", function(splat, ...) {
     decoded_text <- URLdecode(splat)
     cat("\n")
-    evaluate:::replay.list(evaluate:::evaluate(decoded_text, envir = .GlobalEnv))
+    replay.list(evaluate(decoded_text, envir = .GlobalEnv))
     cat(options("prompt")$prompt)
 
     helpr_render_json(TRUE)
@@ -256,7 +267,7 @@ helpr <- function(launch_browser = TRUE) {
 
   # pictures
   router$get("/picture/:file_name", function(file_name, ...) {
-    file_path <- file.path(base::tempdir(), file_name)
+    file_path <- file.path(tempdir(), file_name)
     static_file(file_path)
   })
 
@@ -287,7 +298,7 @@ helpr <- function(launch_browser = TRUE) {
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal 
 helpr_render_json <- function(obj) {
-  suppressWarnings(sinartra:::render_json(obj))
+  suppressWarnings(render_json(obj))
 }
 
 
@@ -376,7 +387,7 @@ print.help_files_with_topic <- function (x, ...)
     }
     else {
         if (tools:::httpdPort == 0L) 
-            tools::startDynamicHelp()
+            startDynamicHelp()
         file <- paths
         pkgname <- basename(dirname(dirname(file)))
         topic <- basename(file)

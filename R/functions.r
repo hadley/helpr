@@ -37,7 +37,7 @@ function_and_link <- function(parser_output) {
   
   funcs_and_paths <- as.data.frame(list(functions = functions, paths = paths), stringsAsFactors = FALSE)
 
-  funcs_and_paths[stats:::complete.cases(funcs_and_paths), ]  
+  funcs_and_paths[complete.cases(funcs_and_paths), ]  
 }
 
 #' Retrieve the package and the topic from a url that contains both.

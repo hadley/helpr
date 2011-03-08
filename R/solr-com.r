@@ -20,7 +20,7 @@ solr_delete_package <- function(package) {
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 read_url <- function(url_string) {
-  url_connect <- url(utils::URLencode(url_string))
+  url_connect <- url(URLencode(url_string))
   on.exit(close(url_connect))
   output <- suppressWarnings(str_c(readLines(url_connect), collapse = ""))
   output
@@ -32,7 +32,7 @@ read_url <- function(url_string) {
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 urlJSON_to_list <- function(url_string) {
-  rjson::fromJSON(read_url(url_string))
+  fromJSON(read_url(url_string))
 }
 
 #' Send commit command to Solr
@@ -41,6 +41,7 @@ urlJSON_to_list <- function(url_string) {
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 send_commit_command <- function() {
+	require("RCurl")
   send_system_command(str_c("curl ", solr_base_url(), "/solr/update --data-binary '<commit/>' -H 'Content-type:text/xml; charset=utf-8'"))
 }
 

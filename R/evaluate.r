@@ -69,7 +69,7 @@ strong <- function(x) {
 evaluate_text <- function(txt, pic_base_name) {
   if (!has_text(txt)) return("")
 
-  evaluated <- evaluate::evaluate(txt, globalenv())
+  evaluated <- evaluate(txt, globalenv())
   replayed <- helpr_replay(evaluated, pic_base_name)
   str_c(as.character(unlist(replayed)), collapse = "\n")
 }

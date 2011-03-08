@@ -6,9 +6,9 @@ Author: Hadley Wickham <h.wickham@gmail.com> and Barret Schloerke
     <schloerke@gmail.com>
 Maintainer: Hadley Wickham <h.wickham@gmail.com>
 Description: Better html documentation for R
-Depends: highlight, sinartra (>= 0.2), digest, parser, rjson, tools, 
-    stringr (>= 0.4), evaluate, RCurl, memoise
-Imports: brew
+Depends: rjson
+Imports: brew, highlight, sinartra, digest, parser, tools, stringr (>= 0.4), evaluate, memoise, stats, utils
+Suggestions: RCurl
 License: GPL-2
 LazyData: true
 Collate: 'changelog.r' 'demo.r' 'evaluate.r' 'functions.r' 'history.r'

@@ -95,6 +95,7 @@ put_string <- function(string) {
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 put_file <- function(file_name) {
+	require("RCurl")
   cat("posting file: ", file_name,"\n")
   send_system_command(str_c("curl ", solr_base_url(), "/solr/update --data-binary @", file_name, " -H 'Content-type:text/xml; charset=utf-8'", collapse = ""))
   send_commit_command()
