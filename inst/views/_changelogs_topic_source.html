@@ -1,6 +1,6 @@
 <%= str_c("<h2>",title,"</h2>") %>
 <% for(i in names(news)) { -%>
-  <% if(helpr:::has_text(news[[i]])) {-%>
+  <% if(has_text(news[[i]])) {-%>
     <dl>
       <%= if(!is.na(i)) str_c("<dt>",i,"</dt>") %>
       <dd>

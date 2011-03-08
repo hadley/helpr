@@ -1,6 +1,6 @@
   <div id="ft">
     <% if(identical(disqus,TRUE)) { -%> 
-      <%= helpr:::render_snippet("disqus_footer") %>
+      <%= render_snippet("disqus_footer") %>
     <% } %>
     <p>Helpr - R help. 
       Synthesis by <a href="http://barretschloerke.com" target="_blank">Barret Schloerke</a>.
@@ -11,5 +11,5 @@
     <p class="load_html">load_html("<%= html %>")</p>
   </div>
   <% if(identical(disqus,TRUE)) { -%> 
-    <%= helpr:::render_snippet("disqus_end_body_script") %>
+    <%= render_snippet("disqus_end_body_script") %>
   <% } %>
