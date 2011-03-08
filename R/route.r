@@ -22,7 +22,7 @@ load_html <- function(...) {
 #' @param ... site to be loaded
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-base_html_path <- function() {
+base_html_path <- function() {  
   path <- str_c("http://127.0.0.1:", tools:::httpdPort, collapse = "")
   
   if(local_active()) path <- str_c(path, "/custom/helpr")
@@ -55,30 +55,34 @@ helpr <- function(launch_browser = TRUE, .local_mode = FALSE) {
 
   if(identical(.local_mode, TRUE)) activate_local()
   
-  file_path <- helpr_path()
-  url_path <- base_html_path()
+  base_path <- helpr_path()
+  url_path <- ""
 
   router <- Router$clone()
+  router$base_url  <- url_path
+  router$base_path <- base_path
+  set_router_url(url_path)
+  set_router_base_path(base_path)
 
   # Show list of all packages on home page
   router$get("/index.html", function(...) {
     page_info <- helpr_home()
     page_info$html <- "/index.html"
-    render_brew("index", page_info, path = file_path)
+    router$render_brew("index", page_info)
   })
 
   # Redirect old home location to new
   router$get("/doc/html/index.html", function(...) {
-    redirect("/index.html")
+    router$redirect("/index.html")
   })
 
   router$get("/", function(...) {
-    redirect("/index.html")
+    router$redirect("/index.html")
   })
 
   # If package path, missing trailing /, redirect
   router$get("/package/:package", function(package, ...) {
-    redirect(str_c("/package/", package, "/"))
+    router$redirect(str_c("/package/", package, "/"))
   })
 
   # Package index page, list topics etc
@@ -87,9 +91,9 @@ helpr <- function(launch_browser = TRUE, .local_mode = FALSE) {
     if (check_for_package(package)) {
       page_info <- helpr_package(package)
       page_info$html <- html
-      render_brew("package", page_info, path = file_path)    
+      router$render_brew("package", page_info)    
     } else {
-      render_brew("whistle", list(package = package, url = deparse(html)), path = file_path)      
+      router$render_brew("whistle", list(package = package, url = deparse(html)))      
     }
   })
   
@@ -97,9 +101,9 @@ helpr <- function(launch_browser = TRUE, .local_mode = FALSE) {
   router$get("/package/:package/vignette/:vignette", function(package, vignette, ...) {
     html <- str_c("/package/", package, "/vignette/", vignette, collapse = "")
     if (check_for_package(package)) {
-      static_file(system.file("doc", str_c(vignette, ".pdf"), package = package))
+      router$static_file(system.file("doc", str_c(vignette, ".pdf"), package = package))
     } else {
-      render_brew("whistle", list(package = package, url = deparse(html)), path = file_path)      
+      router$render_brew("whistle", list(package = package, url = deparse(html)))      
     }
   })
 
@@ -109,9 +113,9 @@ helpr <- function(launch_browser = TRUE, .local_mode = FALSE) {
     page_info <- helpr_demo(package, demo)
     page_info$html <- html
     if (check_for_package(package)) {
-      render_brew("demo", page_info, path = file_path)
+      router$render_brew("demo", page_info)
     } else {
-      render_brew("whistle", list(package = package, url = deparse(html)), path = file_path)      
+      router$render_brew("whistle", list(package = package, url = deparse(html)))      
     }
   })
   
@@ -121,9 +125,9 @@ helpr <- function(launch_browser = TRUE, .local_mode = FALSE) {
     page_info <- helpr_function(package, topic)
     page_info$html <- html
     if (check_for_package(package)) {
-      render_brew("source", page_info, path = file_path)
+      router$render_brew("source", page_info)
     } else {
-      render_brew("whistle", list(package = package, url = deparse(html)), path = file_path)      
+      router$render_brew("whistle", list(package = package, url = deparse(html)))      
     }
   })
 
@@ -147,16 +151,16 @@ helpr <- function(launch_browser = TRUE, .local_mode = FALSE) {
     page_info$html <- html
     
     if (check_for_package(package)) {
-      render_brew("topic", page_info, path = file_path)
+      router$render_brew("topic", page_info)
     } else {
-      render_brew("whistle", list(package = package, url = deparse(html)), path = file_path)      
+      router$render_brew("whistle", list(package = package, url = deparse(html)))      
     }
   })
   router$get("/library/:package/html/:topic.html", function(package, topic, ...) {
-    redirect(str_c("/package/", package, "/topic/", topic))
+    router$redirect(str_c("/package/", package, "/topic/", topic))
   })
   router$get("/library/:package/help/:topic", function(package, topic) {
-    redirect(str_c("/package/", package, "/topic/", topic))
+    router$redirect(str_c("/package/", package, "/topic/", topic))
   })
 
   # Individual help topic with multiple reponses
@@ -171,7 +175,7 @@ helpr <- function(launch_browser = TRUE, .local_mode = FALSE) {
     
     html <- str_c("/multiple_help_paths?", solr_combine_param(topic, pkg))
     
-    render_brew("help", list(pkg = pkg, topic = topic, desc = descriptions, html = html), path = file_path)
+    router$render_brew("help", list(pkg = pkg, topic = topic, desc = descriptions, html = html))
   })
   
   # Search
@@ -190,7 +194,7 @@ helpr <- function(launch_browser = TRUE, .local_mode = FALSE) {
     page_info <- helpr_solr_search(query_list)
     page_info$html <- html
     
-    render_brew("search", page_info, path = file_path)  
+    router$render_brew("search", page_info)  
   })
   
   
@@ -227,7 +231,7 @@ helpr <- function(launch_browser = TRUE, .local_mode = FALSE) {
   # Manual HTML Files
   router$get("/manuals/:name.html", function(name, ...) {
     file_loc <- as.character(subset(get_manuals(), file_name == name, select = "file_loc"))
-    static_file(file_loc)
+    router$static_file(file_loc)
   })
   
   
@@ -255,33 +259,30 @@ helpr <- function(launch_browser = TRUE, .local_mode = FALSE) {
 
   # Individual help topic 
   router$get("/g", function(...) {
-    redirect("package/stats/demo/glm.vr")
+    router$redirect("package/stats/demo/glm.vr")
   })
   router$get("/n", function(...) {
-    redirect("package/stats/topic/nlm")
+    router$redirect("package/stats/topic/nlm")
   })
   
 
   # pictures
   router$get("/picture/:file_name", function(file_name, ...) {
-    file_path <- file.path(tempdir(), file_name)
-    static_file(file_path)
+    base_path <- file.path(tempdir(), file_name)
+    router$static_file(base_path)
   })
 
   # Use file in public, if present
   router$get("/*", function(splat, ...) {
-    static_file(file.path(file_path, "public", splat))
+    router$static_file(file.path(base_path, "public", splat))
   })
 
   render_path <- function(path, query, ...) router$route(path, query)
   assignInNamespace("httpd", render_path, "tools")
+
   if (tools:::httpdPort == 0L) {
     if(launch_browser) help.start()
     options("help_type" = "html")
-    
-  } else if (FALSE) {
-    # load the home page
-    load_html()
   }
 
   return(invisible(router))

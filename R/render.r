@@ -6,9 +6,9 @@
 #' @return text rendered from the template
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-render_snippet <- function(template, params = list(), path = helpr_path()) {
+render_snippet <- function(template, params = NULL, path = router_base_path()) {
   template <- str_c("_", template)
-  render_brew(template, params, path)$payload
+  render_brew(template, params, path, parent = parent.frame())$payload
 }
 
 
@@ -30,4 +30,3 @@ helpr_path <- memoise(function() {
   }
   system.file(package = "helpr")
 })
-    
