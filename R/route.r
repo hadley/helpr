@@ -23,7 +23,10 @@ load_html <- function(...) {
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 base_html_path <- function() {
-  str_c("http://127.0.0.1:", tools:::httpdPort, collapse = "")
+  path <- str_c("http://127.0.0.1:", tools:::httpdPort, collapse = "")
+  
+  if(local_active()) path <- str_c(path, "/custom/helpr")
+  path
 }
 
 #' Check to see if a package exists.
@@ -47,19 +50,13 @@ check_for_package <- function(package) {
 #' @param launch_browser should this function launch a browser for immediate
 #'        viewing of help pages?
 #' @author Hadley Wickham and Barret Schloerke \email{schloerke@@gmail.com}
-#' @imports brew
-#' @imports highlight
-#' @imports sinartra
-#' @imports memoise
-#' @imports evaluate
-#' @imports stringr
-#' @imports tools
-#' @imports parser
-#' @imports digest
-#' @imports stats
-#' @imports utils
-helpr <- function(launch_browser = TRUE) {
-  path <- helpr_path()
+#' @import brew highlight sinartra memoise evaluate stringr tools parser digest stats utils
+helpr <- function(launch_browser = TRUE, .local_mode = FALSE) {
+
+  if(identical(.local_mode, TRUE)) activate_local()
+  
+  file_path <- helpr_path()
+  url_path <- base_html_path()
 
   router <- Router$clone()
 
@@ -67,7 +64,7 @@ helpr <- function(launch_browser = TRUE) {
   router$get("/index.html", function(...) {
     page_info <- helpr_home()
     page_info$html <- "/index.html"
-    render_brew("index", page_info, path = path)
+    render_brew("index", page_info, path = file_path)
   })
 
   # Redirect old home location to new
@@ -90,9 +87,9 @@ helpr <- function(launch_browser = TRUE) {
     if (check_for_package(package)) {
       page_info <- helpr_package(package)
       page_info$html <- html
-      render_brew("package", page_info, path = path)    
+      render_brew("package", page_info, path = file_path)    
     } else {
-      render_brew("whistle", list(package = package, url = deparse(html)), path = path)      
+      render_brew("whistle", list(package = package, url = deparse(html)), path = file_path)      
     }
   })
   
@@ -102,7 +99,7 @@ helpr <- function(launch_browser = TRUE) {
     if (check_for_package(package)) {
       static_file(system.file("doc", str_c(vignette, ".pdf"), package = package))
     } else {
-      render_brew("whistle", list(package = package, url = deparse(html)), path = path)      
+      render_brew("whistle", list(package = package, url = deparse(html)), path = file_path)      
     }
   })
 
@@ -112,9 +109,9 @@ helpr <- function(launch_browser = TRUE) {
     page_info <- helpr_demo(package, demo)
     page_info$html <- html
     if (check_for_package(package)) {
-      render_brew("demo", page_info, path = path)
+      render_brew("demo", page_info, path = file_path)
     } else {
-      render_brew("whistle", list(package = package, url = deparse(html)), path = path)      
+      render_brew("whistle", list(package = package, url = deparse(html)), path = file_path)      
     }
   })
   
@@ -124,9 +121,9 @@ helpr <- function(launch_browser = TRUE) {
     page_info <- helpr_function(package, topic)
     page_info$html <- html
     if (check_for_package(package)) {
-      render_brew("source", page_info, path = path)
+      render_brew("source", page_info, path = file_path)
     } else {
-      render_brew("whistle", list(package = package, url = deparse(html)), path = path)      
+      render_brew("whistle", list(package = package, url = deparse(html)), path = file_path)      
     }
   })
 
@@ -150,9 +147,9 @@ helpr <- function(launch_browser = TRUE) {
     page_info$html <- html
     
     if (check_for_package(package)) {
-      render_brew("topic", page_info, path = path)
+      render_brew("topic", page_info, path = file_path)
     } else {
-      render_brew("whistle", list(package = package, url = deparse(html)), path = path)      
+      render_brew("whistle", list(package = package, url = deparse(html)), path = file_path)      
     }
   })
   router$get("/library/:package/html/:topic.html", function(package, topic, ...) {
@@ -174,7 +171,7 @@ helpr <- function(launch_browser = TRUE) {
     
     html <- str_c("/multiple_help_paths?", solr_combine_param(topic, pkg))
     
-    render_brew("help", list(pkg = pkg, topic = topic, desc = descriptions, html = html), path = path)
+    render_brew("help", list(pkg = pkg, topic = topic, desc = descriptions, html = html), path = file_path)
   })
   
   # Search
@@ -193,7 +190,7 @@ helpr <- function(launch_browser = TRUE) {
     page_info <- helpr_solr_search(query_list)
     page_info$html <- html
     
-    render_brew("search", page_info, path = path)  
+    render_brew("search", page_info, path = file_path)  
   })
   
   
@@ -273,7 +270,7 @@ helpr <- function(launch_browser = TRUE) {
 
   # Use file in public, if present
   router$get("/*", function(splat, ...) {
-    static_file(file.path(path, "public", splat))
+    static_file(file.path(file_path, "public", splat))
   })
 
   render_path <- function(path, query, ...) router$route(path, query)

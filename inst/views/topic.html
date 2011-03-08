@@ -94,7 +94,6 @@
       </ul>
     <% } %>
 
-    <%= render_snippet("used_in_example", list(d = topic_in_example)) %>
     
     
   </div></div>
@@ -111,6 +110,8 @@
   <div class="yui-b"><div class = "sidebar">
 
     <%= render_snippet("top_functions", list(functions = example_functions, title = example_functions_str)) %>
+
+    <%= render_snippet("used_in_example", list(d = topic_in_example)) %>
 
 
   </div></div>

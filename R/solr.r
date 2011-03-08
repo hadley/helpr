@@ -44,7 +44,7 @@ i_can_has_internets <- memoise(function() {
 	if (local_active()) return(FALSE)
 
    google <- url("http://google.com")
-   res <- try({open(google); internet <- TRUE; close(google)}, quiet = TRUE)
+   res <- try({open(google); internet <- TRUE; close(google)}, silent = TRUE)
    !inherits(res, "try-error")
 })
 
