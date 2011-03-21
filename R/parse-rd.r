@@ -139,7 +139,7 @@ reconstruct <- function(rd, package = NULL) {
     }
     
   } else if (tag == "\\S4method") {
-    str_c("## S4 method for signature \"",reconstruct(rd[[2]], package),"\":\n", reconstruct(rd[[1]], package), sep ="")
+    str_c("## S4 method for signature '",reconstruct(rd[[2]], package),"':\n", reconstruct(rd[[1]], package), sep ="")
 
   } else if (tag == "\\linkS4class") {
     require(package, character.only=TRUE)
@@ -174,7 +174,7 @@ reconstruct <- function(rd, package = NULL) {
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 author_email <- function(name, address) {
-  str_c("<a href=\"mailto:", address, "?subject=(R-Help): \">", name, "</a>")
+  str_c("<a href='mailto:", address, "?subject=(R-Help): '>", name, "</a>")
 }
 
 #' tag a simple item
@@ -199,9 +199,9 @@ tag_simple <- function(tag, text) {
 #' @keywords internal
 tag_link <- function(fun, pkg = NULL, topic_page = fun) {
   if (!is.null(pkg)) {
-    str_c("<a href=\"/package/", pkg, "/topic/", topic_page, "\">", fun, "</a>")        
+    str_c("<a href='", router_url(), "/package/", pkg, "/topic/", topic_page, "'>", fun, "</a>")        
   } else {
-    str_c("<a href=\"", function_help_path(fun), "\">", fun, "</a>")
+    str_c("<a href='", router_url(), function_help_path(fun), "'>", fun, "</a>")
   }
 }
 
@@ -227,7 +227,7 @@ list(
   "\\code" =         c("<code>", "</code>"),
   "\\command" =      c("<code>", "</code>"),
   "\\cr" =           c("<br >", ""),
-  "\\describe" =     c("<span class=\"describe\">", "</span>"),
+  "\\describe" =     c("<span class='describe'>", "</span>"),
   "\\dfn" =          c("<dfn>", "</dfn>"),
   "\\donttest" =     c("", ""),
   "\\dots" =         c("...", ""),
@@ -344,16 +344,16 @@ parse_tabular <- function(tabular) {
 
     if (row_tag == "\\tab") {
       column <- column + 1
-      output[i] <- str_c("</td><td align=\"", alignments[column], "\">")
+      output[i] <- str_c("</td><td align='", alignments[column], "'>")
     } else if (row_tag == "\\cr") {
-      output[i] <- str_c("</td></tr><tr><td align=\"", alignments[1], "\">")
+      output[i] <- str_c("</td></tr><tr><td align='", alignments[1], "'>")
       column <- 1
     } else {
       output[i] <- reconstruct(rows[[i]], package)
     }
   }
   
-  output[1] <- str_c("<table><tr><td align=\"", alignments[1], "\">", output[1])
+  output[1] <- str_c("<table><tr><td align='", alignments[1], "'>", output[1])
   output[length(rows)] <- str_c(output[length(rows)], "</td></tr></table>")
 
   str_c(output, collapse = "")

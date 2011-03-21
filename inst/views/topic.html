@@ -9,7 +9,7 @@
 
   <%= render_snippet("disqus_header", list(name = str_c(package, "_topic_",name))) %>
 
-  <script type="text/javascript" src="/_scripts/jquery.highlight-3.yui.js"></script>
+  <script type="text/javascript" src="<%= router_url() %>/_scripts/jquery.highlight-3.yui.js"></script>
 
   <title><%= name %> / <%= package %>. R help</title>
 </head>
@@ -18,7 +18,7 @@
   <div id="watermark"><%= name %></div>
   <div id="doc2" class="yui-t4">
   <div id="hd">
-    <a href="/index.html">R</a> &#8594; <a href=".."><%= package %></a> &#8594; <%= name %> 
+    <a href="<%= router_url() %>/index.html">R</a> &#8594; <a href=".."><%= package %></a> &#8594; <%= name %> 
     <% if (length(aliases) > 0) { -%> (aka <%= str_c(aliases, collapse = ", ") %>)
     <% } %>
     <% if (nchar(highlight) > 0) { -%>
@@ -87,7 +87,7 @@
       <ul>
       <% for (i in seq_len(nrow(similar))) { -%>
         <li>
-        <%= str_c("<a href=\"/package/", similar[i, "pkg"], "\" > ", similar[i, "pkg"], "</a>", " :: ", "<a href=\"/package/", similar[i, "pkg"], "/topic/", similar[i, "topic"],"\" > ", similar[i, "topic"], "</a><br />") %>
+        <%= str_c("<a href='", router_url(), "/package/", similar[i, "pkg"], "' > ", similar[i, "pkg"], "</a>", " :: ", "<a href='", router_url(), "/package/", similar[i, "pkg"], "/topic/", similar[i, "topic"],"' > ", similar[i, "topic"], "</a><br />") %>
         <%= similar[i, "title"] %>
         </li>
       <% } %>

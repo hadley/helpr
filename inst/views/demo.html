@@ -5,13 +5,13 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
 
-  <link rel="stylesheet" type="text/css" href="/_styles/reset-fonts-grids.css" />
-  <link rel="stylesheet" type="text/css" href="/_styles/r-help.css" />
-  <link rel="stylesheet" type="text/css" href="/_styles/jquery.rating.css" />
+  <link rel="stylesheet" type="text/css" href="<%= router_url() %>/_styles/reset-fonts-grids.css" />
+  <link rel="stylesheet" type="text/css" href="<%= router_url() %>/_styles/r-help.css" />
+  <link rel="stylesheet" type="text/css" href="<%= router_url() %>/_styles/jquery.rating.css" />
   
   <%= render_snippet("growl") %>
 
-  <script type="text/javascript" src="/_scripts/package.js"></script>
+  <script type="text/javascript" src="<%= router_url() %>/_scripts/package.js"></script>
 
   <%= render_snippet("disqus_header", list(name = str_c(package, "_demo_", name))) %>
   <title><%= package %> <%= name %>. R help</title>
@@ -21,7 +21,7 @@
   <div id="watermark"><%= package %></div>
   <div id="doc2" class="yui-t6">
   <div id="hd">
-    <a href="/index.html">R</a> &#8594; <a href=".."><%= package %></a> &#8594; <%= name %> (demo) 
+    <a href="<%= router_url() %>/index.html">R</a> &#8594; <a href=".."><%= package %></a> &#8594; <%= name %> (demo) 
     <%= render_snippet("search_bar") %>
   </div>
 
@@ -45,7 +45,7 @@
     <dl>
       <% for(i in seq_len(NROW(other_demos))) {-%>
       <dt>
-        <%= str_c( "<a href=\"/package/", package, "/demo/", other_demos[i, "Item"], "\" >", other_demos[i, "Item"], "</a>") %>
+        <%= str_c( "<a href='", router_url(), "/package/", package, "/demo/", other_demos[i, "Item"], "' >", other_demos[i, "Item"], "</a>") %>
       </dt>
       <dd>
         <%= other_demos[i, "Title"] %>

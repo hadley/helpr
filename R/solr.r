@@ -40,12 +40,12 @@ solr_daily_grind <- function() {
 #' A check to see if solr is running called and memoised at the start of \code{helpr()}
 #'
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
-i_can_has_internets <- memoise(function() {
-	if (local_active()) return(FALSE)
-
-   google <- url("http://google.com")
-   res <- try({open(google); internet <- TRUE; close(google)}, silent = TRUE)
-   !inherits(res, "try-error")
+i_can_has_internetz <- memoise(function() {
+  if (!allow_internetz()) return(FALSE)
+  
+  google <- url("http://google.com")
+  res <- try({open(google); internet <- TRUE; close(google)}, silent = TRUE)
+  !inherits(res, "try-error")
 })
 
 
@@ -108,7 +108,7 @@ solr_topic <- function(package, topic) {
 #' @param package package in question
 #' @param topic topic in question
 index_topic <- function(package, topic) {
-  if (! i_can_has_internets()) return(NULL)
+  if (! i_can_has_internetz()) return(NULL)
 
   put_string(make_add_xml(solr_topic(package, topic)))
 }
@@ -121,7 +121,7 @@ index_topic <- function(package, topic) {
 #' @param start_letter used when you want to start froma certain letter, such as 'q'
 #' @param verbose should output be shown?
 index_package <- function(package, start_letter = "a", verbose = TRUE) {
-  if (! i_can_has_internets()) return(NULL);
+  if (! i_can_has_internetz()) return(NULL);
   
   if (verbose == TRUE) cat("\n\n\n")
   if (verbose == TRUE || verbose == "package") cat(package,"\n")
@@ -170,7 +170,7 @@ index_package <- function(package, start_letter = "a", verbose = TRUE) {
 #' @param start_letter used when you want to start froma certain letter, such as 'q'
 #' @param verbose should output be shown?
 index_all <- function(start_letter = "a", verbose = TRUE) {
-  if (! i_can_has_internets()) return(NULL)
+  if (! i_can_has_internetz()) return(NULL)
 
   packages <- installed_packages()$Package
   packages <- packages[order(tolower(packages))]
@@ -228,7 +228,7 @@ package_and_topic_from_url <- function(url_txt) {
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 helpr_solr_search <- function(query_list) {
-  if (! i_can_has_internets()) return(NULL)
+  if (! i_can_has_internetz()) return(NULL)
 
   result <- get_solr_query_result(query_list)
   items <- result$response

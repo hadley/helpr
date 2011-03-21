@@ -5,11 +5,11 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
 
-  <link rel="stylesheet" type="text/css" href="/_styles/reset-fonts-grids.css" />
-  <link rel="stylesheet" type="text/css" href="/_styles/r-help.css" />
-  <link rel="stylesheet" type="text/css" href="/_styles/jquery.rating.css" />
+  <link rel="stylesheet" type="text/css" href="<%= router_url() %>/_styles/reset-fonts-grids.css" />
+  <link rel="stylesheet" type="text/css" href="<%= router_url() %>/_styles/r-help.css" />
+  <link rel="stylesheet" type="text/css" href="<%= router_url() %>/_styles/jquery.rating.css" />
   
-  <script type="text/javascript" src="/_scripts/jquery-latest.js"></script>
+  <script type="text/javascript" src="<%= router_url() %>/_scripts/jquery-latest.js"></script>
 
 
   <title>R help</title>
@@ -19,7 +19,7 @@
   <div id="watermark">help</div>
   <div id="doc2" class="yui-t6">
   <div id="hd">
-    <a href="/index.html">R</a> 
+    <a href="<%= router_url() %>/index.html">R</a> 
     <%= render_snippet("search_bar") %>
   </div>
 

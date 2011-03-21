@@ -14,7 +14,7 @@
   <div id="watermark"><%= package %></div>
   <div id="doc2" class="yui-t6">
   <div id="hd">
-    <a href="/index.html">R</a> &#8594; <a href="../../../"><%= package %></a> &#8594; <a href=<%= str_c("\"../../", topic,"\"") %> ><%= topic %></a> &#8594; <%= name %> (source) 
+    <a href="<%= router_url() %>/index.html">R</a> &#8594; <a href="../../../"><%= package %></a> &#8594; <a href=<%= str_c("'../../", topic,"'") %> ><%= topic %></a> &#8594; <%= name %> (source) 
   </div>
 
   <div id="bd">
@@ -35,7 +35,7 @@
     <ul>
     <% for(alias in aliases$alias) { -%>
       <li>
-        <%= str_c("<a href=\"/package/", package, "/topic/", topic, "/source/", alias, "\">", alias, "</a>" ) %>
+        <%= str_c("<a href='", router_url(), "/package/", package, "/topic/", topic, "/source/", alias, "'>", alias, "</a>" ) %>
       </li>
     <% } %>
     </ul>

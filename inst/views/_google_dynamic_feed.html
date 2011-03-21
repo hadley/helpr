@@ -1,3 +1,4 @@
+<% if(i_can_has_internetz()) {-%>
   <!-- ++Begin Dynamic Feed Wizard Generated Code++ -->
   <!--
   // Created with a Google AJAX Search and Feed Wizard
@@ -9,5 +10,6 @@
   <!-- Dynamic Feed Control and Stylesheet -->
   <script src="http://www.google.com/uds/solutions/dynamicfeed/gfdynamicfeedcontrol.js"    type="text/javascript"></script>
   <link rel="stylesheet" type="text/css" href="http://www.google.com/uds/solutions/dynamicfeed/gfdynamicfeedcontrol.css" />
-  <script src="/_scripts/rss.js" type="text/javascript"></script>
+  <script src="<%= router_url() %>/_scripts/rss.js" type="text/javascript"></script>
   <!-- ++End Dynamic Feed Control Wizard Generated Code++ -->
+<% } %>

@@ -22,11 +22,13 @@ load_html <- function(...) {
 #' @param ... site to be loaded
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
-base_html_path <- function() {  
-  path <- str_c("http://127.0.0.1:", tools:::httpdPort, collapse = "")
-  
-  if(local_active()) path <- str_c(path, "/custom/helpr")
-  path
+base_html_path <- function() {
+  p <- str_c("http://127.0.0.1:", tools:::httpdPort, collapse = "")
+
+  ifelse(router_custom_route(),
+    str_c(p, "/custom/helpr"),
+    p
+  )
 }
 
 #' Check to see if a package exists.
@@ -51,18 +53,19 @@ check_for_package <- function(package) {
 #'        viewing of help pages?
 #' @author Hadley Wickham and Barret Schloerke \email{schloerke@@gmail.com}
 #' @import brew highlight sinartra memoise evaluate stringr tools parser digest stats utils
-helpr <- function(launch_browser = TRUE, .local_mode = FALSE) {
+helpr <- function(launch_browser = TRUE, no_internetz = FALSE, custom = FALSE) {
 
-  if(identical(.local_mode, TRUE)) activate_local()
+  if(identical(no_internetz, TRUE)) deactivate_internetz()
+  if(identical(custom, TRUE))       set_router_custom_route(TRUE)
   
-  base_path <- helpr_path()
-  url_path <- ""
-
+  file_path <- helpr_path()
+  url_path <- ifelse(router_custom_route(), "/custom/helpr", "")
+  
   router <- Router$clone()
-  router$base_url  <- url_path
-  router$base_path <- base_path
+  router$set_base_url(url_path)
+  router$set_file_path(file_path)
   set_router_url(url_path)
-  set_router_base_path(base_path)
+  set_router_file_path(file_path)
 
   # Show list of all packages on home page
   router$get("/index.html", function(...) {
@@ -76,6 +79,9 @@ helpr <- function(launch_browser = TRUE, .local_mode = FALSE) {
     router$redirect("/index.html")
   })
 
+  router$get("", function(...) {
+    router$redirect("/index.html")
+  })
   router$get("/", function(...) {
     router$redirect("/index.html")
   })
@@ -101,7 +107,7 @@ helpr <- function(launch_browser = TRUE, .local_mode = FALSE) {
   router$get("/package/:package/vignette/:vignette", function(package, vignette, ...) {
     html <- str_c("/package/", package, "/vignette/", vignette, collapse = "")
     if (check_for_package(package)) {
-      router$static_file(system.file("doc", str_c(vignette, ".pdf"), package = package))
+      static_file(system.file("doc", str_c(vignette, ".pdf"), package = package))
     } else {
       router$render_brew("whistle", list(package = package, url = deparse(html)))      
     }
@@ -231,7 +237,7 @@ helpr <- function(launch_browser = TRUE, .local_mode = FALSE) {
   # Manual HTML Files
   router$get("/manuals/:name.html", function(name, ...) {
     file_loc <- as.character(subset(get_manuals(), file_name == name, select = "file_loc"))
-    router$static_file(file_loc)
+    static_file(file_loc)
   })
   
   
@@ -268,21 +274,30 @@ helpr <- function(launch_browser = TRUE, .local_mode = FALSE) {
 
   # pictures
   router$get("/picture/:file_name", function(file_name, ...) {
-    base_path <- file.path(tempdir(), file_name)
-    router$static_file(base_path)
+    static_file(file.path(tempdir(), file_name))
   })
 
   # Use file in public, if present
   router$get("/*", function(splat, ...) {
-    router$static_file(file.path(base_path, "public", splat))
+    router$static_file(file.path("public", splat))
   })
 
-  render_path <- function(path, query, ...) router$route(path, query)
-  assignInNamespace("httpd", render_path, "tools")
-
+  render_path <- function(path, query, ...){
+    router$route(path, query)
+  } 
+  
+  if(router_custom_route()){
+    env <- (tools:::.httpd.handlers.env)
+    env$helpr <- render_path
+  } else {
+    assignInNamespace("httpd", render_path, "tools")
+  }
   if (tools:::httpdPort == 0L) {
-    if(launch_browser) help.start()
     options("help_type" = "html")
+    if(launch_browser) {
+      tools::startDynamicHelp()
+      load_html("index.html")
+    }
   }
 
   return(invisible(router))

@@ -67,7 +67,7 @@ pkg_version <- function(pkg) {
 add_package_link_to_string <- function(string) {
 	packs <- str_trim(str_split(usage_functions(string), "[, ]")[[1]])
 	packs <- packs[packs != ""]
-	pack_link <- str_c("<a href=\"/package/", packs, "/\" >", packs, "</a>")
+	pack_link <- str_c("<a href='<%= router_url() %>/package/", packs, "/' >", packs, "</a>")
 
 	for(i in seq_along(packs)){
 		string <- str_replace(string, packs[i], pack_link[i])[[1]]

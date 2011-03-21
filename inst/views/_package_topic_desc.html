@@ -1,13 +1,13 @@
 <h2>
-  <a href=<%= str_c("/package/",pkg, collapse = "") %> ><%= pkg %></a>
+  <a href=<%= str_c(router_url(), "/package/",pkg, collapse = "") %> ><%= pkg %></a>
     :: 
   <% if(is.null(query)) query_string <- "" else query_string <- str_c("?h=", query) %>
-  <a href=<%= str_c("/package/",pkg, "/topic/", topic, query_string, collapse = "") %> ><%= topic %></a>
+  <a href=<%= str_c(router_url(), "/package/",pkg, "/topic/", topic, query_string, collapse = "") %> ><%= topic %></a>
 </h2>
 <% sapply(items, function(item){ -%>
   <%# item_category <- str_c("<strong>",str_replace_all(names(item), "_t", ""), ":</strong> ", sep="") %>    
   <%# content <- str_c("<td>",item_category, "</td><td>",as.character(item),"</td>", collapse = "</tr><tr>") %>
   
   <% content <- str_c("<td>",as.character(item),"</td>", collapse = "</tr><tr>") %>
-  <%= str_c("<table class=\"search_table\"><tr>", content, "</tr></table>", collapse = "") %>
+  <%= str_c("<table class='search_table'><tr>", content, "</tr></table>", collapse = "") %>
 <% }) %>

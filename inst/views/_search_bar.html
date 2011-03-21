@@ -1,6 +1,6 @@
 <span id="search_bar">
 </span>
-<% if(i_can_has_internets()) {-%>
+<% if(i_can_has_internetz()) {-%>
   <script  type="text/javascript">
     $(document).ready(function(){
       $('#search_bar').html("<label for=\"search_bar_input\">Search: </label><input type=\"text\" rel=\"search_bar_input\" id=\"search_bar_input\" >");
@@ -11,7 +11,7 @@
           query = $.trim(query);
           if(query == "")
             return;
-          $(window.location).attr('href', '/search?start=0&q='+query);
+          $(window.location).attr('href', '<%= router_url() %>/search?start=0&q='+query);
         }
       });  
     })

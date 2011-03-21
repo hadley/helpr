@@ -1,33 +1,51 @@
 local_mode <- local({
-  local_mode <- FALSE
-  activate <- function()   local_mode <<- TRUE
-  deactivate <- function() local_mode <<- FALSE
-  is_active <- function()  local_mode
+  internetz <- TRUE
+  deactivate_internetz  <- function() internetz <<- FALSE
+  activate_internetz    <- function() internetz <<- TRUE
+  allow_internetz       <- function() internetz
 
-  list(activate = activate, deactivate = deactivate, is_active = is_active)
+  list(
+    activate_internetz = activate_internetz, 
+    deactivate_internetz = deactivate_internetz, 
+    allow_internetz = allow_internetz
+  )
 })
-activate_local <- local_mode$activiate
-deactivate_local <- local_mode$deactiviate
-local_active <- local_mode$is_active
+activate_internetz <- local_mode$activate_internetz
+deactivate_internetz <- local_mode$deactivate_internetz
+allow_internetz <- local_mode$allow_internetz
 
 
 
 
 
 rp <- local({
-  url  <- ""
-  base_path <- getwd()
-  set_url <- function(val)       url <<- val
-  set_base_path <- function(val) base_path <<- val
+  url_path  <- ""
+  file_pathP <- getwd()
+  custom <- FALSE
   
-  url <- function()       url
-  base_path <- function() base_path
+  set_url           <- function(val)   url_path <<- val
+  set_file_path     <- function(val) file_pathP <<- val
+  set_custom_router <- function(val)     custom <<- val
+    
+  url           <- function() url_path
+  file_path     <- function() file_pathP
+  custom_router <- function() custom
   
-  list(set_url = set_url, set_base_path = set_base_path, url = url, base_path = base_path)
+  list(
+    set_url = set_url, 
+    set_file_path = set_file_path, 
+    set_custom_router = set_custom_router, 
+
+    url = url, 
+    file_path = file_path, 
+    custom_router = custom_router
+  )
 })
 set_router_url        <- rp$set_url
+set_router_file_path  <- rp$set_file_path
+set_router_custom_route <- rp$set_custom_router
 router_url            <- rp$url
-set_router_base_path  <- rp$set_base_path
-router_base_path      <- rp$base_path
+router_file_path      <- rp$file_path
+router_custom_route   <- rp$custom_router
 
 

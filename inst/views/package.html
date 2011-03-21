@@ -7,7 +7,7 @@
 
   <%= render_snippet("rating") %>
 
-  <script type="text/javascript" src="/_scripts/jquery.quicksearch.js"></script>
+  <script type="text/javascript" src="<%= router_url() %>/_scripts/jquery.quicksearch.js"></script>
 
   <%= render_snippet("disqus_header", list(name = str_c(package, "_package"))) %>
 
@@ -18,7 +18,7 @@
   <div id="watermark"><%= package %></div>
   <div id="doc2" class="yui-t6">
   <div id="hd">
-    <a href="/index.html">R</a> &#8594; <%= package %>
+    <a href="<%= router_url() %>/index.html">R</a> &#8594; <%= package %>
     <%= render_snippet("search_bar") %>
   </div>
 
@@ -98,7 +98,7 @@
       <dl>
       <% for(i in seq_len( nrow(demos))) { -%>
         <dt>
-          <%= str_c( "<a href=\"/package/", package, "/demo/", demos[i, "Item"], "\" >", demos[i, "Item"], "</a>") %>
+          <%= str_c( "<a href='", router_url(), "/package/", package, "/demo/", demos[i, "Item"], "' >", demos[i, "Item"], "</a>") %>
         </dt>
         <dd>
           <%= demos[i, "Title"] %>
@@ -110,38 +110,38 @@
 
     <% if(dataframe_has_rows(vigs)){ -%>    
       <h2><%= vigs_str %></h2>
-      <ul><%= str_c( "<li><a href=\"/package/", package, "/vignette/", vigs[, "item"], "\" >", vigs[, "title"], "</a></li>") %></ul>
+      <ul><%= str_c( "<li><a href='", router_url(), "/package/", package, "/vignette/", vigs[, "item"], "' >", vigs[, "title"], "</a></li>") %></ul>
     <% } %>
 
     <% if(!is.null(description$imports)){ -%>    
       <h2>Imports</h2>      
       <%= add_package_link_to_string(description$imports) %>
-      <!-- <p><%#= str_c(sapply(description$imports, function(x){str_c("<a href=\"/package/", x$name, "/\">", x$name, str_c("</a>", x$version, sep = " "))}), collapse = ", ")  %></p> -->
+      <!-- <p><%#= str_c(sapply(description$imports, function(x){str_c("<a href='", router_url(), "/package/", x$name, "/'>", x$name, str_c("</a>", x$version, sep = " "))}), collapse = ", ")  %></p> -->
     <% }%>
     
     <% if(!is.null(description$suggests)){ -%>    
       <h2>Suggests</h2>
       <%= add_package_link_to_string(description$suggests) %>
-      <!-- <p><%#= str_c(sapply(description$suggests, function(x){str_c("<a href=\"/package/", x$name, "/\">", x$name, str_c("</a>", x$version, sep = " "))}), collapse = ", ")  %></p> -->
+      <!-- <p><%#= str_c(sapply(description$suggests, function(x){str_c("<a href='", router_url(), "/package/", x$name, "/'>", x$name, str_c("</a>", x$version, sep = " "))}), collapse = ", ")  %></p> -->
             <%#= print(description[["suggests"]]) %>
     <% }%>
 
     <% if(!is.null(description$extends)){ -%>    
       <h2>Extends</h2>
       <%= add_package_link_to_string(description$extends) %>
-      <!-- <p><%#= str_c(sapply(description$extends, function(x){str_c("<a href=\"/package/", x$name, "/\">", x$name, str_c("</a>", x$version, sep = " "))}), collapse = ", ")  %></p> -->      
+      <!-- <p><%#= str_c(sapply(description$extends, function(x){str_c("<a href='", router_url(), "/package/", x$name, "/'>", x$name, str_c("</a>", x$version, sep = " "))}), collapse = ", ")  %></p> -->      
     <% }%>
 
     <% if(!is.null(description$depends)){ -%>    
       <h2>Depends</h2>
       <%= add_package_link_to_string(description$depends) %>      
-      <!-- <p><%#= str_c(sapply(description$depends, function(x){str_c("<a href=\"/package/", x$name, "/\">", x$name, str_c("</a>", x$version, sep = " "))}), collapse = ", ")  %></p> -->
+      <!-- <p><%#= str_c(sapply(description$depends, function(x){str_c("<a href='", router_url(), "/package/", x$name, "/'>", x$name, str_c("</a>", x$version, sep = " "))}), collapse = ", ")  %></p> -->
     <% }%>
 
     <% if(dataframe_has_rows(description$reverse)){ -%>    
       <h2>Reverse Dependencies</h2>
       
-      <p><%= str_c("<a href=\"/package/", description$reverse, "/\">", description$reverse,"</a>", collapse = ", ")  %></p>
+      <p><%= str_c("<a href='", router_url(), "/package/", description$reverse, "/'>", description$reverse,"</a>", collapse = ", ")  %></p>
       
     <% }%>
     
@@ -154,18 +154,18 @@
       <% if(!is.null(description$packaged)){ -%>
         <tr><td>Built:</td><td><%= str_split(description$packaged, " ")[[1]][1] %></td></tr>
       <% } %>
-      <% if(!is.null(description$'date/publication')){ -%>
-        <tr><td>Published:</td><td><%= str_split(description$'date/publication'
+      <% if(!is.null(description[["date/publication"]])){ -%>
+        <tr><td>Published:</td><td><%= str_split(description[["date/publication"]]
 , " ")[[1]][1] %></td></tr>
       <% } %>
       <% if(!is.null(description$url)){ -%>
-        <tr><td>URL:</td><td><%= str_c("<a href=\"",description$url,"\">",description$url,"</a>", collapse = ", ") %></td></tr>
+        <tr><td>URL:</td><td><%= str_c("<a href='", router_url(), description$url,"'>",description$url,"</a>", collapse = ", ") %></td></tr>
       <% } %>
       <% if(!is.null(description$license)){ -%>
         <tr><td>License:</td><td><%= description$license %></td></tr>
       <% } %>
-      <tr><td colspan=2><%= str_c("<a href=\"http://cran.r-project.org/web/packages/", package, "/index.html\" target=\"_blank\">CRAN</a>", collapse = "") %></td></tr>
-      <tr><td colspan=2><%= str_c("<a href=\"http://cran.r-project.org/web/checks/check_results_", package, ".html\" target=\"_blank\">CRAN Package Check</a>", collapse = "") %></td></tr>
+      <tr><td colspan=2><%= str_c("<a href='http://cran.r-project.org/web/packages/", package, "/index.html' target='_blank'>CRAN</a>", collapse = "") %></td></tr>
+      <tr><td colspan=2><%= str_c("<a href='http://cran.r-project.org/web/checks/check_results_", package, ".html' target='_blank'>CRAN Package Check</a>", collapse = "") %></td></tr>
     </table>
 
 

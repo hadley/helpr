@@ -185,7 +185,7 @@ add_function_links_into_parsed <- function(parser_output, source_link = FALSE) {
 
   # make links for functions and not for non-package functions
   paths <- function_help_path(funcs, source_link)  
-  text <- str_c("<a href='", paths, "'>", funcs,"</a>")
+  text <- str_c("<a href='", router_url(), paths, "'>", funcs,"</a>")
   text[is.na(paths)] <- funcs[is.na(paths)]
   
   # return data
@@ -258,7 +258,7 @@ parse_usage <- function(usage, package) {
       link <- str_c("<em>",ori_func, "</em>(")
     } else {
       spaces <- str_c(rep(" ", nchar(ori_func) - nchar(func)), collapse = "")
-      link <- str_c("<a href=\"", path, "\">", func, "</a>", spaces ,"(" )
+      link <- str_c("<a href='", router_url(), path, "'>", func, "</a>", spaces ,"(" )
     }
     
     text <- str_replace_all(text, str_c(ori_func,"\\("), link)

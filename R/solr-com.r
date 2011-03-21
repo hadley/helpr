@@ -4,7 +4,7 @@
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 # '
 solr_delete_package <- function(package) {
-  if (! i_can_has_internets()) return(NULL)
+  if (! i_can_has_internetz()) return(NULL)
   
   site <- str_c("<delete><query>id:/package/",package,"/*</query></delete>")
   
@@ -20,7 +20,10 @@ solr_delete_package <- function(package) {
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 read_url <- function(url_string) {
-  url_connect <- url(URLencode(url_string))
+  url_string <- str_replace_all(url_string, "-", "")
+  url <- URLencode(url_string)
+  print(url)
+  url_connect <- base::url(url)
   on.exit(close(url_connect))
   output <- suppressWarnings(str_c(readLines(url_connect), collapse = ""))
   output

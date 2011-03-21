@@ -3,7 +3,7 @@
       <ul>
       <% for (i in seq_len(nrow(d))) { -%>
         <li>
-        <%= str_c("<a href=\"/package/", d[i, "pkg"], "\" > ", d[i, "pkg"], "</a>", " :: ", "<a href=\"/package/", d[i, "pkg"], "/topic/", d[i, "topic"],"#Example\" > ", d[i, "topic"], "</a><br />") %>
+        <%= str_c("<a href='", router_url(), "/package/", d[i, "pkg"], "' > ", d[i, "pkg"], "</a>", " :: ", "<a href='", router_url(), "/package/", d[i, "pkg"], "/topic/", d[i, "topic"],"#Example' > ", d[i, "topic"], "</a><br />") %>
         <%= d[i, "title"] %>
         </li>
       <% } %>

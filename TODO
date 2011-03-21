@@ -1,36 +1,10 @@
 √ Make RCurl a suggestion
 √ Server functions (solr POSTing code) should require("RCurl")
 
-√ Local mode (!i_can_has_internets): should not use RCurl, activates when no
- RCurl, no internet connection, or when asked for by the user.
-
-   if (local_active()) return(FALSE)
-
-   google <- url("http://google.com")
-   res <- try({open(google); internet <- TRUE; close(google)}, quiet = TRUE)
-   !inherits(res, "try-error")
+√ Local mode (!i_can_has_internetz): should not use RCurl, activates when asked for by the user.
 
 
-√ Make a local mode that can be started when helpr needs to be done locally
-   local_mode <- local({
-     local_mode <- FALSE
-     activate <- function()local_mode <<- TRUE
-     deactivate <- function() local_mode <<- FALSE
-     is_active <- function() local_mode
-
-     list(activate = activate, deactivate = deactivate, is_active = is_active)
-   })
-   activate_local <- local_mode$activiate
-   deactivate_local <- local_mode$deactiviate
-   local_active <- local_mode$is_active
-
-* httpd compatibility mode:
-
-     myHanders <- new.env()
-     assign('helpr', render_path, myHandlers)
-     assignInNamespace('.httpd.handlers.env', myHanders, 'tools')
-
-     # http://localhost:8181/custom/helpr/
+√ Make a "custom" mode that can be started when helpr needs to be done through the custom handler
 
  This needs changes to sinartra to make this easy to implement.  A router
  should have a base URL, which is automatically stripped from the incoming
@@ -38,11 +12,11 @@
 
 
 √ Move depends to imports (everything apart from rjson), so they don't clutter
- the user's workspace.
-
- To do this, you need to move them from Depends to Imports in the
- DESCRIPTION, and add @import highlight, sinartra, ... in the package
- documentation rdoc. No function call should have :: in front of it.
+    the user's workspace.
+  
+  √To do this, you need to move them from Depends to Imports in the
+    DESCRIPTION, and add @import highlight, sinartra, ... in the package
+    documentation rdoc. No function call should have :: in front of it.
 
 * Create helprServr and move all server related code out of helpr and into
  helprServr
