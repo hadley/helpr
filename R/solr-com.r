@@ -22,7 +22,6 @@ solr_delete_package <- function(package) {
 read_url <- function(url_string) {
   url_string <- str_replace_all(url_string, "-", "")
   url <- URLencode(url_string)
-  print(url)
   url_connect <- base::url(url)
   on.exit(close(url_connect))
   output <- suppressWarnings(str_c(readLines(url_connect), collapse = ""))
