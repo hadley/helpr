@@ -50,18 +50,21 @@ check_for_package <- function(package) {
 #' 
 #' @export
 #' @param launch_browser should this function launch a browser for immediate viewing of help pages?
-#' @param no_internetz should this function allow the browser to source internet files and actions?
-#' @param custom should this function launch in the custom httpd handlers env?
+#' @param no_internetz should this function allow the browser to source internet files and actions? Default is to allow internet connections
+#' @param custom should this function launch in the custom httpd handlers env? Default is to be at the root of ""
 #' @author Barret Schloerke \email{schloerke@@gmail.com} and Hadley Wickham
 #' @import brew highlight sinartra memoise evaluate stringr tools parser digest stats utils
-helpr <- function(launch_browser = TRUE, no_internetz = FALSE, custom = FALSE) {
+helpr <- function(launch_browser = TRUE, no_internetz = NULL, custom = NULL) {
 
-  if(identical(no_internetz, TRUE)) deactivate_internetz()
-  if(identical(custom, TRUE))       set_router_custom_route(TRUE)
+  if(identical(no_internetz, TRUE))  deactivate_internetz()
+  if(identical(no_internetz, FALSE)) activate_internetz()
+
+  if(identical(custom, TRUE)) set_router_custom_route(TRUE)
+  if(identical(custom, FALSE)) set_router_custom_route(FALSE)
   
   file_path <- helpr_path()
   url_path <- ifelse(router_custom_route(), "/custom/helpr", "")
-  
+
   router <- Router$clone()
   router$set_base_url(url_path)
   router$set_file_path(file_path)
