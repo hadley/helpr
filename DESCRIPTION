@@ -6,8 +6,7 @@ Author: Hadley Wickham <h.wickham@gmail.com> and Barret Schloerke
     <schloerke@gmail.com>
 Maintainer: Hadley Wickham <h.wickham@gmail.com>
 Description: Better html documentation for R
-Depends: rjson
-Imports: brew, memoise, sinartra, evaluate, highlight, digest, parser, tools, stringr (>= 0.4), stats, utils
+Imports: brew, rjson, memoise, sinartra (>= 0.3), evaluate, highlight, digest, parser, tools, stringr (>= 0.4), stats, utils
 Suggestions: RCurl
 License: GPL-2
 LazyData: true
