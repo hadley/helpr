@@ -44,14 +44,15 @@ check_for_package <- function(package) {
 }
 
 
-   
+
 
 #' Start helpr.
 #' 
 #' @export
-#' @param launch_browser should this function launch a browser for immediate
-#'        viewing of help pages?
-#' @author Hadley Wickham and Barret Schloerke \email{schloerke@@gmail.com}
+#' @param launch_browser should this function launch a browser for immediate viewing of help pages?
+#' @param no_internetz should this function allow the browser to source internet files and actions?
+#' @param custom should this function launch in the custom httpd handlers env?
+#' @author Barret Schloerke \email{schloerke@@gmail.com} and Hadley Wickham
 #' @import brew highlight sinartra memoise evaluate stringr tools parser digest stats utils
 helpr <- function(launch_browser = TRUE, no_internetz = FALSE, custom = FALSE) {
 

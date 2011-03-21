@@ -44,7 +44,7 @@ urlJSON_to_list <- function(url_string) {
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 send_commit_command <- function() {
-	require("RCurl")
+  # require("RCurl")
   send_system_command(str_c("curl ", solr_base_url(), "/solr/update --data-binary '<commit/>' -H 'Content-type:text/xml; charset=utf-8'"))
 }
 

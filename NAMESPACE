@@ -1,4 +1,3 @@
 export(load_html)
 export(helpr)
 import(brew, highlight, sinartra, memoise, evaluate, stringr, tools, parser, digest, stats, utils)
-exportPattern("^[^\\.]")

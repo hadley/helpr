@@ -1,5 +1,5 @@
 crantastic_rating <- function(pkg_name){
-	require(RCurl)
+  # require(RCurl)
   txt <- getURL(str_c("http://crantastic.org/packages/",pkg_name,"/"))
   rating_location <- str_locate(txt, "overall-rating")[,"start"]
 

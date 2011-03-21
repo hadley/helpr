@@ -1,7 +1,7 @@
 \name{render_snippet}
 \alias{render_snippet}
 \title{Render HTML Snippet.}
-\usage{render_snippet(template, params=list(), path=helpr_path())}
+\usage{render_snippet(template, params, path=router_file_path())}
 \description{Render HTML Snippet.}
 \value{text rendered from the template}
 \author{Barret Schloerke \email{schloerke@gmail.com}}

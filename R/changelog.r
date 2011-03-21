@@ -1,5 +1,3 @@
-require(memoise)
-
 #' Package news.
 #'
 #' @param package package name
