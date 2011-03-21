@@ -5,7 +5,10 @@
 #' @keywords internal
 #' @author Hadley Wickham
 installed_packages <- function() {
-  paths <- unlist(lapply(.libPaths(), dir, full.names = TRUE))
+  user_libPaths <- normalizePath(.libPaths())
+  uniqueLibPaths <- subset(user_libPaths, !duplicated(user_libPaths))
+  
+  paths <- unlist(lapply(uniqueLibPaths, dir, full.names = TRUE))
   desc <- file.path(paths, "DESCRIPTION")
   desc <- desc[file.exists(desc)]
   
