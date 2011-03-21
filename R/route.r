@@ -358,7 +358,7 @@ helpr_home <- function() {
 #' @param x path to help
 #' @param ... other arguments ignored
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
-#' @keywords internal 
+#' @export
 print.help_files_with_topic <- function (x, ...) 
 {
     browser <- getOption("browser")

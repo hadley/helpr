@@ -1,3 +1,4 @@
 export(load_html)
 export(helpr)
 import(brew, highlight, sinartra, memoise, evaluate, stringr, tools, parser, digest, stats, utils)
+export(print.help_files_with_topic)
