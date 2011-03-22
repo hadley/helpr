@@ -24,7 +24,10 @@
     
     <h2><%= name %> Source</h2>
     <%= src %>
-    <%= render_snippet("changelogs_topic_source", change_log)   %>
+    
+    <% if(!is.null(change_log)) {- %>
+      <%= render_snippet("changelogs_topic_source", change_log)   %>
+    <% } %>
 
 
   </div></div>
