@@ -1,14 +1,13 @@
+  <% if(identical(disqus,TRUE) && i_can_has_internetz()) { -%> 
+    <%= render_snippet("disqus_footer") %>
+  <% } %>
+
   <div id="ft">
-    <% if(identical(disqus,TRUE) && i_can_has_internetz()) { -%> 
-      <%= render_snippet("disqus_footer") %>
-    <% } %>
-    <p>helpr - R help. 
-      By <a href="http://barretschloerke.com" target="_blank">Barret Schloerke</a>
-      and <a href="http://had.co.nz/" target="_blank">Hadley Wickham</a>. 
-      Package funded by <a href="http://www.revolutionanalytics.com/" target="_blank" ><img src="<%= router_url() %>/_images/Revolution_Analytics.png" alt="Revolution_Analytics" /></a>. 
-      Search sponsored by <a href="http://www.metamarketsgroup.com/" target="_blank" ><img src="<%= router_url() %>/_images/Metamarkets.png" alt="Metamarkets" /></a>. 
-    </p>
-    <p class="load_html">load_html("<%= html %>")</p>
+    <p>helpr: elegant R help. By <a href="http://barretschloerke.com" target="_blank">Barret Schloerke</a> and <a href="http://had.co.nz/" target="_blank">Hadley Wickham</a>.</p>
+    
+    <p>Package development sponsored by <a href="http://www.revolutionanalytics.com/" target="_blank" ><img src="<%= router_url() %>/_images/Revolution_Analytics.png" alt="Revolution_Analytics" /></a>. Search sponsored by <a href="http://www.metamarketsgroup.com/" target="_blank" ><img src="<%= router_url() %>/_images/Metamarkets.png" alt="Metamarkets" /></a>.</p>
+
+  <p class="load_html">load_html("<%= html %>")</p>
   </div>
   <% if(identical(disqus,TRUE) && i_can_has_internetz()) { -%> 
     <%= render_snippet("disqus_end_body_script") %>

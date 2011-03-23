@@ -1,29 +1,51 @@
-
 /* Colour scheme: http://kuler.adobe.com/#themeID/163847 */
 
-html {overflow: scroll;}
 
-#feed-control
-{
-  margin-top: -1em;
-}
+/* Basic layout ----------------------------------------------------------- */
+
+body {margin: 0}
 
 #hd {
   padding: 1em;
   margin: 0 0 2em 0;
   background-color: #eee;
-  }
+  vertical-align: center;
+}
 
 #ft {
-  font-size: 100%; 
-  border-top: 1px solid #ccc; 
-  padding-top: 1em; 
+  font-size: 90%; 
+  background-color: #eee;
+  padding: 1em; 
   margin-top: 3em;
   clear: both;
 }
+#ft p {margin: 0 0 0.5em 0}
 
-/* Basic styles ------------------------- */
+#bd {
+  margin-left: 1em;
+}
 
+.box {
+  float: left; 
+  width: 200px;
+}
+.sidebar {
+  font-size: 90%;
+  background-color: #eee;
+  padding: 0.5em;
+  border-top-right-radius: 20px;
+  -moz-border-top-right-radius: 20px;
+}
+.sidebar h2 {
+  margin-top: 0;
+}
+.sidebar ul {margin-left: 1em; padding-left: 0.5em}
+
+#main.box {width: 600px;}
+
+/* Basic styles ----------------------------------------------------------- */
+
+body * {font-family: "Helvetica Neue", Helvetica, Arial, "sans serif";}
 #bd * {margin-bottom: 0.5em; line-height: 1.5em;}
 
 a:link, a:visited { color: #264D66;}
@@ -34,12 +56,16 @@ td {vertical-align: top; padding: 4px;}
 ul {margin-left: 2em; margin-bottom: 0.5em; }
 ul li {list-style-type: disc;}
 
-h1, h2, h3, .change_log_title {font-family: "Helvetica Neue", Helvetica, Arial, "sans serif"; font-weight:  normal;}
-#hd h1 a {color: #000; text-decoration: none;}
+h1, h2, h3, #watermark, #ft, .change_log_title {
+  font-weight:  normal;
+}
+
+/*#hd h1 a {color: #000; text-decoration: none;}
 #hd h1 a:hover {background: none;}
+*/
 #bd h1, #search_bd h1 {font-size: 3em; line-height: 1.2em; width: 75%;}
 h2, .change_log_title {font-size: 1em; margin-top: 1.5em; color: #264D66; font-weight: bold;}
-.sidebar h2, .sidebar .change_log_title {margin-top: 1em; font-size: 1.2em;}
+.sidebar .change_log_title {margin-top: 1em; font-size: 1.2em;}
 .firstline, h2.firstline, .change_log_title.firstline {margin-top: 0;}
 .change_log_date, .load_html {color: rgb(177,177,177);}
 h3 {font-weight: bold;}
@@ -54,11 +80,10 @@ pre, code {
 }
 
 pre {
-     margin-bottom: 0 ! important;
+     margin-bottom: 0;
 }
 
-
-/* Watermark */
+/* Watermark -------------------------------------------------------------- */
 
 #watermark {
   letter-spacing: -15px;
@@ -73,12 +98,12 @@ pre {
   z-index: -5;
 }
 
-/* Sidebar ------------------------- */
+/* Sidebar ---------------------------------------------------------------- */
 
 #sidebar {font-size:  0.9em; line-height: 1.3em; }
 #sidebar li {margin-left: 0em; }
 
-/* Syntax highlighting -----------------------------------------------------*/
+/* Syntax highlighting ---------------------------------------------------- */
 
 .number {color:rgb(21,20,181);}
 .functioncall {color:#264D66 ;}
@@ -101,15 +126,22 @@ pre {
   margin-left: auto;
   margin-right: auto;
 }
-
 .R_output, .R_output_image {
   margin-top: 0.5em ! important;
   margin-bottom: 0.5em ! important;  
 }
 
+/* Home page -------------------------------------------------------------- */
 
 
-/* Packages */
+#feed-control {
+  width: 30em;
+  float: left;
+}
+#feed-control span {
+  color: #676767;
+}
+
 #packages.loaded .installed, #thinking_wheel {display: none;}
 
 .out_of_date { background-color: #FE8080;}
@@ -125,14 +157,15 @@ pre {
   height: 16px;
 }
 
+/* Search ----------------------------------------------------------------- */
 
-/* Search */
-.helpr_prev_next{
+#search_bar {
+  float: right;
+}
+
+.helpr_prev_next {
   text-align: right;
   font-size: 1.5em;
-}
-#search_bar{
-  float: right;
 }
 .highlight { background-color: rgb(255,255,102) }
 #remove_highlight_button { float: right};

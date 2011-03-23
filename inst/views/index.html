@@ -2,52 +2,35 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-
   <%= render_snippet("html_header") %>
-
-  <%= render_snippet("growl") %>
-
   <%= render_snippet("google_dynamic_feed") %>
 
-  <script type="text/javascript" src="<%= router_url() %>/_scripts/jquery.quicksearch.js"></script>
-
-  <script type="text/javascript" src="<%= router_url() %>/_scripts/old_packs.js"></script>
-  
-  <script type="text/javascript">
-
-    $(document).ready(function(){
-      $('#package_buttons').html("<input id='out_of_date_button' type=button onClick='highlight_old_packages();' value='Out of Date'> <input id='show_all_packs_button' type=button onClick='show_all_packages();' value='Show All Packages'>");
-      
-    })
-
+  <script type="text/javascript" 
+    src="<%= router_url() %>/_scripts/jquery-latest.js"></script>
+  <script type="text/javascript" 
+     src="<%= router_url() %>/_scripts/jquery.quicksearch.js"></script>
+  <script type="text/javascript" 
+     src="<%= router_url() %>/_scripts/jquery.masonry.min.js"></script>
+  <script type="text/javascript" 
+     src="<%= router_url() %>/_scripts/old_packs.js"></script>
+  <script>
+    $('#wrapper').masonry({ columnWidth: 200 });
   </script>
+
   <title>R help</title>
 </head>
 
 <body>
-  <div id="watermark">packages</div>
-  <div id="doc2" class="yui-t6">
+<div id="watermark">packages</div>
 
-  <div id="hd">
-    <table style="width:100%;">
-      <tr>
-        <td style="width:52em;">
-          <% if(i_can_has_internetz()) {-%>
-            <div id="feed-control">
-              <span style="color:#676767;font-size:11px;margin:10px;padding:4px;">Loading...</span>
-            </div>
-          <% } %>
-        </td>
-        <td>
-          <%= render_snippet("search_bar") %>
-        </td>
-      </tr>
-    </table>
-  </div>
+<div id="hd">
+  <%= render_snippet("search_bar") %>
+  <br clear="all" />
+</div>
 
-  <div id="bd">
-  <div id="yui-main"><div class="yui-b">
-    <h1>Installed packages</h1>
+<div id="bd">
+  <h1>Installed packages</h1>
+  <div id="main" class="box">
     
     <table id="packages" class="loaded">
       <thead><tr>
@@ -59,42 +42,52 @@
         <td><a href="<%= router_url() %>/package/<%= packages[i,"Package"] %>"><%= packages[i,"Package"] %></a></td>
         <td><%= packages[i,"Title"] %></td>
       </tr>
-      <% } %>
+      <% } -%>
       <tr>
         <td colspan=2 id="package_buttons">
+        <input id='out_of_date_button' type=button onClick='highlight_old_packages();' value='Out of Date'> <input id='show_all_packs_button' type="button" onClick='show_all_packages();' value='Show All Packages'>
         </td>
       </tr>
   </table>
-  </div></div>
-  <div class="yui-b"><div class = "sidebar">
+  </div>
+  
+  <!-- <div class="sidebar"> -->
+    <% if(i_can_has_internetz()) {-%>
+    <div class="sidebar box">
+      <div id="feed-control"><span>Loading...</span></div>
+    </div>
+    <% } -%>
     
     <% if(dataframe_has_rows(top_ten_funcs)) { -%>
+    <div class="sidebar box">
       <h2><%= top_ten_funcs_str %></h2>
       <ol>
         <%= str_c("<li><a href='", router_url(), top_ten_funcs[,"path"], "'>", top_ten_funcs[,"func"], "</a></li>") %>
       </ol>
+    </div>
     <% } %>
 
     <% if(dataframe_has_rows(last_ten_funcs)) { -%>
+    <div class="sidebar box">
       <h2><%= last_ten_funcs_str %></h2>
       <ol>
         <%= str_c("<li><a href='", router_url(), last_ten_funcs[,"path"], "'>", last_ten_funcs[,"func"], "</a></li>") %>
       </ol>
+    </div>
     <% } %>
     
     <% if(dataframe_has_rows(manuals)) { %>
+    <div class="sidebar box">
       <h2>Manuals</h2>
-      <ol>
+      <ul>
         <%= str_c("<li><a href='", router_url(), manuals[,"link"], "'>", manuals[,"title"], "</a></li>") %>
-      </ol>
+      </ul>
+    </div>
     <% } %>
-        
+  <!-- </div> -->
+</div></div>
 
 
-  </div></div>
-  
-  </div><!-- end bd -->
-
-  <%= render_snippet("footer", list(disqus = FALSE, html = html)) %>
-</div></body>
+<%= render_snippet("footer", list(disqus = FALSE, html = html)) %>
+</body>
 </html>
