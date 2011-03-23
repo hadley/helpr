@@ -257,8 +257,8 @@ pkg_topics_alias <- function(pkg) {
   rd <- lapply(rd1, function(x) {
     desc <- reconstruct(untag(x$description), pkg)
     desc_naked <- strip_html(desc)
-    if (str_length(desc_naked) > 100) {
-      desc <- str_c(str_sub(desc_naked, end = 100), " ...")
+    if (str_length(desc_naked) > 150) {
+      desc <- str_c(str_sub(desc_naked, end = 150), " ...")
     }
     
     list(

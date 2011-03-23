@@ -59,7 +59,7 @@ p.description {margin: 0 1em 1em 0;}
 /* Basic styles ----------------------------------------------------------- */
 
 body * {font-family: "Helvetica Neue", Helvetica, Arial, "sans serif";}
-.main * {margin-bottom: 0.5em; line-height: 1.5em;}
+body * {margin-bottom: 0.5em; line-height: 1.5em;}
 
 a:link, a:visited { color: #264D66;}
 a:hover {background-color: #ccc; color: #264D66;}
@@ -95,6 +95,12 @@ pre, code {
 pre {
      margin-bottom: 0;
 }
+
+
+/* Topic listing */
+
+ul.topics, ul.topics li {list-style: none; margin-left: 0; padding-left: 0}
+ul.topics .topic {font-weight: bold}
 
 /* Watermark -------------------------------------------------------------- */
 

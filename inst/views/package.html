@@ -7,8 +7,13 @@
 
   <script type="text/javascript" 
     src="<%= router_url() %>/_scripts/jquery-latest.js"></script>
-  <script type="text/javascript" src="<%= router_url() %>/_scripts/jquery.quicksearch.js"></script>
-
+  <script type="text/javascript" 
+    src="<%= router_url() %>/_scripts/jquery.quicksearch.js"></script>
+  <script type="text/javascript" 
+    src="<%= router_url() %>/_scripts/jquery.masonry.min.js"></script>
+  <script>
+  $('#s').masonry({ singleMode: true });
+  </script>
   <%= render_snippet("disqus", list(name = str_c(package, "_package"))) %>
 
   <title><%= package %>. R help</title>
@@ -27,27 +32,25 @@
   <div id="main" class="box">
   <p class="description"><%= description$description %></p>
 
-  <table id="files">
   <% if(dataframe_has_rows(items$info)){ -%>
-    <tr><th colspan=2><h2>Package Info</h2></th>
+  <h2>Package Info</h2>
+  <ul>
     <% for(i in names(items$info)) { -%>
-    <tr>
-      <td><%= str_c("<a href='topic/", i, "'>", items$info[[i]]$alias, "</a>", collapse = ", ") %></td>
-      <td><%= items$info[[i]]$desc %></td>
-    </tr>
+    <li><%= str_c("<a href='topic/", i, "'>", items$info[[i]]$alias, "</a>", collapse = ", ") %>: <%= items$info[[i]]$desc %></li>
     <% } %>
+  </ul>
   <% } %>
 
   <% if(dataframe_has_rows(items$func)){ -%>
-    <tr><th colspan=2><h2>Functions</h2></th></tr>
+  <h2>Functions</h2>
+  <ul class = "topics">
     <% for(i in names(items$func)) { -%>
-    <tr>
-      <td width ="33%"><%= str_c("<a href='topic/", i, "'>", items$func[[i]]$alias, "</a>", collapse = ", ") %></td>
-      <td width = "67%"><%= items$func[[i]]$desc %></td>
-    </tr>
-    <% } -%>
+    <li><span class="topic"><%= str_c("<a href='topic/", i, "'>", items$func[[i]]$alias, "</a>", collapse = ", ") %></span> <span class="desc"><%= items$func[[i]]$desc %></span></li>
+    <% } %>
+  </ul>
   <% } -%>
   
+  <table>
   <% if(dataframe_has_rows(items$dataset)){ -%>
     <tr><th colspan=2><h2>Data Sets</h2></th></tr>
    <% for(i in names(items$dataset)) { -%>
@@ -60,7 +63,7 @@
   </table>
   
   </div>
-  <div class = "sidebars">
+  <div class = "sidebars" id="s">
 
   <div class="sidebar box">
     <h2>General Info</h2>
@@ -152,11 +155,12 @@
     <%= render_snippet("changelogs", change_log) %>
   </div>
   <% } %>
+</div>
 
-  <br clear = "all" />
-  <div id="comments"></div>
-        
-</div></div>
+<br clear = "all" />
+<div id="comments"></div>
+
+</div>
 
 <br clear = "all" />
 <%= render_snippet("footer", list(html = html)) %>
