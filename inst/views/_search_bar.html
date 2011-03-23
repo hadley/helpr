@@ -1,7 +1,8 @@
 <% if(i_can_has_internetz()) {-%>
 <div id="search_bar">
   <form method="get" action="<%= router_url() %>/search">
-    <label>Search: <input type="text" name="q" /></label>
+    <label>Search: <input type="text" name="q" id ="search" /></label>
+    <input type="submit" value = "go" />
   </form>
 </div>
 <% } %>

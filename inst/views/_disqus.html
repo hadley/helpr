@@ -1,0 +1,28 @@
+<% if(i_can_has_internetz()) {-%>
+  <link rel="stylesheet" type="text/css"
+     href="http://disqus.com/stylesheets/jquery/disqus.css?v=2.0" />
+    
+  <script type="text/javascript">
+  var disqus_identifier = "<%= name %>"; 
+  var disqus_container_id = 'comments';
+  
+  $(function(){
+    var ds_loaded = false;
+    var top = jQuery("#comments").offset().top;
+
+    function check(){
+      if (ds_loaded) return true;
+      // Load disqus comments if they should be visible
+      if ($(window).scrollTop() + $(window).height() <= top) return true;
+      
+      $.getScript("http://barretschloerke.disqus.com/disqus.js?v=2.0");
+      ds_loaded = true;
+    } 
+
+    $(window).scroll(check);
+    check();
+
+  });
+  </script>
+
+<% } %>

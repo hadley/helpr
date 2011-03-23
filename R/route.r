@@ -333,18 +333,7 @@ helpr_home <- function() {
 
   list(
     packages = installed_packages(), 
-  
-    last_ten_funcs_str = pluralize(
-      "Last Function", 
-      bool_statement = (last_ten_length > 1), 
-      plural = str_c("Last ", last_ten_length, " Functions")
-    ),
     last_ten_funcs = ten_funcs$last_ten,
-    top_ten_funcs_str = pluralize(
-      "Top Function", 
-      bool_statement = (top_ten_length > 1), 
-      plural = str_c("Top ", top_ten_length, " Functions")
-    ),
     top_ten_funcs = ten_funcs$top_ten,
     manuals = get_manuals()
   )

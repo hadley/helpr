@@ -13,9 +13,6 @@
      src="<%= router_url() %>/_scripts/jquery.masonry.min.js"></script>
   <script type="text/javascript" 
      src="<%= router_url() %>/_scripts/old_packs.js"></script>
-  <script>
-    $('#wrapper').masonry({ columnWidth: 200 });
-  </script>
 
   <title>R help</title>
 </head>
@@ -29,7 +26,7 @@
 </div>
 
 <div id="bd">
-  <h1>Installed packages</h1>
+  <h1>R documentation</h1>
   <div id="main" class="box">
     
     <table id="packages" class="loaded">
@@ -54,13 +51,14 @@
   <!-- <div class="sidebar"> -->
     <% if(i_can_has_internetz()) {-%>
     <div class="sidebar box">
+      <h2>R news from <a href="http://www.inside-r.org/">inside-r.org</a></h2>
       <div id="feed-control"><span>Loading...</span></div>
     </div>
     <% } -%>
     
     <% if(dataframe_has_rows(top_ten_funcs)) { -%>
     <div class="sidebar box">
-      <h2><%= top_ten_funcs_str %></h2>
+      <h2>Top functions</h2>
       <ol>
         <%= str_c("<li><a href='", router_url(), top_ten_funcs[,"path"], "'>", top_ten_funcs[,"func"], "</a></li>") %>
       </ol>
@@ -69,7 +67,7 @@
 
     <% if(dataframe_has_rows(last_ten_funcs)) { -%>
     <div class="sidebar box">
-      <h2><%= last_ten_funcs_str %></h2>
+      <h2>Recent functions</h2>
       <ol>
         <%= str_c("<li><a href='", router_url(), last_ten_funcs[,"path"], "'>", last_ten_funcs[,"func"], "</a></li>") %>
       </ol>

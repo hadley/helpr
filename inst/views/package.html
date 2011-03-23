@@ -5,190 +5,161 @@
 <head>
   <%= render_snippet("html_header") %>
 
-  <%= render_snippet("rating") %>
-
+  <script type="text/javascript" 
+    src="<%= router_url() %>/_scripts/jquery-latest.js"></script>
   <script type="text/javascript" src="<%= router_url() %>/_scripts/jquery.quicksearch.js"></script>
 
-  <%= render_snippet("disqus_header", list(name = str_c(package, "_package"))) %>
+  <%= render_snippet("disqus", list(name = str_c(package, "_package"))) %>
 
   <title><%= package %>. R help</title>
 </head>
 
 <body>
-  <div id="watermark"><%= package %></div>
-  <div id="doc2" class="yui-t6">
-  <div id="hd">
-    <a href="<%= router_url() %>/index.html">R</a> &#8594; <%= package %>
-    <%= render_snippet("search_bar") %>
+<div id="watermark"><%= package %></div>
+<div id="hd">
+  <a href="<%= router_url() %>/index.html">R</a> &#8594; <%= package %>
+  <%= render_snippet("search_bar") %>
+</div>
+
+<div id="bd">
+  <h1><%= package %></h1>
+
+  <div id="main" class="box">
+  <p class="description"><%= description$description %></p>
+
+  <table id="files">
+  <% if(dataframe_has_rows(items$info)){ -%>
+    <tr><th colspan=2><h2>Package Info</h2></th>
+    <% for(i in names(items$info)) { -%>
+    <tr>
+      <td><%= str_c("<a href='topic/", i, "'>", items$info[[i]]$alias, "</a>", collapse = ", ") %></td>
+      <td><%= items$info[[i]]$desc %></td>
+    </tr>
+    <% } %>
+  <% } %>
+
+  <% if(dataframe_has_rows(items$func)){ -%>
+    <tr><th colspan=2><h2>Functions</h2></th></tr>
+    <% for(i in names(items$func)) { -%>
+    <tr>
+      <td width ="33%"><%= str_c("<a href='topic/", i, "'>", items$func[[i]]$alias, "</a>", collapse = ", ") %></td>
+      <td width = "67%"><%= items$func[[i]]$desc %></td>
+    </tr>
+    <% } -%>
+  <% } -%>
+  
+  <% if(dataframe_has_rows(items$dataset)){ -%>
+    <tr><th colspan=2><h2>Data Sets</h2></th></tr>
+   <% for(i in names(items$dataset)) { -%>
+    <tr>
+      <td><%= str_c("<a href='topic/", i, "'>", items$dataset[[i]]$alias, "</a>", collapse = ", ") %></td>
+      <td><%= items$dataset[[i]]$desc %></td>
+    </tr>
+    <% } %>
+  <% } %>
+  </table>
+  
   </div>
+  <div class = "sidebars">
 
-  <div id="bd">
-  <div id="yui-main"><div class="yui-b">
-    <h1><%= package %></h1>
-    <p><%= description$description %></p>
-    <br />
-
-    <% if(FALSE && dataframe_has_rows(items$package)){ -%>
-      <h2>Package Info</h2>
-      <p><%= str_c("<a href='topic/", items$package$file, "'>", items$package$alias, "</a>", 
-        collapse = ", ") %></p>
-    <% } %>
-    
-    <table id="files">
-    <% if(dataframe_has_rows(items$info)){ -%>
-      <thead>
-        <tr><th colspan=2><h2>Package Info</h2></th>
-      </thead>
-      <% for(i in names(items$info)) { -%>
-        <tr>
-          <td>
-            <%= str_c("<a href='topic/", i, "'>", items$info[[i]]$alias, "</a>", collapse = ", ") %>
-          </td>
-          <td>
-            <%= items$info[[i]]$desc %>
-          </td>
-        </tr>
+  <div class="sidebar box">
+    <h2>General Info</h2>
+    <ul>
+      <% if(!is.null(description$version)){ -%>
+        <li>Version: <%= description$version %></li>
       <% } %>
-    <% } %>
-
-    <% if(dataframe_has_rows(items$func)){ -%>
-      <thead>
-        <tr><th colspan=2><h2>Functions</h2></th></tr>
-      </thead>
-      <% for(i in names(items$func)) { -%>
-        <tr>
-          <td width ="33%">
-            <%= str_c("<a href='topic/", i, "'>", items$func[[i]]$alias, "</a>", collapse = ", ") %>
-          </td>
-          <td width = "67%">
-            <%= items$func[[i]]$desc %>
-          </td>
-        </tr>
+      <% if(!is.null(description$packaged)){ -%>
+        <li>Built: <%= str_split(description$packaged, " ")[[1]][1] %></li>
       <% } %>
-    <% } %>
-    </table>
-    
-    <% if(dataframe_has_rows(items$dataset)){ -%>
-      <thead>
-        <tr><th colspan=2><h2>Data Sets</h2></th></tr>
-      </thead>
-     <% for(i in names(items$dataset)) { -%>
-        <tr>
-          <td>
-            <%= str_c("<a href='topic/", i, "'>", items$dataset[[i]]$alias, "</a>", collapse = ", ") %>
-          </td>
-          <td>
-            <%= items$dataset[[i]]$desc %>
-          </td>
-        </tr>
+      <% if(!is.null(description[["date/publication"]])){ -%>
+        <li>Published: <%= str_split(description[["date/publication"]]
+  , " ")[[1]][1] %></li>
       <% } %>
-    <% } %>
-
-  </div></div>
-  <div class="yui-b"><div class = "sidebar">
-    
-    <% if(has_text(description$author)){ -%>
-      <h2><%= author_str %></h2>
-      <p><%= str_c(description$author, collapse = ", ") %></p>
-    <% }%>
-    
-
-    <% if(dataframe_has_rows(demos)) { -%>    
-      <h2><%= demos_str %></h2>
-      <dl>
-      <% for(i in seq_len( nrow(demos))) { -%>
-        <dt>
-          <%= str_c( "<a href='", router_url(), "/package/", package, "/demo/", demos[i, "Item"], "' >", demos[i, "Item"], "</a>") %>
-        </dt>
-        <dd>
-          <%= demos[i, "Title"] %>
-        </dd>
+      <% if(!is.null(description$url)){ -%>
+        <li>URL: <%= str_c("<a href='", router_url(), description$url,"'>",description$url,"</a>", collapse = ", ") %></li>
       <% } %>
-      </dl>
-    <% } %>
-      
+      <% if(!is.null(description$license)){ -%>
+        <li>License: <%= description$license %></li>
+      <% } %>
+      <li><a href='http://cran.r-project.org/web/packages/<%= package %>/index.html'>View CRAN page</a></li>
+      <li><a href='http://cran.r-project.org/web/checks/check_results_<%= package %>.html'>View CRAN tests</a></li>
+    </ul>
+  </div>
+  
+  <% if(has_text(description$author)){ -%>
+  <div class="sidebar box">
+    <h2><%= author_str %></h2>
+    <p><%= str_c(description$author, collapse = ", ") %></p>
+  </div>
+  <% }%>
 
-    <% if(dataframe_has_rows(vigs)){ -%>    
-      <h2><%= vigs_str %></h2>
-      <ul><%= str_c( "<li><a href='", router_url(), "/package/", package, "/vignette/", vigs[, "item"], "' >", vigs[, "title"], "</a></li>") %></ul>
+  <% if(dataframe_has_rows(demos)) { -%>    
+  <div class="sidebar box">
+    <h2><%= demos_str %></h2>
+    <dl>
+    <% for(i in seq_len( nrow(demos))) { -%>
+      <dt>
+        <%= str_c( "<a href='", router_url(), "/package/", package, "/demo/", demos[i, "Item"], "' >", demos[i, "Item"], "</a>") %>
+      </dt>
+      <dd>
+        <%= demos[i, "Title"] %>
+      </dd>
     <% } %>
+    </dl>
+  </div>
+  <% } %>
 
-    <% if(!is.null(description$imports)){ -%>    
+  <% if(dataframe_has_rows(vigs)){ -%> 
+  <div class="sidebar box">
+     
+    <h2><%= vigs_str %></h2>
+    <ul><%= str_c( "<li><a href='", router_url(), "/package/", package, "/vignette/", vigs[, "item"], "' >", vigs[, "title"], "</a></li>") %></ul>
+  </div>
+  <% } %>
+
+  <div class="sidebar box">
+    <% if(!is.null(description$imports)){ -%>  
       <h2>Imports</h2>      
       <%= add_package_link_to_string(description$imports) %>
-      <!-- <p><%#= str_c(sapply(description$imports, function(x){str_c("<a href='", router_url(), "/package/", x$name, "/'>", x$name, str_c("</a>", x$version, sep = " "))}), collapse = ", ")  %></p> -->
     <% }%>
-    
+  
     <% if(!is.null(description$suggests)){ -%>    
       <h2>Suggests</h2>
       <%= add_package_link_to_string(description$suggests) %>
-      <!-- <p><%#= str_c(sapply(description$suggests, function(x){str_c("<a href='", router_url(), "/package/", x$name, "/'>", x$name, str_c("</a>", x$version, sep = " "))}), collapse = ", ")  %></p> -->
-            <%#= print(description[["suggests"]]) %>
     <% }%>
 
     <% if(!is.null(description$extends)){ -%>    
       <h2>Extends</h2>
       <%= add_package_link_to_string(description$extends) %>
-      <!-- <p><%#= str_c(sapply(description$extends, function(x){str_c("<a href='", router_url(), "/package/", x$name, "/'>", x$name, str_c("</a>", x$version, sep = " "))}), collapse = ", ")  %></p> -->      
     <% }%>
 
     <% if(!is.null(description$depends)){ -%>    
       <h2>Depends</h2>
       <%= add_package_link_to_string(description$depends) %>      
-      <!-- <p><%#= str_c(sapply(description$depends, function(x){str_c("<a href='", router_url(), "/package/", x$name, "/'>", x$name, str_c("</a>", x$version, sep = " "))}), collapse = ", ")  %></p> -->
     <% }%>
 
     <% if(dataframe_has_rows(description$reverse)){ -%>    
       <h2>Reverse Dependencies</h2>
-      
+    
       <p><%= str_c("<a href='", router_url(), "/package/", description$reverse, "/'>", description$reverse,"</a>", collapse = ", ")  %></p>
-      
+    
     <% }%>
-    
-    
-    <h2>General Info</h2>
-    <table>      
-      <% if(!is.null(description$version)){ -%>
-        <tr><td>Version:</td><td><%= description$version %></td></tr>
-      <% } %>
-      <% if(!is.null(description$packaged)){ -%>
-        <tr><td>Built:</td><td><%= str_split(description$packaged, " ")[[1]][1] %></td></tr>
-      <% } %>
-      <% if(!is.null(description[["date/publication"]])){ -%>
-        <tr><td>Published:</td><td><%= str_split(description[["date/publication"]]
-, " ")[[1]][1] %></td></tr>
-      <% } %>
-      <% if(!is.null(description$url)){ -%>
-        <tr><td>URL:</td><td><%= str_c("<a href='", router_url(), description$url,"'>",description$url,"</a>", collapse = ", ") %></td></tr>
-      <% } %>
-      <% if(!is.null(description$license)){ -%>
-        <tr><td>License:</td><td><%= description$license %></td></tr>
-      <% } %>
-      <tr><td colspan=2><%= str_c("<a href='http://cran.r-project.org/web/packages/", package, "/index.html' target='_blank'>CRAN</a>", collapse = "") %></td></tr>
-      <tr><td colspan=2><%= str_c("<a href='http://cran.r-project.org/web/checks/check_results_", package, ".html' target='_blank'>CRAN Package Check</a>", collapse = "") %></td></tr>
-    </table>
-
-
-
-<!--      <h2>Rating</h2>
-      <div id="rating">
-        <script language="javascript">
-          <%#= str_c("get_rating('", package, "');", collapse = "") %>
-        </script>
-      </div> -->
-      
-    
-    <% if(dataframe_has_rows(change_log$news)) { -%>
-      <%= render_snippet("changelogs", change_log) %>
-    <% } %>
-
-          
-  </div></div>
+  </div>
   
-  </div><!-- end bd -->
 
-  <%= render_snippet("footer", list(disqus = TRUE, html = html)) %>
-</div>
+  <% if(dataframe_has_rows(change_log$news)) { -%>
+  <div class="sidebar box">
+    <%= render_snippet("changelogs", change_log) %>
+  </div>
+  <% } %>
+
+  <br clear = "all" />
+  <div id="comments"></div>
+        
+</div></div>
+
+<br clear = "all" />
+<%= render_snippet("footer", list(html = html)) %>
 
 </body>
 </html>

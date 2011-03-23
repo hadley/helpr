@@ -1,7 +1,3 @@
-  <% if(identical(disqus,TRUE) && i_can_has_internetz()) { -%> 
-    <%= render_snippet("disqus_footer") %>
-  <% } %>
-
   <div id="ft">
     <p>helpr: elegant R help. By <a href="http://barretschloerke.com" target="_blank">Barret Schloerke</a> and <a href="http://had.co.nz/" target="_blank">Hadley Wickham</a>.</p>
     
@@ -9,6 +5,3 @@
 
   <p class="load_html">load_html("<%= html %>")</p>
   </div>
-  <% if(identical(disqus,TRUE) && i_can_has_internetz()) { -%> 
-    <%= render_snippet("disqus_end_body_script") %>
-  <% } %>
