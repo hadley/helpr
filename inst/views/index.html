@@ -48,7 +48,7 @@
   </table>
   </div>
   
-  <!-- <div class="sidebar"> -->
+  <div class="sidebars">
     <% if(i_can_has_internetz()) {-%>
     <div class="sidebar box">
       <h2>R news from <a href="http://www.inside-r.org/">inside-r.org</a></h2>
@@ -82,10 +82,10 @@
       </ul>
     </div>
     <% } %>
-  <!-- </div> -->
+  </div>
 </div></div>
 
 
-<%= render_snippet("footer", list(disqus = FALSE, html = html)) %>
+<%= render_snippet("footer", list(html = html)) %>
 </body>
 </html>
