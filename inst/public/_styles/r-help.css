@@ -96,6 +96,9 @@ pre, code {
   background-color: #eaeaea;
   white-space: pre-wrap;
 }
+pre, code, pre * {
+  font-family: Inconsolata, monospace;
+}
 
 pre {
      margin-bottom: 0;
