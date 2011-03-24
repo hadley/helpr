@@ -34,9 +34,9 @@
 
   <% if(dataframe_has_rows(items$info)){ -%>
   <h2>Package Info</h2>
-  <ul>
-    <% for(i in names(items$info)) { -%>
-    <li><%= str_c("<a href='topic/", i, "'>", items$info[[i]]$alias, "</a>", collapse = ", ") %>: <%= items$info[[i]]$desc %></li>
+  <ul class = "topics">
+    <% for(topic in items$info) { -%>
+    <li><span class="topic"><%= str_c("<a href='topic/", topic$topic, "'>", topic$alias, "</a>", collapse = ", ") %></span> <span class="desc"><%= topic$title %></span></li>
     <% } %>
   </ul>
   <% } %>
@@ -44,23 +44,20 @@
   <% if(dataframe_has_rows(items$func)){ -%>
   <h2>Functions</h2>
   <ul class = "topics">
-    <% for(i in names(items$func)) { -%>
-    <li><span class="topic"><%= str_c("<a href='topic/", i, "'>", items$func[[i]]$alias, "</a>", collapse = ", ") %></span> <span class="desc"><%= items$func[[i]]$desc %></span></li>
+    <% for(topic in items$func) { -%>
+    <li><span class="topic"><%= str_c("<a href='topic/", topic$topic, "'>", topic$alias, "</a>", collapse = ", ") %></span> <span class="desc"><%= topic$title %></span></li>
     <% } %>
   </ul>
   <% } -%>
   
-  <table>
   <% if(dataframe_has_rows(items$dataset)){ -%>
-    <tr><th colspan=2><h2>Data Sets</h2></th></tr>
-   <% for(i in names(items$dataset)) { -%>
-    <tr>
-      <td><%= str_c("<a href='topic/", i, "'>", items$dataset[[i]]$alias, "</a>", collapse = ", ") %></td>
-      <td><%= items$dataset[[i]]$desc %></td>
-    </tr>
+  <h2>Data</h2>
+  <ul class = "topics">
+    <% for(topic in items$dataset) { -%>
+    <li><span class="topic"><%= str_c("<a href='topic/", topic$topic, "'>", topic$alias, "</a>", collapse = ", ") %></span> <span class="desc"><%= topic$title %></span></li>
     <% } %>
+  </ul>
   <% } %>
-  </table>
   
   </div>
   <div class = "sidebars" id="s">
@@ -79,7 +76,7 @@
   , " ")[[1]][1] %></li>
       <% } %>
       <% if(!is.null(description$url)){ -%>
-        <li>URL: <%= str_c("<a href='", router_url(), description$url,"'>",description$url,"</a>", collapse = ", ") %></li>
+        <li><%= str_c("<a href='", router_url(), description$url,"'>",description$url,"</a>", collapse = ", ") %></li>
       <% } %>
       <% if(!is.null(description$license)){ -%>
         <li>License: <%= description$license %></li>

@@ -260,8 +260,9 @@ pkg_topics_alias <- function(pkg) {
     if (str_length(desc_naked) > 150) {
       desc <- str_c(str_sub(desc_naked, end = 150), " ...")
     }
-    
+
     list(
+      topic = unlist(x$name),
       alias = unname(sapply(x[names(x) == "alias"], "[[", 1)),
       keywords = str_trim(reconstruct(untag(x$keyword), pkg)),
       desc = desc,

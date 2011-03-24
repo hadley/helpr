@@ -35,8 +35,7 @@ body {margin: 0}
 
 .sidebars {}
 .sidebars .box {
-  width: 200px;
-  font-size: 90%;
+  width: 250px;
   background-color: #eee;
   padding: 0.5em;
   border-top-right-radius: 20px;
@@ -45,7 +44,10 @@ body {margin: 0}
   margin-bottom: 1em;
 }
 
-.sidebars h2 {
+.sidebars .sidebar h2 {
+  font-size: 1.2em;
+}
+.sidebars .sidebar h2:nth-child(1) {
   margin-top: 0;
 }
 .sidebars ul, .sidebars ol {margin-left: 1em; padding-left: 0.5em}
@@ -70,18 +72,22 @@ td {vertical-align: top; padding: 4px;}
 ul {margin-left: 2em; margin-bottom: 0.5em; }
 ul li {list-style-type: disc;}
 
-h1, h2, h3, #watermark, #ft {
-  font-weight:  normal;
+h1 {
+  font-size: 3em; 
+  font-weight: normal;
+  line-height: 1.2em; 
+  margin-bottom: 0.25em
 }
-
-/*#hd h1 a {color: #000; text-decoration: none;}
-#hd h1 a:hover {background: none;}
-*/
-#bd h1 {font-size: 3em; line-height: 1.2em; margin-bottom: 0.25em}
-h2  {font-size: 1em; margin-top: 1.5em; color: #264D66; font-weight: bold;}
-.firstline, h2.firstline, {margin-top: 0;}
-.change_log_date, .load_html {color: rgb(177,177,177);}
+h2  {
+  font-size: 1.4em; 
+  font-weight: bold;
+  margin-top: 1em; 
+  color: #264D66; 
+}
 h3 {font-weight: bold;}
+
+.firstline {margin-top: 0;}
+.change_log_date, .load_html {color: rgb(177,177,177);}
 
 em {font-style: italic;}
 strong {font-weight: bold;}
@@ -100,7 +106,7 @@ pre {
 /* Topic listing */
 
 ul.topics, ul.topics li {list-style: none; margin-left: 0; padding-left: 0}
-ul.topics .topic {font-weight: bold}
+.topic a {background-color: #ddd; font-family: monospace; padding: 1px}
 
 /* Watermark -------------------------------------------------------------- */
 
