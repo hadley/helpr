@@ -9,10 +9,7 @@
     src="<%= router_url() %>/_scripts/jquery-latest.js"></script>
   <script type="text/javascript" 
     src="<%= router_url() %>/_scripts/jquery.quicksearch.js"></script>
-  <script type="text/javascript" 
-    src="<%= router_url() %>/_scripts/jquery.masonry.min.js"></script>
-  <script>
-  $('#s').masonry({ singleMode: true });
+  
   </script>
   <%= render_snippet("disqus", list(name = str_c(package, "_package"))) %>
 
@@ -60,7 +57,7 @@
   <% } %>
   
   </div>
-  <div class = "sidebars" id="s">
+  <div class = "sidebars">
 
   <div class="sidebar box">
     <h2>General Info</h2>
@@ -161,6 +158,5 @@
 
 <br clear = "all" />
 <%= render_snippet("footer", list(html = html)) %>
-
 </body>
 </html>
