@@ -32,9 +32,16 @@ body {margin: 0}
 
 
 /* Sidebar */
+.sidebars {
+  width: 200px;
+  float: left;
+}
+.narrow .sidebars {
+  width: 100%;
+}
 
 .sidebars .box {
-  width: 250px;
+  width: 200px;
   background-color: #eee;
   padding: 0.5em;
   border-top-right-radius: 20px;

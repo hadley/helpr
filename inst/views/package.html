@@ -9,7 +9,12 @@
     src="<%= router_url() %>/_scripts/jquery-latest.js"></script>
   <script type="text/javascript" 
     src="<%= router_url() %>/_scripts/jquery.quicksearch.js"></script>
-  
+  <script type="text/javascript">
+  check_size = function() {
+    $("html").toggleClass("narrow", $(window).width() < 900);    
+  }
+  $(window).resize(check_size);
+  check_size()
   </script>
   <%= render_snippet("disqus", list(name = str_c(package, "_package"))) %>
 
