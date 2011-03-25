@@ -5,11 +5,17 @@
     href="<%= router_url() %>/_styles/r-help.css" />
   <script type="text/javascript" 
     src="<%= router_url() %>/_scripts/jquery-latest.js"></script>
+  <script type="text/javascript" 
+    src="<%= router_url() %>/_scripts/jquery.masonry.min.js"></script>
 
   <script type="text/javascript">
-    check_size = function() {
-      $("html").toggleClass("narrow", $(window).width() < 900);    
-    }
+    function check_size() {
+      var narrow = $(window).width() < 900;
+      $("html").toggleClass("narrow", narrow);
+    };
     $(window).resize(check_size);
-    check_size()
+    check_size();
+    $(document).ready(function() {
+      $('.sidebars').masonry({ singleMode: true });
+    });
   </script>
