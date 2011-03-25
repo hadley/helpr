@@ -107,7 +107,7 @@ pre, code {
   white-space: pre-wrap;
 }
 pre, code, pre * {
-  font-family: Inconsolata, monospace;
+  font-family: monospace;
 }
 
 pre {
