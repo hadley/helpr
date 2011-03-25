@@ -1,3 +1,15 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
-  <link rel="stylesheet" type="text/css" href="<%= router_url() %>/_styles/reset-fonts.css" />
-  <link rel="stylesheet" type="text/css" href="<%= router_url() %>/_styles/r-help.css" />
+  <link rel="stylesheet" type="text/css" 
+    href="<%= router_url() %>/_styles/reset-fonts.css" />
+  <link rel="stylesheet" type="text/css" 
+    href="<%= router_url() %>/_styles/r-help.css" />
+  <script type="text/javascript" 
+    src="<%= router_url() %>/_scripts/jquery-latest.js"></script>
+
+  <script type="text/javascript">
+    check_size = function() {
+      $("html").toggleClass("narrow", $(window).width() < 900);    
+    }
+    $(window).resize(check_size);
+    check_size()
+  </script>

@@ -4,16 +4,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
-
-  <link rel="stylesheet" type="text/css" href="<%= router_url() %>/_styles/reset-fonts-grids.css" />
-  <link rel="stylesheet" type="text/css" href="<%= router_url() %>/_styles/r-help.css" />
-  <link rel="stylesheet" type="text/css" href="<%= router_url() %>/_styles/jquery.rating.css" />
-  
+  <%= render_snippet("html_header") %>
   <%= render_snippet("growl") %>
 
   <script type="text/javascript" src="<%= router_url() %>/_scripts/package.js"></script>
 
-  <%= render_snippet("disqus_header", list(name = str_c(package, "_demo_", name))) %>
   <title><%= package %> <%= name %>. R help</title>
 </head>
 
