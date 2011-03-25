@@ -14,28 +14,26 @@
 
 <body onLoad="set_on_click('#demo_source_code'); $('#run_highlight').hide();">
   <div id="watermark"><%= package %></div>
-  <div id="doc2" class="yui-t6">
+
   <div id="hd">
     <a href="<%= router_url() %>/index.html">R</a> &#8594; <a href=".."><%= package %></a> &#8594; <%= name %> (demo) 
     <%= render_snippet("search_bar") %>
   </div>
 
   <div id="bd">
-  <div id="yui-main"><div class="yui-b">
+  <div class="content">
     <h1><%= name %></h1>
     <p><%= description %></p>
 
-    <h2>Demo Source</h2>
     <input id="hide_output" type="button" value="Show/Hide Output" onclick="hide_show_output('demo', '<%= package %>', '<%= name %>' );" />
     <div id="demo_source_code" class="demo_source_code">
       <%= src %>
     </div>
-
-
-  </div></div>
-  <div class="yui-b"><div class = "sidebar">
-
+  </div>
+  <div class="sidebars">
+      
     <% if(dataframe_has_rows(other_demos)) { -%>    
+    <div class = "sidebar box">
     <h2><%= other_demos_str %></h2>
     <dl>
       <% for(i in seq_len(NROW(other_demos))) {-%>
@@ -47,17 +45,17 @@
       </dd>
     <% } %>
     </dl>
+    </div>
   <% } %>
-
-  <%= render_snippet("top_functions", list(functions = src_functions, title = src_functions_str)) %>
-    
-  </div></div>
   
+  <div class = "sidebar box">
+    <%= render_snippet("top_functions", list(functions = src_functions, title = src_functions_str)) %>
+  </div>
+  
+</div></div>
 
-  </div><!-- end bd -->
+<%= render_snippet("footer", list(disqus = TRUE, html = html)) %>
 
-  <%= render_snippet("footer", list(disqus = TRUE, html = html)) %>
-</div>
 
     <input id="run_highlight" type="button" value="Execute Highlighted" onclick="run_selected_code('#demo_source_code');" style="position:absolute;" />
 
