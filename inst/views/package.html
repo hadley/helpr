@@ -54,7 +54,7 @@
   </div>
   <div class = "sidebars">
 
-  <div class="sidebar box">
+  <div class="sidebar">
     <h2>General Info</h2>
     <ul>
       <% if(!is.null(description$version)){ -%>
@@ -79,14 +79,14 @@
   </div>
   
   <% if(has_text(description$author)){ -%>
-  <div class="sidebar box">
+  <div class="sidebar">
     <h2><%= author_str %></h2>
     <p><%= str_c(description$author, collapse = ", ") %></p>
   </div>
   <% }%>
 
   <% if(dataframe_has_rows(demos)) { -%>    
-  <div class="sidebar box">
+  <div class="sidebar">
     <h2><%= demos_str %></h2>
     <dl>
     <% for(i in seq_len( nrow(demos))) { -%>
@@ -102,14 +102,14 @@
   <% } %>
 
   <% if(dataframe_has_rows(vigs)){ -%> 
-  <div class="sidebar box">
+  <div class="sidebar">
      
     <h2><%= vigs_str %></h2>
     <ul><%= str_c( "<li><a href='", router_url(), "/package/", package, "/vignette/", vigs[, "item"], "' >", vigs[, "title"], "</a></li>") %></ul>
   </div>
   <% } %>
 
-  <div class="sidebar box">
+  <div class="sidebar">
     <% if(!is.null(description$imports)){ -%>  
       <h2>Imports</h2>      
       <%= add_package_link_to_string(description$imports) %>
@@ -140,7 +140,7 @@
   
 
   <% if(dataframe_has_rows(change_log$news)) { -%>
-  <div class="sidebar box">
+  <div class="sidebar">
     <%= render_snippet("changelogs", change_log) %>
   </div>
   <% } %>

@@ -46,14 +46,14 @@
   
   <div class="sidebars">
     <% if(i_can_has_internetz()) {-%>
-    <div class="sidebar box">
+    <div class="sidebar">
       <h2>R news from <a href="http://www.inside-r.org/">inside-r.org</a></h2>
       <div id="feed-control"><span>Loading...</span></div>
     </div>
     <% } -%>
     
     <% if(dataframe_has_rows(top_ten_funcs)) { -%>
-    <div class="sidebar box">
+    <div class="sidebar">
       <h2>Top functions</h2>
       <ol>
         <%= str_c("<li><a href='", router_url(), top_ten_funcs[,"path"], "'>", top_ten_funcs[,"func"], "</a></li>") %>
@@ -62,7 +62,7 @@
     <% } %>
 
     <% if(dataframe_has_rows(last_ten_funcs)) { -%>
-    <div class="sidebar box">
+    <div class="sidebar">
       <h2>Recent functions</h2>
       <ol>
         <%= str_c("<li><a href='", router_url(), last_ten_funcs[,"path"], "'>", last_ten_funcs[,"func"], "</a></li>") %>
@@ -71,7 +71,7 @@
     <% } %>
     
     <% if(dataframe_has_rows(manuals)) { %>
-    <div class="sidebar box">
+    <div class="sidebar">
       <h2>Manuals</h2>
       <ul>
         <%= str_c("<li><a href='", router_url(), manuals[,"link"], "'>", manuals[,"title"], "</a></li>") %>

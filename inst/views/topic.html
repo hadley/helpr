@@ -78,20 +78,20 @@
 <div class="sidebars">
   
   <% if(has_text(seealso)){ -%>
-  <div class = "sidebar box">
+  <div class = "sidebar">
     <h2>See also</h2>
     <%= seealso %>
   </div>
   <% }%>
   
   <% if(has_text(authors)){ -%>
-  <div class = "sidebar box">
+  <div class = "sidebar">
     <h2><%= author_str %></h2>
     <%= authors %>
   </div>
   <% }%>
   
-  <div class = "sidebar box">
+  <div class = "sidebar">
   <%= render_snippet("function_list", 
     list(d = similar, title = "Similar")) %>
   </div>
@@ -111,7 +111,7 @@
   </div>
 </div>
 <div class = "sidebars">
-  <div class = "sidebar box">
+  <div class = "sidebar">
   <%= render_snippet("function_list", 
     list(d = topic_in_example, title = "Used in example")) %>
   </div>

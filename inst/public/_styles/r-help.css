@@ -25,7 +25,7 @@ body {margin: 0}
   margin-left: 1em;
 }
 
-.content, .box {
+.content, .sidebar {
   float: left;
   margin-right: 1em;
 }
@@ -45,7 +45,7 @@ body {margin: 0}
   width: 100%;
 }
 
-.sidebars .box {
+.sidebars .sidebar {
   width: 200px;
   background-color: #eee;
   padding: 0.5em;

@@ -33,7 +33,7 @@
   <div class="sidebars">
       
     <% if(dataframe_has_rows(other_demos)) { -%>    
-    <div class = "sidebar box">
+    <div class = "sidebar">
     <h2><%= other_demos_str %></h2>
     <dl>
       <% for(i in seq_len(NROW(other_demos))) {-%>
@@ -48,7 +48,7 @@
     </div>
   <% } %>
   
-  <div class = "sidebar box">
+  <div class = "sidebar">
     <%= render_snippet("top_functions", list(functions = src_functions, title = src_functions_str)) %>
   </div>
   
