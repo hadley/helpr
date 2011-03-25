@@ -10,12 +10,24 @@
 
   <script type="text/javascript">
     function check_size() {
-      var narrow = $(window).width() < 900;
+      var right_padding = 50;
+
+      var window_width = $(window).width();
+      var narrow = window_width < 900;
       $("html").toggleClass("narrow", narrow);
+      
+      if(!narrow) {
+        var content_width = $(".content").css("max-width").replace(new RegExp(/[a-zA-Z]/g),"");
+        var new_width = window_width - content_width - right_padding;
+        $(".sidebars").css("width", new_width + "px");
+      }
     };
+    
     $(window).resize(check_size);
-    check_size();
-    $(document).ready(function() {
+    
+    $(function() {
+      check_size();
+      
       $('.sidebars').masonry({ singleMode: true, animate:true });
     });
   </script>

@@ -38,15 +38,17 @@ body {margin: 0}
 
 /* Sidebar */
 .sidebars {
-  width: 200px;
   float: left;
 }
 .narrow .sidebars {
   width: 100%;
 }
 
-.sidebars .sidebar {
+.sidebar {
   width: 200px;
+}
+
+.sidebars .sidebar {
   background-color: #eee;
   padding: 0.5em;
   border-top-right-radius: 20px;
