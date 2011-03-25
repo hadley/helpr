@@ -31,14 +31,14 @@
 <div id="bd">
   <h1><%= package %></h1>
 
-  <div id="main" class="box">
+  <div id="main" class="content">
   <p class="description"><%= description$description %></p>
 
   <% if(dataframe_has_rows(items$info)){ -%>
   <h2>Package Info</h2>
   <ul class = "topics">
     <% for(topic in items$info) { -%>
-    <li><code class="topic"><%= str_c("<a href='topic/", topic$topic, "'>", topic$alias, "</a>", collapse = ", ") %></code> <span class="desc"><%= topic$title %></span></li>
+    <li><code><%= str_c("<code><a href='topic/", topic$topic, "'>", topic$alias, "</a></code>", collapse = ", ") %></code> <span class="desc"><%= topic$title %></span></li>
     <% } %>
   </ul>
   <% } %>
@@ -47,7 +47,7 @@
   <h2>Functions</h2>
   <ul class = "topics">
     <% for(topic in items$func) { -%>
-    <li><code class="topic"><%= str_c("<a href='topic/", topic$topic, "'>", topic$alias, "</a>", collapse = ", ") %></code> <span class="desc"><%= topic$title %></span></li>
+    <li><%= str_c("<a href='topic/", topic$topic, "'><code>", topic$alias, "</code></a>", collapse = ", ") %> <span class="desc"><%= topic$title %></span></li>
     <% } %>
   </ul>
   <% } -%>
@@ -56,7 +56,7 @@
   <h2>Data</h2>
   <ul class = "topics">
     <% for(topic in items$dataset) { -%>
-    <li><code class="topic"><%= str_c("<a href='topic/", topic$topic, "'>", topic$alias, "</a>", collapse = ", ") %></code> <span class="desc"><%= topic$title %></span></li>
+    <li><code><%= str_c("<code><a href='topic/", topic$topic, "'>", topic$alias, "</a></code>", collapse = ", ") %></code> <span class="desc"><%= topic$title %></span></li>
     <% } %>
   </ul>
   <% } %>

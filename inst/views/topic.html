@@ -4,9 +4,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <%= render_snippet("html_header") %>
-
+  <script type="text/javascript" 
+    src="<%= router_url() %>/_scripts/jquery-latest.js"></script>
   <%= render_snippet("growl") %>
-
   <script type="text/javascript" 
     src="<%= router_url() %>/_scripts/jquery.highlight-3.yui.js"></script>
   <script type="text/javascript">
@@ -36,7 +36,7 @@
 <div id="bd">
   <h1><%= title%></h1>
   
-  <div id="main" class="box">
+  <div id="main" class="content">
   <p class="description"><%= desc %></p>
   
   <% if(has_text(usage)){ -%>
@@ -93,45 +93,37 @@
   </div>
   <% }%>
   
-  <% if(dataframe_has_rows(similar) ) { -%>
   <div class = "sidebar box">
-    <h2>Similar</h2>
-    <ul>
-    <% for (i in seq_len(nrow(similar))) { -%>
-      <li>
-      <%= str_c("<a href='", router_url(), "/package/", similar[i, "pkg"], "' > ", similar[i, "pkg"], "</a>", " :: ", "<a href='", router_url(), "/package/", similar[i, "pkg"], "/topic/", similar[i, "topic"],"' > ", similar[i, "topic"], "</a><br />") %>
-      <%= similar[i, "title"] %>
-      </li>
-    <% } %>
-    </ul>
+  <%= render_snippet("function_list", 
+    list(d = similar, title = "Similar")) %>
   </div>
-  <% } %>  
-</div></div>
+</div>
+
 <br clear="all" />
-<div id="yui-main"><div id="Example" class="yui-b">
-    <% if(dataframe_has_rows(examples)){ -%>
-      <h2>Examples</h2>
-      <input id="hide_output" type="button" value="Show/Hide Output" onclick="hide_show_output('example', '<%= package %>', '<%= name %>' );" />
-      <div id="example_source_code">
-        <%= examples  %>
-      </div>
-    <% } %>
-</div></div>
-<div class="yui-b"><div class = "sidebar">
 
-  <%= render_snippet("top_functions", list(functions = example_functions, title = example_functions_str)) %>
+<% if(dataframe_has_rows(examples)){ -%>
+<div class="content" id="Example">
+  <h2>Examples</h2>
 
-  <%= render_snippet("used_in_example", list(d = topic_in_example)) %>
+  <input id="hide_output" type="button" value="Show/Hide Output" onclick="hide_show_output('example', '<%= package %>', '<%= name %>' );" />
+  <input id="run_highlight" type="button" value="Execute Highlighted" onclick="run_selected_code('#example_source_code')" />
+  
+  <div id="example_source_code">
+    <%= examples  %>
+  </div>
+</div>
+<div class = "sidebars">
+  <div class = "sidebar box">
+  <%= render_snippet("function_list", 
+    list(d = topic_in_example, title = "Used in example")) %>
+  </div>
+</div>
+<% } %>
 
-
-</div></div>
-
-
-</div><!-- end bd -->
+</div>
 
 <%= render_snippet("footer", list(disqus = TRUE, html = html)) %>
 
-<input id="run_highlight" type="button" value="Execute Highlighted" onclick="run_selected_code('#example_source_code')" />
 
 </body>
 </html>

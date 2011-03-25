@@ -1,6 +1,5 @@
 /* Colour scheme: http://kuler.adobe.com/#themeID/163847 */
 
-
 /* Basic layout ----------------------------------------------------------- */
 
 body {margin: 0}
@@ -26,10 +25,16 @@ body {margin: 0}
   margin-left: 1em;
 }
 
-.box {
-  float: left; 
+.content, .box {
+  float: left;
+  margin-right: 1em;
 }
-
+.content {
+  width: 100%; 
+  max-width: 600px; 
+  float: left; 
+  clear: all;
+}
 
 /* Sidebar */
 .sidebars {
@@ -46,14 +51,13 @@ body {margin: 0}
   padding: 0.5em;
   border-top-right-radius: 20px;
   -moz-border-top-right-radius: 20px;
-  margin-right: 1em;
   margin-bottom: 1em;
 }
 
 .sidebars .sidebar h2 {
   font-size: 1.2em;
 }
-.sidebars .sidebar h2:nth-child(1) {
+.sidebar h2:first-child, .content h2:first-child {
   margin-top: 0;
 }
 .sidebars ul, .sidebars ol {margin-left: 1em; padding-left: 0.5em}
@@ -62,7 +66,6 @@ body {margin: 0}
 .sidebars td {padding: 0px;}
 
 p.description {margin: 0 1em 1em 0;}
-#main.box {max-width: 600px;}
 
 /* Basic styles ----------------------------------------------------------- */
 
@@ -108,14 +111,13 @@ pre, code, pre * {
 }
 
 pre {
-     margin-bottom: 0;
+  margin-bottom: 0;
 }
-
 
 /* Topic listing */
 
 ul.topics, ul.topics li {list-style: none; margin-left: 0; padding-left: 0}
-.topic a {background-color: #ddd; padding: 2px}
+.topics code {background-color: #ddd; padding: 2px}
 
 /* Watermark -------------------------------------------------------------- */
 
@@ -161,7 +163,6 @@ ul.topics, ul.topics li {list-style: none; margin-left: 0; padding-left: 0}
 }
 
 /* Home page -------------------------------------------------------------- */
-
 
 #feed-control {
   width: 30em;

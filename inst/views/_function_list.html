@@ -1,0 +1,8 @@
+<% if(dataframe_has_rows(d) ) { -%>
+<h2><%= title %></h2>
+<ul>
+<% for (i in seq_len(nrow(d))) { -%>
+  <li><%= str_c("<a href='", router_url(), "/package/", d[i, "pkg"], "/topic/", d[i, "topic"],"#Example' ><code>", d[i, "pkg"], "::", d[i, "topic"], "</code></a>") %> <%= d[i, "title"] %></li>
+<% } %>
+</ul>
+<% } %>
