@@ -4,22 +4,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <%= render_snippet("html_header") %>
-
-  <%= render_snippet("disqus_header", list(name = str_c(package, "_topic_",name,"_source"))) %>
-
   <title><%= package %> <%= name %>. R help</title>
 </head>
 
 <body>
-  <div id="watermark"><%= package %></div>
-  <div id="doc2" class="yui-t6">
+  <div id="watermark"><%= name %></div>
   <div id="hd">
-    <a href="<%= router_url() %>/index.html">R</a> &#8594; <a href="../../../"><%= package %></a> &#8594; <a href=<%= str_c("'../../", topic,"'") %> ><%= topic %></a> &#8594; <%= name %> (source) 
+    <a href="<%= router_url() %>/index.html">R</a> &#8594; 
+    <a href="../../../"><%= package %></a> &#8594; 
+    <a href="../<%= topic %>"><%= topic %></a> &#8594; 
+    <%= name %> (source) 
   </div>
-
   <div id="bd">
-  <div id="yui-main"><div class="yui-b">
-    <h1><%= name %></h1>
+  <h1><%= name %></h1>
+  <div class="content">
     <%= desc %>
     
     <h2><%= name %> Source</h2>
@@ -28,12 +26,12 @@
     <% if(!is.null(change_log)) {- %>
       <%= render_snippet("changelogs_topic_source", change_log)   %>
     <% } %>
-
-
-  </div></div>
-  <div class="yui-b"><div class = "sidebar">
+  </div>
+  <div class="sidebars">
+    
 
   <% if(dataframe_has_rows(aliases$alias)) { -%>    
+  <div class = "sidebar">
     <h2><%= aliases_str %></h2>
     <ul>
     <% for(alias in aliases$alias) { -%>
@@ -42,18 +40,17 @@
       </li>
     <% } %>
     </ul>
+  </div>
   <% } %>
 
-  <%= render_snippet("top_functions", list(functions = src_functions, title = src_functions_str)) %>
-  
-  <%= render_snippet("used_in_example", list(d = topic_in_example)) %>
-    
-  </div></div>
-
-  </div><!-- end bd -->
-
-  <%= render_snippet("footer", list(disqus = TRUE, html = html)) %>
+  <div class = "box">
+  <%= render_snippet("function_list", 
+    list(d = topic_in_example, title = "Used in examples")) %>
+  </div>  
 </div>
+</div>
+
+<%= render_snippet("footer", list(disqus = TRUE, html = html)) %>
 </body>
 </html>
 

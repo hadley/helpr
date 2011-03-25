@@ -51,7 +51,7 @@ body {margin: 0}
   padding: 0.5em;
   border-top-right-radius: 20px;
   -moz-border-top-right-radius: 20px;
-  margin-bottom: 1em;
+  word-wrap: break-word;
 }
 
 .sidebars .sidebar h2 {
