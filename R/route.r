@@ -364,6 +364,12 @@ print.help_files_with_topic <- function (x, ...)
     browser <- getOption("browser")
     topic <- attr(x, "topic")
     type <- attr(x, "type")
+
+    if (type != 'html') {
+      # HTML help was not requested. Punt call back to R's default help system
+      return(invisible(utils:::print.help_files_with_topic(x)))
+    }
+
     paths <- as.character(x)
     if (!length(paths)) {
         writeLines(c(gettextf("No documentation for '%s' in specified packages and libraries:", 
