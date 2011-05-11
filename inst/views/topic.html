@@ -91,10 +91,11 @@
   </div>
   <% }%>
   
-  <div class = "sidebar">
-  <%= render_snippet("function_list", 
-    list(d = similar, title = "Similar")) %>
-  </div>
+  <% if(dataframe_has_rows(similar)) { -%>
+    <div class = "sidebar">
+    <%= render_snippet("function_list", list(d = similar, title = "Similar")) %>
+    </div>
+  <% } %>
 </div>
 
 <br clear="all" />
@@ -110,12 +111,15 @@
     <%= examples  %>
   </div>
 </div>
-<div class = "sidebars">
-  <div class = "sidebar">
-  <%= render_snippet("function_list", 
-    list(d = topic_in_example, title = "Used in example")) %>
-  </div>
-</div>
+
+
+  <% if(dataframe_has_rows(topic_in_example)) { -%>
+    <div class = "sidebars">
+      <div class = "sidebar">
+      <%= render_snippet("function_list", list(d = topic_in_example, title = "Used in example")) %>
+      </div>
+    </div>
+  <% } %>
 <% } %>
 
 </div>
