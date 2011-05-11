@@ -132,7 +132,8 @@ ul.topics, ul.topics li {list-style: none; margin-left: 0; padding-left: 0}
   margin-top: 0;
   line-height: 1;
   font-weight: bold;
-  color: #f0f0f6;
+/*  color: #f0f0f6;*/
+  color: #F7F7FC;
   z-index: -5;
 }
 
