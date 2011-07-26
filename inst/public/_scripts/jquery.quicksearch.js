@@ -317,7 +317,6 @@ jQuery(function ($) {
 			var keycode = e.keyCode;
       if ($("#quicksearch input.qs_input").val() == "") {
         clearTimeout(timeout);
-        console.log("hide!");
         $("#packages tbody tr").css("display", null);
       } else {
   			if (!(keycode === 9 || keycode === 13 || keycode === 16 || keycode === 17 || keycode === 18 || keycode === 38 || keycode === 40 || keycode === 224))
@@ -342,17 +341,6 @@ $(function(){
       labelText: 'Filter: ',
       fixWidths: true
     });
-    
-    // $("#quicksearch input.qs_input").keyup(function () {
-    //   console.log("asdf");
-    //   console.log($(this).val());
-    //   if ($(this).val() == "") {
-    //     console.log("hide!");
-    //     $("#packages tbody tr").css("display", null);
-    //   }
-    // }).keyup();
-    console.log("done");
-    console.log($("#quicksearch input.qs_input"));
   }
   
   if(document.getElementById("files")) {
