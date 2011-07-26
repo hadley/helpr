@@ -24,15 +24,6 @@
 * Replace all uses of system curl with RCurl.
 
 
-
-
-
-
-
-
-
-
-
 indexing packages...
   These don't work
     BoolNet, cwhmisc, epitools, multxpert, networksis, openair, pequod, pgirmess, qtl, simone, TeachingSampling 

@@ -4,7 +4,7 @@
 #' @keywords internal
 solr_base_url <- function() {
 	# "http://localhost:8983"
-	"http://helpr.metamx.com:8080"
+	"http://helpr32.mmx-dns.com:8080"
 }
 
 

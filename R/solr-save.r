@@ -97,7 +97,8 @@ put_string <- function(string) {
 put_file <- function(file_name) {
   # require("RCurl")
   cat("posting file: ", file_name,"\n")
-  send_system_command(str_c("curl ", solr_base_url(), "/solr/update --data-binary @", file_name, " -H 'Content-type:text/xml; charset=utf-8'", collapse = ""))
+  cmd <- str_c("curl ", solr_base_url(), "/solr/update --data-binary @", file_name, " -H 'Content-type:text/xml; charset=utf-8'", collapse = "")
+  send_system_command(cmd)
   send_commit_command()
 }
 

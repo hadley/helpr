@@ -17,10 +17,11 @@
 <div id="watermark">packages</div>
 
 <div id="hd">
-  R documentation 
+  <span id="feed-control"><span>Loading...</span></span>
+  
   <%= render_snippet("search_bar") %>
 </div>
-
+<br clear="all">
 <div id="bd">
   <h1>R documentation</h1>
   <div class="content">
@@ -46,10 +47,10 @@
   
   <div class="sidebars">
     <% if(i_can_has_internetz()) {-%>
-    <div class="sidebar">
+    <!-- <div class="sidebar">
       <h2>R news from <a href="http://www.inside-r.org/">inside-r.org</a></h2>
       <div id="feed-control"><span>Loading...</span></div>
-    </div>
+    </div> -->
     <% } -%>
     
     <% if(dataframe_has_rows(top_ten_funcs)) { -%>

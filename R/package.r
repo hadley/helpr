@@ -10,7 +10,7 @@ helpr_package <- function(package) {
 
 helpr_package_mem <- memoise(function(package, version) {
   
-  info <- .readRDS(system.file("Meta", "package.rds", package = package))
+  info <- readRDS(system.file("Meta", "package.rds", package = package))
   description <- as.list(info$DESCRIPTION)
   info$DESCRIPTION <- NULL
   description <- modifyList(info, description)
@@ -53,7 +53,7 @@ helpr_package_mem <- memoise(function(package, version) {
 #' @keywords internal
 #' @author Hadley Wickham
 pkg_version <- function(pkg) {
-  rds <- .readRDS(system.file("Meta", "package.rds", package = pkg))
+  rds <- readRDS(system.file("Meta", "package.rds", package = pkg))
   rds$DESCRIPTION[["Version"]]
 }
 

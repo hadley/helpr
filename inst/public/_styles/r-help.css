@@ -9,8 +9,11 @@ body {margin: 0}
   margin: 0 0 2em 0;
   background-color: #eee;
   vertical-align: center;
+  min-height: 19px;
 }
-#search {width: 15em} 
+#search {
+  width: 15em
+} 
 #hd form * {font-size: 0.9em;}
 #ft {
   font-size: 90%; 
@@ -168,12 +171,25 @@ ul.topics, ul.topics li {list-style: none; margin-left: 0; padding-left: 0}
 /* Home page -------------------------------------------------------------- */
 
 #feed-control {
-  width: 30em;
+/*  width: 150px;*/
+/*  max-width: 530px !important;*/
   float: left;
 }
+
+#feed-control, #feed-control .gfg-horizontal-root {
+/*  font-size: 0.7em !important;*/
+/*  line-height: 0.8em !important;*/
+  padding: 0px !important;
+}
+
 #feed-control span {
   color: #676767;
 }
+
+#feed-control .gfg-branding {
+  display: none;
+}
+
 
 #packages.loaded .installed, #thinking_wheel {display: none;}
 
@@ -193,7 +209,15 @@ ul.topics, ul.topics li {list-style: none; margin-left: 0; padding-left: 0}
 /* Search ----------------------------------------------------------------- */
 
 #search_bar {
-  float: right;
+  background-color: #EEE;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  display: inline-block;
+  padding-left: 20px;
+}
+#search_bar form {
+  margin-bottom: 0px;
 }
 
 .helpr_prev_next {
