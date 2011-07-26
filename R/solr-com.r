@@ -20,7 +20,10 @@ solr_delete_package <- function(package) {
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 read_url <- function(url_string) {
+  
+  url_string <- str_replace_all(url_string, "mmx-dns", "mmxMINUSdns")
   url_string <- str_replace_all(url_string, "-", "")
+  url_string <- str_replace_all(url_string, "mmxMINUSdns", "mmx-dns")
   url <- URLencode(url_string)
   url_connect <- base::url(url)
   on.exit(close(url_connect))
