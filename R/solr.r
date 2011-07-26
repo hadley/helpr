@@ -19,18 +19,27 @@ solr_daily_grind <- function() {
 	# update packages
 	message("\n\n\nupdating old\n\n\n")
 	old <- old.packages()[,"Package"]
-	install.packages(old, type = "source")
-	sapply(old, index_package)
+	if (!is.null(old)) {
+  	install.packages(old, type = "source")
+  	sapply(old, index_package)
+	}
 	
 	# install new packages
 	message("\n\n\ninstalling new\n\n\n")
-	new <- new.packages()
-	install.packages(new, type = "source")
-
+	newPackages <- new.packages()
+	maxNewLength <- 200
+	if (length(newPackages) > maxNewLength) {
+	  newPackages = newPackages[1:maxNewLength]
+	}
+	
+	install.packages(newPackages, type = "source")
+  
 	if(firstPass){
 		index_all()
 	} else {
-		sapply(new, index_package)
+    leftOver <- new.packages()
+    packs <- newPackages[! newPackages %in% leftOver]
+		sapply(packs, index_package)
 	}
 	
 }
