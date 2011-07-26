@@ -152,7 +152,9 @@ get_solr_query_result <- function(query_list, function_field = FALSE) {
   query <- query_list$query
 
   start_pos <- as.numeric(response$responseHeader$params$start)
-
+  if (is.na(start_pos) || is.null(start_pos)) {
+    start_pos <- 0
+  }
   total_item_count <- as.numeric(response$response$numFound)
 
   list(

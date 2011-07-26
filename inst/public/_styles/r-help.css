@@ -206,6 +206,10 @@ ul.topics, ul.topics li {list-style: none; margin-left: 0; padding-left: 0}
   height: 16px;
 }
 
+#yui-main {
+  margin-left: 1em;
+}
+
 /* Search ----------------------------------------------------------------- */
 
 #search_bar {
