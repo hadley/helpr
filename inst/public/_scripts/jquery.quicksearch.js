@@ -313,11 +313,17 @@ jQuery(function ($) {
 		
 		init();
 		
-		$('input[rel="' + options.randomElement + '"]').keydown(function (e) {
+		$('input[rel="' + options.randomElement + '"]').keyup(function (e) {
 			var keycode = e.keyCode;
-			if (!(keycode === 9 || keycode === 13 || keycode === 16 || keycode === 17 || keycode === 18 || keycode === 38 || keycode === 40 || keycode === 224))
-			{
-				qs();
+      if ($("#quicksearch input.qs_input").val() == "") {
+        clearTimeout(timeout);
+        console.log("hide!");
+        $("#packages tbody tr").css("display", null);
+      } else {
+  			if (!(keycode === 9 || keycode === 13 || keycode === 16 || keycode === 17 || keycode === 18 || keycode === 38 || keycode === 40 || keycode === 224))
+  			{
+  				qs();
+        }
 			}
 		});
 		
@@ -328,7 +334,7 @@ jQuery(function ($) {
 });
 
 
-$(document).ready(function(){
+$(function(){
   if(document.getElementById("packages")) {
     $('#packages tbody tr').quicksearch({
       position: 'before',
@@ -336,6 +342,17 @@ $(document).ready(function(){
       labelText: 'Filter: ',
       fixWidths: true
     });
+    
+    // $("#quicksearch input.qs_input").keyup(function () {
+    //   console.log("asdf");
+    //   console.log($(this).val());
+    //   if ($(this).val() == "") {
+    //     console.log("hide!");
+    //     $("#packages tbody tr").css("display", null);
+    //   }
+    // }).keyup();
+    console.log("done");
+    console.log($("#quicksearch input.qs_input"));
   }
   
   if(document.getElementById("files")) {
