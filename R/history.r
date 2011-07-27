@@ -78,9 +78,9 @@ top_ten_functions <- function(fun_list = get_function_history()) {
 #' @keywords internal
 ten_functions <- function() {
   fun_hist <- tryCatch(
-		get_function_history(),
-		error = function(e) data.frame()
-	)
+    get_function_history(),
+    error = function(e) data.frame()
+  )
 
   list(
     last_ten = last_ten_functions(fun_hist),

@@ -257,12 +257,12 @@ helpr <- function(launch_browser = TRUE, no_internetz = NULL, custom = NULL) {
   })
 
   router$get("/eval_demo/:package~:demo_name", function(package, demo_name, ...) {
-		require(package, character.only = TRUE)
+    require(package, character.only = TRUE)
     list(payload = evaluate_text(demo_src(package, demo_name), pic_base_name = str_c(package, "_", pkg_version(package),"_demo_", demo_name)))
   })
 
   router$get("/eval_example/:package~:topic", function(package, topic, ...) {
-		require(package, character.only = TRUE)
+    require(package, character.only = TRUE)
     list(payload = evaluate_text(reconstruct(untag(pkg_topic(package, topic)$examples), package), pic_base_name = str_c(package, "_", pkg_version(package),"_topic_", topic)))
   })
   

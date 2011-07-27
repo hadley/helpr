@@ -2,8 +2,6 @@
 
 /* Basic layout ----------------------------------------------------------- */
 
-body {margin: 0}
-
 #hd {
   padding: 0.5em;
   margin: 0 0 2em 0;
@@ -18,11 +16,21 @@ body {margin: 0}
 #ft {
   font-size: 90%; 
   background-color: #eee;
-  padding: 1em; 
+  padding-top: 1em; 
   margin-top: 3em;
+  margin-bottom: 0;
+  padding-bottom: 0.5em;
   clear: both;
 }
-#ft p {margin: 0 0 0.5em 0}
+#ft p {
+  margin-left: 1em;
+  margin-bottom: 0.5em;
+  margin-top: 0;
+}
+#ft p.load_html {
+  margin-bottom: 0;
+}
+
 
 #bd {
   margin-left: 1em;
@@ -74,9 +82,15 @@ p.description {margin: 0 1em 1em 0;}
 
 /* Basic styles ----------------------------------------------------------- */
 
-body * {font-family: "Helvetica Neue", Helvetica, Arial, "sans serif";}
-body * {margin-bottom: 0.5em; line-height: 1.5em;}
+body {
+  margin: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, "sans serif";
+}
+body * {
+  margin-bottom: 0.5em; line-height: 1.5em;
+}
 #ft a, #ft img {margin-bottom: 0}
+
 
 a:link, a:visited { color: #264D66;}
 a:hover {background-color: #ccc; color: #264D66;}
@@ -101,7 +115,9 @@ h2  {
 }
 h3 {font-weight: bold;}
 
-.change_log_date, .load_html {color: rgb(177,177,177);}
+.change_log_date, .load_html {
+  color: rgb(177,177,177);
+}
 
 em {font-style: italic;}
 strong {font-weight: bold;}

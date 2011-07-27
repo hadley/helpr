@@ -58,8 +58,8 @@ get_manuals <- memoise(function() {
   file_name <- str_replace_all(manuals, ".html", "")
   link <- str_c("/manuals/", file_name, ".html")
 
-	if(identical(link, "/manuals/.html"))
-		link <- character(0)
+  if(identical(link, "/manuals/.html"))
+    link <- character(0)
 
   data.frame(
     title = sapply(file_loc, function(x) {

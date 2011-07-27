@@ -48,7 +48,7 @@ solr_combine_param <- function(value, param = names(value)) {
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 solr_has_topic_in_example <- function(topics) {
-	if (! i_can_has_internetz()) return(data.frame())
+  if (! i_can_has_internetz()) return(data.frame())
   
   query_list <- list(query = topics)
   

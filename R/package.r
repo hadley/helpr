@@ -65,14 +65,14 @@ pkg_version <- function(pkg) {
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @examples #add_package_link_to_string("quantreg, Hmisc, mapproj, maps, hexbin, gpclib, maptools")
 add_package_link_to_string <- function(string) {
-	packs <- str_trim(str_split(usage_functions(string), "[, ]")[[1]])
-	packs <- packs[packs != ""]
-	pack_link <- str_c("<a href='", router_url(), "/package/", packs, "/' >", packs, "</a>")
+  packs <- str_trim(str_split(usage_functions(string), "[, ]")[[1]])
+  packs <- packs[packs != ""]
+  pack_link <- str_c("<a href='", router_url(), "/package/", packs, "/' >", packs, "</a>")
 
-	for(i in seq_along(packs)){
-		string <- str_replace(string, packs[i], pack_link[i])[[1]]
-	}
-	string
+  for(i in seq_along(packs)){
+    string <- str_replace(string, packs[i], pack_link[i])[[1]]
+  }
+  string
 }
 
 #' Ensure package version is properly displayed (if not already in a nice
@@ -85,10 +85,10 @@ parse_pkg_desc_item <- function(obj) {
     return(NULL)
   }
   
-	if (is.character(obj)) {
-		return(obj)
-	}
-	
+  if (is.character(obj)) {
+    return(obj)
+  }
+  
   if (!is.list(obj)) {
     obj <- list(obj = (list(name = obj, version = NULL)))
   }

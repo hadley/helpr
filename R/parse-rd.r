@@ -155,12 +155,12 @@ reconstruct <- function(rd, package = NULL) {
     value
     
   } else if (tag == "\\section"){
-		title <- str_c("<h3>", reconstruct(rd[[1]][[1]], package), "</h3>", collapse = "")
-		content <- reconstruct(rd[[2]], package)
-		content <- str_replace_all(content, "\n\n", "<br />")
-		content <- str_c(content, "<br />")
-		str_c(title, content)
-	} else {
+    title <- str_c("<h3>", reconstruct(rd[[1]][[1]], package), "</h3>", collapse = "")
+    content <- reconstruct(rd[[2]], package)
+    content <- str_replace_all(content, "\n\n", "<br />")
+    content <- str_c(content, "<br />")
+    str_c(title, content)
+  } else {
     message("Unknown tag ", tag, ". Please contact the 'helpr' maintainer. Thank you.")
     reconstruct(untag(rd), package)
   }

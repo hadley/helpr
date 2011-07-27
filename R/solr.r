@@ -3,8 +3,8 @@
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 solr_base_url <- function() {
-	# "http://localhost:8983"
-	"http://helpr32.mmx-dns.com:8080"
+  # "http://localhost:8983"
+  "http://helpr32.mmx-dns.com:8080"
 }
 
 
@@ -13,35 +13,35 @@ solr_base_url <- function() {
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @keywords internal
 solr_daily_grind <- function() {
-	
-	firstPass <- nrow(library()) < 100
-	
-	# update packages
-	message("\n\n\nupdating old\n\n\n")
-	old <- old.packages()[,"Package"]
-	if (!is.null(old)) {
-  	install.packages(old, type = "source")
-  	sapply(old, index_package)
-	}
-	
-	# install new packages
-	message("\n\n\ninstalling new\n\n\n")
-	newPackages <- new.packages()
-	maxNewLength <- 200
-	if (length(newPackages) > maxNewLength) {
-	  newPackages = newPackages[1:maxNewLength]
-	}
-	
-	install.packages(newPackages, type = "source")
   
-	if(firstPass){
-		index_all()
-	} else {
+  firstPass <- nrow(library()) < 100
+  
+  # update packages
+  message("\n\n\nupdating old\n\n\n")
+  old <- old.packages()[,"Package"]
+  if (!is.null(old)) {
+    install.packages(old, type = "source")
+    sapply(old, index_package)
+  }
+  
+  # install new packages
+  message("\n\n\ninstalling new\n\n\n")
+  newPackages <- new.packages()
+  maxNewLength <- 200
+  if (length(newPackages) > maxNewLength) {
+    newPackages = newPackages[1:maxNewLength]
+  }
+  
+  install.packages(newPackages, type = "source")
+  
+  if(firstPass){
+    index_all()
+  } else {
     leftOver <- new.packages()
     packs <- newPackages[! newPackages %in% leftOver]
-		sapply(packs, index_package)
-	}
-	
+    sapply(packs, index_package)
+  }
+  
 }
 
 
@@ -187,20 +187,20 @@ index_all <- function(start_letter = "a", verbose = TRUE) {
   rows <- str_detect(first_letter, str_c("[", tolower(start_letter), "-z]"))
   packages <- packages[rows]
   
-	result <- index_packages(packages)
+  result <- index_packages(packages)
 
   if (verbose) cat("Finished\n")
-	result
+  result
 }
 index_packages <- function(arr) {
-	sapply(arr, function(x) {
-		tryCatch(
-			index_package(x, verbose = verbose),
-			error = function(e) {
-				"failure"
-			}
-		)
-	})
+  sapply(arr, function(x) {
+    tryCatch(
+      index_package(x, verbose = verbose),
+      error = function(e) {
+        "failure"
+      }
+    )
+  })
 }
 
 
