@@ -3,8 +3,13 @@
 #' @param ... site to be loaded
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @export
-load_html <- function(...) {
-  url_path <- str_c(as.character(substitute(...)), collapse = "/")
+load_html <- function(..., character.only = FALSE) {
+  url_path <- NULL
+  if (character.only) {
+    url_path <- str_c(as.character(...), collapse = "/")
+  } else {
+    url_path <- str_c(as.character(substitute(...)), collapse = "/")
+  }
 
   if (str_sub(url_path, end = 1) != "/") {
     url_path <- str_c("/", url_path, collapse = "")
@@ -338,6 +343,25 @@ helpr_home <- function() {
     manuals = get_manuals()
   )
 }
+
+
+#' Route to the package page
+#' 
+#'
+print.packageInfo = function (x, ...) {
+  if (!inherits(x, "packageInfo")) 
+    stop("wrong class")
+    
+  type <- options("help_type")[[1]]
+  
+  if (type != 'html') {
+    # HTML help was not requested. Punt call back to R's default help system
+    invisible(base:::print.packageInfo(x))
+  } else {
+    load_html(str_c("/package/", x$name), character.only = TRUE)
+  }
+}
+
 
 #' Route to the topics with multiple files to correct page.
 #'
