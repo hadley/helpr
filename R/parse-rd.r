@@ -150,8 +150,9 @@ reconstruct <- function(rd, package = NULL) {
   } else if (tag == "\\Sexpr") {
     expr <- eval(parse(text = rd), envir=globalenv())
     con <- textConnection(expr)
+    on.exit(close(con))
+    
     value <- reconstruct(parse_Rd(con,fragment=T), package)
-    close(con)
     value
     
   } else if (tag == "\\section"){
