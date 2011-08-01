@@ -94,6 +94,10 @@ helpr <- function(launch_browser = TRUE, no_internetz = NULL, custom = NULL) {
   router$get("/", function(...) {
     router$redirect("/index.html")
   })
+  router$get("/index", function(...) {
+    router$redirect("/index.html")
+  })
+  
 
   # If package path, missing trailing /, redirect
   router$get("/package/:package", function(package, ...) {
