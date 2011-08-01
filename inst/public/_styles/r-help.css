@@ -52,6 +52,10 @@
   clear:both;
   height: 1px;
 }
+.tight_bottom {
+  margin-bottom: 0;
+  padding-bottom: 0;  
+}
 
 
 /* Sidebar */
@@ -114,7 +118,7 @@ h1 {
   line-height: 1.2em; 
   margin-bottom: 0.25em
 }
-h2  {
+h2, search_title  {
   font-size: 1.4em; 
   font-weight: bold;
   margin-top: 1em; 
