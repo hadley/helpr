@@ -1,10 +1,10 @@
 function set_on_click(section){
   $("body").select(function(e){
     var offset = $(section).offset();
-    window.status = e.pageX +', '+ e.pageY + "\tdiv position: " + offset.left + ", " + offset.top;
+    o.log(e.pageX +', '+ e.pageY + "\tdiv position: " + offset.left + ", " + offset.top);
     
     var code = jQuery.trim(get_output_selected_text(section));
-    if(code == ""){
+    if (! code ) {
       $("#run_highlight").hide();
       return;
     }
@@ -40,12 +40,12 @@ function hide_show_output(demo_topic, package, text_name){
   $("#run_highlight").hide();
 
   if(output_hidden == 0){
-    window.console.log("Hide output!");
+    o.log("Hide output!");
     $(".R_output").hide();    
     $(".R_output_image").hide();    
 //    $(".R_output").hide('slow');    
   }else{
-    window.console.log("Show output!");
+    o.log("Show output!");
 
     if(has_shown_output == 0){
       evaluate_section(demo_topic, package, text_name)
@@ -120,16 +120,16 @@ function getSelText()
 
 function get_output_selected_text(section){
   var code = getSelText();
-  window.console.log("Selected Code: \n" + code);
+  o.log("Selected Code: \n" + code);
   if(code == "")
     return "";
   
-  window.console.log("Section: "+section+"\ncode_index: "+$(section).text().indexOf(code));
+  o.log("Section: "+section+"\ncode_index: "+$(section).text().indexOf(code));
   var i;
   code = "" + code;
   var lines = code.split("\n");
   for(i =0; i < lines.length; i++){
-    window.console.log("Section: "+lines[i]+"\ncode_index: "+$(section).text().indexOf(lines[i])+"\noutput_index: "+$(".R_output").text().indexOf(lines[i]));
+    o.log("Section: "+lines[i]+"\ncode_index: "+$(section).text().indexOf(lines[i])+"\noutput_index: "+$(".R_output").text().indexOf(lines[i]));
     if( $(section).text().indexOf(lines[i]) < 0) {
       message_notify("Removing: \n"+lines[i]);
       lines[i] = "";
@@ -141,7 +141,7 @@ function get_output_selected_text(section){
   
   code = lines.join("%0A");
   code = r_urlencode(code);
-  window.console.log("code : " + code);
+  o.log("code : " + code);
   
   return code;
   
@@ -155,11 +155,11 @@ function run_selected_code(section){
   if(code == "")
     return;
   
-  $.blockUI({ message: '<h1><img src="/_images/busy.gif" /> Running selected code in the R console</h1>' }); 
+  $.blockUI({ message: '<h1><img src="' + routerUrl + '/_images/busy.gif" /> Running selected code in the R console</h1>' }); 
   
   setTimeout(function(){
     jQuery.ajax({
-      url: "/eval_text/" + code,
+      url: routerUrl + "/eval_text/" + code,
       dataType: "json",
       success: function() {
         $.unblockUI();
@@ -177,11 +177,11 @@ function run_selected_code(section){
 
 function evaluate_section(demo_topic, package, demo_name){
   
-  $.blockUI({ message: "<h1><img src=\"/_images/busy.gif\" /> Running "+demo_topic+". Please wait.</h1>" }); 
+  $.blockUI({ message: "<h1><img src=\"" + routerUrl + "/_images/busy.gif\" /> Running "+demo_topic+". Please wait.</h1>" }); 
   
   setTimeout(function(){
     jQuery.ajax({
-      url: "/eval_"+demo_topic+"/" + package + "~" + demo_name,
+      url: routerUrl + "/eval_"+demo_topic+"/" + package + "~" + demo_name,
       dataType: "html",
       success: function(eval_code) {
         $("#"+demo_topic+"_source_code").html(eval_code)

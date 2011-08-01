@@ -60,6 +60,17 @@ strong <- function(x) {
   eval_tag_output(str_c("\n<strong>",x,"</strong>"))
 }
 
+
+#' Eval text using the global environment.
+#' Using memoise to speedup reproducability.
+#'
+#' @param txt text to be evaluated
+#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @keywords internal
+eval_on_global <- memoise(function(txt) {
+  evaluate(txt, globalenv())
+})
+
 #' Evaluate text and return the corresponding text output and source.
 #'
 #' @param txt text to be evaluated
@@ -69,7 +80,7 @@ strong <- function(x) {
 evaluate_text <- function(txt, pic_base_name) {
   if (!has_text(txt)) return("")
 
-  evaluated <- evaluate(txt, globalenv())
+  evaluated <- eval_on_global(txt)
   replayed <- helpr_replay(evaluated, pic_base_name)
   str_c(as.character(unlist(replayed)), collapse = "\n")
 }

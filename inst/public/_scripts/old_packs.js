@@ -17,10 +17,10 @@ var has_highlighted = 0;
 function highlight_old_packages() {
   has_highlighted = 1;
 
-  $.blockUI({ message: "<h1><img src=\"/_images/busy.gif\" /> Finding Old Packages</h1>" });   
+  $.blockUI({ message: "<h1><img src=\"" + routerUrl + "/_images/busy.gif\" /> Finding Old Packages</h1>" });   
 
   jQuery.ajax({
-    url: "/package/old.json",
+    url: routerUrl + "/package/old.json",
     dataType: "json",
     success: function(packages) {
       if(packages == null){
@@ -28,19 +28,19 @@ function highlight_old_packages() {
         $.unblockUI();
         return;
       }
-      window.console.log(packages);
-//      window.console.log(packages.length);
+      o.log(packages);
+//      o.log(packages.length);
       for(i = 0; i < packages.length; i++) {
         pkg = packages[i];
         pkg = pkg.replace(".", "_");
-        window.console.log(pkg + " is old");      
+        o.log(pkg + " is old");      
         $("#" + pkg).addClass("old");
       }
       
       $("tr.old").hover(
         function () {
           var pkg = $(this).find("td:first").text();
-          window.console.log(pkg);
+          o.log(pkg);
           $(this).find("td:last").prepend($(" <input type='button' value='Install' class='single_install_button' onclick='install_package(\""+pkg+"\")'></input>"));
         }, 
         function () {
@@ -66,13 +66,13 @@ function update_packs() {
   if(showing_all == 1)
     all = "TRUE";
     
-  $.blockUI({ message: "<h1><img src=\"/_images/busy.gif\" /> Updating Packages</h1>" });   
+  $.blockUI({ message: "<h1><img src=\"" + routerUrl + "/_images/busy.gif\" /> Updating Packages</h1>" });   
 
   jQuery.ajax({
-    url: "/package/update.json/"+all,
+    url: routerUrl + "/package/update.json/"+all,
     dataType: "json",
     success: function(packages) {
-      window.console.log(packages);
+      o.log(packages);
       for(i = 0; i < packages.length; i++) {
         pkg = packages[i];
         pkg = pkg.replace(".", "_");
@@ -117,7 +117,7 @@ function set_update_button(){
     var pkg = packs.childNodes[i];
 
     if(pkg.nodeType==1 && $(pkg).hasClass("old")  && ($(pkg).hasClass("loaded") || showing_all == 1)){
-//      window.console.log( pkg.childNodes[1].childNodes[0].innerHTML + ": " + $(pkg).hasClass("old")  + "    :  "+ !$(pkg).hasClass("hide"));
+//      o.log( pkg.childNodes[1].childNodes[0].innerHTML + ": " + $(pkg).hasClass("old")  + "    :  "+ !$(pkg).hasClass("hide"));
       count++;
     }
   }
@@ -144,11 +144,11 @@ function remove_single_install_button() {
 
 function install_package(pkg){
 
-  $.blockUI({ message: "<h1><img src=\"/_images/busy.gif\" /> Installing "+pkg+". Please wait.</h1>" }); 
+  $.blockUI({ message: "<h1><img src=\"" + routerUrl + "/_images/busy.gif\" /> Installing "+pkg+". Please wait.</h1>" }); 
   
   setTimeout(function(){
     jQuery.ajax({
-      url: "/package/install.json/" + pkg,
+      url: routerUrl + "/package/install.json/" + pkg,
       dataType: "json",
       success: function(txt) {
         $("#" + pkg).removeClass("old").addClass("update");

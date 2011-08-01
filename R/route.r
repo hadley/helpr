@@ -259,7 +259,7 @@ helpr <- function(launch_browser = TRUE, no_internetz = NULL, custom = NULL) {
   router$get("/eval_text/*", function(splat, ...) {
     decoded_text <- URLdecode(splat)
     cat("\n")
-    replay.list(evaluate(decoded_text, envir = .GlobalEnv))
+    replay.list(eval_on_global(decoded_text))
     cat(options("prompt")$prompt)
 
     helpr_render_json(TRUE)
@@ -278,10 +278,10 @@ helpr <- function(launch_browser = TRUE, no_internetz = NULL, custom = NULL) {
 
   # Individual help topic 
   router$get("/g", function(...) {
-    router$redirect("package/stats/demo/glm.vr")
+    router$redirect("/package/stats/demo/glm.vr")
   })
   router$get("/n", function(...) {
-    router$redirect("package/stats/topic/nlm")
+    router$redirect("/package/stats/topic/nlm")
   })
   
 

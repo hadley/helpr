@@ -7,12 +7,18 @@
   <%= render_snippet("html_header") %>
   <%= render_snippet("growl") %>
 
-  <script type="text/javascript" src="<%= router_url() %>/_scripts/package.js"></script>
+  <!-- // <script type="text/javascript" src="<%= router_url() %>/_scripts/package.js"></script> -->
 
   <title><%= package %> <%= name %>. R help</title>
+  
+  <script type='text/javascript'>
+    $(function() {
+      set_on_click('#demo_source_code');
+    });
+  </script>
 </head>
 
-<body onLoad="set_on_click('#demo_source_code'); $('#run_highlight').hide();">
+<body>
   <div id="watermark"><%= package %></div>
 
   <div id="hd">
@@ -57,7 +63,7 @@
 <%= render_snippet("footer", list(disqus = TRUE, html = html)) %>
 
 
-    <input id="run_highlight" type="button" value="Execute Highlighted" onclick="run_selected_code('#demo_source_code');" style="position:absolute;" />
+    <input id="run_highlight" type="button" value="Execute Highlighted" onclick="run_selected_code('#demo_source_code');" style="position:absolute; display: none;" />
 
 </body>
 </html>

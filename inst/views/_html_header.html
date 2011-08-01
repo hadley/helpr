@@ -7,8 +7,13 @@
     src="<%= router_url() %>/_scripts/jquery-latest.js"></script>
   <script type="text/javascript" 
     src="<%= router_url() %>/_scripts/jquery.masonry.min.js"></script>
+  <script type="text/javascript" 
+    src="<%= router_url() %>/_scripts/out.js"></script>
 
   <script type="text/javascript">
+    var routerUrl = "<%= router_url() %>";
+    o.log(routerUrl);
+  
     function check_size() {
       var right_padding = 50;
 
