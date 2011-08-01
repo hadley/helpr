@@ -17,11 +17,14 @@
 <body>
 <div id="watermark">packages</div>
 
+<% if(i_can_has_internetz()) {-%>
 <div id="hd">
   <span id="feed-control"><span>&nbsp;</span></span>
-  
+
   <%= render_snippet("search_bar") %>
 </div>
+<% } %>
+
 <div class="clearDiv"></div>
 <div id="bd">
   <h1>R documentation</h1>
