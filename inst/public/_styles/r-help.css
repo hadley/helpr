@@ -47,6 +47,8 @@
 }
 
 .clearDiv {
+  padding: 0;
+  margin: 0;
   clear:both;
   height: 1px;
 }

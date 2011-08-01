@@ -19,7 +19,7 @@ i_can_has_internetz <- memoise(function() {
   google <- url("http://google.com")
   on.exit(close(google))
   
-  res <- try({suppresWarnings(open(google)); internet <- TRUE}, silent = TRUE)
+  res <- try({suppressWarnings(open(google)); internet <- TRUE}, silent = TRUE)
   !inherits(res, "try-error")
 })
 
