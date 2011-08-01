@@ -4,7 +4,6 @@
 
 #hd {
   padding: 0.5em;
-  margin: 0 0 2em 0;
   background-color: #eee;
   vertical-align: center;
   min-height: 19px;
@@ -46,6 +45,12 @@
   float: left; 
   clear: all;
 }
+
+.clearDiv {
+  clear:both;
+  height: 1px;
+}
+
 
 /* Sidebar */
 .sidebars {
