@@ -17,7 +17,9 @@ installed_packages <- function() {
   
   packages$status <- ifelse(packages$Package %in% .packages(), "loaded", "installed")
   class(packages) <- c("packages", class(packages))
-  packages[order(packages$Package), ]
+  packages <- packages[order(packages$Package), ]
+  packages[! duplicated(packages$Package), ]
+  
 }
 
 
