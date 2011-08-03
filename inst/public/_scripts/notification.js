@@ -1,15 +1,17 @@
 function set_on_click(section){
-  $("body").select(function(e){
+  
+  $("#bd").mouseup(function(e){
+    
     var offset = $(section).offset();
     o.log(e.pageX +', '+ e.pageY + "\tdiv position: " + offset.left + ", " + offset.top);
     
-    var code = jQuery.trim(get_output_selected_text(section));
+    var code = $.trim(get_output_selected_text(section));
     if (! code ) {
       $("#run_highlight").hide();
       return;
     }
 
-    $("#run_highlight").offset({ top: e.pageY, left: (offset.left - $("#run_highlight").width() - 20) });
+    // $("#run_highlight").offset({ top: e.pageY, left: (offset.left - $("#run_highlight").width() - 20) });
     $("#run_highlight").show('slow');
   }); 
 }
@@ -119,7 +121,7 @@ function getSelText()
 
 
 function get_output_selected_text(section){
-  var code = getSelText();
+  var code = getSelText() + "";
   o.log("Selected Code: \n" + code);
   if(code == "")
     return "";
@@ -131,10 +133,10 @@ function get_output_selected_text(section){
   for(i =0; i < lines.length; i++){
     o.log("Section: "+lines[i]+"\ncode_index: "+$(section).text().indexOf(lines[i])+"\noutput_index: "+$(".R_output").text().indexOf(lines[i]));
     if( $(section).text().indexOf(lines[i]) < 0) {
-      message_notify("Removing: \n"+lines[i]);
+      // message_notify("Removing: \n"+lines[i]);
       lines[i] = "";
     } else if( $(".R_output").text().indexOf(lines[i]) >= 0) {
-      message_notify("Removing: \n"+lines[i]);
+      // message_notify("Removing: \n"+lines[i]);
       lines[i] = "";
     }
   }

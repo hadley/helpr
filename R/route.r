@@ -166,10 +166,11 @@ helpr <- function(launch_browser = TRUE, no_internetz = NULL, custom = NULL) {
       query_string <- ""
     
     html <- str_c("/package/", package, "/topic/", topic, query_string, collapse = "")
-    page_info <- helpr_topic(package, topic, highlight)
-    page_info$html <- html
     
     if (check_for_package(package)) {
+      page_info <- helpr_topic(package, topic, highlight)
+      page_info$html <- html
+      
       router$render_brew("topic", page_info)
     } else {
       router$render_brew("whistle", list(package = package, url = deparse(html)))      
@@ -230,6 +231,7 @@ helpr <- function(launch_browser = TRUE, no_internetz = NULL, custom = NULL) {
   })
   router$get("/package/install.json/:pkg", function(pkg, ...) {
     install_packages(pkg)
+    library(pkg, character.only = TRUE)
     helpr_render_json(TRUE)
   })
   router$get("/package/:package/rating.json", function(package, ...) {
@@ -259,7 +261,7 @@ helpr <- function(launch_browser = TRUE, no_internetz = NULL, custom = NULL) {
   router$get("/eval_text/*", function(splat, ...) {
     decoded_text <- URLdecode(splat)
     cat("\n")
-    replay.list(eval_on_global(decoded_text))
+    replay(eval_on_global(decoded_text))
     cat(options("prompt")$prompt)
 
     helpr_render_json(TRUE)

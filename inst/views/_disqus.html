@@ -1,21 +1,34 @@
 <% if(i_can_has_internetz()) {-%>
-  <link rel="stylesheet" type="text/css"
-     href="http://disqus.com/stylesheets/jquery/disqus.css?v=2.0" />
+  
+  <div class='clearDiv'></div>
+  <div id="disqus_thread"></div>
+  
     
   <script type="text/javascript">
+  
   var disqus_identifier = "<%= name %>"; 
-  var disqus_container_id = 'comments';
+  var disqus_container_id = 'disqus_thread';
+  // var disqus_url = window.location.href.replace(window.location.origin, "").substring(1);
   
   $(function(){
+    var disqus_shortname = 'barretschloerke';
     var ds_loaded = false;
-    var top = jQuery("#comments").offset().top;
+    var top = jQuery("#disqus_thread").offset().top;
 
     function check(){
       if (ds_loaded) return true;
       // Load disqus comments if they should be visible
       if ($(window).scrollTop() + $(window).height() <= top) return true;
       
-      $.getScript("http://barretschloerke.disqus.com/disqus.js?v=2.0");
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+         (function() {
+             var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+             dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+             $('head').append('<link rel="stylesheet" type="text/css" href="http://disqus.com/stylesheets/jquery/disqus.css?v=2.0" />');
+             
+         })();
+         
       ds_loaded = true;
     } 
 
@@ -23,6 +36,7 @@
     check();
 
   });
+  
   </script>
 
 <% } %>

@@ -5,14 +5,15 @@
 <head>
   <%= render_snippet("html_header") %>
   <%= render_snippet("growl") %>
+  
   <script type="text/javascript" 
     src="<%= router_url() %>/_scripts/jquery.highlight-3.yui.js"></script>
   <script type="text/javascript">
-  $(document).ready(function() {
+  $(function() {
     set_on_click('#example_source_code'); 
     $('#run_highlight').hide(); 
     highlight_text('<%= highlight %>');    
-  })
+  });
   </script>
 
   <title><%= name %> / <%= package %>. R help</title>
@@ -26,7 +27,12 @@
   <a href=".."><%= package %></a> &#8594; <%= name %>
   <% if (length(aliases) > 0) { %> (aka <%= str_c(aliases, collapse = ", ") %>) <% } %>
   <% if (nchar(highlight) > 0) { -%>
-    <input type="button" id="remove_highlight_button" onclick="remove_highlight()" value="Remove Highlighting" />
+    <input type="button" id="remove_highlight_button" style="position:absolute; top: 5px;" onclick="remove_highlight()" value="Remove Highlighting" />
+    <script type="text/javascript">
+      $(function() {
+        $("#remove_highlight_button").css("right", $("#search_bar").width() + 25);
+      });
+    </script>
   <% } %>
   <%= render_snippet("search_bar") %>
 </div>
@@ -122,9 +128,12 @@
   <% } %>
 <% } %>
 
+  <% render_snippet("disqus", list(name = str_c(package, "_", name))) %>
+
+
 </div>
 
-<%= render_snippet("footer", list(disqus = TRUE, html = html)) %>
+<%= render_snippet("footer", list(html = html)) %>
 
 
 </body>

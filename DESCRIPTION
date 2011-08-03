@@ -10,6 +10,3 @@ Depends: rjson, memoise, sinartra (>= 0.3), evaluate, highlight, digest, parser,
 Imports: brew
 License: GPL-2
 LazyData: true
-Collate: 'changelog.r' 'demo.r' 'evaluate.r' 'functions.r' 'history.r'
-    'local.r' 'package.r' 'packages.r' 'parse-rd.r' 'pictures.r'
-    'render.r' 'route.r' 'topic.r' 'solr.r' 'solr-com.r' 'solr-query.r'

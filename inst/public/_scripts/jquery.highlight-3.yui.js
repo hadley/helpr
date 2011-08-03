@@ -2,11 +2,11 @@ jQuery.fn.highlight=function(b){function a(e,j){var l=0;if(e.nodeType==3){var k=
 
 function highlight_text(q) {
   if(q == "") return;  
-  $('#yui-main').highlight(q);
+  $('#bd').highlight(q);
 }
 
 function remove_highlight() {
-  $('#yui-main').removeHighlight();
+  $('#bd').removeHighlight();
   $('#remove_highlight_button').remove();
 }
 

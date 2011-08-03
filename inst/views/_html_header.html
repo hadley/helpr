@@ -12,27 +12,36 @@
 
   <script type="text/javascript">
     var routerUrl = "<%= router_url() %>";
-    o.log(routerUrl);
+    // o.log(routerUrl);
   
-    function check_size() {
-      var right_padding = 50;
+    (function(){
+      
+      var hasContent = $(".content").length > 0;
+      function check_size() {
+        var right_padding = 50;
 
-      var window_width = $(window).width();
-      var narrow = window_width < 900;
-      $("html").toggleClass("narrow", narrow);
+        var window_width = $(window).width();
+        var narrow = window_width < 900;
+        $("html").toggleClass("narrow", narrow);
       
-      if(!narrow) {
-        var content_width = $(".content").css("max-width").replace(new RegExp(/[a-zA-Z]/g),"");
-        var new_width = window_width - content_width - right_padding;
-        $(".sidebars").css("width", new_width + "px");
-      }
-    };
+        if(!narrow && hasContent) {
+          var content_width = $(".content").css("max-width").replace(new RegExp(/[a-zA-Z]/g),"");
+          var new_width = window_width - content_width - right_padding;
+          $(".sidebars").css("width", new_width + "px");
+        }
+      };
     
-    $(window).resize(check_size);
+      $(window).resize(check_size);
     
-    $(function() {
-      check_size();
+      $(function() {
+        check_size();
       
-      $('.sidebars').masonry({ singleMode: true, animate:true });
-    });
+        $('.sidebars').masonry({ 
+          // singleMode: true, 
+          columnWidth: 200,
+          isAnimated:true 
+          });
+      });
+    })()
+    
   </script>

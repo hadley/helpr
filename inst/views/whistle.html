@@ -17,7 +17,7 @@
 
   setTimeout(function(){
     jQuery.ajax({
-      url: "/package/install.json/" + <%= package %>,
+      url: "/package/install.json/<%= package %>",
       dataType: "json",
       success: function() {
         $.unblockUI();

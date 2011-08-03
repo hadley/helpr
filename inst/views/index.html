@@ -59,7 +59,7 @@
     
     <% if(dataframe_has_rows(top_ten_funcs)) { -%>
     <div class="sidebar">
-      <h2>Top functions</h2>
+      <h2>Top Functions</h2>
       <ol>
         <%= str_c("<li><a href='", router_url(), top_ten_funcs[,"path"], "'>", top_ten_funcs[,"func"], "</a></li>") %>
       </ol>
@@ -68,7 +68,7 @@
 
     <% if(dataframe_has_rows(last_ten_funcs)) { -%>
     <div class="sidebar">
-      <h2>Recent functions</h2>
+      <h2>Recent Functions</h2>
       <ol>
         <%= str_c("<li><a href='", router_url(), last_ten_funcs[,"path"], "'>", last_ten_funcs[,"func"], "</a></li>") %>
       </ol>
