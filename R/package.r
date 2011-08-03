@@ -8,9 +8,19 @@ helpr_package <- function(package) {
   helpr_package_mem(package, pkg_version(package))
 }
 
+
+read_rds <- function(...) {
+  rv = R.version
+  if (rv$major == "2" && as.numeric(rv$minor) < 13.1) {
+    base:::.readRDS(...)
+  } else {
+    base:::readRDS(...)
+  }
+}
+
 helpr_package_mem <- memoise(function(package, version) {
   
-  info <- base::.readRDS(system.file("Meta", "package.rds", package = package))
+  info <- read_rds(system.file("Meta", "package.rds", package = package))
   description <- as.list(info$DESCRIPTION)
   info$DESCRIPTION <- NULL
   description <- modifyList(info, description)
@@ -53,7 +63,7 @@ helpr_package_mem <- memoise(function(package, version) {
 #' @keywords internal
 #' @author Hadley Wickham
 pkg_version <- function(pkg) {
-  rds <- base::.readRDS(system.file("Meta", "package.rds", package = pkg))
+  rds <- read_rds(system.file("Meta", "package.rds", package = pkg))
   rds$DESCRIPTION[["Version"]]
 }
 
