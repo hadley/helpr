@@ -120,7 +120,7 @@ index_all <- function(start_letter = "a", verbose = TRUE) {
   if (verbose) cat("Finished\n")
   result
 }
-index_packages <- function(arr) {
+index_packages <- function(arr, verbose = TRUE) {
   sapply(arr, function(x) {
     tryCatch(
       index_package(x, verbose = verbose),
