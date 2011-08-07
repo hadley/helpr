@@ -32,6 +32,7 @@
     <p><%= description %></p>
 
     <input id="hide_output" type="button" value="Show/Hide Output" onclick="hide_show_output('demo', '<%= package %>', '<%= name %>' );" />
+    <input id="run_highlight" type="button" value="Execute Highlighted" onclick="run_selected_code('#demo_source_code');" style="display: none;" />
     <div id="demo_source_code" class="demo_source_code">
       <%= src %>
     </div>
@@ -63,7 +64,6 @@
 <%= render_snippet("footer", list(disqus = TRUE, html = html)) %>
 
 
-    <input id="run_highlight" type="button" value="Execute Highlighted" onclick="run_selected_code('#demo_source_code');" style="position:absolute; display: none;" />
 
 </body>
 </html>
