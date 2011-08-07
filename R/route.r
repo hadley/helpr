@@ -64,7 +64,7 @@ helpr <- function(launch_browser = TRUE, no_internetz = NULL, custom = NULL) {
   if(identical(no_internetz, TRUE))  deactivate_internetz()
   if(identical(no_internetz, FALSE)) activate_internetz()
 
-  if(identical(custom, TRUE)) set_router_custom_route(TRUE)
+  if(identical(custom, TRUE) || (is.null(custom) && .Platform$GUI == "RStudio")) set_router_custom_route(TRUE)
   if(identical(custom, FALSE)) set_router_custom_route(FALSE)
   
   file_path <- helpr_path()
