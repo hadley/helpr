@@ -88,8 +88,10 @@ solr_similar <- function(topic) {
   site <- str_c(solr_base_url(), "/solr/select?wt=json&mlt=true&mlt.count=5&mlt.fl=Title_t,Description_t&q=", solr_query_topic_fields(topic))
   output <- suppressWarnings(urlJSON_to_list(site))
   
+  if (length(output$moreLIkeThis) < 1) return(data.frame())
+  
   docs <- output$moreLikeThis[[1]]$docs
-
+  
   t(sapply(docs, function(x) { 
     path <- package_and_topic_from_url(x$id)
     c(title = x$Title_t, pkg = path$pkg, topic = path$topic) 
