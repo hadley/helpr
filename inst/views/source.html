@@ -48,6 +48,8 @@
     list(d = topic_in_example, title = "Used in examples")) %>
   </div>  
 </div>
+
+<%= render_snippet("facebook", list(url = str_c("/package/", package, "/topic/", name, "/source")) ) %>
 </div>
 
 <%= render_snippet("footer", list(disqus = TRUE, html = html)) %>

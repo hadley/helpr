@@ -59,7 +59,10 @@
     <%= render_snippet("top_functions", list(functions = src_functions, title = src_functions_str)) %>
   </div>
   
-</div></div>
+</div>
+
+<%= render_snippet("facebook", list(url = str_c("/package/", package, "/demo/", name)) ) %>
+</div>
 
 <%= render_snippet("footer", list(disqus = TRUE, html = html)) %>
 
