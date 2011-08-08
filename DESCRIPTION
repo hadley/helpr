@@ -3,10 +3,9 @@ Type: Package
 Title: Help for R.
 Version: 0.2.0
 Author: Hadley Wickham <h.wickham@gmail.com> and Barret Schloerke
-    <schloerke@gmail.com>
-Maintainer: Hadley Wickham <h.wickham@gmail.com>
+    <schloerke+helpr@gmail.com>
+Maintainer: Barret Schloerke <schloerke+helpr@gmail.com>
 Description: Better html documentation for R
-Depends: rjson, memoise, sinartra (>= 0.3), evaluate, highlight, digest, parser, tools, stringr (>= 0.4), stats, utils
-Imports: brew
+Imports: brew, rjson, memoise, sinartra (>= 0.3), evaluate, highlight, digest, parser, tools, stringr (>= 0.4), stats, utils
 License: GPL-2
 LazyData: true
