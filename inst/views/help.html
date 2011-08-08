@@ -2,40 +2,40 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
 
-  <link rel="stylesheet" type="text/css" href="<%= router_url() %>/_styles/reset-fonts.css" />
-  <link rel="stylesheet" type="text/css" href="<%= router_url() %>/_styles/r-help.css" />
+    <link rel="stylesheet" type="text/css" href="<%= router_url() %>/_styles/reset-fonts.css" />
+    <link rel="stylesheet" type="text/css" href="<%= router_url() %>/_styles/r-help.css" />
   
-  <script type="text/javascript" src="<%= router_url() %>/_scripts/jquery-latest.js"></script>
+    <script type="text/javascript" src="<%= router_url() %>/_scripts/jquery-latest.js"></script>
 
 
-  <title>R help</title>
-</head>
+    <title>R help</title>
+  </head>
 
-<body>
-  <div id="watermark">help</div>
-  <div id="doc2" class="yui-t6">
-  <div id="hd">
-    <a href="<%= router_url() %>/index.html">R</a> 
-    <%= render_snippet("search_bar") %>
-  </div>
+  <body>
+    <div id="watermark">help</div>
+    <div id="doc2" class="yui-t6">
+      <div id="hd">
+        <a href="<%= router_url() %>/index.html">R</a> 
+        <%= render_snippet("search_bar") %>
+      </div>
 
-  <div id="bd">
-  <div id="yui-main"><div class="yui-b">
-    <h1>Multiple Topics</h1>
+      <div id="bd">
+        <div id="yui-main">
+          <div class="yui-b">
+            <h1>Multiple Topics</h1>
 
-    <% for(i in seq_along(pkg)){ -%>
-      <%= render_snippet("package_topic_desc", list(pkg = pkg[i], topic = topic[i], items = desc[i])) %>
-    <% } %>
+            <% for(i in seq_along(pkg)){ -%>
+              <%= render_snippet("package_topic_desc", list(pkg = pkg[i], topic = topic[i], items = desc[i])) %>
+            <% } %>
     
-  </div></div>
-  <div class="yui-b"><div class = "sidebar"></div></div>
+          </div>
+        </div>
+      </div><!-- end bd -->
+    </div>
+    <%= render_snippet("footer", list(disqus = FALSE, html = html)) %>
 
-  </div><!-- end bd -->
-
-  <%= render_snippet("footer", list(disqus = FALSE, html = html)) %>
-  
-</div></body>
+  </body>
 </html>

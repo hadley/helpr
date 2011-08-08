@@ -11,8 +11,8 @@
   <div id="watermark"><%= name %></div>
   <div id="hd">
     <a href="<%= router_url() %>/index.html">R</a> &#8594; 
-    <a href="../../../"><%= package %></a> &#8594; 
-    <a href="../<%= topic %>"><%= topic %></a> &#8594; 
+    <a href="<%= router_url() %>/package/<%= package %>"><%= package %></a> &#8594; 
+    <a href="../"><%= topic %></a> &#8594; 
     <%= name %> (source) 
   </div>
   <div id="bd">
@@ -49,9 +49,9 @@
   </div>  
 </div>
 
-<%= render_snippet("facebook", list(url = str_c("/package/", package, "/topic/", name, "/source")) ) %>
 </div>
 
+<%= render_snippet("facebook", list(url = str_c("/package/", package, "/topic/", name, "/source")) ) %>
 <%= render_snippet("footer", list(disqus = TRUE, html = html)) %>
 </body>
 </html>
