@@ -83,5 +83,14 @@ Follow the [tutorial](http://lucene.apache.org/solr/tutorial.html) to get a feel
     `index_package(package)`
     `index_all()`
 
+# Design inspiration
+
+* http://www.smashingmagazine.com/2009/06/09/smart-fixes-for-fluid-layouts/
+* http://www.sohtanaka.com/web-design/smart-columns-w-css-jquery/
+* http://desandro.com/demo/masonry/
+* http://cssiphone.com/gallery/
+* http://mediaqueri.es/popular/
+* https://github.com/davatron5000/FitText.js
+* http://trentwalton.com/
 
 
