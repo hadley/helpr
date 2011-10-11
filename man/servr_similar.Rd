@@ -1,9 +1,9 @@
-\name{solr_similar}
-\alias{solr_similar}
+\name{servr_similar}
+\alias{servr_similar}
 \title{Similar pages.
 Find related pages and return info in a data.frame}
 \usage{
-  solr_similar(topic)
+  servr_similar(topic)
 }
 \arguments{
   \item{topic}{title to be used to find similar results}

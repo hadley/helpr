@@ -256,6 +256,7 @@ pkg_topics_index <- memoise(function(package) {
 #' @return \code{\link{list}} containing the documentation file of each file of a package
 #' @keywords internal
 #' @author Hadley Wickham
+#' @import tools
 pkg_topics_rd <- memoise(function(package) {
   rd <- tools:::fetchRdDB(pkg_rddb_path(package))
   lapply(rd, name_rd)

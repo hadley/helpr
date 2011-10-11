@@ -1,5 +1,5 @@
-\name{solr_base_url}
-\alias{solr_base_url}
+\name{servr_base_url}
+\alias{servr_base_url}
 \title{Solr base URL.}
 \description{
   Solr base URL.

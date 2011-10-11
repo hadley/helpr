@@ -1,10 +1,20 @@
 \name{author_email}
 \alias{author_email}
-\title{Author Email Parsing...}
-\usage{author_email(name, address)}
-\description{Author Email Parsing
+\title{Author Email Parsing
 parse the author email}
-\author{Barret Schloerke \email{schloerke@gmail.com}}
+\usage{
+  author_email(name, address)
+}
+\arguments{
+  \item{name}{name of the email}
+
+  \item{address}{email address}
+}
+\description{
+  Author Email Parsing parse the author email
+}
+\author{
+  Barret Schloerke
+}
 \keyword{internal}
-\arguments{\item{name}{name of the email}
-\item{address}{email address}}
+

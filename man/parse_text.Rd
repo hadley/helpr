@@ -1,9 +1,18 @@
 \name{parse_text}
 \alias{parse_text}
-\title{Parse Text...}
-\usage{parse_text(text)}
-\description{Parse Text
+\title{Parse Text
 wrapper to parser's \code{parser(text = text)}}
-\author{Barret Schloerke \email{schloerke@gmail.com}}
+\usage{
+  parse_text(text)
+}
+\arguments{
+  \item{text}{text to be parsed}
+}
+\description{
+  Parse Text wrapper to parser's \code{parser(text = text)}
+}
+\author{
+  Barret Schloerke
+}
 \keyword{internal}
-\arguments{\item{text}{text to be parsed}}
+

@@ -68,8 +68,9 @@ topic_is_internal <- function(help) {
 #'
 #' @param rd item to be tagged recursively
 #' @return item reformatted to be used in HTML
-#' @author Hadley Wickham and Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Hadley Wickham and Barret Schloerke
 #' @keywords internal
+#' @importFrom highlight highlight
 parse_help <- function(rd, package) {
   tags <- sapply(rd, tag)
 
@@ -94,7 +95,7 @@ parse_help <- function(rd, package) {
   out$value <- reconstruct(rd$value, package)
   reconstructed_examples <- reconstruct(untag(rd$examples), package)
   par_text <- parse_text(reconstructed_examples)
-  out$examples <- highlight(par_text)
+  out$examples <- highlight:::highlight(par_text)
   out$example_functions <- code_info(par_text)
   out$example_functions_str <- pluralize("Top Function", out$example_functions)
   out$usage <- parse_usage(rd$usage, package)
@@ -145,8 +146,9 @@ parse_help <- function(rd, package) {
 #' Highlights R text to include links to all functions and make it easier to read
 #' @param parser_output text to be parsed and highlighted
 #' @return highlighted text
-#' @author Hadley Wickham and Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Hadley Wickham and Barret Schloerke
 #' @keywords internal
+#' @importFrom highlight highlight renderer_html
 highlight <- function(parser_output, source_link = FALSE) {
   if (is.null(parser_output)) return("")
   
@@ -155,7 +157,7 @@ highlight <- function(parser_output, source_link = FALSE) {
   
   str_c(
     capture.output(
-      highlight::highlight( 
+      highlight:::highlight( 
         parser.output = parser_output, 
         renderer = highlight::renderer_html(doc = F)
       )

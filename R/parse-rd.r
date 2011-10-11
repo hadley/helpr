@@ -35,7 +35,7 @@ list_tags <- function(rd) {
 #' Recursively reconstruct R documentation.
 #'
 #' @param rd rd in question
-#' @author Hadley Wickham and Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Hadley Wickham and Barret Schloerke
 #' @keywords internal
 reconstruct <- function(rd, package = NULL) {
   
@@ -196,7 +196,7 @@ tag_simple <- function(tag, text) {
 #' @param fun function to tag
 #' @param pkg package to look in
 #' @param topic_page topic page of the function
-#' @author Hadley Wickham and Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Hadley Wickham and Barret Schloerke
 #' @keywords internal
 tag_link <- function(fun, pkg = NULL, topic_page = fun) {
   if (!is.null(pkg)) {
@@ -284,8 +284,9 @@ dataframe_has_rows <- function(x) {
 #' @param text text to be parsed
 #' @author Barret Schloerke
 #' @keywords internal
+#' @importFrom parser parser
 parse_text <- function(text) {
-  output <- suppressWarnings(parser(text = text))
+  output <- suppressWarnings(parser:::parser(text = text))
   if (!dataframe_has_rows(attr(output, "data"))) {
     NULL
   } else {

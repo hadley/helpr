@@ -1,8 +1,8 @@
-\name{solr_combine_param}
-\alias{solr_combine_param}
+\name{servr_combine_param}
+\alias{servr_combine_param}
 \title{Combine Solr parameters.}
 \usage{
-  solr_combine_param(value, param = names(value))
+  servr_combine_param(value, param = names(value))
 }
 \description{
   Combine Solr parameters.

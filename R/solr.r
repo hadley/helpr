@@ -12,6 +12,7 @@ solr_base_url <- function() {
 #' Check to see if solr is running.
 #' A check to see if solr is running called and memoised at the start of \code{helpr()}
 #'
+#' @param ... ignored
 #' @author Barret Schloerke
 i_can_has_internetz <- memoise(function() {
   if (!allow_internetz()) return(FALSE)
@@ -26,7 +27,7 @@ i_can_has_internetz <- memoise(function() {
 
 # # Produce a message that states Solr is not running.
 # #
-# # @author Barret Schloerke \email{schloerke@@gmail.com}
+# # @author Barret Schloerke
 # # @keywords internal
 # solr_FAIL <- function() {
 #   message("Full text search is not available, yet.  Please wait for future versions.")

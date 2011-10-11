@@ -6,6 +6,7 @@
 #' @return text rendered from the template
 #' @author Barret Schloerke
 #' @keywords internal
+#' @import sinartra
 render_snippet <- function(template, params = NULL, path = router_file_path()) {
   template <- str_c("_", template)
   render_brew(template, params, path, parent = parent.frame())$payload

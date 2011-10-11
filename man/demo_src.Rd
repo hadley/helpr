@@ -1,10 +1,22 @@
 \name{demo_src}
 \alias{demo_src}
 \title{Demo source.}
-\usage{demo_src(package, demo_name)}
-\description{Demo source.}
-\value{source for the demo}
-\author{Barret Schloerke \email{schloerke@gmail.com}}
+\usage{
+  demo_src(package, demo_name)
+}
+\arguments{
+  \item{package}{package name}
+
+  \item{demo_name}{demo name}
+}
+\value{
+  source for the demo
+}
+\description{
+  Demo source.
+}
+\author{
+  Barret Schloerke
+}
 \keyword{internal}
-\arguments{\item{package}{package name}
-\item{demo_name}{demo name}}
+

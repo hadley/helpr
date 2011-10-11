@@ -1,9 +1,10 @@
-\name{get_solr_query_result}
-\alias{get_solr_query_result}
+\name{get_servr_query_result}
+\alias{get_servr_query_result}
 \title{Solr query.
 Retrieve a solr query}
 \usage{
-  get_solr_query_result(query_list, function_field = FALSE)
+  get_servr_query_result(query_list, function_field =
+  FALSE)
 }
 \arguments{
   \item{query_list}{list that contains the start position,

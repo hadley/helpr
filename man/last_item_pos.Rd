@@ -1,9 +1,20 @@
 \name{last_item_pos}
 \alias{last_item_pos}
 \title{Find the last Item position.}
-\usage{last_item_pos(arr)}
-\description{Find the last Item position.}
-\value{position of the last item to match "\\item" else 0}
-\author{Barret Schloerke \email{schloerke@gmail.com}}
+\usage{
+  last_item_pos(arr)
+}
+\arguments{
+  \item{arr}{arr of items to look at}
+}
+\value{
+  position of the last item to match "\\item" else 0
+}
+\description{
+  Find the last Item position.
+}
+\author{
+  Barret Schloerke
+}
 \keyword{internal}
-\arguments{\item{arr}{arr of items to look at}}
+

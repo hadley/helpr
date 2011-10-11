@@ -1,6 +1,7 @@
 #' Load an html page from the console.
 #' 
 #' @param ... site to be loaded
+#' @param character.only flag to substitute or not
 #' @author Barret Schloerke
 #' @export
 load_html <- function(..., character.only = FALSE) {
@@ -27,6 +28,7 @@ load_html <- function(..., character.only = FALSE) {
 #' @param ... site to be loaded
 #' @author Barret Schloerke
 #' @keywords internal
+#' @import tools
 base_html_path <- function() {
   p <- str_c("http://127.0.0.1:", tools:::httpdPort, collapse = "")
 
@@ -58,7 +60,7 @@ check_for_package <- function(package) {
 #' @param no_internetz should this function allow the browser to source internet files and actions? Default is to allow internet connections
 #' @param custom should this function launch in the custom httpd handlers env? Default is to be at the root of ""
 #' @author Barret Schloerke and Hadley Wickham
-#' @import brew highlight sinartra memoise evaluate stringr tools parser digest stats utils
+#' @import sinartra memoise stringr stats tools
 helpr <- function(launch_browser = TRUE, no_internetz = NULL, custom = NULL) {
 
   if(identical(no_internetz, TRUE))  deactivate_internetz()
@@ -333,7 +335,7 @@ helpr_render_json <- function(obj) {
 #' Helpr Home.
 #'
 #' @return all the information necessary to produce the home site ("index.html")
-#' @author Hadley Wickham and Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Hadley Wickham and Barret Schloerke
 #' @keywords internal 
 helpr_home <- function() {
 
@@ -353,7 +355,8 @@ helpr_home <- function() {
 
 #' Route to the package page
 #' 
-#'
+#' @param x object supplied from help function describing a package
+#' @param ... ignored
 print.packageInfo = function (x, ...) {
   if (!inherits(x, "packageInfo")) 
     stop("wrong class")
@@ -377,6 +380,7 @@ print.packageInfo = function (x, ...) {
 #' @param x path to help
 #' @param ... other arguments ignored
 #' @author Barret Schloerke
+#' @import tools utils
 #' @export
 print.help_files_with_topic <- function (x, ...) 
 {
@@ -429,7 +433,7 @@ print.help_files_with_topic <- function (x, ...)
     }
     else {
         if (tools:::httpdPort == 0L) 
-            startDynamicHelp()
+            tools:::startDynamicHelp()
         file <- paths
         pkgname <- basename(dirname(dirname(file)))
         topic <- basename(file)

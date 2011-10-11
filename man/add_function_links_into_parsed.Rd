@@ -1,10 +1,23 @@
 \name{add_function_links_into_parsed}
 \alias{add_function_links_into_parsed}
-\title{Add funciton link.}
-\usage{add_function_links_into_parsed(parser_output, source_link=FALSE)}
-\description{Add funciton link.
+\title{Add funciton link.
 Add the function link to the preparsed R code}
-\value{parsed output with functions with html links around them}
-\author{Barret Schloerke \email{schloerke@gmail.com}}
+\usage{
+  add_function_links_into_parsed(parser_output, source_link
+  = FALSE)
+}
+\arguments{
+  \item{parser_output}{pre-parsed output}
+}
+\value{
+  parsed output with functions with html links around them
+}
+\description{
+  Add funciton link. Add the function link to the preparsed
+  R code
+}
+\author{
+  Barret Schloerke
+}
 \keyword{internal}
-\arguments{\item{parser_output}{pre-parsed output}}
+
