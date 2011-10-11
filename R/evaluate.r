@@ -3,7 +3,7 @@
 #'
 #' @param x result from \code{\link{evaluate}}
 #' @param pic_base_name base picture name to be used
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 helpr_replay <- function(x, pic_base_name) UseMethod("helpr_replay", x)
 
@@ -54,7 +54,7 @@ helpr_replay.recordedplot <- function(x, pic_base_name) {
 
 #' Strong HTML
 #'
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 strong <- function(x) {
   eval_tag_output(str_c("\n<strong>",x,"</strong>"))
@@ -65,7 +65,7 @@ strong <- function(x) {
 #' Using memoise to speedup reproducability.
 #'
 #' @param txt text to be evaluated
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 eval_on_global <- memoise(function(txt) {
   evaluate(txt, globalenv())
@@ -75,7 +75,7 @@ eval_on_global <- memoise(function(txt) {
 #'
 #' @param txt text to be evaluated
 #' @param pic_base_name base name for the picture files
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 evaluate_text <- function(txt, pic_base_name) {
   if (!has_text(txt)) return("")
@@ -87,7 +87,7 @@ evaluate_text <- function(txt, pic_base_name) {
 
 #' Tag the output text with correct css class
 #' 
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 eval_tag_output <- function(x) {
   str_c("<pre class=\"R_output\">", x, "</pre>")
@@ -97,7 +97,7 @@ eval_tag_output <- function(x) {
 #'
 #' @param package package in question
 #' @param dem demo in question
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 exec_pkg_demo <- function(package, dem) {
   demo(dem, character = TRUE, package = package, ask = TRUE)

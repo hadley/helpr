@@ -1,7 +1,7 @@
 #' Save a picture into the temp directory.
 #'
 #' @return the path to the picture (using the website)
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal 
 save_picture <- function(obj_name, obj_plot) {
   file_path <- file.path(tempdir(), str_c(obj_name, ".png", collapse = ""))

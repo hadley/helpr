@@ -1,7 +1,7 @@
 #' Load an html page from the console.
 #' 
 #' @param ... site to be loaded
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @export
 load_html <- function(..., character.only = FALSE) {
   url_path <- NULL
@@ -25,7 +25,7 @@ load_html <- function(..., character.only = FALSE) {
 #' Base html path needed to load a website.
 #' 
 #' @param ... site to be loaded
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 base_html_path <- function() {
   p <- str_c("http://127.0.0.1:", tools:::httpdPort, collapse = "")
@@ -40,7 +40,7 @@ base_html_path <- function() {
 #' 
 #' @param package package in question
 #' @keywords internal
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @examples
 #'   #check_for_package("stats")
 #'   #check_for_package("does_not_exist")
@@ -57,7 +57,7 @@ check_for_package <- function(package) {
 #' @param launch_browser should this function launch a browser for immediate viewing of help pages?
 #' @param no_internetz should this function allow the browser to source internet files and actions? Default is to allow internet connections
 #' @param custom should this function launch in the custom httpd handlers env? Default is to be at the root of ""
-#' @author Barret Schloerke \email{schloerke@@gmail.com} and Hadley Wickham
+#' @author Barret Schloerke and Hadley Wickham
 #' @import brew highlight sinartra memoise evaluate stringr tools parser digest stats utils
 helpr <- function(launch_browser = TRUE, no_internetz = NULL, custom = NULL) {
 
@@ -323,7 +323,7 @@ helpr <- function(launch_browser = TRUE, no_internetz = NULL, custom = NULL) {
 #' Remove the warnings from the rendering of the JSON
 #'
 #' @param obj object to be rendered
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal 
 helpr_render_json <- function(obj) {
   suppressWarnings(render_json(obj))
@@ -376,7 +376,7 @@ print.packageInfo = function (x, ...) {
 #' @method print help_files_with_topic
 #' @param x path to help
 #' @param ... other arguments ignored
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @export
 print.help_files_with_topic <- function (x, ...) 
 {

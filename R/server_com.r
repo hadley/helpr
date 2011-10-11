@@ -1,6 +1,6 @@
 #' Solr base URL.
 #'
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 servr_base_url <- function() {
   # "http://localhost:8983"
@@ -11,7 +11,7 @@ servr_base_url <- function() {
 
 #' Combine Solr parameters.
 #'
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 servr_combine_param <- function(value, param = names(value)) {
   str_c(param, value, sep = "=", collapse = "&")
@@ -22,7 +22,7 @@ servr_combine_param <- function(value, param = names(value)) {
 #' Find related pages and return info in a data.frame
 #'
 #' @param topic title to be used to find similar results
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 servr_similar <- function(topic) {
   if (! i_can_has_internetz()) return(data.frame())
@@ -42,7 +42,7 @@ servr_similar <- function(topic) {
 
 #' Solr Topics in Example
 #'
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 servr_has_topic_in_example <- function(topics) {
   if (! i_can_has_internetz()) return(data.frame())
@@ -65,7 +65,7 @@ servr_has_topic_in_example <- function(topics) {
 #' Retrieve a solr query 
 #'
 #' @param query_list list that contains the start position, query, and other parameters that are ready to be pasted
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 get_servr_query_result <- function(query_list, function_field = FALSE) {
   

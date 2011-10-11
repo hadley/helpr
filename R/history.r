@@ -1,7 +1,7 @@
 #' List all recently called functions.
 #' 
 #' @return fuctions that are from a package
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 get_function_history <- function() {
   rawhist <- NULL
@@ -25,7 +25,7 @@ get_function_history <- function() {
 #' List last ten unique functions called from the command line.
 #' 
 #' @param fun_list function list
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 #' @return fuctions that are from a package and their help paths
 last_ten_functions <- function(fun_list = get_function_history()) {  
@@ -47,7 +47,7 @@ last_ten_functions <- function(fun_list = get_function_history()) {
 #' 
 #' @param fun_list function list
 #' @return fuctions that are from a package and their help paths
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 top_ten_functions <- function(fun_list = get_function_history()) {  
   if(NROW(fun_list) < 1) return(NULL)
@@ -74,7 +74,7 @@ top_ten_functions <- function(fun_list = get_function_history()) {
 #' Both the top ten most called and last ten functions.
 #' 
 #' @return list containing the \code{\link{top_ten_functions}} and \code{\link{last_ten_functions}}
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 ten_functions <- function() {
   fun_hist <- tryCatch(

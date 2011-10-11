@@ -1,6 +1,6 @@
 #' Solr base URL.
 #'
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 solr_base_url <- function() {
   # "http://localhost:8983"
@@ -12,7 +12,7 @@ solr_base_url <- function() {
 #' Check to see if solr is running.
 #' A check to see if solr is running called and memoised at the start of \code{helpr()}
 #'
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 i_can_has_internetz <- memoise(function() {
   if (!allow_internetz()) return(FALSE)
   
@@ -44,7 +44,7 @@ i_can_has_internetz <- memoise(function() {
 #' Retrieve the pkg and topic from the URL
 #'
 #' @param url_txt url to be parsed
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 package_and_topic_from_url <- function(url_txt) {
   pkg <- ""
@@ -69,7 +69,7 @@ package_and_topic_from_url <- function(url_txt) {
 #'
 #' @param query_list list that contains the start position, query, and other parameters
 #' @return returns all the necessary information from a search
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 helpr_solr_search <- function(query_list) {
   if (! i_can_has_internetz()) return(NULL)

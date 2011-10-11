@@ -25,7 +25,7 @@ installed_packages <- function() {
 
 #' Out of date packages.
 #'
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 old_package_names <- function() {
   unname(old.packages()[, "Package"])
@@ -33,7 +33,7 @@ old_package_names <- function() {
 
 #' Update all packages that are old and currently loaded or installed.
 #'
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 update_packs <- function(all = FALSE) {
   if(all) {
@@ -49,7 +49,7 @@ update_packs <- function(all = FALSE) {
 #' Install packages.
 #' update a vector of packages
 #'
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 install_packages <- function(pkg_vec) {
 #  message(str_c("installing: ", pkg_vec, collapse = "\n"))

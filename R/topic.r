@@ -1,7 +1,7 @@
 #' Helpr home.
 #'
 #' @return all the information necessary to produce the home site ("index.html")
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 helpr_topic <- function(package, topic, highlight) {
   topic_info <- parse_help(pkg_topic(package, topic), package = package)
@@ -57,7 +57,7 @@ name_rd <- function(rd) {
 #'
 #' @param help \code{pkg_topic(}\emph{\code{topic}}\code{)}  is checked to see if a keyword is "internal"
 #' @return boolean
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 topic_is_internal <- function(help) {
   "internal" %in% help$keywords
@@ -169,7 +169,7 @@ highlight <- function(parser_output, source_link = FALSE) {
 #'
 #' @param parser_output pre-parsed output
 #' @return parsed output with functions with html links around them
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 add_function_links_into_parsed <- function(parser_output, source_link = FALSE) {
   # pull out data
@@ -200,7 +200,7 @@ add_function_links_into_parsed <- function(parser_output, source_link = FALSE) {
 #' Find the first item position.
 #' @param arr arr of items to look at
 #' @return position of the first item to match "\\item" else 1
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 first_item_pos <- function(arr) {
   for (i in seq_along(arr))
@@ -212,7 +212,7 @@ first_item_pos <- function(arr) {
 #' Find the last Item position.
 #' @param arr arr of items to look at
 #' @return position of the last item to match "\\item" else 0
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 last_item_pos <- function(arr) {
   for (i in rev(seq_along(arr)))
@@ -226,7 +226,7 @@ last_item_pos <- function(arr) {
 #' Parse the topic usage to add links to functions
 #'
 #' @param usage rd usage
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 parse_usage <- function(usage, package) {
   
@@ -271,7 +271,7 @@ parse_usage <- function(usage, package) {
 #' Order functions safely by name.
 #'
 #' @param vect string vector to be processed
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 safely_order_funcs <- function(vect) {
   
@@ -298,7 +298,7 @@ safely_order_funcs <- function(vect) {
 #' go through the function text to find the function level (depth) of each function
 #'
 #' @param text text to be evaluated
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 function_levels <- function(text) {
   split_text <- str_split(text, "")[[1]]
@@ -325,7 +325,7 @@ function_levels <- function(text) {
 #' Find all usage functions.
 #'
 #' @param usage usage in question
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 usage_functions <- function(usage) {
   usage <- reconstruct(untag(usage), package)
@@ -356,7 +356,7 @@ usage_functions <- function(usage) {
 #' find all methods within a usage
 #' 
 #' @param usage usage in question
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 usage_methods <- function(usage) {
   if (str_trim(reconstruct(untag(usage), package)) == "") return(NULL)

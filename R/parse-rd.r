@@ -18,7 +18,7 @@ untag <- function(x) {
 #' list all the tags within a object
 #'
 #' @param rd rd in question
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 list_tags <- function(rd) {
   tags <- c()
@@ -172,7 +172,7 @@ reconstruct <- function(rd, package = NULL) {
 #'
 #' @param name name of the email
 #' @param address email address
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 author_email <- function(name, address) {
   str_c("<a href='mailto:", address, "?subject=(R-Help): '>", name, "</a>")
@@ -262,7 +262,7 @@ list(
 #' Determines whether or not the item has text.
 #'
 #' @param x item in question
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 has_text <- function(x) {
   trim <- str_trim(x)
@@ -272,7 +272,7 @@ has_text <- function(x) {
 #' Determines whether or not the dataframe has rows.
 #'
 #' @param x item in question
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 dataframe_has_rows <- function(x) {
   NROW(x) > 0 && x != ""
@@ -282,7 +282,7 @@ dataframe_has_rows <- function(x) {
 #' wrapper to parser's \code{parser(text = text)}
 #'
 #' @param text text to be parsed
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 parse_text <- function(text) {
   output <- suppressWarnings(parser(text = text))
@@ -300,7 +300,7 @@ parse_text <- function(text) {
 #' @param obj object to look at
 #' @param plural plural string
 #' @param bool_statement boolean to use to determine which string to use
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal 
 pluralize <- function(string, obj, plural = str_c(string, "s"), bool_statement = NROW(obj)) {
   if (bool_statement) {
@@ -325,7 +325,7 @@ strip_html <- function(x) {
 #' Parse a tabular section to include the text alignments
 #'
 #' @param tabular rd item to parsed
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal 
 parse_tabular <- function(tabular) {
   #' make all alignements into left, right or center
@@ -366,7 +366,7 @@ parse_tabular <- function(tabular) {
 #' It will replace the items with plan, non-attributed text.  It needs to be a 'pre-parser' as it must be done before the whole list is reconstructed
 #' @param rd R documentation item to be altered and then returned
 #' @param package package looking at
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal 
 parse_items <- function(rd, package) {
   tags <- list_tags(rd)
@@ -403,7 +403,7 @@ parse_items <- function(rd, package) {
 
 #' Group items into similar sections.
 #'
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal 
 group_int_arr <- function(arr) {
   n <- length(arr)
@@ -417,7 +417,7 @@ group_int_arr <- function(arr) {
 #' @param rd item to be parsed
 #' @param package package looking at
 #' @return table text with no attributes
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal 
 parse_item_list <- function(rd, package) {
   tags <- list_tags(rd)
@@ -438,7 +438,7 @@ parse_item_list <- function(rd, package) {
 #' Functions used in the string of functions.
 #'
 #' @param txt text in question.  should be full of functions
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 functions_used <- function(txt) {
   if (txt == "") return("")

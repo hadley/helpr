@@ -2,13 +2,18 @@
 #'
 #' @aliases helpr_package helpr_package_mem
 #' @return all the information necessary to produce a package site ("/package/:package/")
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 helpr_package <- function(package) {
   helpr_package_mem(package, pkg_version(package))
 }
 
 
+#' Read RDS file
+#' 
+#' @param ... args sent directly to base's read rds function
+#' @author Barret Schloerke
+#' @keywords internal
 read_rds <- function(...) {
   rv = R.version
   if (rv$major == "2" && as.numeric(rv$minor) < 13.1) {
@@ -72,7 +77,7 @@ pkg_version <- function(pkg) {
 #' 
 #' @param string string to be evaluated
 #' @keywords internal
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @examples #add_package_link_to_string("quantreg, Hmisc, mapproj, maps, hexbin, gpclib, maptools")
 add_package_link_to_string <- function(string) {
   packs <- str_trim(str_split(usage_functions(string), "[, ]")[[1]])
@@ -88,7 +93,7 @@ add_package_link_to_string <- function(string) {
 #' Ensure package version is properly displayed (if not already in a nice
 #' format).
 #'
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 parse_pkg_desc_item <- function(obj) {
   if (NROW(obj) < 1) {
@@ -121,7 +126,7 @@ parse_pkg_desc_item <- function(obj) {
 #'
 #' @param description list containing the \code{author} and \code{maintainer}
 #' @return string containing the authors with links properly displayed
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 pkg_author_and_maintainers <- function(authors, maintainer=NULL) {
 
@@ -205,7 +210,7 @@ pkg_help_path <- function(package) {
 #'
 #' @param package package to explore
 #' @return \code{subset} of the \code{vignette()$results} \code{data.frame} ("Package", "LibPath", "Item" and "Title")
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 pkg_vigs <- function(package) {
   vignettes <- vignette(package = package)$results
@@ -259,7 +264,7 @@ pkg_topics_rd <- memoise(function(package) {
 #' return information on the package, datasets, internal, and datasets
 #'
 #' @param pkg package in question
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 pkg_topics_alias <- function(pkg) {
     
@@ -297,7 +302,7 @@ pkg_topics_alias <- function(pkg) {
 #'
 #' @param pkg package in question
 #' @param topic topic in question
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 package_description <- function(pkg, topic) {
   gsub("$\n+|\n+^", "", reconstruct(pkg_topic(pkg, topic)$description, package))

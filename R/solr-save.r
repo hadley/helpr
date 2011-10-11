@@ -1,7 +1,7 @@
 #' Deletes everything that belongs to a package in solr.
 #'
 #' @param package package to be deleted
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 # '
 solr_delete_package <- function(package) {
   if (! i_can_has_internetz()) return(NULL)
@@ -17,7 +17,7 @@ solr_delete_package <- function(package) {
 #' 
 #' @param name name of the field
 #' @param value value of the field
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 make_field <- function(name, value) {
   if (length(value) < 1) value <- ""
@@ -38,7 +38,7 @@ make_field <- function(name, value) {
 #' 
 #' @param id id tag to be used
 #' @param obj list to perform on
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 list_to_xml <- function(id, obj) {
   obj$id <- id
@@ -56,7 +56,7 @@ list_to_xml <- function(id, obj) {
 #' this is to be done to easily use sapply and keep the name of the item
 #'
 #' @param obj list to perform on
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 list_to_double_list <- function(obj) {
   new_obj <- list()
@@ -71,7 +71,7 @@ list_to_double_list <- function(obj) {
 #' make it so the xml is an 'add' to be commited to solr
 #'
 #' @param obj list to perform on
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 make_add_xml <- function(obj) {
   str_c("<add>", obj, "</add>", collaspe = "")
@@ -83,7 +83,7 @@ make_add_xml <- function(obj) {
 #'
 #' @param txt xml text string
 #' @param file_name location to save the file. Defaults to a temp file that is discarded when R shuts down.
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 save_xml <- function(txt, file_name=tempfile()) {
   txt <- str_replace_all(txt, "<doc>", "<doc>\n\t")
@@ -96,7 +96,7 @@ save_xml <- function(txt, file_name=tempfile()) {
 
 #' PUT a string to the Solr server.
 #'
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 put_string <- function(string) {
   file_name <- save_xml(string)
@@ -105,7 +105,7 @@ put_string <- function(string) {
 
 #' PUT a file to the Solr server.
 #'
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 put_file <- function(file_name) {
   # require("RCurl")

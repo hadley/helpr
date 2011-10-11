@@ -3,7 +3,7 @@
 #' 
 #' @param url_string url to explore
 #' @return plain text from that url
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 read_url <- function(url_string) {
   
@@ -20,7 +20,7 @@ read_url <- function(url_string) {
 #' URL with JSON result to list.
 #'
 #' @param url_string url that contains a JSON output to be turned into a list
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 urlJSON_to_list <- function(url_string) {
   fromJSON(read_url(url_string))
@@ -29,7 +29,7 @@ urlJSON_to_list <- function(url_string) {
 #' Send commit command to Solr
 #' Send a commit command to Solr to finalized any submissions
 #'
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 send_commit_command <- function() {
   # require("RCurl")
@@ -39,7 +39,7 @@ send_commit_command <- function() {
 #' Send system command to Solr.
 #' Send a system command to Solr to add / update files to Solr
 #'
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 send_system_command <- function(system_string) {
   curled_text <- system(system_string, intern = TRUE, ignore.stderr = TRUE)

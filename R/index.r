@@ -2,7 +2,7 @@
 #'
 #' @param package package to use
 #' @param topic topic to explore
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 solr_topic <- function(package, topic) {
   
@@ -40,7 +40,7 @@ solr_topic <- function(package, topic) {
 #' Index topic.
 #' Index a topic into solr
 #'
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @param package package in question
 #' @param topic topic in question
 index_topic <- function(package, topic) {
@@ -53,7 +53,7 @@ index_topic <- function(package, topic) {
 #' Index package.
 #' Index a whole package into solr
 #'
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @param package package in question
 #' @param start_letter used when you want to start froma certain letter, such as 'q'
 #' @param verbose should output be shown?
@@ -103,7 +103,7 @@ index_package <- function(package, start_letter = "a", verbose = TRUE) {
 #' Index all packages into solr
 #'
 #' @aliases index_all index_packages
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @param start_letter used when you want to start froma certain letter, such as 'q'
 #' @param verbose should output be shown?
 index_all <- function(start_letter = "a", verbose = TRUE) {

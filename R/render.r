@@ -4,7 +4,7 @@
 #' @param params list containing objects to be sent to the template
 #' @param path path to be used to find the "views" folder
 #' @return text rendered from the template
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @keywords internal
 render_snippet <- function(template, params = NULL, path = router_file_path()) {
   template <- str_c("_", template)

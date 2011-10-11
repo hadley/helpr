@@ -1,6 +1,6 @@
 #' Local Mode
 #'
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @aliases local_mode activate_internetz deactivate_internetz allow_internetz
 #' @keywords internal
 local_mode <- local({
@@ -25,7 +25,7 @@ allow_internetz <- local_mode$allow_internetz
 
 #' Router Info
 #'
-#' @author Barret Schloerke \email{schloerke@@gmail.com}
+#' @author Barret Schloerke
 #' @aliases rp set_router_info set_fouter_file_path set_router_custom_route router_info fouter_file_path router_custom_route
 #' @keywords internal
 rp <- local({
