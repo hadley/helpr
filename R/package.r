@@ -1,14 +1,3 @@
-#' Package information.
-#'
-#' @aliases helpr_package helpr_package_mem
-#' @return all the information necessary to produce a package site ("/package/:package/")
-#' @author Barret Schloerke
-#' @keywords internal
-helpr_package <- function(package) {
-  helpr_package_mem(package, pkg_version(package))
-}
-
-
 #' Read RDS file
 #' 
 #' @param ... args sent directly to base's read rds function
@@ -21,6 +10,18 @@ read_rds <- function(...) {
   } else {
     base:::readRDS(...)
   }
+}
+
+
+
+#' Package information.
+#'
+#' @aliases helpr_package helpr_package_mem
+#' @return all the information necessary to produce a package site ("/package/:package/")
+#' @author Barret Schloerke
+#' @keywords internal
+helpr_package <- function(package) {
+  helpr_package_mem(package, pkg_version(package))
 }
 
 helpr_package_mem <- memoise(function(package, version) {
