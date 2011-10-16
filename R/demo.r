@@ -25,11 +25,11 @@ demo_info <- function(package, demo_name) {
 #' @param package package name
 #' @param demo_name demo name
 #' @keywords internal
-#' @importFrom parser parser
+#' @import parser
 helpr_demo <- function(package, demo_name) {
   info <- demo_info(package, demo_name)
   
-  parsed_src <- parser:::parser(file = demo_src_file(package, demo_name))
+  parsed_src <- parser::parser(file = demo_src_file(package, demo_name))
   
   demo_functions <- code_info(parsed_src)
   other_demos <- suppressWarnings(subset(as.data.frame(pkg_demos(package)), Item != demo_name))

@@ -5,7 +5,7 @@
 #' @param pic_base_name base picture name to be used
 #' @author Barret Schloerke
 #' @keywords internal
-#' @importFrom parser parser
+#' @import parser
 helpr_replay <- function(x, pic_base_name) UseMethod("helpr_replay", x)
 
 helpr_replay.list <- function(x, pic_base_name) {
@@ -23,7 +23,7 @@ helpr_replay.character <- function(x, pic_base_name) {
 helpr_replay.source <- function(x, pic_base_name) {
   if (str_trim(x$src) == "") return(x$src)
 
-  parsed <- parser:::parser(text = x$src)
+  parsed <- parser::parser(text = x$src)
   highlight(parsed)
 }
 

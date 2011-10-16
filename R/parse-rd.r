@@ -284,9 +284,9 @@ dataframe_has_rows <- function(x) {
 #' @param text text to be parsed
 #' @author Barret Schloerke
 #' @keywords internal
-#' @importFrom parser parser
+#' @import parser
 parse_text <- function(text) {
-  output <- suppressWarnings(parser:::parser(text = text))
+  output <- suppressWarnings(parser::parser(text = text))
   if (!dataframe_has_rows(attr(output, "data"))) {
     NULL
   } else {
