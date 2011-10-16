@@ -73,31 +73,32 @@ helpr <- function(launch_browser = TRUE, no_internetz = NULL, custom = NULL) {
   url_path <- ifelse(router_custom_route(), "/custom/helpr", "")
 
   router <- Router$clone()
-  router$set_base_url(url_path)
-  router$set_file_path(file_path)
+  router$base_url(url_path)
+  router$file_path(file_path)
   set_router_url(url_path)
   set_router_file_path(file_path)
 
   # Show list of all packages on home page
-  router$get("/index.html", function(...) {
+  indexLocation = "/index.html"
+  router$get(indexLocation, function(...) {
     page_info <- helpr_home()
-    page_info$html <- "/index.html"
+    page_info$html <- indexLocation
     router$render_brew("index", page_info)
   })
 
   # Redirect old home location to new
   router$get("/doc/html/index.html", function(...) {
-    router$redirect("/index.html")
+    router$redirect(indexLocation)
   })
 
   router$get("", function(...) {
-    router$redirect("/index.html")
+    router$redirect(indexLocation)
   })
   router$get("/", function(...) {
-    router$redirect("/index.html")
+    router$redirect(indexLocation)
   })
   router$get("/index", function(...) {
-    router$redirect("/index.html")
+    router$redirect(indexLocation)
   })
   
 
@@ -296,7 +297,11 @@ helpr <- function(launch_browser = TRUE, no_internetz = NULL, custom = NULL) {
 
   # Use file in public, if present
   router$get("/*", function(splat, ...) {
-    router$static_file(file.path("public", splat))
+    if (splat == "") {
+      router$redirect(indexLocation)
+    } else {
+      router$static_file(file.path("public", splat))
+    }
   })
 
   render_path <- function(path, query, ...){
