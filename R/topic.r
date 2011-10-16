@@ -95,7 +95,7 @@ parse_help <- function(rd, package) {
   out$value <- reconstruct(rd$value, package)
   reconstructed_examples <- reconstruct(untag(rd$examples), package)
   par_text <- parse_text(reconstructed_examples)
-  out$examples <- highlight:::highlight(par_text)
+  out$examples <- highlight(par_text)
   out$example_functions <- code_info(par_text)
   out$example_functions_str <- pluralize("Top Function", out$example_functions)
   out$usage <- parse_usage(rd$usage, package)
@@ -157,7 +157,7 @@ highlight <- function(parser_output, source_link = FALSE) {
   
   str_c(
     capture.output(
-      highlight:::highlight( 
+      highlight::highlight( 
         parser.output = parser_output, 
         renderer = highlight::renderer_html(doc = F)
       )
