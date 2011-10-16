@@ -297,11 +297,7 @@ helpr <- function(launch_browser = TRUE, no_internetz = NULL, custom = NULL) {
 
   # Use file in public, if present
   router$get("/*", function(splat, ...) {
-    if (splat == "") {
-      router$redirect(indexLocation)
-    } else {
-      router$static_file(file.path("public", splat))
-    }
+    router$static_file(file.path("public", splat))
   })
 
   render_path <- function(path, query, ...){
