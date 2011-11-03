@@ -91,6 +91,7 @@ parse_help <- function(rd, package) {
   # single string.
   out$title <- reconstruct(untag(rd$title), package)
   out$desc <- gsub("$\n+|\n+^", "", reconstruct(rd$description, package))
+  out$references <- gsub("$\n+|\n+^", "", reconstruct(rd$references, package))
   out$details <- reconstruct(rd$details, package)
   out$value <- reconstruct(rd$value, package)
   reconstructed_examples <- reconstruct(untag(rd$examples), package)
