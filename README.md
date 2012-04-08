@@ -46,8 +46,9 @@ The development of `helpr` was made possible with generous support from Revoluti
 # Installation
 
 To install `helpr`, you first need to install some packages:
-  * from CRAN: `install.packages( c("stringr", "digest",  "mutatr", "brew", "testthat") )`
-  * from github: `http://github.com/hadley/sinartra`
+
+* from CRAN: `install.packages( c("stringr", "digest",  "mutatr", "brew", "testthat") )`
+* from github: `http://github.com/hadley/sinartra`
 
 # Running helpr
 
