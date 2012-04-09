@@ -213,7 +213,7 @@ tag_link <- function(fun, pkg = NULL, topic_page = fun) {
 #' @author Hadley Wickham
 #' @keywords internal
 is_section <- function(tag) {
-  tag %in% c("\\details", "\\description", "\\value", "\\author", "\\seealso")
+  tag %in% c("\\details", "\\description", "\\value", "\\author", "\\seealso", "\\references")
 }
 
 #' All tags that can be parsed in a simple way.
